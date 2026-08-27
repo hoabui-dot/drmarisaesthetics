@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_customer_story_items",
+  "info": {
+    "displayName": "Story Item",
+    "description": "Customer testimonial with avatar"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "treatment": {
+      "type": "string"
+    },
+    "quote": {
+      "type": "text"
+    },
+    "rating": {
+      "type": "integer",
+      "default": 5
+    },
+    "avatar": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "collectionName": "components_services_overview_ctas",
+  "info": {
+    "displayName": "Services CTA",
+    "description": "Call-to-action section for services page"
+  },
+  "options": {},
+  "attributes": {
+    "heading": {
+      "type": "text",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true,
+      "default": "Book a consultation with our experts today and take the first step toward a healthier, more confident you."
+    },
+    "button_label": {
+      "type": "string",
+      "required": true
+    },
+    "button_link": {
+      "type": "string",
+      "required": true
+    },
+    "background_image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}

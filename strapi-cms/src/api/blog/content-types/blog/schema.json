@@ -1,0 +1,77 @@
+{
+  "kind": "collectionType",
+  "collectionName": "blogs",
+  "info": {
+    "singularName": "blog",
+    "pluralName": "blogs",
+    "displayName": "Blog",
+    "description": "Blog posts collection"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "seo.page-seo"
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "Implant Dentistry",
+        "Cosmetic Dentistry",
+        "Orthodontics",
+        "Preventive Care",
+        "Dental Technology",
+        "General Knowledge"
+      ],
+      "required": false
+    },
+    "coverImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "excerpt": {
+      "type": "text",
+      "required": false
+    },
+    "metaDescription": {
+      "type": "text",
+      "required": false
+    },
+    "authorName": {
+      "type": "string",
+      "required": false
+    },
+    "readingTime": {
+      "type": "string",
+      "required": false
+    },
+    "metaImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "content": {
+      "type": "richtext",
+      "required": false
+    },
+    "publishedAt": {
+      "type": "datetime"
+    }
+  }
+}

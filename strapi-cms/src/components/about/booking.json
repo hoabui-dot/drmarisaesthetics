@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_about_bookings",
+  "info": {
+    "displayName": "About Booking Consultation",
+    "description": "Final About Us consultation form, clinic contact details and reception image."
+  },
+  "options": {},
+  "attributes": {
+    "heading": { "type": "string", "required": true, "default": "Book a Consultation" },
+    "clinic_name": { "type": "string", "required": true, "default": "Smilux Dental Clinic" },
+    "address": { "type": "text", "required": true },
+    "phone": { "type": "string", "required": true },
+    "email": { "type": "string", "required": true },
+    "opening_hours": { "type": "text", "required": true },
+    "clinic_image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

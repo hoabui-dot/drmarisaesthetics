@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_about_hero_stats",
+  "info": {
+    "displayName": "About Hero Statistic",
+    "icon": "chart-bar"
+  },
+  "options": {},
+  "attributes": {
+    "value": { "type": "string", "required": true },
+    "label": { "type": "string", "required": true },
+    "icon": { "type": "string" },
+    "icon_image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

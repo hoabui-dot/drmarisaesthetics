@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_customer_combined_testimonial_results",
+  "info": {
+    "displayName": "Combined Testimonial Result Section",
+    "description": "Unified section displaying customer stories alongside their before/after treatment results"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "customer.combined-testimonial-result-item"
+    }
+  }
+}

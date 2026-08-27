@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_homepage_faq_contact_items",
+  "info": {
+    "displayName": "FAQ Contact Item",
+    "description": "Contact method item for FAQ support card (icon as text, label, sub-label)"
+  },
+  "options": {},
+  "attributes": {
+    "icon": {
+      "type": "string",
+      "description": "Emoji or text icon, e.g. 📞 or 💬"
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "sub_label": {
+      "type": "string"
+    }
+  }
+}

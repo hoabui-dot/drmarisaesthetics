@@ -1,0 +1,35 @@
+{
+  "collectionName": "components_customer_reviews",
+  "info": {
+    "displayName": "Reviews",
+    "description": "5-Star Dental Clinic with Verified Patient Reviews section"
+  },
+  "options": {},
+  "attributes": {
+    "badge": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "required": true,
+      "default": "5-Star Dental Clinic with Verified Patient Reviews"
+    },
+    "rating": {
+      "type": "decimal",
+      "default": 4.9
+    },
+    "total_reviews": {
+      "type": "integer",
+      "default": 400
+    },
+    "rating_subtitle": {
+      "type": "string",
+      "default": "rating from over 400 reviews on Google Maps"
+    },
+    "checklist": {
+      "type": "component",
+      "repeatable": true,
+      "component": "customer.review-checklist-item"
+    }
+  }
+}

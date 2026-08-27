@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_about_core_value_items",
+  "info": {
+    "displayName": "Core Value Item",
+    "icon": "heart"
+  },
+  "options": {},
+  "attributes": {
+    "title": { "type": "string", "required": true },
+    "description": { "type": "text", "required": true },
+    "icon_image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_homepage_patient_testimonials",
+  "info": {
+    "displayName": "Patient Testimonial",
+    "description": "Atomic patient evaluation record"
+  },
+  "options": {},
+  "attributes": {
+    "rating": { "type": "integer", "required": true, "min": 1, "max": 5, "default": 5 },
+    "quote": { "type": "text", "required": true },
+    "patient_name": { "type": "string", "required": true },
+    "patient_location": { "type": "string" },
+    "patient_avatar": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "patient_avatar_alt": { "type": "string" }
+  }
+}

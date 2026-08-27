@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  dozzle:
+    container_name: neura-dozzle
+    image: amir20/dozzle:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "5555:5555"
+    environment:
+      - DOZZLE_LEVEL=info
+      - DOZZLE_TAILSIZE=300
+      - DOZZLE_AUTH=false
+    command: ["--addr=:5555"]
+    restart: unless-stopped

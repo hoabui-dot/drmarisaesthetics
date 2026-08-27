@@ -1,0 +1,48 @@
+{
+  "collectionName": "components_homepage_doctor_profiles",
+  "info": {
+    "displayName": "Doctor Profile",
+    "description": "Individual doctor profile"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "specialization": {
+      "type": "string"
+    },
+    "bio": {
+      "type": "text"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "image_alt": {
+      "type": "string"
+    },
+    "profile_link": {
+      "type": "string"
+    },
+    "linkedin_url": {
+      "type": "string"
+    },
+    "experience_years": {
+      "type": "integer"
+    },
+    "badges": {
+      "type": "component",
+      "repeatable": true,
+      "component": "homepage.doctor-badge"
+    },
+    "stats": {
+      "type": "component",
+      "repeatable": true,
+      "component": "homepage.doctor-stat"
+    }
+  }
+}

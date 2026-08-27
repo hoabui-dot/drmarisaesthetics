@@ -1,0 +1,26 @@
+{
+  "kind": "singleType",
+  "collectionName": "seo_manager_settings",
+  "info": {
+    "singularName": "seo-manager-settings",
+    "pluralName": "seo-manager-settings-list",
+    "displayName": "SEO Manager - Default Metadata",
+    "description": "Global fallback metadata for pages without page-level SEO."
+  },
+  "options": {"draftAndPublish": true},
+  "pluginOptions": {},
+  "attributes": {
+    "default_meta_title": {"type": "string", "required": true, "maxLength": 60},
+    "meta_title_template": {"type": "string", "maxLength": 100, "default": "%page_title% | Smilux Dental"},
+    "default_meta_description": {"type": "text", "required": true, "maxLength": 160},
+    "default_open_graph_image": {"type": "media", "multiple": false, "allowedTypes": ["images"]},
+    "site_name": {"type": "string", "required": true, "default": "Smilux Dental", "maxLength": 80},
+    "default_open_graph_title": {"type": "string", "maxLength": 60},
+    "default_open_graph_description": {"type": "text", "maxLength": 200},
+    "structured_data_enabled": {"type": "boolean", "default": true},
+    "structured_data_business_type": {"type": "enumeration", "enum": ["Organization", "Dentist", "MedicalBusiness", "MedicalClinic", "ProfessionalService"], "default": "Dentist"},
+    "sitemap_enabled": {"type": "boolean", "default": true},
+    "sitemap_default_change_frequency": {"type": "enumeration", "enum": ["always", "hourly", "daily", "weekly", "monthly", "yearly", "never"], "default": "weekly"},
+    "sitemap_default_priority": {"type": "decimal", "min": 0, "max": 1, "default": 0.5}
+  }
+}

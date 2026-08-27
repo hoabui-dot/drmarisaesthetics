@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_homepage_doctors",
+  "info": {
+    "displayName": "Doctor Section",
+    "description": "Doctor team showcase"
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "view_all_label": {
+      "type": "string"
+    },
+    "view_all_link": {
+      "type": "string"
+    },
+    "doctors": {
+      "type": "component",
+      "repeatable": true,
+      "component": "homepage.doctor-profile"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_seo_robots_rules",
+  "info": {
+    "displayName": "Robots Rule",
+    "description": "A user-agent rule for robots.txt. Enter one path per line."
+  },
+  "options": {},
+  "attributes": {
+    "user_agent": {
+      "type": "string",
+      "required": true,
+      "default": "*"
+    },
+    "allow": {
+      "type": "text"
+    },
+    "disallow": {
+      "type": "text"
+    }
+  }
+}

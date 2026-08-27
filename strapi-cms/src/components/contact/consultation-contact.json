@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_contact_consultation_contacts",
+  "info": {
+    "displayName": "Consultation Contact",
+    "description": "Structured contact row in the consultation information card."
+  },
+  "options": {},
+  "attributes": {
+    "type": {
+      "type": "enumeration",
+      "enum": ["hotline", "zalo", "whatsapp", "email"],
+      "required": true
+    },
+    "label": { "type": "string", "required": true },
+    "value": { "type": "string", "required": true },
+    "href": { "type": "string" }
+  }
+}

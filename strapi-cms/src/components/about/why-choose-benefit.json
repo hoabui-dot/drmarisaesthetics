@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_about_why_choose_benefits",
+  "info": {
+    "displayName": "Why Choose Benefit",
+    "icon": "check"
+  },
+  "options": {},
+  "attributes": {
+    "title": { "type": "string", "required": true },
+    "description": { "type": "text", "required": true },
+    "icon_image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

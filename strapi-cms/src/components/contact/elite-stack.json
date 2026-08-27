@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_contact_elite_stacks",
+  "info": {
+    "displayName": "Elite Stack",
+    "description": "50/50 Info Section for Contact Page"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "cards": {
+      "type": "component",
+      "repeatable": true,
+      "component": "contact.elite-stack-card"
+    }
+  }
+}

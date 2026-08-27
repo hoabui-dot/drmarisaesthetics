@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_contact_heroes",
+  "info": {
+    "displayName": "Hero",
+    "description": "Contact page hero with editable introduction, clinic image, and four structured contact cards"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "description": {
+      "type": "text"
+    },
+    "hero_image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "contact_cards": {
+      "type": "component",
+      "repeatable": true,
+      "component": "contact.quick-contact-card"
+    }
+  }
+}

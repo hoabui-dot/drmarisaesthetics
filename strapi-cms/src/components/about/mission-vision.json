@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_about_mission_visions",
+  "info": {
+    "displayName": "Mission and Vision",
+    "icon": "pin"
+  },
+  "options": {},
+  "attributes": {
+    "backgroundImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "missionIcon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "visionIcon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "missionTitle": { "type": "string", "required": true },
+    "missionDescription": { "type": "text", "required": true },
+    "visionTitle": { "type": "string", "required": true },
+    "visionDescription": { "type": "text", "required": true }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_contact_quick_action_banners",
+  "info": {
+    "displayName": "Quick-Action Banner",
+    "description": "Strategic Call-to-Action Ribbon"
+  },
+  "options": {},
+  "attributes": {
+    "text_prefix": {
+      "type": "string",
+      "required": true
+    },
+    "whatsapp_text": {
+      "type": "string",
+      "required": true
+    },
+    "text_suffix": {
+      "type": "string"
+    },
+    "mobile_link": {
+      "type": "string"
+    },
+    "desktop_link": {
+      "type": "string"
+    }
+  }
+}

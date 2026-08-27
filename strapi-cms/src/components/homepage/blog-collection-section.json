@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_homepage_blog_collection_sections",
+  "info": {
+    "displayName": "BlogCollectionSection",
+    "description": "Blog collection grid section"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "posts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::blog.blog"
+    },
+    "showFeatured": {
+      "type": "boolean",
+      "default": false
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

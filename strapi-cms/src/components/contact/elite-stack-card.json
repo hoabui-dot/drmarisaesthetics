@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_contact_elite_stack_cards",
+  "info": {
+    "displayName": "Elite Stack Card",
+    "description": "Refractive glass cards for the Elite Stack"
+  },
+  "options": {},
+  "attributes": {
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "icon_image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "show_cta": {
+      "type": "boolean",
+      "default": false
+    },
+    "cta_label": {
+      "type": "string"
+    },
+    "cta_link": {
+      "type": "string"
+    }
+  }
+}

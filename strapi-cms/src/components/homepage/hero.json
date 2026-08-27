@@ -1,0 +1,49 @@
+{
+  "collectionName": "components_homepage_heroes",
+  "info": {
+    "displayName": "Hero",
+    "description": "Hero section with heading, subheading, CTA, and image"
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string" },
+    "heading": {
+      "type": "string",
+      "required": true
+    },
+    "heading_line_1": { "type": "string" },
+    "heading_line_2": { "type": "string" },
+    "subheading": {
+      "type": "text"
+    },
+    "background_image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "cta_label": {
+      "type": "string"
+    },
+    "cta_link": {
+      "type": "string"
+    },
+    "secondary_cta_label": { "type": "string" },
+    "secondary_cta_link": { "type": "string" },
+    "secondary_cta_action": {
+      "type": "enumeration",
+      "enum": ["video-dialog", "internal-route", "external-url"],
+      "default": "video-dialog"
+    },
+    "secondary_cta_video_url": { "type": "string" },
+    "trust_label": { "type": "string" },
+    "trust_value": { "type": "string" },
+    "trust_rating": { "type": "decimal", "min": 0, "max": 5 },
+    "patient_avatars": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

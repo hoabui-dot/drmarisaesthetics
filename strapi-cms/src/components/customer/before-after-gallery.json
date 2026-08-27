@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_customer_before_after_galleries",
+  "info": {
+    "displayName": "Before After Gallery",
+    "description": "Gallery of before and after dental transformation images"
+  },
+  "options": {},
+  "attributes": {
+    "badge": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "customer.gallery-item"
+    }
+  }
+}

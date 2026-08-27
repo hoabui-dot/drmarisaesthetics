@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_homepage_press_sections",
+  "info": {
+    "displayName": "Homepage Press / Featured In",
+    "description": "Image-only publication logo collection"
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string", "required": true },
+    "heading": { "type": "string", "required": true },
+    "logos": { "type": "media", "multiple": true, "required": true, "allowedTypes": ["images"] }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "kind": "singleType",
+  "collectionName": "contact_pages",
+  "info": {
+    "singularName": "contact-page",
+    "pluralName": "contact-pages",
+    "displayName": "Contact Page",
+    "description": "Contact page with hero, consultation, and clinic location sections"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": false
+    }
+  },
+  "attributes": {
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "seo.page-seo"
+    },
+    "title": {
+      "type": "string",
+      "required": true,
+      "default": "Contact Us - Saigon International Dental Clinic"
+    },
+    "description": {
+      "type": "text"
+    },
+    "layout": {
+      "type": "dynamiczone",
+      "components": [
+        "contact.hero",
+        "contact.consultation-section",
+        "contact.map-section"
+      ]
+    }
+  }
+}

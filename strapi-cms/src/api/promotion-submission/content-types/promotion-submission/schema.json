@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "promotion_submissions",
+  "info": {
+    "singularName": "promotion-submission",
+    "pluralName": "promotion-submissions",
+    "displayName": "Promotion Submission",
+    "description": "Tracking promotion modal claims"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "phone_number": {
+      "type": "string",
+      "required": true,
+      "minLength": 7,
+      "maxLength": 20
+    },
+    "ip_address": {
+      "type": "string",
+      "required": false
+    },
+    "user_agent": {
+      "type": "text",
+      "required": false
+    },
+    "promotion_status": {
+      "type": "enumeration",
+      "enum": ["new", "contacted", "completed", "cancelled"],
+      "default": "new"
+    }
+  }
+}

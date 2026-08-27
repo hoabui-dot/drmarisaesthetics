@@ -1,0 +1,816 @@
+{
+  "data": {
+    "title": "Trang chủ - Nha Khoa Quốc Tế Sài Gòn 2026",
+    "locale": null,
+    "metadata_title": "Best dental in Ho Chi Minh - Saigon International Dental",
+    "metadata_description": "Experience dentistry delivered by highly qualified, English-speaking specialists. We provide advanced surgical, restorative, and preventive oral care strictly adhering to European medical protocols.",
+    "metadata_image": {
+      "connect": [
+        228
+      ]
+    },
+    "layout": [
+      {
+        "__component": "homepage.hero",
+        "heading": "Your Smile, Our Passion",
+        "subheading": "At Smilux Dental, we combine advanced technology, experienced professionals, and a patient-first approach to deliver safe, lasting, and beautiful smiles for you and your loved ones.",
+        "cta_label": "BOOK APPOINTMENT",
+        "cta_link": "/booking",
+        "eyebrow": "PREMIUM DENTAL CARE & SERVICES",
+        "secondary_cta_label": "WATCH VIDEO",
+        "secondary_cta_link": null,
+        "trust_label": "Trusted by 10,000+ Patients",
+        "trust_value": "4.9/5",
+        "secondary_cta_action": "video-dialog",
+        "secondary_cta_video_url": "https://www.youtube.com/watch?v=AIaFqXNspJo",
+        "trust_rating": 4.9,
+        "heading_line_1": "Your Smile,",
+        "heading_line_2": "Our Passion",
+        "background_image": null,
+        "patient_avatars": [
+          {
+            "connect": [
+              97
+            ]
+          },
+          {
+            "connect": [
+              98
+            ]
+          },
+          {
+            "connect": [
+              99
+            ]
+          },
+          {
+            "connect": [
+              100
+            ]
+          }
+        ]
+      },
+      {
+        "__component": "homepage.proof-showcase",
+        "eyebrow": "ABOUT SMILUX DENTAL",
+        "title": "Trusted Care. Lasting Smiles.",
+        "description": "At Smilux Dental, we are committed to providing world-class dental care in a comfortable and friendly environment. Every smile we create is built on trust, innovation, and personalized attention.",
+        "heading_line_1": "Trusted Care.",
+        "heading_line_2": "Lasting Smiles.",
+        "cta_label": "LEARN MORE ABOUT US",
+        "cta_link": "/about-us",
+        "experience_value": "15+",
+        "experience_label": "Years of Experience",
+        "patient_stat_value": "10,000+",
+        "patient_stat_label": "Happy Patients",
+        "primary_image": null,
+        "secondary_image": null,
+        "primary_team_image": {
+          "connect": [
+            21
+          ]
+        },
+        "technology_image": {
+          "connect": [
+            20
+          ]
+        },
+        "patient_story_image": {
+          "connect": [
+            24
+          ]
+        },
+        "patient_stat_image": {
+          "connect": [
+            23
+          ]
+        },
+        "benefits": [
+          {
+            "label": "Experienced & Certified Dental Experts"
+          },
+          {
+            "label": "State-of-the-Art Technology & Equipment"
+          },
+          {
+            "label": "Painless & Patient-Friendly Procedures"
+          },
+          {
+            "label": "Personalized Treatment Plans"
+          }
+        ],
+        "metrics": [
+          {
+            "value": "15",
+            "suffix": "+",
+            "label": "Years of Clinical Experience",
+            "icon": null
+          },
+          {
+            "value": "25,000",
+            "suffix": "+",
+            "label": "Patients",
+            "icon": null
+          },
+          {
+            "value": "98",
+            "suffix": "%",
+            "label": "Successful Treatments",
+            "icon": null
+          },
+          {
+            "value": "15",
+            "suffix": "+",
+            "label": "Highly Skilled Dentists",
+            "icon": null
+          }
+        ]
+      },
+      {
+        "__component": "homepage.services",
+        "title": "Comprehensive Care For Your Perfect Smile",
+        "description": "Tailored therapeutic and surgical solutions utilizing state-of-the-art diagnostic equipment.",
+        "eyebrow": "OUR DENTAL SERVICES",
+        "subtitle": null,
+        "view_more_label": "VIEW ALL SERVICES",
+        "view_more_link": "/services",
+        "items": [
+          {
+            "title": "Dental Implants",
+            "description": "Restore missing teeth with strong and natural-looking dental implants.",
+            "link": "/services/dental-implants",
+            "image": {
+              "connect": [
+                286
+              ]
+            }
+          },
+          {
+            "title": "Teeth Whitening",
+            "description": "Brighten your smile with safe and effective whitening solutions.",
+            "link": "/services/dental-bleaching",
+            "image": {
+              "connect": [
+                287
+              ]
+            }
+          },
+          {
+            "title": "Orthodontics",
+            "description": "Straighten your teeth braces or clear aligners for a perfect.",
+            "link": "/services/dental-braces",
+            "image": {
+              "connect": [
+                288
+              ]
+            }
+          },
+          {
+            "title": "Teeth Fillings",
+            "description": "Safe and durable to restore and protect your natural teeth.",
+            "link": "/services/general-and-preventive-dentistry",
+            "image": {
+              "connect": [
+                289
+              ]
+            }
+          },
+          {
+            "title": "Root Canal Therapy",
+            "description": "Relieve pain and save your natural teeth with precise root canal treatment.",
+            "link": "/services/general-and-preventive-dentistry",
+            "image": {
+              "connect": [
+                290
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "__component": "homepage.technology-feature",
+        "eyebrow": "SMILUX ADVANCED TECHNOLOGY",
+        "title": "Technology That Powers Precision Smiles",
+        "description": "At Smilux, advanced dental technology helps us deliver safer, more accurate, and more comfortable treatment experiences. From diagnosis to implant placement, every step is guided by precision, efficiency, and patient-centered care.",
+        "cta_label": "Explore Our Technology",
+        "cta_link": "/services",
+        "heading_line_1": "Technology That",
+        "heading_line_2": "Powers Precision",
+        "heading_accent": "Smiles",
+        "background_image": {
+          "connect": [
+            283
+          ]
+        },
+        "image": {
+          "connect": [
+            20
+          ]
+        },
+        "features": [
+          {
+            "title": "3D Imaging",
+            "description": "Clear diagnostic imaging.",
+            "icon": null
+          },
+          {
+            "title": "Guided Implant",
+            "description": "Precise implant planning.",
+            "icon": null
+          },
+          {
+            "title": "Digital Scan",
+            "description": "Comfortable digital impressions.",
+            "icon": null
+          },
+          {
+            "title": "Laser Support",
+            "description": "Gentle precision treatment.",
+            "icon": null
+          },
+          {
+            "title": "Comfort Care",
+            "description": "Calm patient-first procedures.",
+            "icon": null
+          },
+          {
+            "title": "Smart Appointment",
+            "description": "Efficient care planning.",
+            "icon": null
+          }
+        ],
+        "technologies": [
+          {
+            "index": 1,
+            "title": "OTI® Guided Implant Technology",
+            "description": "A screw-guided implant technique designed for precise placement, minimal tissue trauma, faster recovery, and stable long-term results.",
+            "image": {
+              "connect": [
+                284
+              ]
+            },
+            "thumbnail": null
+          },
+          {
+            "index": 2,
+            "title": "Digital Smile Design",
+            "description": "Plan a personalized smile with digital previews and precise clinical measurements before treatment begins.",
+            "image": {
+              "connect": [
+                285
+              ]
+            },
+            "thumbnail": null
+          },
+          {
+            "index": 3,
+            "title": "3D Diagnostic Imaging",
+            "description": "Advanced imaging gives our clinical team a complete view for safer diagnosis and confident treatment planning.",
+            "image": {
+              "connect": [
+                273
+              ]
+            },
+            "thumbnail": null
+          },
+          {
+            "index": 4,
+            "title": "Precision Laser Support",
+            "description": "Modern laser-assisted care supports precise procedures and a more comfortable recovery experience.",
+            "image": {
+              "connect": [
+                283
+              ]
+            },
+            "thumbnail": null
+          },
+          {
+            "index": 5,
+            "title": "Comfort-First Digital Care",
+            "description": "Connected digital workflows help every appointment feel clearer, calmer, and more efficient for patients.",
+            "image": {
+              "connect": [
+                284
+              ]
+            },
+            "thumbnail": null
+          }
+        ]
+      },
+      {
+        "__component": "homepage.equipment-showcase",
+        "eyebrow": "SMILUX DENTAL DEVICES",
+        "title": "Advanced Technology for Better Care",
+        "subtitle": "Modern dental devices support precise diagnosis, comfortable treatment, and confident smiles.",
+        "items": [
+          {
+            "title": "3D Cone Beam CT",
+            "description": "Accurate 3D imaging for precise diagnosis",
+            "link": null,
+            "image_alt": "3D dental imaging device",
+            "image": {
+              "connect": [
+                286
+              ]
+            }
+          },
+          {
+            "title": "Intraoral Scanner",
+            "description": "Digital impressions for better comfort",
+            "link": null,
+            "image_alt": "Digital intraoral scanner",
+            "image": {
+              "connect": [
+                287
+              ]
+            }
+          },
+          {
+            "title": "CAD/CAM Technology",
+            "description": "Precision smile design and restorations",
+            "link": null,
+            "image_alt": "CAD/CAM dental technology",
+            "image": {
+              "connect": [
+                288
+              ]
+            }
+          },
+          {
+            "title": "Laser Dental Care",
+            "description": "Treatments with advanced laser technology",
+            "link": null,
+            "image_alt": "Laser dental care device",
+            "image": {
+              "connect": [
+                289
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "__component": "homepage.doctor",
+        "title": "Meet Our Expert Dentists",
+        "subtitle": "Our practitioners hold advanced degrees and possess decades of specialized experience in complex dental rehabilitation",
+        "eyebrow": "OUR DENTIST TEAM",
+        "view_all_label": "VIEW ALL DOCTORS",
+        "view_all_link": "/doctors",
+        "doctors": [
+          {
+            "name": "DR. ETHAN SANTOS",
+            "specialization": "Implantology & Surgery",
+            "bio": "Specialized in advanced dental implants and surgical procedures with a focus on precision and longevity.",
+            "experience_years": null,
+            "image_alt": "Dr. Ethan Santos",
+            "profile_link": "/doctors/ethan-santos",
+            "image": {
+              "connect": [
+                274
+              ]
+            },
+            "badges": [
+              {
+                "label": "10+ years of experience in implantology and oral surgery"
+              },
+              {
+                "label": "International Implant Association Member"
+              },
+              {
+                "label": "Certified in Advanced Bone Augmentation"
+              }
+            ],
+            "stats": []
+          },
+          {
+            "name": "DR. MICHELLE JIN",
+            "specialization": "Cosmetic Dentistry",
+            "bio": "Expert in smile design, veneers, and aesthetic makeovers.",
+            "experience_years": null,
+            "image_alt": "Dr. Michelle Jin",
+            "profile_link": "/doctors/michelle-jin",
+            "image": {
+              "connect": [
+                275
+              ]
+            },
+            "badges": [
+              {
+                "label": "Member of the American Dental Association"
+              },
+              {
+                "label": "Certified in Advanced Aesthetic Restorations"
+              }
+            ],
+            "stats": []
+          },
+          {
+            "name": "DR. NICHOLAS TAN",
+            "specialization": "Orthodontics",
+            "bio": "Expert in braces and clear aligners for all ages, creating healthy, confident smiles.",
+            "experience_years": null,
+            "image_alt": "Dr. Nicholas Tan",
+            "profile_link": "/doctors/nicholas-tan",
+            "image": {
+              "connect": [
+                276
+              ]
+            },
+            "badges": [
+              {
+                "label": "Member of the World Federation of Orthodontists"
+              },
+              {
+                "label": "Invisalign Certified Provider"
+              }
+            ],
+            "stats": []
+          },
+          {
+            "name": "DR. SOPHIA LIM",
+            "specialization": "Pediatric Dentistry",
+            "bio": "Making dental visits fun and stress-free for your little ones.",
+            "experience_years": null,
+            "image_alt": "Dr. Sophia Lim",
+            "profile_link": "/doctors/sophia-lim",
+            "image": {
+              "connect": [
+                277
+              ]
+            },
+            "badges": [
+              {
+                "label": "Certified in Pediatric Dentistry"
+              }
+            ],
+            "stats": []
+          }
+        ]
+      },
+      {
+        "__component": "homepage.certification",
+        "eyebrow": "CERTIFICATES & ACCREDITATIONS",
+        "heading": "Certified. Recognized. Trusted.",
+        "bundles": [
+          {
+            "organization_name": "ADA",
+            "summary": "American Dental Association",
+            "certificate_alt": "ADA American Dental Association Member certificate",
+            "organization_logo": {
+              "connect": [
+                278
+              ]
+            },
+            "certificate_image": {
+              "connect": [
+                251
+              ]
+            }
+          },
+          {
+            "organization_name": "ISO",
+            "summary": "ISO 9001 Certification for Standardization",
+            "certificate_alt": "ISO 9001:2015 Quality Management Certified certificate",
+            "organization_logo": {
+              "connect": [
+                279
+              ]
+            },
+            "certificate_image": {
+              "connect": [
+                252
+              ]
+            }
+          },
+          {
+            "organization_name": "ICOI",
+            "summary": "International Congress of Oral Implantologists",
+            "certificate_alt": "ICOI International Congress of Oral Implantologists Fellow certificate",
+            "organization_logo": {
+              "connect": [
+                280
+              ]
+            },
+            "certificate_image": {
+              "connect": [
+                253
+              ]
+            }
+          },
+          {
+            "organization_name": "AAO",
+            "summary": "American Association of Orthodontists",
+            "certificate_alt": "AAO American Association of Orthodontists Member certificate",
+            "organization_logo": {
+              "connect": [
+                281
+              ]
+            },
+            "certificate_image": {
+              "connect": [
+                254
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "__component": "homepage.results-section",
+        "eyebrow": "SMILE TRANSFORMATIONS",
+        "heading": "Real Stories. Real Smiles.",
+        "intro": "Nothing speaks louder than the smiles of those we've experienced with, Here are some inspiring smile makeovers and real stories.",
+        "stories": [
+          {
+            "title": "Christina’s Smile. Transformed",
+            "description": "Christine wanted a brighter, balanced, natural smile aesthetic smile. We crafted a treatment plan tailored to her goals -- enhancing her teeth' white and giving her a confident smile.",
+            "treatments": [
+              "Smile design planning with digital preview",
+              "Professional teeth whitening",
+              "Placement of composite veneers"
+            ],
+            "portrait_alt": "Christina smiling after her smile transformation",
+            "quote": "Christine’s smile, before and after – confident, complete, and truly hers.",
+            "before_image": {
+              "connect": [
+                202
+              ]
+            },
+            "after_image": {
+              "connect": [
+                203
+              ]
+            },
+            "patient_portrait": {
+              "connect": [
+                274
+              ]
+            }
+          },
+          {
+            "title": "Sarah’s Smile. Transformed",
+            "description": "A carefully planned transformation created a brighter, balanced smile while preserving a natural look and comfortable bite.",
+            "treatments": [
+              "Digital smile design planning",
+              "Professional teeth whitening",
+              "Personalized restorative treatment"
+            ],
+            "portrait_alt": "Sarah smiling after her smile transformation",
+            "quote": "A brighter smile, a calmer experience, and confidence that feels completely natural.",
+            "before_image": {
+              "connect": [
+                204
+              ]
+            },
+            "after_image": {
+              "connect": [
+                205
+              ]
+            },
+            "patient_portrait": {
+              "connect": [
+                275
+              ]
+            }
+          },
+          {
+            "title": "Mia’s Smile. Transformed",
+            "description": "Mia’s treatment combined precise planning and aesthetic care to create a confident smile designed around her features.",
+            "treatments": [
+              "Smile design planning with digital preview",
+              "Aesthetic restorative treatment",
+              "Final bite and shade refinement"
+            ],
+            "portrait_alt": "Mia smiling after her smile transformation",
+            "quote": "A thoughtful transformation that feels confident, complete, and truly hers.",
+            "before_image": {
+              "connect": [
+                206
+              ]
+            },
+            "after_image": {
+              "connect": [
+                207
+              ]
+            },
+            "patient_portrait": {
+              "connect": [
+                276
+              ]
+            }
+          },
+          {
+            "title": "Olivia’s Smile. Transformed",
+            "description": "A patient-first plan brought together functional improvement and a natural-looking aesthetic result for a lasting smile.",
+            "treatments": [
+              "Digital treatment planning",
+              "Conservative smile enhancement",
+              "Personalized finishing and review"
+            ],
+            "portrait_alt": "Olivia smiling after her smile transformation",
+            "quote": "A complete smile transformation with a result that feels personal and effortless.",
+            "before_image": {
+              "connect": [
+                208
+              ]
+            },
+            "after_image": {
+              "connect": [
+                209
+              ]
+            },
+            "patient_portrait": {
+              "connect": [
+                277
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "__component": "homepage.testimonials-section",
+        "eyebrow": "PATIENTS LOVE SMILUX",
+        "heading": "What Our Patients Say",
+        "section_image_alt": "Smiling Smilux Dental patient",
+        "section_image": {
+          "connect": [
+            282
+          ]
+        },
+        "testimonials": [
+          {
+            "rating": 5,
+            "quote": "The doctors and staff are very professional and caring. I'm so happy with my new smile!",
+            "patient_name": "Jennifer L.",
+            "patient_location": "Vietnam",
+            "patient_avatar_alt": "Jennifer L.",
+            "patient_avatar": {
+              "connect": [
+                274
+              ]
+            }
+          },
+          {
+            "rating": 5,
+            "quote": "The clinic is modern, clean and very comfortable. Highly recommended!",
+            "patient_name": "David M.",
+            "patient_location": "Australia",
+            "patient_avatar_alt": "David M.",
+            "patient_avatar": {
+              "connect": [
+                275
+              ]
+            }
+          },
+          {
+            "rating": 5,
+            "quote": "I had my implant done here and the result is beyond my expectations.",
+            "patient_name": "Sophie K.",
+            "patient_location": "Korea",
+            "patient_avatar_alt": "Sophie K.",
+            "patient_avatar": {
+              "connect": [
+                276
+              ]
+            }
+          },
+          {
+            "rating": 5,
+            "quote": "The team listened carefully to my goals and made every appointment feel comfortable.",
+            "patient_name": "Maria T.",
+            "patient_location": "Singapore",
+            "patient_avatar_alt": "Maria T.",
+            "patient_avatar": {
+              "connect": [
+                277
+              ]
+            }
+          },
+          {
+            "rating": 5,
+            "quote": "From consultation to final result, the care was clear, precise and reassuring.",
+            "patient_name": "Alex R.",
+            "patient_location": "United Kingdom",
+            "patient_avatar_alt": "Alex R.",
+            "patient_avatar": {
+              "connect": [
+                274
+              ]
+            }
+          },
+          {
+            "rating": 5,
+            "quote": "My smile feels natural and confident. I would absolutely recommend Smilux Dental.",
+            "patient_name": "Emma P.",
+            "patient_location": "Canada",
+            "patient_avatar_alt": "Emma P.",
+            "patient_avatar": {
+              "connect": [
+                275
+              ]
+            }
+          },
+          {
+            "rating": 5,
+            "quote": "The technology and attention to detail gave me complete confidence in my treatment.",
+            "patient_name": "Daniel K.",
+            "patient_location": "South Korea",
+            "patient_avatar_alt": "Daniel K.",
+            "patient_avatar": {
+              "connect": [
+                276
+              ]
+            }
+          },
+          {
+            "rating": 5,
+            "quote": "Everyone was kind, professional and focused on making the experience easy for me.",
+            "patient_name": "Linh N.",
+            "patient_location": "Vietnam",
+            "patient_avatar_alt": "Linh N.",
+            "patient_avatar": {
+              "connect": [
+                277
+              ]
+            }
+          },
+          {
+            "rating": 5,
+            "quote": "I am delighted with the result and grateful for the thoughtful patient-first care.",
+            "patient_name": "Olivia S.",
+            "patient_location": "Australia",
+            "patient_avatar_alt": "Olivia S.",
+            "patient_avatar": {
+              "connect": [
+                274
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "__component": "homepage.press-section",
+        "eyebrow": "AS FEATURED IN",
+        "heading": "Smilux Dental In The Press",
+        "logos": [
+          {
+            "connect": [
+              244
+            ]
+          },
+          {
+            "connect": [
+              245
+            ]
+          },
+          {
+            "connect": [
+              246
+            ]
+          },
+          {
+            "connect": [
+              247
+            ]
+          },
+          {
+            "connect": [
+              248
+            ]
+          },
+          {
+            "connect": [
+              249
+            ]
+          }
+        ]
+      },
+      {
+        "__component": "homepage.blog-collection-section",
+        "title": "Featured Articles",
+        "subtitle": "Explore professional tips, treatment guides, and the latest updates in modern dentistry to help you make confident decisions.",
+        "showFeatured": true,
+        "isActive": true,
+        "posts": []
+      },
+      {
+        "__component": "homepage.consultation",
+        "title": "Book a Consultation",
+        "description": "Our team of experienced dentists uses advanced technology and a personalized approach to deliver safe, effective, and beautiful results for every patient.",
+        "form_heading": "Book a Consultation",
+        "contact_heading": "Consult With Our Experts",
+        "expert_name": null,
+        "expert_role": null,
+        "address": "32 Nguyen Van Troi Street, Ward 8, Phu Nhuan District, Ho Chi Minh City, Vietnam",
+        "phone": "0866 251 379",
+        "email": null,
+        "submit_label": "REQUEST CONSULTATION",
+        "help_text": null,
+        "clinic_eyebrow": "SMILUX DENTAL CLINIC",
+        "opening_hours": "Mon - Sat: 8:00 AM - 7:00 PM",
+        "international_patients": "We provide consultation support in English and flexible scheduling for overseas patients.",
+        "expert_image": null
+      }
+    ]
+  },
+  "meta": {}
+}

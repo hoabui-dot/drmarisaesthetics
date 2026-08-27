@@ -1,0 +1,18 @@
+{
+  "kind": "singleType",
+  "collectionName": "robots_settings",
+  "info": {
+    "singularName": "robots-settings",
+    "pluralName": "robots-settings-list",
+    "displayName": "SEO Manager - Robots.txt",
+    "description": "Controls crawler indexing rules and the sitemap directive."
+  },
+  "options": {"draftAndPublish": true},
+  "pluginOptions": {},
+  "attributes": {
+    "indexing_enabled": {"type": "boolean", "default": true},
+    "rules": {"type": "component", "repeatable": true, "component": "seo.robots-rule"},
+    "sitemap_url": {"type": "string", "maxLength": 2048},
+    "additional_directives": {"type": "text", "maxLength": 4000}
+  }
+}

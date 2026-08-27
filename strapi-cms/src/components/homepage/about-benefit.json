@@ -1,0 +1,6 @@
+{
+  "collectionName": "components_homepage_about_benefits",
+  "info": { "displayName": "About benefit" },
+  "options": {},
+  "attributes": { "label": { "type": "string", "required": true } }
+}

@@ -1,0 +1,42 @@
+{
+  "collectionName": "components_contact_contact_infos",
+  "info": {
+    "displayName": "Contact Info Suite",
+    "description": "High-Conversion Contact Suite with interactive tiles"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "website": {
+      "type": "component",
+      "repeatable": false,
+      "component": "contact.website-tile"
+    },
+    "hotline": {
+      "type": "component",
+      "repeatable": false,
+      "component": "contact.hotline-tile"
+    },
+    "address": {
+      "type": "component",
+      "repeatable": false,
+      "component": "contact.address-tile"
+    },
+    "operating_hours": {
+      "type": "component",
+      "repeatable": false,
+      "component": "contact.hours-tile"
+    },
+    "quick_action": {
+      "type": "component",
+      "repeatable": false,
+      "component": "contact.quick-action-banner"
+    }
+  }
+}

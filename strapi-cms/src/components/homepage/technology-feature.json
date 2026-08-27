@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_homepage_technology_features",
+  "info": { "displayName": "Advanced technology" },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string" }, "title": { "type": "string", "required": true },
+    "heading_line_1": { "type": "string" }, "heading_line_2": { "type": "string" }, "heading_accent": { "type": "string" },
+    "description": { "type": "text" }, "background_image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "cta_label": { "type": "string" }, "cta_link": { "type": "string" },
+    "features": { "type": "component", "repeatable": true, "component": "homepage.feature-item" },
+    "technologies": { "type": "component", "repeatable": true, "component": "homepage.technology-card" }
+  }
+}

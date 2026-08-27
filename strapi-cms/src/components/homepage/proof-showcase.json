@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_homepage_proof_showcases",
+  "info": { "displayName": "About / Trust mosaic" },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string" }, "title": { "type": "string", "required": true },
+    "heading_line_1": { "type": "string" }, "heading_line_2": { "type": "string" }, "description": { "type": "text" },
+    "benefits": { "type": "component", "repeatable": true, "component": "homepage.about-benefit" },
+    "cta_label": { "type": "string" }, "cta_link": { "type": "string" },
+    "primary_team_image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "experience_value": { "type": "string" }, "experience_label": { "type": "string" },
+    "technology_image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "patient_story_image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "patient_stat_image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "patient_stat_value": { "type": "string" }, "patient_stat_label": { "type": "string" },
+    "primary_image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "secondary_image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "metrics": { "type": "component", "repeatable": true, "component": "homepage.proof-metric" }
+  }
+}

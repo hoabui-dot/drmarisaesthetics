@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_homepage_certification_items",
+  "info": {
+    "displayName": "Certification Item",
+    "description": "Certification or award badge"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images"]
+    },
+    "organization": {
+      "type": "string"
+    }
+  }
+}

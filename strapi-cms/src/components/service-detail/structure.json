@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_service_detail_structures",
+  "info": { "displayName": "Implant Structure" },
+  "options": {},
+  "attributes": {
+    "anchor_label": { "type": "string", "required": true },
+    "title": { "type": "string", "required": true },
+    "diagram": { "type": "media", "multiple": false, "required": true, "allowedTypes": ["images"] },
+    "callouts": { "type": "component", "repeatable": true, "component": "service-detail.callout" },
+    "supporting_title": { "type": "string", "required": true },
+    "supporting_items": { "type": "component", "repeatable": true, "component": "service-detail.structure-check-item" }
+  }
+}

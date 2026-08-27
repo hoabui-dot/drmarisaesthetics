@@ -1,0 +1,11 @@
+{
+  "collectionName": "components_service_detail_variant_items",
+  "info": { "displayName": "Service Variant" },
+  "options": {},
+  "attributes": {
+    "icon": { "type": "string", "required": true },
+    "title": { "type": "string", "required": true },
+    "description": { "type": "text", "required": true },
+    "image": { "type": "media", "multiple": false, "required": false, "allowedTypes": ["images"] }
+  }
+}

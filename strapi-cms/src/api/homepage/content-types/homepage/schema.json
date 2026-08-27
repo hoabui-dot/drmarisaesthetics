@@ -1,0 +1,57 @@
+{
+  "kind": "singleType",
+  "collectionName": "homepages",
+  "info": {
+    "singularName": "homepage",
+    "pluralName": "homepages",
+    "displayName": "Homepage",
+    "description": "Dynamic homepage with flexible layout blocks - 2026 Enhanced"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "default": "Homepage"
+    },
+    "metadata_title": {
+      "type": "string"
+    },
+    "metadata_description": {
+      "type": "text"
+    },
+    "metadata_image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "seo.page-seo"
+    },
+    "layout": {
+      "type": "dynamiczone",
+      "components": [
+        "homepage.hero",
+        "homepage.blog-collection-section",
+        "homepage.services",
+        "homepage.doctor",
+        "homepage.results-section",
+        "homepage.testimonials-section",
+        "homepage.press-section",
+        "homepage.certification",
+        "homepage.proof-showcase",
+        "homepage.technology-feature",
+        "homepage.equipment-showcase",
+        "homepage.consultation"
+      ]
+    }
+  }
+}

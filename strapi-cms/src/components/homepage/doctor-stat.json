@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_homepage_doctor_stats",
+  "info": {
+    "displayName": "Doctor Stat",
+    "description": "Individual stat item for a doctor profile (e.g. 15+ years)"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

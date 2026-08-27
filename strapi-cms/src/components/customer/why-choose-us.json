@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_customer_why_choose_us",
+  "info": {
+    "displayName": "Why Choose Us",
+    "description": "Why International Patients Choose Our Dental Clinic section"
+  },
+  "options": {},
+  "attributes": {
+    "badge": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "required": true,
+      "default": "Why International Patients Choose Our Dental Clinic"
+    },
+    "description": {
+      "type": "text"
+    },
+    "features": {
+      "type": "component",
+      "repeatable": true,
+      "component": "customer.feature-item"
+    }
+  }
+}

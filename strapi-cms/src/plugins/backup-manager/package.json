@@ -1,0 +1,20 @@
+{
+  "name": "backup-manager",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Manual database and local uploads backup downloads for Strapi administrators",
+  "exports": {
+    "./strapi-admin": {
+      "source": "./admin/src/index.ts",
+      "import": "./admin/src/index.ts",
+      "default": "./admin/src/index.ts"
+    },
+    "./strapi-server": "./strapi-server.js",
+    "./package.json": "./package.json"
+  },
+  "strapi": {
+    "name": "backup-manager",
+    "displayName": "Backup Management",
+    "kind": "plugin"
+  }
+}

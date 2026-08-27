@@ -1,0 +1,1 @@
+{"collectionName":"components_homepage_equipment_showcases","info":{"displayName":"Equipment showcase"},"options":{},"attributes":{"eyebrow":{"type":"string"},"title":{"type":"string","required":true},"subtitle":{"type":"text"},"items":{"type":"component","repeatable":true,"component":"homepage.equipment-item"}}}

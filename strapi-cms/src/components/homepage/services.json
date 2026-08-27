@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_homepage_services",
+  "info": {
+    "displayName": "Services",
+    "description": "Services section with title and repeatable service items"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "eyebrow": { "type": "string" },
+    "subtitle": { "type": "text" },
+    "view_more_label": { "type": "string" },
+    "view_more_link": { "type": "string" },
+    "description": {
+      "type": "text"
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "homepage.service-item"
+    }
+  }
+}

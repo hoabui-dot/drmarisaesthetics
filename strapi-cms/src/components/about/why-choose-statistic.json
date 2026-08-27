@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_about_why_choose_statistics",
+  "info": {
+    "displayName": "Why Choose Statistic",
+    "description": "CMS-managed trust statistic shown beside the tooth image."
+  },
+  "options": {},
+  "attributes": {
+    "value": { "type": "string", "required": true },
+    "label": { "type": "string", "required": true }
+  }
+}

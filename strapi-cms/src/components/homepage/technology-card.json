@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_homepage_technology_cards",
+  "info": { "displayName": "Technology card" },
+  "options": {},
+  "attributes": {
+    "index": { "type": "integer", "required": true },
+    "title": { "type": "string", "required": true },
+    "description": { "type": "text", "required": true },
+    "image": { "type": "media", "multiple": false, "required": true, "allowedTypes": ["images"] },
+    "thumbnail": { "type": "media", "multiple": false, "allowedTypes": ["images"] }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_contact_hours_tiles",
+  "info": {
+    "displayName": "Hours Tile",
+    "description": "Operating hours tracking component"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "default": "Operating Hours"
+    },
+    "hours_text": {
+      "type": "text",
+      "required": true
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

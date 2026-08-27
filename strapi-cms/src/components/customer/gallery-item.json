@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_customer_gallery_items",
+  "info": {
+    "displayName": "Gallery Item",
+    "description": "Before and after dental transformation images"
+  },
+  "options": {},
+  "attributes": {
+    "before_image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images"]
+    },
+    "after_image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images"]
+    },
+    "treatment_type": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "collectionName": "components_contact_hotline_tiles",
+  "info": {
+    "displayName": "Hotline Tile",
+    "description": "Hotline tracking component"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "default": "24/7 Hotline"
+    },
+    "whatsapp_number": {
+      "type": "string",
+      "required": true
+    },
+    "zalo_number": {
+      "type": "string"
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "whatsapp_icon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "zalo_icon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_customer_checklist_items",
+  "info": {
+    "displayName": "Checklist Item",
+    "description": "Single checklist item with text"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

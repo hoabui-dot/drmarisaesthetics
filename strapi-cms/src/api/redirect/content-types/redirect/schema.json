@@ -1,0 +1,19 @@
+{
+  "kind": "collectionType",
+  "collectionName": "redirects",
+  "info": {
+    "singularName": "redirect",
+    "pluralName": "redirects",
+    "displayName": "SEO Manager - Redirects",
+    "description": "Managed URL redirects for legacy and campaign paths."
+  },
+  "options": {"draftAndPublish": true},
+  "pluginOptions": {},
+  "attributes": {
+    "source_path": {"type": "string", "required": true, "unique": true, "maxLength": 2048},
+    "destination_path": {"type": "string", "required": true, "maxLength": 2048},
+    "status_code": {"type": "enumeration", "enum": ["redirect_301", "redirect_302", "redirect_307", "redirect_308"], "default": "redirect_301", "required": true},
+    "is_active": {"type": "boolean", "default": true},
+    "notes": {"type": "text", "maxLength": 1000}
+  }
+}

@@ -1,0 +1,1 @@
+{"collectionName":"components_homepage_equipment_items","info":{"displayName":"Equipment item"},"options":{},"attributes":{"title":{"type":"string","required":true},"description":{"type":"text"},"image":{"type":"media","multiple":false,"allowedTypes":["images"]},"image_alt":{"type":"string"},"link":{"type":"string"}}}

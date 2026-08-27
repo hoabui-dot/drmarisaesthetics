@@ -1,0 +1,47 @@
+{
+  "kind": "collectionType",
+  "collectionName": "service_details",
+  "info": {
+    "singularName": "service-detail",
+    "pluralName": "service-details",
+    "displayName": "Service Detail",
+    "description": "Shared content model for the new service detail template"
+  },
+  "options": { "draftAndPublish": true },
+  "pluginOptions": {},
+  "attributes": {
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "seo.page-seo"
+    },
+    "slug": { "type": "string", "required": true, "unique": true },
+    "title": { "type": "string", "required": true },
+    "breadcrumb_label": { "type": "string", "required": true },
+    "description": { "type": "text", "required": true },
+    "hero_image": { "type": "media", "multiple": false, "required": true, "allowedTypes": ["images"] },
+    "primary_cta_label": { "type": "string", "required": true, "default": "Book Consultation" },
+    "primary_cta_link": { "type": "string", "required": true, "default": "/contact" },
+    "secondary_cta_label": { "type": "string", "required": true, "default": "View Technology" },
+    "secondary_cta_link": { "type": "string", "required": true, "default": "#technology" },
+    "trust_label": { "type": "string", "required": true, "default": "Trusted by 10,000+ Patients" },
+    "trust_rating": { "type": "string", "required": true, "default": "4.9/5" },
+    "trust_avatars": { "type": "media", "multiple": true, "required": false, "allowedTypes": ["images"] },
+    "sections": {
+      "type": "dynamiczone",
+      "components": [
+        "service-detail.overview",
+        "service-detail.benefits",
+        "service-detail.candidates",
+        "service-detail.structure",
+        "service-detail.technology",
+        "service-detail.procedure",
+        "service-detail.specialists",
+        "service-detail.patient-results",
+        "service-detail.pricing",
+        "service-detail.faq",
+        "service-detail.consultation"
+      ]
+    }
+  }
+}

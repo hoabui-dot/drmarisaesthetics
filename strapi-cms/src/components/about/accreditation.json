@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_about_accreditations",
+  "info": {
+    "displayName": "About Accreditation",
+    "description": "Compact accreditation entry for the About Us trust banner."
+  },
+  "options": {},
+  "attributes": {
+    "short_name": { "type": "string", "required": true },
+    "description": { "type": "string", "required": true },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

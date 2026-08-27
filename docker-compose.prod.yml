@@ -1,0 +1,129 @@
+version: "1.0"
+
+services:
+  strapi:
+    image: vanhoadotbui2628/dental_cms:1.0.0
+    platform: linux/amd64
+    container_name: dental-strapi-prod
+    restart: unless-stopped
+    environment:
+      HOST: 0.0.0.0
+      PORT: 1337
+      NODE_ENV: production
+      DANGEROUSLY_DISABLE_HOST_CHECK: "true"
+      VITE_ALLOWED_HOSTS: all
+      APP_KEYS: ${STRAPI_APP_KEYS}
+      API_TOKEN_SALT: ${STRAPI_API_TOKEN_SALT}
+      ADMIN_JWT_SECRET: ${STRAPI_ADMIN_JWT_SECRET}
+      TRANSFER_TOKEN_SALT: ${STRAPI_TRANSFER_TOKEN_SALT}
+      JWT_SECRET: ${STRAPI_JWT_SECRET}
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: ${POSTGRES_HOST}
+      DATABASE_PORT: ${POSTGRES_PORT}
+      DATABASE_NAME: ${POSTGRES_DB}
+      DATABASE_USERNAME: ${POSTGRES_USER}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
+      DATABASE_SSL: "false"
+
+      # URLs
+      PUBLIC_URL: ${STRAPI_PUBLIC_URL}
+      FRONTEND_URL: ${FRONTEND_URL}
+      NEXTJS_URL: ${NEXTJS_URL}
+      PREVIEW_SECRET: ${NEXT_PREVIEW_SECRET}
+      STRAPI_WEBHOOK_SECRET: ${STRAPI_WEBHOOK_SECRET}
+      # Cloudflare tunnel — hostname only (no https://), used by allowedHosts + CORS
+      CLOUDFLARE_TUNNEL_HOST: ${CLOUDFLARE_TUNNEL_HOST}
+    volumes:
+      - strapi_uploads:/app/public/uploads
+      - strapi_cache:/app/.cache
+    ports:
+      - "1337:1337"
+    networks:
+      - dental-network-prod
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "require('http').get('http://localhost:1337/_health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})",
+        ]
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
+      retries: 3
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: dental-postgres-prod
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: dental_cms_strapi
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - dental-network-prod
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  frontend:
+    platform: linux/amd64
+    image: vanhoadotbui2628/dental_frontend:2.0.0
+    container_name: dental-frontend-prod
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      STRAPI_URL: ${STRAPI_URL}
+      STRAPI_API_TOKEN: ${STRAPI_API_TOKEN}
+      NEXT_PREVIEW_SECRET: ${NEXT_PREVIEW_SECRET}
+      RECAPTCHA_SECRET_KEY: ${RECAPTCHA_SECRET_KEY}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_SECURE: ${SMTP_SECURE}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      EMAIL_FROM: ${EMAIL_FROM}
+      EMAIL_FROM_NAME: ${EMAIL_FROM_NAME}
+      EMAIL_TO_ADMIN: ${EMAIL_TO_ADMIN}
+      EMAIL_TO_STAFF: ${EMAIL_TO_STAFF}
+      EMAIL_ENABLED: ${EMAIL_ENABLED}
+      EMAIL_RETRY_ATTEMPTS: ${EMAIL_RETRY_ATTEMPTS}
+      EMAIL_RETRY_DELAY: ${EMAIL_RETRY_DELAY}
+      STRAPI_WEBHOOK_SECRET: ${STRAPI_WEBHOOK_SECRET}
+    ports:
+      - "3000:3000"
+    networks:
+      - dental-network-prod
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3000",
+        ]
+      interval: 30s
+      timeout: 10s
+      start_period: 40s
+      retries: 3
+
+volumes:
+  postgres_data:
+    driver: local
+    name: dental-postgres-data-prod
+  strapi_uploads:
+    driver: local
+    name: dental-strapi-uploads-prod
+  strapi_cache:
+    driver: local
+    name: dental-strapi-cache-prod
+networks:
+  dental-network-prod:
+    driver: bridge
+    name: dental-network-prod

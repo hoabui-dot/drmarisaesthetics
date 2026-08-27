@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_about_featured_services",
+  "info": {
+    "displayName": "Featured Services Section",
+    "description": "About Us service section presentation configuration. Cards are loaded from the service-details collection."
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Featured Services"
+    }
+  }
+}

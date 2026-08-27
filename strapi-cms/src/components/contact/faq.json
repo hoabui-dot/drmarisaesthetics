@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_contact_faqs",
+  "info": {
+    "displayName": "Contact FAQ Section",
+    "description": "Dedicated FAQ section for contact page"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "questions": {
+      "type": "component",
+      "repeatable": true,
+      "component": "contact.faq-item"
+    }
+  }
+}

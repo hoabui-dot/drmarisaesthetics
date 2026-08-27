@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_contact_website_tiles",
+  "info": {
+    "displayName": "Website Tile",
+    "description": "Website tracking component"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "default": "Visit Our Website"
+    },
+    "url": {
+      "type": "string",
+      "required": true
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

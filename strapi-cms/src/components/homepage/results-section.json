@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_homepage_results_sections",
+  "info": {
+    "displayName": "Smile Transformations / Results",
+    "description": "Homepage result-story carousel with synchronized before/after stories"
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string", "required": true },
+    "heading": { "type": "string", "required": true },
+    "intro": { "type": "text", "required": true },
+    "stories": {
+      "type": "component",
+      "repeatable": true,
+      "component": "homepage.result-story",
+      "min": 1,
+      "max": 4
+    }
+  }
+}

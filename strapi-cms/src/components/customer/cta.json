@@ -1,0 +1,43 @@
+{
+  "collectionName": "components_customer_cta",
+  "info": {
+    "displayName": "CTA",
+    "description": "Call to action section with optional inline form"
+  },
+  "options": {},
+  "attributes": {
+    "badge": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "primary_button_text": {
+      "type": "string"
+    },
+    "primary_button_link": {
+      "type": "string"
+    },
+    "secondary_button_text": {
+      "type": "string"
+    },
+    "secondary_button_link": {
+      "type": "string"
+    },
+    "contact_info": {
+      "type": "component",
+      "repeatable": true,
+      "component": "customer.contact-info-item"
+    },
+    "show_inline_form": {
+      "type": "boolean",
+      "default": false
+    },
+    "form_instruction": {
+      "type": "string"
+    }
+  }
+}

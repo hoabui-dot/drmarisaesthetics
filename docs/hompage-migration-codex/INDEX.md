@@ -1,0 +1,27 @@
+# File Index
+
+- `00-source-of-truth.md`
+- `01-current-homepage-audit.md`
+- `02-compatibility-scorecard.md`
+- `03-design-to-code-section-matrix.md`
+- `04-component-migration-plan.md`
+- `05-strapi-schema-migration.md`
+- `06-theme-token-migration.md`
+- `07-responsive-motion-performance.md`
+- `08-implementation-sequence.md`
+- `09-testing-acceptance.md`
+- `10-risk-rollback.md`
+- `11-file-change-manifest.md`
+- `AGENTS.md`
+- `CODEX_START_PROMPT.md`
+- `INDEX.md`
+- `README.md`
+- `references/accessibility.md`
+- `references/figma-home.md`
+- `references/frontend-handoff.md`
+- `references/motion.md`
+- `references/responsive.md`
+- `references/theme.md`
+- `references/typography.md`
+- `rules/AGENTS.md`
+- `specs/homepage-implementation-spec.md`

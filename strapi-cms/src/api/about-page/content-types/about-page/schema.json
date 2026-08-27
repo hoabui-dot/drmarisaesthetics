@@ -1,0 +1,33 @@
+{
+  "kind": "singleType",
+  "collectionName": "about_pages",
+  "info": {
+    "singularName": "about-page",
+    "pluralName": "about-pages",
+    "displayName": "About Page",
+    "description": "About Us page with CMS-managed section order and editable section content"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "seo.page-seo"
+    },
+    "sections": {
+      "type": "dynamiczone",
+      "components": [
+        "about.hero",
+        "about.mission-vision",
+        "about.core-values",
+        "about.doctors",
+        "about.featured-services",
+        "about.why-choose-us",
+        "about.booking"
+      ]
+    }
+  }
+}

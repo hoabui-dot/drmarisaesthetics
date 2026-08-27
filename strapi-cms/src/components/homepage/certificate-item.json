@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_homepage_certificate_items",
+  "info": {
+    "displayName": "Certificate Item",
+    "description": "Individual certificate for carousel"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images"]
+    },
+    "organization": {
+      "type": "string"
+    }
+  }
+}

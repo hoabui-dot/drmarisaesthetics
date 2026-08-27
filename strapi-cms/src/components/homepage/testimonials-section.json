@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_homepage_testimonials_sections",
+  "info": {
+    "displayName": "Customer Evaluation / Testimonials",
+    "description": "Homepage testimonials with independent patient visual"
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string", "required": true },
+    "heading": { "type": "string", "required": true },
+    "section_image": { "type": "media", "multiple": false, "required": true, "allowedTypes": ["images"] },
+    "section_image_alt": { "type": "string" },
+    "testimonials": {
+      "type": "component",
+      "repeatable": true,
+      "component": "homepage.patient-testimonial",
+      "min": 1,
+      "max": 12
+    }
+  }
+}

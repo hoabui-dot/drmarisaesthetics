@@ -1,0 +1,1 @@
+{"collectionName":"components_homepage_press_logos","info":{"displayName":"Press logo"},"options":{},"attributes":{"name":{"type":"string","required":true},"image":{"type":"media","multiple":false,"allowedTypes":["images"]},"url":{"type":"string"}}}

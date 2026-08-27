@@ -1,0 +1,10 @@
+{
+  "collectionName": "components_service_detail_pricing_sections",
+  "info": { "displayName": "Dental Implant Pricing" },
+  "attributes": {
+    "anchor_label": { "type": "string", "required": true, "default": "Pricing" },
+    "title": { "type": "string", "required": true },
+    "plans": { "type": "component", "repeatable": true, "component": "service-detail.pricing-plan" },
+    "footer_note": { "type": "string", "required": true }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_contact_location_benefits",
+  "info": {
+    "displayName": "Clinic Location Benefit",
+    "description": "Icon and text row shown in the clinic location card"
+  },
+  "options": {},
+  "attributes": {
+    "icon": {
+      "type": "enumeration",
+      "enum": ["location", "landmark", "parking"],
+      "required": true,
+      "default": "location"
+    },
+    "text": { "type": "string", "required": true }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_contact_faq_items",
+  "info": {
+    "displayName": "Contact FAQ Item",
+    "description": "Isolated FAQ item for contact page"
+  },
+  "options": {},
+  "attributes": {
+    "question": {
+      "type": "string",
+      "required": true
+    },
+    "answer": {
+      "type": "text",
+      "required": true
+    }
+  }
+}

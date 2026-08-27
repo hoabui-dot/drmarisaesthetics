@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_homepage_title_lines",
+  "info": {
+    "displayName": "Title Line",
+    "description": "Individual line of text for multi-line titles"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

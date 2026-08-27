@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_contact_cta_stats",
+  "info": {
+    "displayName": "CTA Stat",
+    "description": "CTA statistics item"
+  },
+  "options": {},
+  "attributes": {
+    "value": {
+      "type": "string",
+      "required": true,
+      "maxLength": 50
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

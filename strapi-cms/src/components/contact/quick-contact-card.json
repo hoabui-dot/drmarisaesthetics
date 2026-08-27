@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_contact_quick_contact_cards",
+  "info": {
+    "displayName": "Quick Contact Card",
+    "description": "Structured contact information card displayed below the Contact hero."
+  },
+  "options": {},
+  "attributes": {
+    "label": { "type": "string", "required": true },
+    "value": { "type": "text", "required": true },
+    "supporting_text": { "type": "string" },
+    "icon": {
+      "type": "enumeration",
+      "enum": ["phone", "location", "email", "clock"],
+      "default": "phone",
+      "required": true
+    },
+    "href": { "type": "string" }
+  }
+}

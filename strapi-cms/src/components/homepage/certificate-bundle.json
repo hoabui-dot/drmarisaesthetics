@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_homepage_certificate_bundles",
+  "info": {
+    "displayName": "Certificate Bundle",
+    "description": "Paired accreditation summary and certificate image"
+  },
+  "options": {},
+  "attributes": {
+    "organization_logo": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images"]
+    },
+    "organization_name": {
+      "type": "string",
+      "required": true
+    },
+    "summary": {
+      "type": "string",
+      "required": true
+    },
+    "certificate_image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images"]
+    },
+    "certificate_alt": {
+      "type": "string"
+    }
+  }
+}

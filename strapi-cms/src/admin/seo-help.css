@@ -1,0 +1,206 @@
+/*
+ * Small, reusable help affordance for SEO fields in the Strapi Content Manager.
+ * The field names are stable schema contracts, so this remains compatible with
+ * Page SEO when it is rendered inside any single type or collection type.
+ */
+
+label[for$="meta_title"]::before,
+label[for$="meta_description"]::before,
+label[for$="meta_image"]::before,
+label[for$="canonical_url"]::before,
+label[for$="no_index"]::before,
+label[for$="no_follow"]::before,
+label[for$="open_graph_title"]::before,
+label[for$="open_graph_description"]::before,
+label[for$="structured_data_enabled"]::before,
+label[for$="structured_data_json"]::before,
+label[for$="structured_data_business_type"]::before,
+label[for$="default_meta_title"]::before,
+label[for$="default_meta_description"]::before,
+label[for$="default_open_graph_image"]::before,
+label[for$="default_open_graph_title"]::before,
+label[for$="default_open_graph_description"]::before,
+label[for$="site_name"]::before,
+label[for$="sitemap_enabled"]::before,
+label[for$="sitemap_default_change_frequency"]::before,
+label[for$="sitemap_default_priority"]::before {
+  content: "!";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-left: 0.35rem;
+  border: 1px solid #7c3aed;
+  border-radius: 999px;
+  color: #7c3aed;
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: help;
+  transform: translateY(-50%);
+}
+
+label[for$="meta_title"],
+label[for$="meta_description"],
+label[for$="meta_image"],
+label[for$="canonical_url"],
+label[for$="no_index"],
+label[for$="no_follow"],
+label[for$="open_graph_title"],
+label[for$="open_graph_description"],
+label[for$="structured_data_enabled"],
+label[for$="structured_data_json"],
+label[for$="structured_data_business_type"],
+label[for$="default_meta_title"],
+label[for$="default_meta_description"],
+label[for$="default_open_graph_image"],
+label[for$="default_open_graph_title"],
+label[for$="default_open_graph_description"],
+label[for$="site_name"],
+label[for$="sitemap_enabled"],
+label[for$="sitemap_default_change_frequency"],
+label[for$="sitemap_default_priority"] {
+  position: relative;
+}
+
+label[for$="meta_title"]::after,
+label[for$="meta_description"]::after,
+label[for$="meta_image"]::after,
+label[for$="canonical_url"]::after,
+label[for$="no_index"]::after,
+label[for$="no_follow"]::after,
+label[for$="open_graph_title"]::after,
+label[for$="open_graph_description"]::after,
+label[for$="structured_data_enabled"]::after,
+label[for$="structured_data_json"]::after,
+label[for$="structured_data_business_type"]::after,
+label[for$="default_meta_title"]::after,
+label[for$="default_meta_description"]::after,
+label[for$="default_open_graph_image"]::after,
+label[for$="default_open_graph_title"]::after,
+label[for$="default_open_graph_description"]::after,
+label[for$="site_name"]::after,
+label[for$="sitemap_enabled"]::after,
+label[for$="sitemap_default_change_frequency"]::after,
+label[for$="sitemap_default_priority"]::after {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  width: min(22rem, 80vw);
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #d9d9e8;
+  border-radius: 0.375rem;
+  background: #ffffff;
+  box-shadow: 0 0.5rem 1.5rem rgb(16 24 40 / 14%);
+  color: #32324d;
+  content: "SEO field help";
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-0.25rem);
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+label[for$="meta_title"]::after,
+label[for$="default_meta_title"]::after,
+label[for$="open_graph_title"]::after,
+label[for$="default_open_graph_title"]::after {
+  content: "Title used for search results and social previews. Keep it clear and relevant to the page.";
+}
+
+label[for$="meta_description"]::after,
+label[for$="default_meta_description"]::after,
+label[for$="open_graph_description"]::after,
+label[for$="default_open_graph_description"]::after {
+  content: "Summary shown to search engines and social previews. Describe the visible page content; do not add claims that are not on the page.";
+}
+
+label[for$="meta_image"]::after,
+label[for$="default_open_graph_image"]::after {
+  content: "Optional image used when the page is shared. Choose a relevant image from the Strapi Media Library.";
+}
+
+label[for$="canonical_url"]::after {
+  content: "Optional absolute HTTPS canonical URL. Leave empty unless this page has a deliberate canonical target.";
+}
+
+label[for$="no_index"]::after,
+label[for$="no_follow"]::after {
+  content: "Use only when this page should be excluded from search indexing or link crawling.";
+}
+
+label[for$="structured_data_enabled"]::after {
+  content: "Page-level switch for Schema.org JSON-LD. The global SEO Manager switch remains the master switch.";
+}
+
+label[for$="structured_data_json"]::after {
+  content: "Optional Schema.org JSON-LD object, array, or @graph. Add only facts visible on this page and use stable @id values.";
+}
+
+label[for$="structured_data_business_type"]::after {
+  content: "Default Schema.org business type for the generated clinic entity. Choose only a type that accurately describes the clinic.";
+}
+
+label[for$="site_name"]::after {
+  content: "Name used by the site's global SEO metadata and WebSite structured-data entity.";
+}
+
+label[for$="sitemap_enabled"]::after {
+  content: "Master switch for the generated sitemap.xml. Disable only when the whole site must be excluded.";
+}
+
+label[for$="sitemap_default_change_frequency"]::after,
+label[for$="sitemap_default_priority"]::after {
+  content: "Fallback sitemap value used when the selected sitemap group does not define one.";
+}
+
+label[for$="meta_title"]:hover::after,
+label[for$="meta_description"]:hover::after,
+label[for$="meta_image"]:hover::after,
+label[for$="canonical_url"]:hover::after,
+label[for$="no_index"]:hover::after,
+label[for$="no_follow"]:hover::after,
+label[for$="open_graph_title"]:hover::after,
+label[for$="open_graph_description"]:hover::after,
+label[for$="structured_data_enabled"]:hover::after,
+label[for$="structured_data_json"]:hover::after,
+label[for$="structured_data_business_type"]:hover::after,
+label[for$="default_meta_title"]:hover::after,
+label[for$="default_meta_description"]:hover::after,
+label[for$="default_open_graph_image"]:hover::after,
+label[for$="default_open_graph_title"]:hover::after,
+label[for$="default_open_graph_description"]:hover::after,
+label[for$="site_name"]:hover::after,
+label[for$="sitemap_enabled"]:hover::after,
+label[for$="sitemap_default_change_frequency"]:hover::after,
+label[for$="sitemap_default_priority"]:hover::after,
+label[for$="meta_title"]:focus-within::after,
+label[for$="meta_description"]:focus-within::after,
+label[for$="meta_image"]:focus-within::after,
+label[for$="canonical_url"]:focus-within::after,
+label[for$="no_index"]:focus-within::after,
+label[for$="no_follow"]:focus-within::after,
+label[for$="open_graph_title"]:focus-within::after,
+label[for$="open_graph_description"]:focus-within::after,
+label[for$="structured_data_enabled"]:focus-within::after,
+label[for$="structured_data_json"]:focus-within::after,
+label[for$="structured_data_business_type"]:focus-within::after,
+label[for$="default_meta_title"]:focus-within::after,
+label[for$="default_meta_description"]:focus-within::after,
+label[for$="default_open_graph_image"]:focus-within::after,
+label[for$="default_open_graph_title"]:focus-within::after,
+label[for$="default_open_graph_description"]:focus-within::after,
+label[for$="site_name"]:focus-within::after,
+label[for$="sitemap_enabled"]:focus-within::after,
+label[for$="sitemap_default_change_frequency"]:focus-within::after,
+label[for$="sitemap_default_priority"]:focus-within::after {
+  opacity: 1;
+  transform: translateY(0);
+}

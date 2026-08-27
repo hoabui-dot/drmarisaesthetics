@@ -1,0 +1,37 @@
+{
+  "collectionName": "components_contact_consultation_sections",
+  "info": {
+    "displayName": "Consultation Form Section",
+    "description": "Appointment form and Smilux contact information section below the Contact Hero."
+  },
+  "options": {},
+  "attributes": {
+    "form_title": { "type": "string", "required": true },
+    "form_intro": { "type": "text", "required": true },
+    "location_options": {
+      "type": "component",
+      "repeatable": true,
+      "component": "contact.select-option"
+    },
+    "privacy_policy_label": { "type": "string", "required": true },
+    "privacy_policy_href": { "type": "string" },
+    "submit_label": { "type": "string", "required": true },
+    "info_title": { "type": "string", "required": true },
+    "info_description": { "type": "text", "required": true },
+    "advisor_title": { "type": "string", "required": true },
+    "advisor_description": { "type": "text", "required": true },
+    "advisor_image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "contacts": {
+      "type": "component",
+      "repeatable": true,
+      "component": "contact.consultation-contact"
+    },
+    "trust_title": { "type": "string", "required": true },
+    "trust_description": { "type": "string", "required": true }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_homepage_doctor_badges",
+  "info": {
+    "displayName": "Doctor Badge",
+    "description": "Credential badge for a doctor profile"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

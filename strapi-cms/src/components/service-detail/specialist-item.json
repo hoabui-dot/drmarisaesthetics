@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_service_detail_specialist_items",
+  "info": { "displayName": "Implant Specialist" },
+  "options": {},
+  "attributes": {
+    "name": { "type": "string", "required": true },
+    "specialty": { "type": "string", "required": true },
+    "credential_one": { "type": "string", "required": true },
+    "credential_two": { "type": "string", "required": true },
+    "profile_label": { "type": "string", "required": true, "default": "View Profile →" },
+    "profile_link": { "type": "string", "required": true, "default": "/contact" },
+    "portrait": { "type": "media", "multiple": false, "required": true, "allowedTypes": ["images"] }
+  }
+}

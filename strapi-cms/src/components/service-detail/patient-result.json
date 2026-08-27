@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_service_detail_patient_results",
+  "info": { "displayName": "Patient Result" },
+  "options": {},
+  "attributes": {
+    "name": { "type": "string", "required": true },
+    "treatment": { "type": "string", "required": true },
+    "rating": { "type": "integer", "required": true, "default": 5 },
+    "testimonial": { "type": "text", "required": true },
+    "portrait": { "type": "media", "multiple": false, "required": true, "allowedTypes": ["images"] },
+    "before_image": { "type": "media", "multiple": false, "required": true, "allowedTypes": ["images"] },
+    "after_image": { "type": "media", "multiple": false, "required": true, "allowedTypes": ["images"] },
+    "before_alt": { "type": "string", "required": true },
+    "after_alt": { "type": "string", "required": true }
+  }
+}

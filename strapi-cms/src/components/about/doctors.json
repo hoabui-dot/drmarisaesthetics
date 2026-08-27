@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_about_doctors",
+  "info": {
+    "displayName": "Doctors Section",
+    "description": "About Us doctor section configuration. Doctor records remain canonical in Homepage Doctor content."
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Meet Our Doctors"
+    },
+    "view_all_label": {
+      "type": "string",
+      "default": "VIEW ALL DOCTORS"
+    },
+    "view_all_link": {
+      "type": "string",
+      "default": "/doctors"
+    },
+    "doctors": {
+      "type": "component",
+      "repeatable": true,
+      "component": "homepage.doctor-profile"
+    }
+  }
+}

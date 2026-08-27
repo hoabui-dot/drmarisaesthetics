@@ -1,0 +1,11 @@
+{
+  "collectionName": "components_service_detail_candidates",
+  "info": { "displayName": "Who Should Consider" },
+  "options": {},
+  "attributes": {
+    "anchor_label": { "type": "string", "required": true },
+    "title": { "type": "string", "required": true },
+    "items": { "type": "component", "repeatable": true, "component": "service-detail.candidate-item" },
+    "image": { "type": "media", "multiple": false, "required": false, "allowedTypes": ["images"] }
+  }
+}

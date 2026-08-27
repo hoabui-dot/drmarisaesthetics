@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_homepage_stat_items",
+  "info": {
+    "displayName": "Stat Item",
+    "description": "Individual statistic with number and label"
+  },
+  "options": {},
+  "attributes": {
+    "number": {
+      "type": "string",
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "suffix": {
+      "type": "string"
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}

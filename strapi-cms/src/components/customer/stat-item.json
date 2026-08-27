@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_customer_stat_items",
+  "info": {
+    "displayName": "Stat Item"
+  },
+  "options": {},
+  "attributes": {
+    "number": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "suffix": {
+      "type": "string"
+    },
+    "icon": {
+      "type": "string"
+    }
+  }
+}

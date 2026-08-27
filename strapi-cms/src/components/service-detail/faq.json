@@ -1,0 +1,9 @@
+{
+  "collectionName": "components_service_detail_faq_sections",
+  "info": { "displayName": "Frequently Asked Questions" },
+  "attributes": {
+    "anchor_label": { "type": "string", "required": true, "default": "FAQ" },
+    "title": { "type": "string", "required": true },
+    "items": { "type": "component", "repeatable": true, "component": "service-detail.faq-item" }
+  }
+}

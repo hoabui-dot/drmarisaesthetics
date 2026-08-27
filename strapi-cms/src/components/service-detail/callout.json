@@ -1,0 +1,11 @@
+{
+  "collectionName": "components_service_detail_callouts",
+  "info": { "displayName": "Structure Callout" },
+  "options": {},
+  "attributes": {
+    "title": { "type": "string", "required": true },
+    "description": { "type": "text", "required": true },
+    "side": { "type": "enumeration", "enum": ["left", "right"], "required": true },
+    "target_key": { "type": "string", "required": true }
+  }
+}

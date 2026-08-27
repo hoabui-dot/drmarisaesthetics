@@ -1,0 +1,1 @@
+{"collectionName":"components_homepage_feature_items","info":{"displayName":"Feature item"},"options":{},"attributes":{"title":{"type":"string","required":true},"description":{"type":"text"},"icon":{"type":"media","multiple":false,"allowedTypes":["images"]}}}

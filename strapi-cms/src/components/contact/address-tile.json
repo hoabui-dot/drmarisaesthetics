@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_contact_address_tiles",
+  "info": {
+    "displayName": "Address Tile",
+    "description": "Address tracking component"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "default": "Heritage Address"
+    },
+    "address_text": {
+      "type": "text",
+      "required": true
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "location_lat": {
+      "type": "decimal"
+    },
+    "location_lng": {
+      "type": "decimal"
+    }
+  }
+}

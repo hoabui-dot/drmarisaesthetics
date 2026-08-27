@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_homepage_process_steps",
+  "info": {
+    "displayName": "Process Step",
+    "description": "Individual step in process"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "icon": {
+      "type": "string"
+    }
+  }
+}

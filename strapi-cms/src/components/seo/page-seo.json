@@ -1,0 +1,52 @@
+{
+  "collectionName": "components_seo_page_seos",
+  "info": {
+    "displayName": "Page SEO",
+    "description": "Optional page-level SEO overrides. Leave blank to use derived and global defaults."
+  },
+  "options": {},
+  "attributes": {
+    "meta_title": {
+      "type": "string",
+      "maxLength": 60
+    },
+    "meta_description": {
+      "type": "text",
+      "maxLength": 160
+    },
+    "meta_image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "canonical_url": {
+      "type": "string",
+      "maxLength": 2048
+    },
+    "no_index": {
+      "type": "boolean",
+      "default": false
+    },
+    "no_follow": {
+      "type": "boolean",
+      "default": false
+    },
+    "open_graph_title": {
+      "type": "string",
+      "maxLength": 60
+    },
+    "open_graph_description": {
+      "type": "text",
+      "maxLength": 200
+    },
+    "structured_data_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable structured data for this page. The global SEO Manager switch remains the master switch."
+    },
+    "structured_data_json": {
+      "type": "json",
+      "description": "Optional page-specific Schema.org JSON-LD entity or graph. Only add facts visible on this page."
+    },
+  }
+}

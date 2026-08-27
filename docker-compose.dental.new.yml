@@ -1,0 +1,160 @@
+version: "3.8"
+
+# ============================================
+# Dental Production Docker Compose Configuration
+# ============================================
+# All environment variables are inline
+# No depends_on - start services manually in order
+# ============================================
+
+services:
+  # ============================================
+  # PostgreSQL Database
+  # ============================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: dental-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: dental_cms_strapi
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+    volumes:
+      - ec2-user_postgres_dental_data:/var/lib/postgresql/data
+
+    networks:
+      - dental-network
+
+    ports:
+      - "5433:5432"
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ============================================
+  # Strapi CMS Backend
+  # ============================================
+  strapi:
+    image: vanhoadotbui2628/dental_cms:1.0.0
+    platform: linux/amd64
+    container_name: dental-strapi
+    restart: unless-stopped
+
+    environment:
+      # Server
+      HOST: 0.0.0.0
+      PORT: 1337
+      NODE_ENV: production
+
+      # Database
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: dental_cms_strapi
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_SSL: "false"
+      DATABASE_SCHEMA: public
+
+      # Secrets
+      APP_KEYS: "${APP_KEYS:?Set APP_KEYS in the environment}"
+      API_TOKEN_SALT: "${API_TOKEN_SALT:?Set API_TOKEN_SALT in the environment}"
+      ADMIN_JWT_SECRET: "${ADMIN_JWT_SECRET:?Set ADMIN_JWT_SECRET in the environment}"
+      TRANSFER_TOKEN_SALT: "${TRANSFER_TOKEN_SALT:?Set TRANSFER_TOKEN_SALT in the environment}"
+      JWT_SECRET: "${JWT_SECRET:?Set JWT_SECRET in the environment}"
+
+      # URLs
+      PUBLIC_URL: "https://nhakhoaquoctesaigon.ddns.net"
+      FRONTEND_URL: "https://nhakhoaquoctesaigon.ddns.net"
+      PREVIEW_SECRET: "${PREVIEW_SECRET:?Set PREVIEW_SECRET in the environment}"
+      STRAPI_WEBHOOK_SECRET: "${STRAPI_WEBHOOK_SECRET:?Set STRAPI_WEBHOOK_SECRET in the environment}"
+      NEXTJS_URL: "https://nhakhoaquoctesaigon.ddns.net"
+
+    volumes:
+      - dental-strapi-uploads:/app/public/uploads
+      - dental-strapi-cache:/app/.cache
+
+    ports:
+      - "1337:1337"
+
+    networks:
+      - dental-network
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "require('http').get('https://guild-biblical-expectations-easily.trycloudflare.com/_health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})",
+        ]
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
+      retries: 3
+
+  # ============================================
+  # Next.js Frontend
+  # ============================================
+  frontend:
+    image: vanhoadotbui2628/dental_frontend:1.0.0
+    platform: linux/amd64
+    container_name: dental-frontend
+    restart: unless-stopped
+
+    environment:
+      NODE_ENV: production
+
+      # Strapi API (use host IP for production)
+      STRAPI_URL: "http://13.210.111.152:1337"
+      STRAPI_API_TOKEN: "${STRAPI_API_TOKEN:?Set STRAPI_API_TOKEN in the environment}"
+
+      # Next.js public URL
+      NEXT_PUBLIC_SERVER_URL: "https://nhakhoaquoctesaigon.ddns.net"
+      NEXT_PREVIEW_SECRET: "your-secure-preview-secret-change-in-production"
+
+    ports:
+      - "3003:3000"
+
+    networks:
+      - dental-network
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3000",
+        ]
+      interval: 30s
+      timeout: 10s
+      start_period: 40s
+      retries: 3
+
+# ============================================
+# Volumes
+# ============================================
+volumes:
+  ec2-user_postgres_dental_data:
+    external: true
+
+  dental-strapi-uploads:
+    driver: local
+
+  dental-strapi-cache:
+    driver: local
+
+# ============================================
+# Networks
+# ============================================
+networks:
+  dental-network:
+    driver: bridge

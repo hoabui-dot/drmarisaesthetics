@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_menu_nav_children",
+  "info": {
+    "displayName": "NavChild",
+    "description": "Child navigation item for dropdown menus"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "href": {
+      "type": "string",
+      "required": true
+    },
+    "isExternal": {
+      "type": "boolean",
+      "default": false
+    },
+    "icon": {
+      "type": "string"
+    }
+  }
+}

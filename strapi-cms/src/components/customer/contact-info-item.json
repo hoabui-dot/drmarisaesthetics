@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_customer_contact_info_items",
+  "info": {
+    "displayName": "Contact Info Item"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string"
+    }
+  }
+}

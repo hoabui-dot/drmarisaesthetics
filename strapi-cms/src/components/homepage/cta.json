@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_homepage_ctas",
+  "info": {
+    "displayName": "CTA",
+    "description": "Shared CTA component used by service content"
+  },
+  "options": {},
+  "attributes": {
+    "heading": { "type": "text", "required": true },
+    "highlight_text": { "type": "string" },
+    "button_label": { "type": "string", "required": true },
+    "button_link": { "type": "string", "required": true },
+    "background_image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "human_image": { "type": "media", "multiple": false, "allowedTypes": ["images"] }
+  }
+}
