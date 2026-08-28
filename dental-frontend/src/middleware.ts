@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const STRAPI_URL = (process.env.STRAPI_URL || "http://smilux-strapi:1337").replace(/\/$/, "");
-const STRAPI_TOKEN = process.env.STRAPI_API_TOKEN;
+const configuredToken = process.env.STRAPI_API_TOKEN;
+// A local placeholder must not be sent as a Bearer token. Strapi treats an
+// invalid token as 401 before evaluating the public read permission.
+const STRAPI_TOKEN = configuredToken && configuredToken !== "local-api-token"
+  ? configuredToken
+  : undefined;
 
 function normalize(path: string): string { return path.replace(/\/+/g, "/").replace(/\/$/, "") || "/"; }
 function safeDestination(source: string, destination: string): string | null {

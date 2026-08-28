@@ -318,6 +318,7 @@ export interface StrapiHomepage {
     id: number;
     documentId: string;
     title: string;
+    visual_theme?: 'clinical-blue';
     layout: HomepageBlockComponent[];
     createdAt: string;
     updatedAt: string;
@@ -602,6 +603,7 @@ export interface HomepageFAQComponent {
 
 export interface Homepage {
   title: string;
+  visualTheme?: 'clinical-blue';
   metadataTitle?: string;
   metadataDescription?: string;
   metadataImage?: any;

@@ -56,6 +56,34 @@ export default {
         .findOne({ where: { type: "public" } });
 
       if (publicRole) {
+        // Public website reads must not require a token in local Docker before
+        // an editor has created a real API token. Keep writes protected.
+        const publicReadActions = [
+          "api::redirect.redirect.find",
+          "api::navigation.navigation.find",
+          "api::homepage.homepage.find",
+          "api::our-team.our-team.find",
+          "api::results.results.find",
+          "api::footer.footer.find",
+          "api::seo-manager-settings.seo-manager-settings.find",
+          "api::canonical-rule.canonical-rule.find",
+          "api::service-detail.service-detail.find",
+          "api::blog.blog.find",
+        ];
+
+        for (const action of publicReadActions) {
+          const permission = await strapi
+            .query("plugin::users-permissions.permission")
+            .findOne({ where: { role: publicRole.id, action } });
+
+          if (!permission) {
+            console.log(`[BOOTSTRAP] Setting Public permission for: ${action}`);
+            await strapi.query("plugin::users-permissions.permission").create({
+              data: { role: publicRole.id, action },
+            });
+          }
+        }
+
         // Contact Page API
         const contactPageAction = "api::contact-page.contact-page.find";
         const contactPagePermission = await strapi
@@ -99,6 +127,88 @@ export default {
             );
           }
         }
+      }
+
+      // ── 1b. Stitch editorial metadata seed ─────────────────────────────
+      // Keep the restored dynamic-zone content intact while aligning the
+      // document metadata with the new cosmetic-surgery editorial direction.
+      let stitchHomepageSeed: Record<string, unknown> = {};
+      try {
+        const seedPath = path.join(process.cwd(), "data", "stitch-homepage.json");
+        stitchHomepageSeed = JSON.parse(fs.readFileSync(seedPath, "utf8"));
+      } catch (seedError: any) {
+        console.warn(`[BOOTSTRAP] Stitch homepage seed file unavailable: ${seedError.message}`);
+      }
+      const stitchHome = await strapi.documents("api::homepage.homepage").findMany({ limit: 1, status: "draft" });
+      if (stitchHome.length > 0) {
+        await strapi.documents("api::homepage.homepage").update({
+          documentId: stitchHome[0].documentId,
+          data: {
+            title: "Dr. Maris Aesthetics",
+            metadata_title: "Plastic Surgery in Vietnam for International Patients | Dr. Maris Aesthetics",
+            metadata_description: "Surgeon-led cosmetic surgery in Ho Chi Minh City, with direct surgeon care, hospital-based procedures, and personalized revision assessment.",
+            visual_theme: "clinical-blue",
+            ...stitchHomepageSeed,
+          },
+        });
+        await strapi.documents("api::homepage.homepage").publish({ documentId: stitchHome[0].documentId });
+        console.log("[BOOTSTRAP] Stitch homepage metadata seeded.");
+      }
+
+      const stitchAbout = await strapi.documents("api::about-page.about-page").findMany({ limit: 1, status: "draft" });
+      if (stitchAbout.length > 0) {
+        await strapi.documents("api::about-page.about-page").update({
+          documentId: stitchAbout[0].documentId,
+          data: {
+            seo: {
+              meta_title: "About Us | Dr. Maris Aesthetics",
+              meta_description: "Learn about Dr. Maris Aesthetics, a surgeon-led cosmetic surgery practice in Ho Chi Minh City.",
+            },
+          },
+        });
+        await strapi.documents("api::about-page.about-page").publish({ documentId: stitchAbout[0].documentId });
+        console.log("[BOOTSTRAP] Stitch About Us metadata seeded.");
+      }
+
+      // ── 1c. Stitch Our Team page seed ─────────────────────────────────
+      let ourTeamSeed: Record<string, unknown> = {};
+      try {
+        const seedPath = path.join(process.cwd(), "data", "our-team.json");
+        ourTeamSeed = JSON.parse(fs.readFileSync(seedPath, "utf8"));
+      } catch (seedError: any) {
+        console.warn(`[BOOTSTRAP] Our Team seed file unavailable: ${seedError.message}`);
+      }
+      const ourTeam = await strapi.documents("api::our-team.our-team").findMany({ limit: 1, status: "draft" });
+      if (ourTeam.length > 0) {
+        await strapi.documents("api::our-team.our-team").update({
+          documentId: ourTeam[0].documentId,
+          data: ourTeamSeed,
+        });
+        await strapi.documents("api::our-team.our-team").publish({ documentId: ourTeam[0].documentId });
+        console.log("[BOOTSTRAP] Our Team page seeded and published.");
+      } else {
+        const createdOurTeam = await strapi.documents("api::our-team.our-team").create({ data: ourTeamSeed });
+        await strapi.documents("api::our-team.our-team").publish({ documentId: createdOurTeam.documentId });
+        console.log("[BOOTSTRAP] Our Team page created, seeded and published.");
+      }
+
+      // ── 1d. Stitch Results page seed ──────────────────────────────────
+      let resultsSeed: Record<string, unknown> = {};
+      try {
+        const seedPath = path.join(process.cwd(), "data", "results.json");
+        resultsSeed = JSON.parse(fs.readFileSync(seedPath, "utf8"));
+      } catch (seedError: any) {
+        console.warn(`[BOOTSTRAP] Results seed file unavailable: ${seedError.message}`);
+      }
+      const resultsPage = await strapi.documents("api::results.results").findMany({ limit: 1, status: "draft" });
+      if (resultsPage.length > 0) {
+        await strapi.documents("api::results.results").update({ documentId: resultsPage[0].documentId, data: resultsSeed });
+        await strapi.documents("api::results.results").publish({ documentId: resultsPage[0].documentId });
+        console.log("[BOOTSTRAP] Results page seeded and published.");
+      } else {
+        const createdResults = await strapi.documents("api::results.results").create({ data: resultsSeed });
+        await strapi.documents("api::results.results").publish({ documentId: createdResults.documentId });
+        console.log("[BOOTSTRAP] Results page created, seeded and published.");
       }
 
       // ── 2. Check if Contact Page layout is initialized ──────────────────────────
@@ -211,6 +321,16 @@ export default {
       });
 
       if (customerDocs && customerDocs.length > 0) {
+        const requiredCustomerMediaIds = [4, 5, 7, 8, 9, 42, 43, 44, 45];
+        const availableCustomerMedia = await strapi.db
+          .query("plugin::upload.file")
+          .findMany({ where: { id: { $in: requiredCustomerMediaIds } }, select: ["id"] });
+
+        if (availableCustomerMedia.length !== requiredCustomerMediaIds.length) {
+          console.warn(
+            `[BOOTSTRAP] Preserving restored Customer Page; ${requiredCustomerMediaIds.length - availableCustomerMedia.length} referenced media file(s) are not present in the backup.`,
+          );
+        } else {
         const doc = customerDocs[0];
         console.log(`[BOOTSTRAP] Updating Customer Page: ${doc.documentId}`);
 
@@ -368,6 +488,7 @@ export default {
         });
 
         console.log("[BOOTSTRAP] Customer Page successfully updated and published via Document API!");
+        }
       }
     } catch (error: any) {
       console.error("[BOOTSTRAP] Error:", error.message);

@@ -1,10 +1,9 @@
 import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { getHomepage } from '@/src/lib/api/queries'
-import { BlockRenderer } from '@/src/components/BlockRenderer'
-import { EmptyState } from '@/src/components/EmptyState'
 import { buildSeoMetadata } from '@/src/lib/seo/seo-manager'
 import { resolveStructuredData, StructuredDataScript } from '@/src/lib/seo/structured-data'
+import { StitchHomepage, StitchHomepageFaq } from '@/src/components/StitchAestheticPage'
 
 /**
  * Homepage
@@ -24,18 +23,6 @@ export default async function Home() {
   // Fetch homepage data from CMS
   const homepage = await getHomepage(isDraftMode)
 
-  // Handle empty homepage
-  if (!homepage.blocks || homepage.blocks.length === 0) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <EmptyState
-          title="Homepage not configured"
-          description="The homepage hasn't been set up yet. Please configure it in the CMS."
-        />
-      </div>
-    )
-  }
-
   const structuredData = await resolveStructuredData({
     pageType: 'home', path: '/',
     title: homepage.metadataTitle || 'Saigon International Dental Clinic - Perfect Smile',
@@ -43,14 +30,7 @@ export default async function Home() {
     pageSeo: homepage.seo,
   })
 
-  return (
-    <>
-      <StructuredDataScript data={structuredData} />
-      <div className="min-h-screen bg-background">
-      <BlockRenderer layout={homepage.blocks} />
-      </div>
-    </>
-  )
+  return <><StructuredDataScript data={structuredData} /><StitchHomepage /><StitchHomepageFaq /></>
 }
 
 export async function generateMetadata(): Promise<Metadata> {

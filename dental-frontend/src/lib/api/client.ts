@@ -79,7 +79,11 @@ export async function apiClient<T = unknown>(
   };
 
   // Add authentication token if available
-  if (STRAPI_API_TOKEN) {
+  // Local Docker uses public read permissions while an API token is not yet
+  // created in the local Strapi admin. Never send the placeholder as a bearer
+  // token: Strapi treats an invalid bearer token as 401 even for public routes.
+  const hasUsableApiToken = STRAPI_API_TOKEN && STRAPI_API_TOKEN !== "local-api-token";
+  if (hasUsableApiToken) {
     headers["Authorization"] = `Bearer ${STRAPI_API_TOKEN}`;
   }
 

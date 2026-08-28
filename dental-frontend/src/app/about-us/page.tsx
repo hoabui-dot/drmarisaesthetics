@@ -3,9 +3,9 @@ import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { getAboutPage } from '@/src/lib/api/queries'
 import { PreviewBanner } from '@/src/components/PreviewBanner'
-import { AboutUsContent } from './AboutUsContent'
 import { buildSeoMetadata } from '@/src/lib/seo/seo-manager'
 import { resolveStructuredData, StructuredDataScript } from '@/src/lib/seo/structured-data'
+import { StitchAboutUs } from '@/src/components/StitchAestheticPage'
 
 /**
  * About Us Page
@@ -46,7 +46,7 @@ export default async function AboutUsPage() {
                 <StructuredDataScript data={structuredData} />
                 {isDraftMode && <PreviewBanner />}
                 <main className={isDraftMode ? 'min-h-screen bg-background pt-20' : 'min-h-screen bg-background'}>
-                    <AboutUsContent content={parsedContent} page={null} />
+                    <StitchAboutUs />
                 </main>
             </>
         )

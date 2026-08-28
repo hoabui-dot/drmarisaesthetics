@@ -1,16 +1,39 @@
 version: "3.8"
 
 services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: dental-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_HOST_PORT:-5432}:5432"
+    networks:
+      - dental-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   smilux-strapi:
     build:
       context: ./strapi-cms
       dockerfile: Dockerfile
       args:
-        STRAPI_ADMIN_BACKEND_URL: http://100.68.50.41:1337
+        STRAPI_ADMIN_BACKEND_URL: ${STRAPI_PUBLIC_URL}
     image: vanhoadotbui2628/dental_cms:1.0.0
     platform: linux/amd64
     container_name: dental-strapi
     restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
     environment:
       HOST: 0.0.0.0
       PORT: 1337

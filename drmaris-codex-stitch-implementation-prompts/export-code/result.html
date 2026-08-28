@@ -1,0 +1,362 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}.mega-menu{display:none;position:absolute;top:100%;left:0;width:100%;background-color:rgba(255,255,255,0.98);backdrop-blur:xl;border-bottom:1px solid rgba(196,198,210,0.2);}.group:hover .mega-menu{display:block;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "on-secondary-container": "#003e73",
+                "clinical-surface": "#F8FAFC",
+                "primary-container": "#002d72",
+                "on-error": "#ffffff",
+                "on-tertiary": "#ffffff",
+                "inverse-surface": "#303031",
+                "outline-variant": "#c4c6d2",
+                "primary-fixed": "#dae2ff",
+                "on-surface": "#1b1b1c",
+                "secondary-fixed": "#d4e3ff",
+                "outline": "#747782",
+                "surface-tint": "#3d5ca2",
+                "secondary": "#0060ac",
+                "primary-fixed-dim": "#b1c5ff",
+                "surface-variant": "#e5e2e3",
+                "on-primary-container": "#7a97e2",
+                "on-tertiary-container": "#979a9c",
+                "surface-dim": "#dcd9da",
+                "tertiary-fixed": "#e0e3e5",
+                "on-secondary-fixed-variant": "#004883",
+                "on-secondary-fixed": "#001c39",
+                "deep-navy": "#002D72",
+                "on-error-container": "#93000a",
+                "surface": "#fcf8f9",
+                "surface-container-lowest": "#ffffff",
+                "tertiary": "#1a1d1f",
+                "secondary-fixed-dim": "#a4c9ff",
+                "tertiary-container": "#2e3234",
+                "on-primary": "#ffffff",
+                "tertiary-fixed-dim": "#c4c7c9",
+                "error-container": "#ffdad6",
+                "secondary-container": "#68abff",
+                "surface-container-low": "#f6f3f4",
+                "medical-white": "#FFFFFF",
+                "inverse-primary": "#b1c5ff",
+                "on-secondary": "#ffffff",
+                "on-surface-variant": "#444651",
+                "background": "#fcf8f9",
+                "surface-container": "#f0edee",
+                "glassy-blue": "#4A90E2",
+                "error": "#ba1a1a",
+                "on-background": "#1b1b1c",
+                "inverse-on-surface": "#f3f0f1",
+                "surface-container-high": "#eae7e8",
+                "on-primary-fixed-variant": "#224489",
+                "surface-container-highest": "#e5e2e3",
+                "primary": "#001a48",
+                "on-tertiary-fixed": "#191c1e",
+                "on-tertiary-fixed-variant": "#444749",
+                "on-primary-fixed": "#001946",
+                "surface-bright": "#fcf8f9",
+                "slate-gray": "#71717A"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "margin-mobile": "20px",
+                "margin-desktop": "64px",
+                "section-padding": "96px",
+                "gutter": "24px",
+                "container-max": "1280px",
+                "unit": "4px"
+        },
+        "fontFamily": {
+                "label-md": [
+                        "Plus Jakarta Sans"
+                ],
+                "headline-md": [
+                        "Bodoni Moda"
+                ],
+                "body-lg": [
+                        "Plus Jakarta Sans"
+                ],
+                "headline-lg-mobile": [
+                        "Bodoni Moda"
+                ],
+                "body-md": [
+                        "Plus Jakarta Sans"
+                ],
+                "display-lg": [
+                        "Bodoni Moda"
+                ],
+                "label-sm": [
+                        "Plus Jakarta Sans"
+                ],
+                "headline-lg": [
+                        "Bodoni Moda"
+                ]
+        },
+        "fontSize": {
+                "label-md": [
+                        "14px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "0.08em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "headline-md": [
+                        "32px",
+                        {
+                                "lineHeight": "1.3",
+                                "fontWeight": "500"
+                        }
+                ],
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-lg-mobile": [
+                        "32px",
+                        {
+                                "lineHeight": "1.2",
+                                "fontWeight": "500"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ],
+                "display-lg": [
+                        "64px",
+                        {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "label-sm": [
+                        "12px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "500"
+                        }
+                ],
+                "headline-lg": [
+                        "48px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "500"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@100..900&amp;family=Plus+Jakarta+Sans:wght@200..800&amp;display=swap" rel="stylesheet"></head><body class="bg-surface-container-lowest font-body-md text-on-surface selection:bg-secondary-container selection:text-on-secondary-container"><header class="fixed top-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-outline-variant/30"><div class="bg-deep-navy text-on-primary py-2 px-margin-desktop"><div class="max-w-container-max mx-auto flex justify-between items-center font-label-sm text-label-sm"><div class="flex gap-6"><span class="flex items-center gap-2 uppercase tracking-widest"><span class="material-symbols-outlined text-[14px]">call</span> +1 (555) MARIS-MD</span><span class="flex items-center gap-2 uppercase tracking-widest"><span class="material-symbols-outlined text-[14px]">location_on</span> Beverly Hills, CA</span></div><div class="flex gap-4"><a class="hover:text-primary-fixed transition-colors" href="#">Patient Portal</a><a class="hover:text-primary-fixed transition-colors" href="#">Virtual Visit</a></div></div></div><div class="h-20 max-w-container-max mx-auto px-margin-desktop flex items-center justify-between"><div class="flex items-center gap-10"><div class="flex items-center gap-3"><img alt="Dr. Maris Aesthetic Logo" class="h-10 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsY25LJDs7tG95qdvmCulf0fYRQH-oIPH7pb4rJR9115pPMU3gdJlkrtYE3oXVgZUptiPRHQF4skGdHDKocmY-wt2t932l3JnLmk91Jo0keuwCl5Gk31x2vUOa1zZMg9y85-x1ZiyDpTIa5yuha0ZkpA5yxx-s_CE-xhYJLcHVh4V7wgIUxZmMqbAfYuBRcUT4ALHcktDp6LsNBfxAwOckLqO5DgxGP41ubVwAMFoH1HrGzcWMiTRB"><span class="font-headline-md text-headline-md leading-none tracking-tight" style="color: rgb(0, 45, 114);">Dr. Maris</span></div><nav class="hidden xl:flex items-center gap-6" data-active-classes="text-deep-navy font-bold"><a class="font-label-md text-label-md text-on-surface-variant hover:text-deep-navy transition-colors" data-path="about" href="#">About</a><div class="group relative"><a class="font-label-md text-label-md text-on-surface-variant hover:text-deep-navy transition-colors flex items-center gap-1" data-path="face" href="#">Face <span class="material-symbols-outlined text-[16px]">expand_more</span></a><div class="mega-menu px-margin-desktop py-10 shadow-lg"><div class="max-w-container-max mx-auto grid grid-cols-4 gap-12"><div class="space-y-4"><h4 class="font-headline-md text-headline-md border-b border-outline-variant/30 pb-2">Lifting</h4><ul class="space-y-2"><li class=""><a class="text-body-md hover:text-deep-navy" href="#">Facelift</a></li><li class=""><a class="text-body-md hover:text-deep-navy" href="#">Neck Lift</a></li><li class=""><a class="text-body-md hover:text-deep-navy" href="#">Brow Lift</a></li></ul></div><div class="space-y-4"><h4 class="font-headline-md text-headline-md border-b border-outline-variant/30 pb-2">Eyes &amp; Nose</h4><ul class="space-y-2"><li class=""><a class="text-body-md hover:text-deep-navy" href="#">Blepharoplasty</a></li><li class=""><a class="text-body-md hover:text-deep-navy" href="#">Rhinoplasty</a></li></ul></div></div></div></div><a class="font-label-md text-label-md text-on-surface-variant hover:text-deep-navy transition-colors" data-path="breast" href="#">Breast</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-deep-navy transition-colors" data-path="body" href="#">Body</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-deep-navy transition-colors" data-path="non-surgical" href="#">Non-Surgical</a><a aria-current="page" class="transition-colors text-deep-navy font-bold" data-path="results" href="#" style="color: rgb(0, 45, 114);">Results</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-deep-navy transition-colors" data-path="insights" href="#">Insights</a></nav></div><div class="flex items-center gap-6"><a class="bg-deep-navy text-on-primary px-8 py-3 rounded-lg font-label-md text-label-md hover:bg-primary-container transition-all" data-path="consultation" href="#">BOOK A CONSULTATION</a><img alt="Profile" class="w-10 h-10 rounded-full object-cover border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTeb4K7icJOejOCNmhoM1L_97JimcI6Qtyot9YzMr51gD3_D096TT551datl7elzq4TGEQz-bEMf8KBAUaMGPSuRx-gXA7LQDE6AxQJeik8HAprXx5WLc0J8tMTKQRuN5tTfMsno6xTgx-ocAouFxiXWQRiCATFFvjwsLvpxprL1m7V9S-mUEXDc3L_aWSsmNthvE245NzLwUH0W-RYhnjXBO7LUB-OAqjk5SNLSZFeUzTH3V751D0"></div></div></header><main class="w-full pt-[112px] min-h-screen bg-surface-container-lowest"><div class="flex flex-col w-full">
+<!-- Section: Header & Filters -->
+<section class="w-full px-margin-desktop py-section-padding">
+<div class="max-w-container-max mx-auto flex flex-col items-center text-center space-y-6">
+<div class="h-8 w-[1px] bg-outline-variant/50"></div>
+<h1 class="font-headline-lg text-headline-lg text-deep-navy font-bold" style="color: rgb(0, 45, 114);">Patient Results Gallery</h1>
+<p class="font-body-lg text-body-lg text-slate-gray max-w-2xl">
+        A curated selection of our surgical and non-surgical outcomes. Every result is bespoke, 
+        reflecting our commitment to natural-looking enhancement and clinical precision.
+      </p>
+<!-- Filters -->
+<div class="flex flex-wrap justify-center gap-4 mt-8 pt-8 border-t border-outline-variant/30 w-full max-w-4xl">
+<button class="px-6 py-2 bg-deep-navy text-on-primary rounded-full font-label-md text-label-md transition-transform hover:-translate-y-1">All Procedures</button>
+<button class="px-6 py-2 bg-transparent border border-deep-navy text-deep-navy rounded-full font-label-md text-label-md hover:bg-deep-navy hover:text-on-primary transition-all">Face &amp; Neck</button>
+<button class="px-6 py-2 bg-transparent border border-deep-navy text-deep-navy rounded-full font-label-md text-label-md hover:bg-deep-navy hover:text-on-primary transition-all">Rhinoplasty</button>
+<button class="px-6 py-2 bg-transparent border border-deep-navy text-deep-navy rounded-full font-label-md text-label-md hover:bg-deep-navy hover:text-on-primary transition-all">Breast</button>
+<button class="px-6 py-2 bg-transparent border border-deep-navy text-deep-navy rounded-full font-label-md text-label-md hover:bg-deep-navy hover:text-on-primary transition-all">Body Contouring</button>
+</div>
+</div>
+</section>
+<!-- Section: Patient Case Grid -->
+<section class="w-full px-margin-desktop pb-section-padding">
+<div class="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-gutter">
+<!-- Case Card 1 -->
+<div class="group bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden hover:border-deep-navy/50 transition-colors duration-500">
+<div class="relative w-full aspect-[4/3] bg-clinical-surface">
+<!-- Image Container (Side-by-side simulation) -->
+<div class="absolute inset-0 flex">
+<div class="w-1/2 h-full bg-cover bg-center border-r border-surface-container-lowest" data-alt="Clinical before photo of a female patient's face, profile view, showing signs of aging along the jawline and neck. Neutral gray background, sterile clinical lighting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCMcflJwOeFU4y8jTcIqQZUGhz2yexItUr42sLTK1GenzDc1AwxrOvvglvHrcVEEAq9FrLflCFUgZYUnh30V7GnFRP51VxJJbKmJmuSam7lF2aM2MoYtPh1kY4OlrcKYs8ofLg5Q23DHNwOBtjaHOEnt0QsCjs_aScz7IhZo55DhJlLnST_URbIlxLqn2LhXTFxhtxQGMpcaC7DM-HtH_PEIxoaz9ux9rPFNOeIDvQFn0tgSM03HZJ9')"></div>
+<div class="w-1/2 h-full bg-cover bg-center" data-alt="Clinical after photo of the same female patient's face, profile view, showing a refined jawline and smooth neck following a facelift. Neutral gray background, sterile clinical lighting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBPxtXQB0z-MzW_OuPK5s77Nn57e3Mqft92rgoFT9jYYJh3R4eIlKLsPGagRVodROfhyWZj6xSD78lnCnhGoyzGOfQKPRCUpcumA_gS020JLBCTE0Tn2C5LMyFsiQ9C0vj_L49fSKX9ama9w-MuCvU9J7CNyR34u_CczzO0gQwzk8t2ilSOxi3OuB4igQ9cGsbkoPvnGQj1i8bAzgrmqqdZ45oMz8T54HsQdQP8wY9-AjSZVJw8x-s2')"></div>
+</div>
+<!-- Labels -->
+<div class="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-sm px-3 py-1 font-label-sm text-label-sm text-deep-navy rounded">Before</div>
+<div class="absolute top-4 right-4 bg-surface-container-lowest/90 backdrop-blur-sm px-3 py-1 font-label-sm text-label-sm text-deep-navy rounded">After</div>
+</div>
+<div class="p-8">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="font-headline-md text-headline-md text-deep-navy mb-2" style="color: rgb(0, 45, 114);">Deep Plane Facelift</h3>
+<p class="font-body-md text-body-md text-slate-gray">Combined with Neck Lift &amp; Fat Grafting</p>
+</div>
+<span class="font-body-md text-body-md text-deep-navy" style="color: rgb(40, 100, 163);">Case 042</span>
+</div>
+<div class="grid grid-cols-2 gap-4 pt-6 border-t border-outline-variant/30">
+<div>
+<span class="block font-label-sm text-label-sm text-slate-gray uppercase tracking-wider mb-1">Patient Profile</span>
+<span class="font-body-md text-body-md text-deep-navy" style="color: rgb(40, 100, 163);">Female, 54 Years</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-slate-gray uppercase tracking-wider mb-1">Recovery</span>
+<span class="font-body-md text-body-md text-deep-navy" style="color: rgb(40, 100, 163);">14 Days</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Case Card 2 -->
+<div class="group bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden hover:border-deep-navy/50 transition-colors duration-500">
+<div class="relative w-full aspect-[4/3] bg-clinical-surface">
+<div class="absolute inset-0 flex">
+<div class="w-1/2 h-full bg-cover bg-center border-r border-surface-container-lowest" data-alt="Clinical before photo of a female patient's nose, profile view, showing a dorsal hump. Neutral gray background, uniform lighting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAHPIrHmRYQ27MpPlYzMs6ZOzTAy9ZPT-n6_CpsVoFljhKS0UuYyKuZnc1jhe6bikE0MNpipvyyHA3MGIU_6dUJpQWC6JRHNH76X23Eo-Yv8w6mkV9D4SeR9hv6l4nZkF3veHsr5bMrTjeyhZehG6SGx3np6A3PAd-0ERZKXGFCHMPOSiRIPtbOpj_41fTVDB9lKbZYjxfd7_ZRQ5zVWWm8DUZDrfIXEPLOXd0xX-b9UYDJvH-qkBHb')"></div>
+<div class="w-1/2 h-full bg-cover bg-center" data-alt="Clinical after photo of the same female patient's nose, profile view, showing a straight, refined bridge post-rhinoplasty. Neutral gray background, uniform lighting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCJh-HUnxEqBKSLNkD9vL_V_y3CjFnIW4aQ7o14LoFo5nfOweJFvmdbypgL5Y6Xde9gKnD2kyX4WhtXoho3ee0PpVMhGTDG362t-m54-1xHmcYSsGVuGRm0SDMMYErTaQuQScbc8Rine34VsPKic-dQ0z7D1EdMlL4Cnw-7sYaZxVv4MTUPoHaP7SXhNnWqpd9WN1ibr82mhyZnsV3MM8Z8kZB-SlBykm_ywgJ7jqcDFgdcW3auYldv')"></div>
+</div>
+<div class="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-sm px-3 py-1 font-label-sm text-label-sm text-deep-navy rounded">Before</div>
+<div class="absolute top-4 right-4 bg-surface-container-lowest/90 backdrop-blur-sm px-3 py-1 font-label-sm text-label-sm text-deep-navy rounded">After</div>
+</div>
+<div class="p-8">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="font-headline-md text-headline-md text-deep-navy mb-2" style="color: rgb(0, 45, 114);">Primary Rhinoplasty</h3>
+<p class="font-body-md text-body-md text-slate-gray">Dorsal Hump Reduction &amp; Tip Refinement</p>
+</div>
+<span class="font-body-md text-body-md text-deep-navy" style="color: rgb(40, 100, 163);">Case 089</span>
+</div>
+<div class="grid grid-cols-2 gap-4 pt-6 border-t border-outline-variant/30">
+<div>
+<span class="block font-label-sm text-label-sm text-slate-gray uppercase tracking-wider mb-1">Patient Profile</span>
+<span class="font-body-md text-body-md text-deep-navy" style="color: rgb(40, 100, 163);">Female, 28 Years</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-slate-gray uppercase tracking-wider mb-1">Recovery</span>
+<span class="font-body-md text-body-md text-deep-navy" style="color: rgb(40, 100, 163);">10 Days</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Case Card 3 -->
+<div class="group bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden hover:border-deep-navy/50 transition-colors duration-500">
+<div class="relative w-full aspect-[4/3] bg-clinical-surface">
+<div class="absolute inset-0 flex">
+<div class="w-1/2 h-full bg-cover bg-center border-r border-surface-container-lowest" data-alt="Clinical before photo of a patient's eyes, frontal view, showing upper eyelid hooding and under-eye bags. Neutral gray background." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD1uSzpVCfXj9noXL5oeFLmjuFJ95glXdyqN4r1Ct9kJRL2pGOTBxCM6stWCINmVbfM4UzB7zfAg3uOOi7osltUyYJeEWF5MNnzxweJvqaM1MZ5JAGakoS2uTDG9QDzQv9oKg1CoJQ9OSC_rZANaesC0i8JDVUrNsf6l5ItzUka03-B1_5y1BiHU47h11dI1yI5Y6u-sFyNOFjfDLURjFElp9fwcXn-1PVVunkB29T7IIhGtrI9M0OR')"></div>
+<div class="w-1/2 h-full bg-cover bg-center" data-alt="Clinical after photo of the same patient's eyes, frontal view, showing refreshed, open eyes following blepharoplasty. Neutral gray background." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAK7KJQwAN2TBs_FpqBVBg5g44cqmDBCLP7q5ITDqnuZQHa3XICH_QAvHDcDFFq1jO1qMYi96D7YebRtirRo0NG53cf1NoECHFyHt4_0TKlw0cb9MpMl-0dw_Z7Nb-P-XDHG9hNanse0kyl6xXZmsVWUMDtjKf30Wkyq8-7Rvdfvwgz6BOsZckf1ki-REo8-i200RA30S0LJtau7NSvta1qvQ2gAdN0s5BWB-fwUZUr42V0h8BtODFv')"></div>
+</div>
+<div class="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-sm px-3 py-1 font-label-sm text-label-sm text-deep-navy rounded">Before</div>
+<div class="absolute top-4 right-4 bg-surface-container-lowest/90 backdrop-blur-sm px-3 py-1 font-label-sm text-label-sm text-deep-navy rounded">After</div>
+</div>
+<div class="p-8">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="font-headline-md text-headline-md text-deep-navy mb-2" style="color: rgb(0, 45, 114);">Upper &amp; Lower Blepharoplasty</h3>
+<p class="font-body-md text-body-md text-slate-gray">Skin Excision &amp; Fat Repositioning</p>
+</div>
+<span class="font-body-md text-body-md text-deep-navy" style="color: rgb(40, 100, 163);">Case 112</span>
+</div>
+<div class="grid grid-cols-2 gap-4 pt-6 border-t border-outline-variant/30">
+<div>
+<span class="block font-label-sm text-label-sm text-slate-gray uppercase tracking-wider mb-1">Patient Profile</span>
+<span class="font-body-md text-body-md text-deep-navy" style="color: rgb(40, 100, 163);">Male, 61 Years</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-slate-gray uppercase tracking-wider mb-1">Recovery</span>
+<span class="font-body-md text-body-md text-deep-navy" style="color: rgb(40, 100, 163);">7 Days</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Case Card 4 -->
+<div class="group bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden hover:border-deep-navy/50 transition-colors duration-500">
+<div class="relative w-full aspect-[4/3] bg-clinical-surface">
+<div class="absolute inset-0 flex">
+<div class="w-1/2 h-full bg-cover bg-center border-r border-surface-container-lowest" data-alt="Clinical before photo of a female patient's neck, oblique view, showing platysmal bands and skin laxity. Neutral background." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAuoARv0xcOoDfyIFKGhSP2r4PHpZj6vc_4QUhrp0h0CJEDodbj3m220W7YHD595Hgiwr0ImrNR3CWi0q7cBsCVvenhyLx-Qz3xe1MVo3yUbnxrTtHGeNMxy5plfWbbrCAPhPs0-_b1amlymx-buk1KblEHPDfL-ST74CeXymklQ6RQgEH8rxPouwgDBfa004yVZW3AopeY9ZLXSrB7jhjxd_4ANzcKOAXGXs4jVGRT3gWssbIw4VAh')"></div>
+<div class="w-1/2 h-full bg-cover bg-center" data-alt="Clinical after photo of the same patient's neck, oblique view, showing a smooth, contoured neck post-surgery. Neutral background." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCm8pF_9uBIv0PG1t8YZGSzKuHMGLQdgGiz2D_rn7PmDRc9PlZ6Sbv6ORHLPLmtqCEcdnFGg3iSH1PeSqmJbkCJEKGugNFcl31tIySan6Rui4X9SCp0rMhOrfC8D3ulSiughyqk8XAFGyE9t6FaoYMHBFXeEQLnh5BTAld_dtJ4AB7qhB6_fz_sOUFe13ez_5mWhXN4Huux7dELkW8LaEegPzFCH9WBem3fSsEDRI8yXKI5aXbYOhDp')"></div>
+</div>
+<div class="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-sm px-3 py-1 font-label-sm text-label-sm text-deep-navy rounded">Before</div>
+<div class="absolute top-4 right-4 bg-surface-container-lowest/90 backdrop-blur-sm px-3 py-1 font-label-sm text-label-sm text-deep-navy rounded">After</div>
+</div>
+<div class="p-8">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="font-headline-md text-headline-md text-deep-navy mb-2" style="color: rgb(0, 45, 114);">Isolated Neck Lift</h3>
+<p class="font-body-md text-body-md text-slate-gray">Platysmaplasty &amp; Submental Liposuction</p>
+</div>
+<span class="font-body-md text-body-md text-deep-navy" style="color: rgb(40, 100, 163);">Case 056</span>
+</div>
+<div class="grid grid-cols-2 gap-4 pt-6 border-t border-outline-variant/30">
+<div>
+<span class="block font-label-sm text-label-sm text-slate-gray uppercase tracking-wider mb-1">Patient Profile</span>
+<span class="font-body-md text-body-md text-deep-navy" style="color: rgb(40, 100, 163);">Female, 49 Years</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-slate-gray uppercase tracking-wider mb-1">Recovery</span>
+<span class="font-body-md text-body-md text-deep-navy" style="color: rgb(40, 100, 163);">10 Days</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination / Load More -->
+<div class="flex justify-center mt-12">
+<button class="flex items-center gap-2 px-8 py-3 border border-deep-navy text-deep-navy font-label-md text-label-md rounded-full hover:bg-deep-navy hover:text-on-primary transition-colors" style="color: rgb(0, 45, 114); border-color: rgb(0, 45, 114);">
+        Load Additional Cases
+        <span class="material-symbols-outlined text-[18px]">expand_more</span>
+</button>
+</div>
+</section>
+<!-- Section: Disclaimer -->
+<section class="w-full bg-clinical-surface py-12 px-margin-desktop border-y border-outline-variant/30">
+<div class="max-w-4xl mx-auto text-center">
+<span class="material-symbols-outlined text-outline mb-4">info</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-2">Patient Image Disclaimer</p>
+<p class="font-body-md text-body-md text-slate-gray">
+        The photographs in this gallery feature actual patients of Dr. Maris Aesthetic Surgery. 
+        Images are provided for illustrative purposes only and do not constitute a guarantee of results. 
+        Individual outcomes vary based on anatomy, healing, and adherence to post-operative protocols. 
+        All photos have been published with the explicit written consent of the patients.
+      </p>
+</div>
+</section>
+<!-- Section: CTA -->
+<section class="w-full px-margin-desktop py-section-padding bg-deep-navy text-on-primary relative overflow-hidden">
+<!-- Decorative abstract shape -->
+<div class="absolute -top-24 -right-24 w-96 h-96 bg-primary-fixed/5 rounded-full blur-3xl pointer-events-none"></div>
+<div class="max-w-container-max mx-auto flex flex-col md:flex-row items-center justify-between gap-12 relative z-10">
+<div class="max-w-xl">
+<h2 class="font-headline-lg text-headline-lg text-on-primary mb-4 font-bold" style="color: rgb(0, 45, 114);">Begin Your Transformation</h2>
+<p class="font-body-lg text-body-lg text-on-primary/80">
+          Schedule a private consultation to discuss your aesthetic goals and discover 
+          what is surgically possible tailored specifically for you.
+        </p>
+</div>
+<div>
+<a class="inline-flex items-center gap-3 bg-medical-white text-deep-navy px-8 py-4 rounded-lg font-label-md text-label-md hover:bg-clinical-surface transition-colors" href="#" style="color: rgb(0, 45, 114);">
+          Book a Consultation
+          <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</section>
+</div></main><footer class="w-full bg-clinical-surface border-t border-outline-variant/30"><div class="max-w-container-max mx-auto px-margin-desktop py-20"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12"><div class="space-y-6"><div><h5 class="font-headline-md text-headline-md mb-4 text-on-surface">Procedures</h5><ul class="space-y-3 font-body-md text-on-surface-variant"><li class=""><a class="hover:text-deep-navy" href="#">Facelift &amp; Neck Lift</a></li><li class=""><a class="hover:text-deep-navy" href="#">Breast Augmentation</a></li><li class=""><a class="hover:text-deep-navy" href="#">Liposuction</a></li><li class=""><a class="hover:text-deep-navy" href="#">Rhinoplasty</a></li><li class=""><a class="hover:text-deep-navy" href="#">Abdominoplasty</a></li></ul></div></div><div class="space-y-6"><div><h5 class="font-headline-md text-headline-md mb-4 text-on-surface">Popular</h5><ul class="space-y-3 font-body-md text-on-surface-variant"><li class=""><a class="hover:text-deep-navy" href="#">Mommy Makeover</a></li><li class=""><a class="hover:text-deep-navy" href="#">Brazilian Butt Lift</a></li><li class=""><a class="hover:text-deep-navy" href="#">Botox Cosmetic</a></li><li class=""><a class="hover:text-deep-navy" href="#">Dermal Fillers</a></li><li class=""><a class="hover:text-deep-navy" href="#">Skin Tightening</a></li></ul></div></div><div class="space-y-6"><div><h5 class="font-headline-md text-headline-md mb-4 text-on-surface">Resources</h5><ul class="space-y-3 font-body-md text-on-surface-variant"><li class=""><a class="hover:text-deep-navy" href="#">Financing Options</a></li><li class=""><a class="hover:text-deep-navy" href="#">Out of Town Patients</a></li><li class=""><a class="hover:text-deep-navy" href="#">Pre-Op Instructions</a></li><li class=""><a class="hover:text-deep-navy" href="#">Post-Op Care</a></li><li class=""><a class="hover:text-deep-navy" href="#">Patient Gallery</a></li></ul></div></div><div class="space-y-6"><div><h5 class="font-headline-md text-headline-md mb-4 text-on-surface">Practice</h5><ul class="space-y-3 font-body-md text-on-surface-variant"><li class=""><a class="hover:text-deep-navy" href="#">About Dr. Maris</a></li><li class=""><a class="hover:text-deep-navy" href="#">Meet the Staff</a></li><li class=""><a class="hover:text-deep-navy" href="#">Our Facility</a></li><li class=""><a class="hover:text-deep-navy" href="#">Careers</a></li><li class=""><a class="hover:text-deep-navy" href="#">Press &amp; Media</a></li></ul></div></div><div class="space-y-6"><div><h5 class="font-headline-md text-headline-md mb-4 text-on-surface">Visit</h5><p class="font-body-md text-on-surface-variant mb-4">450 N Bedford Dr,<br>Beverly Hills, CA 90210</p><div class="flex gap-4"><a class="text-deep-navy hover:opacity-70" href="#"><span class="material-symbols-outlined">share_reviews</span></a><a class="text-deep-navy hover:opacity-70" href="#"><span class="material-symbols-outlined">cloud_download</span></a></div></div></div></div><div class="mt-20 pt-10 border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center gap-6 font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant"><div class="flex gap-8"><a class="hover:text-deep-navy" href="#">Privacy Policy</a><a class="hover:text-deep-navy" href="#">Terms of Use</a><a class="hover:text-deep-navy" href="#">Medical Disclaimer</a><a class="hover:text-deep-navy" href="#">Accessibility</a></div><p class="">© 2024 Dr. Maris Aesthetic Surgery. All Rights Reserved.</p></div></div></footer>
+
+
+
+
+
+
+
+</body></html>

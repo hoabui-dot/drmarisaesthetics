@@ -1,0 +1,25 @@
+# Page Acceptance Checklist
+
+- [ ] Exact Stitch screen ID was retrieved before implementation.
+- [ ] Existing route/data flow was audited.
+- [ ] Every editor-managed value has a CMS mapping.
+- [ ] No accidental mock/sample content remains.
+- [ ] Exact available assets are used.
+- [ ] Desktop layout matches Stitch.
+- [ ] Mobile reflow is intentional and usable.
+- [ ] No horizontal overflow.
+- [ ] Header/footer/shared shell are consistent.
+- [ ] Links and CTAs work.
+- [ ] Forms/interactions work.
+- [ ] Keyboard navigation works.
+- [ ] Focus styles are visible.
+- [ ] Image alt strategy is correct.
+- [ ] Heading hierarchy is valid.
+- [ ] Metadata/canonical/schema are correct.
+- [ ] Draft preview works if applicable.
+- [ ] Publish/revalidation works.
+- [ ] Unpublish/delete behavior works where applicable.
+- [ ] Targeted lint passes.
+- [ ] Type-check passes.
+- [ ] Route smoke test passes.
+- [ ] Visual comparison was performed.

@@ -37,7 +37,7 @@ const nextConfig: NextConfig = {
               // Fonts
               `font-src 'self' https://fonts.gstatic.com`,
               // Images: self + Strapi uploads + data URIs + blob (Next.js image opt)
-              `img-src 'self' data: blob: ${strapiPublicUrl} https://*.trycloudflare.com https://*.unsplash.com https://*.s3.amazonaws.com https://api.dicebear.com https://cdn-icons-png.flaticon.com https://nhakhoaquoctesg.vn`,
+              `img-src 'self' data: blob: ${strapiPublicUrl} https://*.trycloudflare.com https://*.unsplash.com https://*.s3.amazonaws.com https://api.dicebear.com https://cdn-icons-png.flaticon.com https://nhakhoaquoctesg.vn https://lh3.googleusercontent.com`,
               // API connections: self + Strapi + Google reCAPTCHA
               `connect-src 'self' ${strapiPublicUrl} https://*.trycloudflare.com https://www.google.com`,
               // Media: self + Strapi
@@ -144,6 +144,10 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "nhakhoaquoctesg.vn",
+      },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
       },
     ],
   },

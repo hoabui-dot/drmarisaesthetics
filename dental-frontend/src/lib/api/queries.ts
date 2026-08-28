@@ -39,6 +39,8 @@ import type {
   HomepageConsultationComponent,
   HomepageCertificationComponent,
 } from "@/src/types/strapi";
+import type { OurTeamData } from "@/src/data/our-team";
+import type { ResultsData } from "@/src/data/results";
 
 // Helper to prevent JSON strings from being rendered as text descriptions
 function cleanDescription(desc: any): string | undefined {
@@ -203,6 +205,36 @@ export async function getServiceOptions(): Promise<Array<{ value: string; label:
       .map((service: any) => ({ value: service.slug, label: service.title }));
   } catch {
     return [];
+  }
+}
+
+/** Fetch the Strapi single type that powers the Stitch Our Team page. */
+export async function getOurTeam(isDraftMode: boolean = false): Promise<OurTeamData | null> {
+  try {
+    const response = await apiClient<any>("/api/our-team", {
+      params: { status: isDraftMode ? "draft" : "published" },
+      isDraftMode,
+      tags: ["our-team"],
+    });
+    return response?.data || null;
+  } catch (error) {
+    console.warn("[getOurTeam] Unable to fetch Our Team data", error);
+    return null;
+  }
+}
+
+/** Fetch the Strapi single type that powers the Stitch Results page. */
+export async function getResults(isDraftMode: boolean = false): Promise<ResultsData | null> {
+  try {
+    const response = await apiClient<any>("/api/results", {
+      params: { status: isDraftMode ? "draft" : "published" },
+      isDraftMode,
+      tags: ["results"],
+    });
+    return response?.data || null;
+  } catch (error) {
+    console.warn("[getResults] Unable to fetch Results data", error);
+    return null;
   }
 }
 
@@ -488,6 +520,7 @@ export async function getHomepage(isDraftMode: boolean = false): Promise<Homepag
       console.warn("[getHomepage] No homepage data found");
       return {
         title: "Homepage",
+        visualTheme: 'clinical-blue',
         metadataTitle: undefined,
         metadataDescription: undefined,
         metadataImage: undefined,
@@ -505,6 +538,7 @@ export async function getHomepage(isDraftMode: boolean = false): Promise<Homepag
       console.warn("[getHomepage] No homepage data in response");
       return {
         title: "Homepage",
+        visualTheme: 'clinical-blue',
         metadataTitle: undefined,
         metadataDescription: undefined,
         metadataImage: undefined,
@@ -1086,6 +1120,7 @@ export async function getHomepage(isDraftMode: boolean = false): Promise<Homepag
 
     return {
       title: data.title || "Homepage",
+      visualTheme: data.visual_theme || 'clinical-blue',
       metadataTitle: data.metadata_title,
       metadataDescription: data.metadata_description,
       metadataImage: data.metadata_image ? getMediaUrl(data.metadata_image) : undefined,

@@ -1,0 +1,22 @@
+{
+  "kind": "singleType",
+  "collectionName": "our_teams",
+  "info": {
+    "singularName": "our-team",
+    "pluralName": "our-teams",
+    "displayName": "Our Team",
+    "description": "Stitch Our Team editorial page"
+  },
+  "options": { "draftAndPublish": true },
+  "pluginOptions": {},
+  "attributes": {
+    "title": { "type": "string", "required": true, "default": "Our Team" },
+    "hero": { "type": "json" },
+    "surgicalCare": { "type": "json" },
+    "revision": { "type": "json" },
+    "internationalPatients": { "type": "json" },
+    "journey": { "type": "json" },
+    "consultation": { "type": "json" },
+    "faq": { "type": "json" }
+  }
+}

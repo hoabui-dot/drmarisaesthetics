@@ -5,7 +5,7 @@
     "singularName": "homepage",
     "pluralName": "homepages",
     "displayName": "Homepage",
-    "description": "Dynamic homepage with flexible layout blocks - 2026 Enhanced"
+    "description": "Dr. Maris Aesthetics editorial homepage"
   },
   "options": {
     "draftAndPublish": true
@@ -31,27 +31,24 @@
         "images"
       ]
     },
+    "visual_theme": {
+      "type": "enumeration",
+      "enum": ["clinical-blue"],
+      "default": "clinical-blue"
+    },
     "seo": {
       "type": "component",
       "repeatable": false,
       "component": "seo.page-seo"
     },
-    "layout": {
-      "type": "dynamiczone",
-      "components": [
-        "homepage.hero",
-        "homepage.blog-collection-section",
-        "homepage.services",
-        "homepage.doctor",
-        "homepage.results-section",
-        "homepage.testimonials-section",
-        "homepage.press-section",
-        "homepage.certification",
-        "homepage.proof-showcase",
-        "homepage.technology-feature",
-        "homepage.equipment-showcase",
-        "homepage.consultation"
-      ]
-    }
+    "hero_content": { "type": "json" },
+    "surgical_care_process": { "type": "json" },
+    "revision_surgery": { "type": "json" },
+    "doctor_assessment": { "type": "json" },
+    "hospital_based_surgery": { "type": "json" },
+    "international_patients": { "type": "json" },
+    "international_journey": { "type": "json" },
+    "consultation": { "type": "json" },
+    "frequently_asked_questions": { "type": "json" }
   }
 }
