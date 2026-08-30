@@ -134,7 +134,7 @@ export default function BlogCollectionSection({
                                 <svg className="w-14 h-14 text-primary-200" fill="none" stroke="currentColor" strokeWidth={1.2} viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 3c-2 0-4.5 1-4.5 4 0 1.5.5 3 .5 5s-1 5-1 6.5a1.5 1.5 0 003 0c0-1 .5-3 1.5-3s1.5 2 1.5 3a1.5 1.5 0 003 0c0-1.5-1-5-1-6.5s.5-3.5.5-5C16.5 4 14 3 12 3z" />
                                 </svg>
-                                <span className="text-xs font-medium text-primary-300 uppercase tracking-widest">Dental News</span>
+                                <span className="text-xs font-medium text-primary-300 uppercase tracking-widest">Aesthetic Surgery Insights</span>
                               </div>
                             );
                           })()}
@@ -206,4 +206,3 @@ export default function BlogCollectionSection({
     </section>
   );
 }
-

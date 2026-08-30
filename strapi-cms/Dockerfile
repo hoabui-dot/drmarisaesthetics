@@ -75,7 +75,7 @@ ENV PATH /opt/node_modules/.bin:$PATH
 ENTRYPOINT ["/usr/local/bin/strapi-entrypoint"]
 
 # Expose port
-EXPOSE 1337
+EXPOSE 22345
 
 # Start Strapi
 CMD ["npm", "run", "start"]

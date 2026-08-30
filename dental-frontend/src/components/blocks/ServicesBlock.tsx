@@ -37,8 +37,8 @@ export function ServicesBlock({ data }: { data: HomepageServicesBlock }) {
       <div className="mx-auto max-w-home-container px-4 sm:px-6 lg:px-8">
         <div className="flex items-end justify-between gap-6">
           <div>
-            <p className="eyebrow">{data.eyebrow || 'OUR DENTAL SERVICES'}</p>
-            <h2 id="home-services-heading" className="home-services-title mt-3 max-w-2xl font-bold leading-tight tracking-tight text-smilux-navy">{data.title || 'Comprehensive Care For Your Perfect Smile'}</h2>
+            <p className="eyebrow">{data.eyebrow || 'OUR SURGICAL SERVICES'}</p>
+            <h2 id="home-services-heading" className="home-services-title mt-3 max-w-2xl font-bold leading-tight tracking-tight text-smilux-navy">{data.title || 'Cosmetic Surgery Planned Around You'}</h2>
             {data.subtitle && <p className="home-content mt-3 max-w-2xl text-smilux-navy">{data.subtitle}</p>}
           </div>
           <Link href={data.viewMoreLink || '/services'} className="hidden shrink-0 items-center gap-2 text-xs font-bold uppercase tracking-wide text-smilux-badge sm:inline-flex">

@@ -2,7 +2,7 @@
  * Contact Information Constants
  *
  * Centralized clinic information used across the application
- * Note: Contact methods are now managed through Strapi CMS (see contact-methods collection)
+ * Shared brand and contact configuration for the surgeon-led practice.
  */
 
 // ==========================================
@@ -10,23 +10,23 @@
 // ==========================================
 
 export const CLINIC_INFO = {
-  name: "Saigon International Dental Clinic",
-  vietNamName: "Nha Khoa Quốc Tế Sài Gòn",
+  name: "DR. MARIS AESTHETICS",
+  vietNamName: "DR. MARIS AESTHETICS",
 
   // Dialable phone values (raw)
   phone1: "+84396877518",
   phone2: "+84902759406",
 
-  email: "sgnhakhoaquocte@gmail.com",
+  email: "concierge@drmarisaesthetics.com",
 
   // Addresses
-  address: "233 – 233A Nguyễn Trọng Tuyển, Phú Nhuận Ward, Ho Chi Minh City, Vietnam",
-  vietNamAddress: "233 – 233A Nguyễn Trọng Tuyển, Phường Phú Nhuận, TP. Hồ Chí Minh, Việt Nam",
+  address: "City International Hospital, Ho Chi Minh City, Vietnam",
+  vietNamAddress: "City International Hospital, Thành phố Hồ Chí Minh, Việt Nam",
 
   // Wait time & hours
   days: "Mon – Sun",
   hours: "8:00 AM – 7:00 PM",
-  website: "https://nhakhoaquoctesg.vn",
+  website: "https://drmarisaesthetics.com",
   coordinates: {
     lat: 10.775413839246676,
     lng: 106.67969229159051,

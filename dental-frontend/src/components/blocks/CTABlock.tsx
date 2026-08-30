@@ -88,7 +88,7 @@ export function CTABlock({ data }: CTABlockProps) {
                 {data.humanImage?.url && (
                   <Image
                     src={data.humanImage.url}
-                    alt={data.humanImage.alt || "Dental Professional"}
+                    alt={data.humanImage.alt || "Cosmetic surgery professional"}
                     fill
                     className="object-contain object-bottom transform"
                     sizes="(max-width: 1024px) 100vw, 50vw"
@@ -113,7 +113,7 @@ export function CTABlock({ data }: CTABlockProps) {
                 </h2>
                 <p className="text-base sm:text-lg md:text-xl text-[#4A6D95] font-normal leading-relaxed mx-auto lg:mx-0">
                   {data.subheading ||
-                    "Experience patient-centered care with our English-speaking experts. Your journey to a perfect smile starts with a single click."}
+                    "Begin with a private clinical assessment led by our surgeon and international patient team."}
                 </p>
               </div>
 

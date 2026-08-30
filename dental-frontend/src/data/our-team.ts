@@ -1,14 +1,29 @@
 export type OurTeamData = {
+  professionalImage?: string
+  hospitalImage?: string
+  internationalImage?: string
   hero: { eyebrow: string; title: string; paragraphs: string[]; image: string; imageAlt: string }
   surgicalCare: { title: string; heading: string; paragraphs: string[]; steps: string[]; image: string; imageAlt: string; experience: string; experienceLabel: string }
-  revision: { eyebrow: string; title: string; heading: string; description: string; calloutTitle: string; calloutDescription: string; concerns: Array<{ title: string; description: string }> }
+  revision: { eyebrow: string; title: string; heading: string; description: string; calloutTitle: string; calloutDescription: string; concerns: Array<{ title: string; description: string }>; image?: string; imageAlt?: string }
   internationalPatients: { eyebrow: string; title: string; description: string; steps: Array<{ number: string; title: string; description: string }> }
   journey: { eyebrow: string; title: string; description: string; steps: Array<{ number: string; title: string; description: string }> }
   consultation: { title: string; description: string; fields: { name: string; email: string; phone: string; interest: string; description: string }; interests: string[]; whatsappLabel: string }
   faq: { eyebrow: string; title: string; items: Array<{ question: string; answer: string }> }
 }
 
+// Stable, openly hosted editorial imagery replaces expired Stitch preview URLs.
+const reliableTeamImages = {
+  hero: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=1600&q=85',
+  clinic: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1800&q=85',
+  hospital: 'https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1800&q=85',
+  consultation: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1800&q=85',
+  revision: 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=1800&q=85',
+}
+
 export const ourTeamMockData: OurTeamData = {
+  professionalImage: 'https://lh3.googleusercontent.com/aida/AEtjO1XXbq0nEsgYvRypCDIPl7aYFjLX9jK_4XdlD_cfBculkZTdj5M2lnd9-W1CXBjRYBrDa1nXZqbd-iZUYb1Q7Vi1trslqcuOB4el34aOEFT6XGhIihyHsb_t3BGfWObKnT3UXlvYfzYkzOyHmJWHuhvCsUo0zZ-lbVEw_J-hkqA-JofgimRbz3kNUwXTYtwpLw-ZQi1AXtd-zJ2XICOQ2o-MAFpQA6KGdJnfwk7YcJcVasZJbRsdCYOAt_5n',
+  hospitalImage: 'https://lh3.googleusercontent.com/aida/AEtjO1WfULKLvdA7A_Rj8nBOX_Kn4LmHjU2-su8dEHYnuCNvWH8zGH2VDEOxtFMgWgeR6If4x7n5vdvVky1h0MeTtSV8PStHQs2fsgjwbQZmU1Q1PgUg6dJdriyJXI1p5Bn9OTSDBvBwctYIf2mrg6TFJIMeg3auoz96farOQg5_OfYLFN0fu-A5WYBZolrU8LjIPAQ5J6My4bPbRib4k0H1rV7OGK8kdzTOHwxqk7KYMM_icNzO6KJ7Pjb1nJ4r',
+  internationalImage: 'https://lh3.googleusercontent.com/aida/AEtjO1UyuNh8ose2rDhcXXEcTYoAdy4x4Ry3MwC3pg_wXtQn4c63X1-UQdzF14j9kip2XLiqMvjaesf48BCWcM1Dqw1Clq1SzLJU6HUXKTRwKYAjnv1O8y-ZZ8EgA2jGpludA-yFWXoN6vSOb7-Bpa1pIcKLnhasL4U6-8QBhJmhnlM0_pftftjplRV_VA8mM9Nx_z24iA7y5fVSFl6vtZ6rOO5GTlKvBKPeMWYartYc6acnLzIToaIIAzE2Qcg',
   hero: {
     eyebrow: 'HOSPITAL-BASED COSMETIC SURGERY · HO CHI MINH CITY',
     title: 'Plastic Surgery in Vietnam for International Patients',
@@ -16,7 +31,7 @@ export const ourTeamMockData: OurTeamData = {
       'Cosmetic surgery is a medical decision before it is an aesthetic one. At DR. MARIS AESTHETICS, your case is personally assessed and managed by Dr. Maris, with surgery performed at City International Hospital (CIH) in Ho Chi Minh City.',
       'From primary cosmetic procedures to complex revision surgery, every surgical plan begins with your anatomy, medical history, previous procedures and individual goals.',
     ],
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCTeb4K7icJOejOCNmhoM1L_97JimcI6Qtyot9YzMr51gD3_D096TT551datl7elzq4TGEQz-bEMf8KBAUaMGPSuRx-gXA7LQDE6AxQJeik8HAprXx5WLc0J8tMTKQRuN5tTfMsno6xTgx-ocAouFxiXWQRiCATFFvjwsLvpxprL1m7V9S-mUEXDc3L_aWSsmNthvE245NzLwUH0W-RYhnjXBO7LUB-OAqjk5SNLSZFeUzTH3V751D0',
+    image: 'https://lh3.googleusercontent.com/aida/AEtjO1VJgsEWyGmfDFSAH60TpejN1jfTPmYouVsZ6nzGtFO-mzWXDj4ML916mc1zchSnpvY7m88L1KOFHMClbU6PRUGQVk20RWEOObY-Azg1runApDtoRFTNBpZnQXPxQv8lEKzGLEtfQlKASUeJ1Z5sq0SVnz15YOQcXehydlpLHsYXKhD855cjiMUGm4GDxrrvSsczZAH4ZDei4aqQkEzjXiaIG6taexRlthR5fWzpWqGrG1XApRqhfUWwKchJ',
     imageAlt: 'Portrait of Dr. Maris in clinical setting',
   },
   surgicalCare: {
@@ -39,6 +54,8 @@ export const ourTeamMockData: OurTeamData = {
     description: 'Revision surgery requires a significantly higher level of expertise, precision, and understanding of altered anatomy. Dr. Maris specializes in complex reconstructive and secondary cosmetic procedures, providing honest assessments and realistic pathways to restoration.',
     calloutTitle: 'Can My Previous Cosmetic Surgery Be Corrected?',
     calloutDescription: 'The first step in any revision journey is determining if a secondary surgery is medically advisable and likely to achieve an improvement. We require detailed medical records, operative reports (if available), and high-resolution images to conduct a thorough preliminary assessment before you travel.',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAdQyeOuQas2HDVrVcVv0mWZjxK3NWf1aDA_QEng9nRjmoK2pYH1XjEumfk0988xq1TbuDpUye-R2kcmzj_NraeiFCSU7EiiUQcK5Wg-heWJarwStAYZNOfwi30sJc6xoXm5FXiLNhEnrR_0IJEJov2CIwFzzznKxxh2ptDNszjA5d22zwbu-pLLc42i4MJd3LN6i-eVWO1UU6D7Q1SWaZuz51f0dMV7ZyaKKxbyKgxHxbTC40sadlI8Q',
+    imageAlt: 'Specialist surgeon examining medical scans for revision planning',
     concerns: [
       { title: 'Capsular Contracture', description: 'Addressing hardened or distorted breast implants.' },
       { title: 'Asymmetry Correction', description: 'Balancing uneven results from previous breast, facial, or body procedures.' },
@@ -97,3 +114,11 @@ export const ourTeamMockData: OurTeamData = {
     ],
   },
 }
+
+// Keep every rendered media slot backed by a verified URL, including nested legacy data.
+ourTeamMockData.professionalImage = reliableTeamImages.clinic
+ourTeamMockData.hospitalImage = reliableTeamImages.hospital
+ourTeamMockData.internationalImage = reliableTeamImages.consultation
+ourTeamMockData.hero.image = reliableTeamImages.hero
+ourTeamMockData.surgicalCare.image = reliableTeamImages.consultation
+ourTeamMockData.revision.image = reliableTeamImages.revision

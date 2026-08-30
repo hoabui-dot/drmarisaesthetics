@@ -77,7 +77,7 @@ function HeroSection({ data, onBook }: { data: PageData["hero"]; onBook: () => v
   return (
     <>
     <section className="services-page-hero">
-      {data.image ? <Image src={data.image} alt="Modern Smilux dental treatment room" fill priority sizes="(max-width: 1023px) 100vw, 58vw" className="services-page-hero__image" /> : null}
+      {data.image ? <Image src={data.image} alt="Modern cosmetic surgery consultation room" fill priority sizes="(max-width: 1023px) 100vw, 58vw" className="services-page-hero__image" /> : null}
       <div className="services-page-hero__fade" aria-hidden="true" />
       <div className="services-page-hero__content">
         <p className="services-page-hero__eyebrow">{data.badge}</p>
@@ -102,7 +102,7 @@ function ServicesGridSection({ data, title }: { data: PageData["services"]; titl
       <div className="services-list-container">
         <div className="services-list-heading">
           <PerformanceAnimation preset="slide-up-subtle" whileInView={true}>
-            <p className="services-list-eyebrow">OUR DENTAL SERVICES</p>
+            <p className="services-list-eyebrow">OUR SURGICAL SERVICES</p>
             <h2 id="services-list-title">{title}</h2>
             <div className="services-list-divider" aria-hidden="true">
               <span />
@@ -185,13 +185,13 @@ function ServiceCard({ service }: { service: ServiceItem }) {
 function CTASection({ ctaData }: { ctaData?: any }) {
   const image = ctaData?.background_image;
   const imageUrl = resolveMediaUrl(image?.url);
-  const imageAlt = image?.alternativeText || image?.name || "Smilux Dental clinic reception";
+  const imageAlt = image?.alternativeText || image?.name || "DR. MARIS AESTHETICS clinical environment";
 
   return (
     <section className="services-consultation-cta" aria-labelledby="services-consultation-cta-title">
       <div className="services-consultation-cta__content">
         <PerformanceAnimation preset="slide-up-subtle" whileInView={true}>
-          <h2 id="services-consultation-cta-title">{ctaData?.heading || "Ready for Your Best Smile?"}</h2>
+          <h2 id="services-consultation-cta-title">{ctaData?.heading || "Ready to Begin Your Assessment?"}</h2>
           <p>{ctaData?.description || "Book a consultation with our experts today and take the first step toward a healthier, more confident you."}</p>
           <NavigationLink href={ctaData?.button_link || "/contact"} className="services-consultation-cta__button">
             <CalendarDays size={16} aria-hidden="true" />
@@ -266,8 +266,8 @@ export default function ServicesPageClient({ data, serviceDetails = [] }: { data
   const activeData: PageData = {
     hero: {
       badge: heroBlock.badge || "OUR SERVICES",
-      title: heroBlock.title || "Comprehensive Dental Care for Every Smile",
-      description: heroBlock.description || "From advanced treatments to cosmetic enhancements, Smilux Dental provides personalized care using modern technology and a patient-first approach.",
+      title: heroBlock.title || "Cosmetic Surgery Planned Around You",
+      description: heroBlock.description || "From facial procedures to complex revision surgery, DR. MARIS AESTHETICS provides personalized, hospital-based care with direct surgeon involvement.",
       image: (() => {
         const image = heroBlock.hero_image;
         const url = image?.formats?.large?.url || image?.formats?.medium?.url || image?.url;
@@ -291,8 +291,8 @@ export default function ServicesPageClient({ data, serviceDetails = [] }: { data
         })(),
       })),
     features: {
-      eyebrow: featuresBlock.eyebrow || "WHY CHOOSE SMILUX DENTAL?",
-      title: featuresBlock.title || "Trusted Care. Lasting Smiles.",
+      eyebrow: featuresBlock.eyebrow || "WHY CHOOSE DR. MARIS AESTHETICS?",
+      title: featuresBlock.title || "Precise Planning. Personal Care.",
       items: (featuresBlock.features || []).map((f: any) => ({
         icon: getIconForString(f.icon),
         title: f.title,

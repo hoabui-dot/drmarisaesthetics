@@ -2,6 +2,7 @@ import type { PageSeoInput } from "./seo-manager";
 import { publicUrl, resolveCanonicalUrl } from "./seo-manager";
 import { CLINIC_INFO } from "@/src/lib/constants/contact";
 import { apiClient } from "@/src/lib/api/client";
+import { BRAND_LOGO_PATH } from "@/src/lib/constants/brand";
 
 type PageType = "home" | "about" | "contact" | "services" | "service" | "page" | "blog" | "news";
 type JsonLdEntity = Record<string, unknown>;
@@ -12,8 +13,8 @@ export interface StructuredDataInput {
   contentId?: string | number | null; serviceType?: string | null; areaServed?: string | null; faqItems?: Array<{ question: string; answer: string }>;
 }
 interface StructuredDataSettings { structured_data_enabled?: boolean; structured_data_business_type?: string | null; }
-const ALLOWED_BUSINESS_TYPES = new Set(["Organization", "Dentist", "MedicalBusiness", "MedicalClinic", "ProfessionalService"]);
-const FALLBACK_SETTINGS = { structured_data_enabled: true, structured_data_business_type: "Dentist" } as const;
+const ALLOWED_BUSINESS_TYPES = new Set(["Organization", "MedicalBusiness", "MedicalClinic", "ProfessionalService"]);
+const FALLBACK_SETTINGS = { structured_data_enabled: true, structured_data_business_type: "MedicalBusiness" } as const;
 function siteOrigin(): string { return (process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:1234").replace(/\/$/, ""); }
 function cleanText(value: unknown): string | undefined { if (typeof value !== "string") return undefined; const text = value.replace(/\s+/g, " ").trim(); return text || undefined; }
 function isoDate(value?: string | null): string | undefined { if (!value) return undefined; const date = new Date(value); return Number.isNaN(date.getTime()) ? undefined : date.toISOString(); }
@@ -51,7 +52,7 @@ async function getSettings(): Promise<StructuredDataSettings> {
   } catch { return FALLBACK_SETTINGS; }
 }
 function buildOrganization(type: string): JsonLdEntity {
-  const origin = siteOrigin(); const logo = `${origin}/api/strapi-media/uploads/logo_37125485af.png`;
+  const origin = siteOrigin(); const logo = `${origin}${BRAND_LOGO_PATH}`;
   return compact({ "@type": type, "@id": `${origin}/#organization`, name: CLINIC_INFO.name, alternateName: CLINIC_INFO.vietNamName, url: `${origin}/`, logo, image: logo, telephone: CLINIC_INFO.phone1, email: CLINIC_INFO.email, address: { "@type": "PostalAddress", streetAddress: CLINIC_INFO.address, addressLocality: "Ho Chi Minh City", addressCountry: "VN" }, geo: { "@type": "GeoCoordinates", latitude: CLINIC_INFO.coordinates.lat, longitude: CLINIC_INFO.coordinates.lng }, openingHoursSpecification: { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], opens: "08:00", closes: "19:00" }, sameAs: [CLINIC_INFO.youtube, CLINIC_INFO.facebook, CLINIC_INFO.zalo, CLINIC_INFO.instagram] });
 }
 function buildBreadcrumbs(items: StructuredDataBreadcrumb[], currentCanonical: string): JsonLdEntity | undefined {

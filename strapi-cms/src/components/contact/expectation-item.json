@@ -1,0 +1,10 @@
+{
+  "collectionName": "components_contact_expectation_items",
+  "info": { "displayName": "Consultation Process Step" },
+  "options": {},
+  "attributes": {
+    "step": { "type": "string", "required": true },
+    "title": { "type": "string", "required": true },
+    "description": { "type": "text", "required": true }
+  }
+}

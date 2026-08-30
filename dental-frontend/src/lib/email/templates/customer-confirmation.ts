@@ -53,7 +53,7 @@ export function generateCustomerConfirmationEmail(
         ✅ Booking Received
       </h1>
       <p style="${emailStyles.headerSubtitle}">
-        Saigon International Dental Clinic
+        DR. MARIS AESTHETICS
       </p>
     </div>
 
@@ -66,7 +66,7 @@ export function generateCustomerConfirmationEmail(
           Dear <strong>${escapeHtml(data.fullName)}</strong>,
         </p>
         <p style="font-size: 15px; color: #475569; line-height: 1.7; margin: 0;">
-          Thank you for choosing <strong>Saigon International Dental Clinic</strong>. 
+          Thank you for choosing <strong>DR. MARIS AESTHETICS</strong>.
           We have received your booking request and our team will review it shortly.
         </p>
       </div>
@@ -330,7 +330,7 @@ export function generateCustomerConfirmationEmail(
     <!-- Footer -->
     <div style="${emailStyles.footer}">
       <p style="${emailStyles.footerText}">
-        <strong>Saigon International Dental Clinic</strong><br/>
+        <strong>DR. MARIS AESTHETICS</strong><br/>
         ${clinicAddress}<br/>
         Hotlines: <a href="${generateTelLink(clinicPhone1)}" style="${emailStyles.footerLink}">${formatPhoneNumber(clinicPhone1)}</a> | 
         <a href="${generateTelLink(clinicPhone2)}" style="${emailStyles.footerLink}">${formatPhoneNumber(clinicPhone2)}</a><br/>
@@ -358,5 +358,5 @@ export function generateCustomerConfirmationEmail(
 export function generateCustomerConfirmationSubject(
   _data: CustomerConfirmationData,
 ): string {
-  return "✅ Booking Received - Saigon International Dental Clinic";
+  return "✅ Consultation Case Received - DR. MARIS AESTHETICS";
 }

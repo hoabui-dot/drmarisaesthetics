@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebookF, faInstagram, faYoutube, faTiktok } from "@fortawesome/free-brands-svg-icons";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { SOCIAL_LINKS } from "@/src/lib/constants/social-links";
 import type { Footer as FooterData, SocialLink } from "@/src/types/strapi";
+import { BrandLogo } from "@/src/components/brand/BrandLogo";
 
 const socialIcons = { facebook: faFacebookF, instagram: faInstagram, youtube: faYoutube, tiktok: faTiktok } as const;
 
@@ -26,8 +26,8 @@ export function Footer({ footer }: FooterProps) {
     <div className="site-footer-inner">
       <div className="site-footer-main">
         <div className="site-footer-brand">
-          <div className="site-footer-wordmark">{footer?.logo ? <Image src={footer.logo.url} alt={footer.logo.alt || "Smilux Dental"} width={footer.logo.width || 150} height={footer.logo.height || 56} className="site-footer-logo" /> : <><strong>Smilux</strong><span>DENTAL CLINIC</span></>}</div>
-          <p>{footer?.description || "We're here to help you achieve a healthy, confident smile with advanced care you can trust."}</p>
+          <div className="site-footer-wordmark"><BrandLogo size="lg" imageClassName="site-footer-logo" /></div>
+          <p>{footer?.description || "Surgeon-led, hospital-based cosmetic surgery planned around each patient."}</p>
           <div className="site-footer-socials" aria-label="Social media links">{socialLinks.filter((social) => ["facebook", "instagram", "youtube", "tiktok"].includes(social.platform.toLowerCase())).map((social) => <a href={social.url} key={social.id} aria-label={social.platform} target="_blank" rel="noopener noreferrer"><SocialIcon platform={social.platform} /></a>)}</div>
         </div>
         {groups.slice(0, 3).map((group) => <nav className="site-footer-group" key={group.id} aria-label={group.heading}><h2>{group.heading}</h2><ul>{group.links.map((link) => <li key={link.id}><Link href={link.href}>{link.label}</Link></li>)}</ul></nav>)}
@@ -37,7 +37,7 @@ export function Footer({ footer }: FooterProps) {
           {contact?.email ? <a href={`mailto:${contact.email}`}><Mail size={17} aria-hidden="true" /><span>{contact.email}</span></a> : null}
         </div><Link className="site-footer-cta" href={footer?.appointmentHref || "/#home-booking"}>{footer?.appointmentLabel || "BOOK APPOINTMENT"}<ArrowRight size={17} aria-hidden="true" /></Link></div>
       </div>
-      <div className="site-footer-bottom"><p>{footer?.copyrightText || `© ${new Date().getFullYear()} Smilux Dental Clinic. All Rights Reserved.`}</p><p>{footer?.tagline || "Designed with care for your smile."}</p></div>
+      <div className="site-footer-bottom"><p>{footer?.copyrightText || `© ${new Date().getFullYear()} DR. MARIS AESTHETICS. ALL RIGHTS RESERVED.`}</p><p>{footer?.tagline || "Surgeon-led. Hospital-based. Individually planned."}</p></div>
     </div>
   </footer>;
 }

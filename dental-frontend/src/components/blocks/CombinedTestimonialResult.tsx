@@ -46,11 +46,11 @@ function Stars({ rating }: { rating: number }) {
 function BeforeAfterSlider({ item }: { item: Item }) {
   const before = (item.beforeImage && item.beforeImage.url) ? item.beforeImage : {
     url: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=800&auto=format&fit=crop&q=60',
-    alt: 'Before dental treatment'
+    alt: 'Before cosmetic surgery'
   }
   const after = (item.afterImage && item.afterImage.url) ? item.afterImage : {
     url: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=800&auto=format&fit=crop&q=60',
-    alt: 'After dental treatment'
+    alt: 'After cosmetic surgery'
   }
 
   const positionMV = useMotionValue(50)

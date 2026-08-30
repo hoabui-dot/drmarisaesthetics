@@ -21,7 +21,7 @@ const SMTP_CONFIG = {
 
 const EMAIL_FROM = process.env.EMAIL_FROM || "noreply@nhakhoaquoctesaigon.com";
 const EMAIL_FROM_NAME =
-  process.env.EMAIL_FROM_NAME || "Saigon International Dental Clinic";
+  process.env.EMAIL_FROM_NAME || "DR. MARIS AESTHETICS";
 const EMAIL_ENABLED = process.env.EMAIL_ENABLED !== "false"; // Default to true
 const EMAIL_RETRY_ATTEMPTS = parseInt(process.env.EMAIL_RETRY_ATTEMPTS || "3");
 const EMAIL_RETRY_DELAY = parseInt(process.env.EMAIL_RETRY_DELAY || "5000");

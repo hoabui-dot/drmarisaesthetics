@@ -1,0 +1,9 @@
+{
+  "collectionName": "components_contact_expectations",
+  "info": { "displayName": "Consultation Process", "description": "Three-step consultation journey" },
+  "options": {},
+  "attributes": {
+    "title": { "type": "string", "required": true, "default": "What to Expect" },
+    "items": { "type": "component", "repeatable": true, "component": "contact.expectation-item" }
+  }
+}

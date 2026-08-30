@@ -1,8 +1,7 @@
 'use client'
 
-import { useState } from 'react'
 import type { HomepageFAQBlock } from '@/src/types/strapi'
-import { SafetyAccordionItem } from '@/src/components/ui/safety-accordion'
+import { MotionFaqAccordion } from '@/src/components/ui/motion-faq-accordion'
 import { AnimatedSectionHeader } from '@/src/components/ui/AnimatedSectionHeader'
 import { cn } from '@/src/lib/utils'
 import { PerformanceAnimation } from '@/src/components/ui/PerformanceAnimation'
@@ -84,8 +83,6 @@ function QuestionIcon({ question }: { question: string }) {
 // ─── Section ──────────────────────────────────────────────────────────────────
 
 export function FAQSection({ data, maxWidthClassName = 'max-w-4xl' }: FAQSectionProps) {
-  const [openIndex, setOpenIndex] = useState<number | null>(0)
-
   if (!data.questions || data.questions.length === 0) return null
 
   return (
@@ -117,19 +114,12 @@ export function FAQSection({ data, maxWidthClassName = 'max-w-4xl' }: FAQSection
 
       {/* Accordion — constrained to maxWidthClassName (default max-w-4xl) */}
       <div className={cn("relative z-10 mx-auto px-4 sm:px-6 lg:px-8", maxWidthClassName)}>
-        <div className="flex flex-col gap-3">
-          {data.questions.map((item, index) => (
-            <SafetyAccordionItem
-              key={item.id}
-              title={item.question}
-              content={item.answer}
-              icon={<QuestionIcon question={item.question} />}
-              index={index}
-              isOpen={openIndex === index}
-              onToggle={() => setOpenIndex(openIndex === index ? null : index)}
-            />
-          ))}
-        </div>
+        <MotionFaqAccordion
+          items={data.questions.map((item) => ({ id: item.id, question: item.question, answer: item.answer }))}
+          className="faq-section__accordion flex flex-col gap-3"
+          defaultOpenIndex={0}
+          renderIcon={(item) => <QuestionIcon question={item.question} />}
+        />
       </div>
     </section>
   )

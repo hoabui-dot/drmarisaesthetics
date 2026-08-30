@@ -10,7 +10,7 @@ function ImageCard({ image, className = '', sizes }: { image?: Media; className?
 
 export function HomeProofSection({ data }: { data: HomepageProofShowcaseBlock }) {
   const benefits = data.benefits?.length ? data.benefits : [
-    { id: 1, label: 'Experienced & Certified Dental Experts' },
+    { id: 1, label: 'Experienced & Certified Surgical Team' },
     { id: 2, label: 'State-of-the-Art Technology & Equipment' },
     { id: 3, label: 'Painless & Patient-Friendly Procedures' },
     { id: 4, label: 'Personalized Treatment Plans' },
@@ -20,14 +20,14 @@ export function HomeProofSection({ data }: { data: HomepageProofShowcaseBlock })
     <section id="home-about" aria-labelledby="home-about-heading" className="bg-white py-16 text-smilux-navy sm:py-20 lg:py-28">
       <div className="mx-auto grid max-w-home-container gap-10 px-4 sm:px-6 lg:grid-cols-[.36fr_.64fr] lg:items-start lg:gap-12 lg:px-8">
         <div className="pt-1">
-          <p className="eyebrow text-smilux-navy">{data.eyebrow || 'ABOUT SMILUX DENTAL'}</p>
+          <p className="eyebrow text-smilux-navy">{data.eyebrow || 'ABOUT DR. MARIS AESTHETICS'}</p>
           <h2 id="home-about-heading" className="home-about-title mt-4 font-bold leading-tight tracking-tight text-smilux-navy">
             <span className="block">{data.headingLine1 || 'Trusted Care.'}</span>
             <span className="block">{data.headingLine2 || 'Lasting Smiles.'}</span>
           </h2>
           <div className="mt-5 h-1 w-12 rounded-full bg-smilux-primary" aria-hidden="true" />
           <p className="home-content mt-6 max-w-lg text-smilux-navy">{data.description}</p>
-          <ul className="mt-7 space-y-3" aria-label="Smilux Dental benefits">
+          <ul className="mt-7 space-y-3" aria-label="DR. MARIS AESTHETICS benefits">
             {benefits.slice(0, 4).map((benefit) => <li key={benefit.id} className="home-content flex items-center gap-3 text-smilux-navy"><CheckCircle2 className="h-5 w-5 shrink-0 text-smilux-primary" aria-hidden="true" /><span>{benefit.label}</span></li>)}
           </ul>
           <Link href={data.ctaLink || '/about-us'} className="mt-8 inline-flex items-center gap-3 rounded-md bg-smilux-primary px-5 py-3 text-xs font-semibold uppercase tracking-wide text-white transition-colors hover:bg-smilux-primary-hover focus-ring">

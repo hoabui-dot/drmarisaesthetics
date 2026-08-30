@@ -226,7 +226,7 @@ export async function getOurTeam(isDraftMode: boolean = false): Promise<OurTeamD
 /** Fetch the Strapi single type that powers the Stitch Results page. */
 export async function getResults(isDraftMode: boolean = false): Promise<ResultsData | null> {
   try {
-    const response = await apiClient<any>("/api/results", {
+    const response = await apiClient<any>("/api/result", {
       params: { status: isDraftMode ? "draft" : "published" },
       isDraftMode,
       tags: ["results"],
@@ -1480,6 +1480,8 @@ export async function getContactPage(isDraftMode: boolean = false): Promise<Cont
         "populate[layout][on][contact.hero][populate][contact_cards]": "*",
         "populate[layout][on][contact.consultation-section][populate]": "*",
         "populate[layout][on][contact.map-section][populate]": "*",
+        "populate[layout][on][contact.expectation][populate]": "*",
+        "populate[layout][on][contact.faq][populate]": "*",
       },
       isDraftMode,
       tags: ["contact-page"],
@@ -1544,7 +1546,7 @@ export async function getContactPage(isDraftMode: boolean = false): Promise<Cont
             icon: benefit.icon || 'location',
             text: benefit.text || '',
           })),
-          clinicName: block.clinic_name || "Smilux Dental Clinic",
+          clinicName: block.clinic_name || "DR. MARIS AESTHETICS",
           mapAddress: block.map_address || block.address || "",
           map: {
             lat: Number(block.map_latitude),
@@ -1553,6 +1555,16 @@ export async function getContactPage(isDraftMode: boolean = false): Promise<Cont
           },
           directionsLabel: block.directions_label || "CHỈ ĐƯỜNG TRÊN GOOGLE MAPS",
           directionsUrl: block.directions_url || '',
+        };
+      } else if (type === "contact.expectation") {
+        blockData = {
+          title: block.title || 'What to Expect',
+          items: (block.items || []).map((item: any) => ({ step: item.step || '', title: item.title || '', description: item.description || '' })),
+        };
+      } else if (type === "contact.faq") {
+        blockData = {
+          title: block.title || 'Frequently Asked Questions',
+          questions: (block.questions || []).map((item: any) => ({ question: item.question || '', answer: item.answer || '' })),
         };
       }
 
@@ -1735,13 +1747,13 @@ export async function getAboutPage(isDraftMode: boolean = false): Promise<any> {
     const booking = data.booking
       ? {
         heading: data.booking.heading || "Book a Consultation",
-        clinicName: data.booking.clinic_name || "Smilux Dental Clinic",
+        clinicName: data.booking.clinic_name || "DR. MARIS AESTHETICS",
         address: cleanDescription(data.booking.address) || "",
         phone: data.booking.phone || "",
         email: data.booking.email || "",
         openingHours: cleanDescription(data.booking.opening_hours) || "",
         clinicImage: data.booking.clinic_image
-          ? { url: getMediaUrl(data.booking.clinic_image), alt: getMediaAlt(data.booking.clinic_image, "Smilux Dental Clinic reception") }
+          ? { url: getMediaUrl(data.booking.clinic_image), alt: getMediaAlt(data.booking.clinic_image, "DR. MARIS AESTHETICS reception") }
           : undefined,
       }
       : null;

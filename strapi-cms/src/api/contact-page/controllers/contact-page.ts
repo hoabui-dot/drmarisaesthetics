@@ -33,6 +33,16 @@ export default factories.createCoreController(
                 benefits: { populate: "*" },
               },
             },
+            "contact.expectation": {
+              populate: {
+                items: { populate: "*" },
+              },
+            },
+            "contact.faq": {
+              populate: {
+                questions: { populate: "*" },
+              },
+            },
           },
         },
       };

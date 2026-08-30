@@ -1,8 +1,4 @@
-import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import { draftMode } from 'next/headers'
-import { getAboutPage } from '@/src/lib/api/queries'
-import { PreviewBanner } from '@/src/components/PreviewBanner'
 import { buildSeoMetadata } from '@/src/lib/seo/seo-manager'
 import { resolveStructuredData, StructuredDataScript } from '@/src/lib/seo/structured-data'
 import { StitchAboutUs } from '@/src/components/StitchAestheticPage'
@@ -15,37 +11,26 @@ import { StitchAboutUs } from '@/src/components/StitchAestheticPage'
  */
 
 export async function generateMetadata(): Promise<Metadata> {
-    const title = 'About Us - Saigon International Dental Clinic'
+    const title = 'About Us - DR. MARIS AESTHETICS'
     const description =
-        'Learn about Saigon International Dental Clinic — 15+ years of trusted dental care for international patients in Vietnam. Transparent pricing, elite specialists, guaranteed results.'
+        'Learn about DR. MARIS AESTHETICS and our surgeon-led, hospital-based approach to cosmetic surgery in Vietnam.'
 
-    const content = await getAboutPage()
-    return buildSeoMetadata({ path: '/about-us', pageSeo: content?.seo, title, description })
+    return buildSeoMetadata({ path: '/about-us', title, description })
 }
 
 export default async function AboutUsPage() {
     try {
-        const { isEnabled: isDraftMode } = await draftMode()
-        const content = await getAboutPage(isDraftMode)
-
-        if (!content) {
-            notFound()
-        }
-
-        // Ensure content is an object, not a string
-        const parsedContent = typeof content === 'string' ? JSON.parse(content) : content
         const structuredData = await resolveStructuredData({
-            pageType: 'about', path: '/about-us', pageSeo: parsedContent?.seo,
-            title: 'About Us - Saigon International Dental Clinic',
-            description: 'Learn about Saigon International Dental Clinic — 15+ years of trusted dental care for international patients in Vietnam.',
+            pageType: 'about', path: '/about-us',
+            title: 'About Us - DR. MARIS AESTHETICS',
+            description: 'Learn about DR. MARIS AESTHETICS and our surgeon-led, hospital-based approach to cosmetic surgery in Vietnam.',
             breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'About Us', path: '/about-us' }],
         })
 
         return (
             <>
                 <StructuredDataScript data={structuredData} />
-                {isDraftMode && <PreviewBanner />}
-                <main className={isDraftMode ? 'min-h-screen bg-background pt-20' : 'min-h-screen bg-background'}>
+                <main className="min-h-screen bg-background">
                     <StitchAboutUs />
                 </main>
             </>

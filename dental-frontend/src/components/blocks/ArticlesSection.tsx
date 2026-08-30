@@ -42,7 +42,7 @@ export function ArticlesSection({ data }: { data: ArticlesSectionData }) {
     <section id="home-articles" className="articles-section">
       <div className="articles-container">
         <header className="articles-header">
-          <p className="eyebrow">DENTAL INSIGHTS</p>
+          <p className="eyebrow">SURGICAL INSIGHTS</p>
           <h2>{data.title || 'Featured Articles'}</h2>
           <span className="articles-heading-line" aria-hidden="true" />
         </header>

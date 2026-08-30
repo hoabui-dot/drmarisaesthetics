@@ -1,9 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import type { NavChild } from '@/src/types/strapi';
 
 /**
@@ -27,6 +27,7 @@ export function NavDropdown({ label, href, children, isActive: propIsActive, onN
   const router = useRouter();
   const [isOptimisticActive, setIsOptimisticActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   
   // Determine active states with hierarchy: child overrides parent
   // Check if we're on the exact parent page
@@ -81,6 +82,7 @@ export function NavDropdown({ label, href, children, isActive: propIsActive, onN
   };
 
   const handleMouseEnter = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
     setIsOpen(true);
     // Preload parent route
     router.prefetch(href);
@@ -88,11 +90,25 @@ export function NavDropdown({ label, href, children, isActive: propIsActive, onN
     children.forEach(child => router.prefetch(child.href));
   };
 
+  const handleMouseLeave = () => {
+    closeTimer.current = setTimeout(() => setIsOpen(false), 90);
+  };
+
+  const handleBlur = (event: React.FocusEvent<HTMLDivElement>) => {
+    if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setIsOpen(false);
+  };
+
+  useEffect(() => () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+  }, []);
+
   return (
     <div
       className="relative group"
       onMouseEnter={handleMouseEnter}
-      onMouseLeave={() => setIsOpen(false)}
+      onMouseLeave={handleMouseLeave}
+      onFocus={() => setIsOpen(true)}
+      onBlur={handleBlur}
     >
       {/* Parent Link */}
       <Link
@@ -103,12 +119,19 @@ export function NavDropdown({ label, href, children, isActive: propIsActive, onN
           relative font-medium transition-colors flex items-center gap-1
           px-3 py-2 rounded-lg
           ${isActive 
-            ? 'text-primary-600' 
-            : 'text-foreground-secondary hover:text-primary-500'
+            ? 'text-primary-600 hover:text-white' 
+            : 'text-foreground-secondary hover:text-white'
           }
           ${isLoading ? 'animate-pulse' : ''}
         `.trim()}
       >
+        <motion.span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-0 rounded-lg bg-smilux-primary opacity-0 scale-[0.92] transition-opacity"
+          initial={{ opacity: 0, scale: 0.92 }}
+          whileHover={{ opacity: 1, scale: 1 }}
+          transition={{ type: 'spring', stiffness: 520, damping: 34, mass: 0.6 }}
+        />
         <span className="relative z-10">{label}</span>
         <motion.svg
           animate={{ rotate: isOpen ? 180 : 0 }}
@@ -127,23 +150,11 @@ export function NavDropdown({ label, href, children, isActive: propIsActive, onN
         </motion.svg>
         
         {/* Smooth sliding underline animation - ONLY show when on parent page, NOT child pages */}
-        <motion.span
-          className={`
-            absolute bottom-1 left-3 right-3 h-0.5 bg-gradient-to-r from-primary-400 to-primary-600
-            ${isLoading ? 'shadow-lg shadow-primary-500/50' : ''}
-          `}
-          initial={false}
-          animate={{ 
-            scaleX: showParentUnderline ? 1 : 0,
-            opacity: isLoading ? [1, 0.7, 1] : 1
-          }}
-          whileHover={{ scaleX: isChildActive ? 0 : 1 }}
-          transition={{ 
-            scaleX: { duration: 0.25, ease: 'easeOut' },
-            opacity: { duration: 0.5, repeat: isLoading ? Infinity : 0 }
-          }}
-          style={{ transformOrigin: 'left' }}
-        />
+        {(showParentUnderline || isOpen) && <motion.span
+          layoutId="global-header-nav-indicator"
+          className={`absolute bottom-1 left-3 right-3 h-0.5 bg-gradient-to-r from-primary-400 to-primary-600 ${isLoading ? 'shadow-lg shadow-primary-500/50' : ''}`}
+          transition={{ type: 'spring', stiffness: 520, damping: 36, mass: 0.7 }}
+        />}
         
         {/* Loading glow effect */}
         {isLoading && (
@@ -157,21 +168,25 @@ export function NavDropdown({ label, href, children, isActive: propIsActive, onN
       </Link>
 
       {/* Dropdown Menu */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {isOpen && children.length > 0 && (
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className="absolute top-full left-0 pt-2 w-max"
+            initial="closed"
+            animate="open"
+            exit="closed"
+            variants={{
+              closed: { opacity: 0, y: -10, scale: 0.98, transition: { duration: 0.16, ease: 'easeIn' } },
+              open: { opacity: 1, y: 0, scale: 1, transition: { type: 'spring', stiffness: 420, damping: 32, mass: 0.8, staggerChildren: 0.045, delayChildren: 0.03 } },
+            }}
+            className="absolute top-full left-1/2 z-50 w-[min(42rem,calc(100vw-2rem))] -translate-x-1/2 pt-3"
           >
             {/* Invisible bridge to cover the gap */}
-            <div className="absolute top-0 left-0 right-0 h-2" />
+            <div className="absolute inset-x-0 top-0 h-3" aria-hidden="true" />
             
             {/* Actual dropdown content */}
-            <div className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-primary-50 py-3 overflow-hidden">
-              {children.map((child, index) => {
+            <div className="overflow-hidden rounded-2xl border border-primary-100 bg-white/95 p-2 shadow-2xl backdrop-blur-xl">
+              <div className={`grid gap-1 ${children.length > 3 ? 'grid-cols-2' : 'grid-cols-1'}`}>
+              {children.map((child) => {
                 const isChildActive = child.href === '/' 
                   ? pathname === '/' 
                   : pathname.startsWith(child.href);
@@ -179,24 +194,27 @@ export function NavDropdown({ label, href, children, isActive: propIsActive, onN
                 return (
                   <motion.div
                     key={child.id}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
+                    variants={{
+                      closed: { opacity: 0, y: -6 },
+                      open: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 500, damping: 34 } },
+                    }}
+                    whileHover={{ y: -2 }}
+                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                   >
                     <Link
                       href={child.href}
                       onClick={() => handleChildClick(child.href)}
                       className={`
-                        block px-5 py-3 text-lg whitespace-nowrap transition-all duration-200
+                        block rounded-xl px-4 py-3 text-base whitespace-nowrap transition-colors duration-200
                         relative overflow-hidden group/item
                         ${isChildActive
-                          ? 'text-primary-600 bg-primary-50 font-medium'
-                          : 'text-foreground-secondary hover:text-primary-500'
+                          ? 'text-white bg-smilux-primary font-medium'
+                          : 'text-foreground-secondary hover:text-white'
                         }
                       `.trim()}
                     >
                       {/* Hover background effect */}
-                      <span className="absolute inset-0 bg-gradient-to-r from-primary-50 to-primary-100 opacity-0 group-hover/item:opacity-100 transition-opacity duration-200" />
+                      <span className="pointer-events-none absolute inset-0 rounded-xl bg-smilux-primary opacity-0 transition-opacity duration-200 group-hover/item:opacity-100" />
                       
                       <span className="relative z-10 flex items-center gap-2">
                         {isChildActive && (
@@ -212,6 +230,7 @@ export function NavDropdown({ label, href, children, isActive: propIsActive, onN
                   </motion.div>
                 );
               })}
+              </div>
             </div>
           </motion.div>
         )}

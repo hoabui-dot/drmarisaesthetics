@@ -4,20 +4,20 @@ export const EN_MAP = {
   'Đọc thêm': 'Read More',
   'Tìm kiếm bài viết...': 'Search articles...',
   'Không tìm thấy bài viết nào.': 'No articles found.',
-  'Niềng răng': 'Braces',
-  'Tẩy trắng': 'Whitening',
-  'Răng sứ': 'Porcelain Teeth',
-  'Chăm sóc răng': 'Oral Care',
-  'Implant': 'Implant',
+  'Phẫu thuật chỉnh sửa': 'Revision Surgery',
+  'Tạo hình khuôn mặt': 'Facial Contouring',
+  'Nâng mũi': 'Rhinoplasty',
+  'Chăm sóc hậu phẫu': 'Postoperative Care',
+  'Phẫu thuật thẩm mỹ': 'Cosmetic Surgery',
 } as Record<string, string>;
 
 export const STATIC_CATEGORIES = [
   { id: 'all', label: 'All Articles', icon: 'grid' },
-  { id: 'implant-dentistry', label: 'Implant Dentistry', icon: 'implant' },
-  { id: 'cosmetic-dentistry', label: 'Cosmetic Dentistry', icon: 'sparkle' },
-  { id: 'orthodontics', label: 'Orthodontics', icon: 'braces' },
-  { id: 'preventive-care', label: 'Preventive Care', icon: 'shield' },
-  { id: 'dental-technology', label: 'Dental Technology', icon: 'technology' },
+  { id: 'revision-surgery', label: 'Revision Surgery', icon: 'shield' },
+  { id: 'facial-contouring', label: 'Facial Contouring', icon: 'sparkle' },
+  { id: 'rhinoplasty', label: 'Rhinoplasty', icon: 'book' },
+  { id: 'postoperative-care', label: 'Postoperative Care', icon: 'shield' },
+  { id: 'cosmetic-surgery', label: 'Cosmetic Surgery', icon: 'technology' },
   { id: 'general-knowledge', label: 'General Knowledge', icon: 'book' },
 ];
 
@@ -25,11 +25,11 @@ export const STATIC_CATEGORIES = [
 // mapped to the English navigation IDs so the menu remains stable while
 // editors can continue using the existing tags.
 export const BLOG_CATEGORY_TAGS: Record<string, string[]> = {
-  'implant-dentistry': ['implant', 'implants', 'implant dentistry'],
-  'cosmetic-dentistry': ['cosmetic', 'whitening', 'tẩy trắng', 'porcelain', 'răng sứ', 'veneers', 'cosmetic dentistry'],
-  orthodontics: ['orthodontics', 'braces', 'invisalign', 'niềng răng'],
-  'preventive-care': ['preventive', 'oral care', 'chăm sóc răng', 'dental care'],
-  'dental-technology': ['technology', 'digital dentistry', 'dental technology'],
+  'revision-surgery': ['revision', 'revision surgery', 'phẫu thuật chỉnh sửa'],
+  'facial-contouring': ['facial', 'facial contouring', 'tạo hình khuôn mặt'],
+  rhinoplasty: ['rhinoplasty', 'nâng mũi'],
+  'postoperative-care': ['postoperative', 'aftercare', 'chăm sóc hậu phẫu'],
+  'cosmetic-surgery': ['cosmetic', 'cosmetic surgery', 'phẫu thuật thẩm mỹ'],
   'general-knowledge': ['general', 'knowledge', 'general knowledge'],
 };
 

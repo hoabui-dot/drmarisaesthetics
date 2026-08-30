@@ -143,7 +143,7 @@ const defaultContactItems: ContactItem[] = [
 export const VisitClinicSection = ({
   id,
   badge,
-  title = "Book your appointment at SG International Dental Clinic",
+  title = "Begin your consultation with DR. MARIS AESTHETICS",
   subtitle,
   ctaLabel = "Book a Free Consultation",
   contactItems: _contactItems = defaultContactItems,
@@ -349,7 +349,7 @@ export const VisitClinicSection = ({
 
             <p className="text-sm sm:text-base md:text-lg text-foreground-secondary/70 font-medium px-1 flex items-start gap-3">
               <span className="w-1.5 h-1.5 rounded-full bg-primary-400 shrink-0 mt-[0.6em]" />
-              Free dental check-up and consultation for all new international patients
+              Private clinical assessment and international patient support
             </p>
           </motion.div>
         </motion.div>

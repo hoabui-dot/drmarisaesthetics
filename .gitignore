@@ -52,7 +52,7 @@ yarn-error.log*
 # Runtime data
 pids
 logs
-results
+/results/
 lib-cov
 lcov.info
 .node_history
@@ -65,6 +65,7 @@ lcov.info
 /.next/
 /out/
 /build
+uploads
 /dental-frontend/.next/
 /dental-frontend/.next
 /dental-frontend/out/

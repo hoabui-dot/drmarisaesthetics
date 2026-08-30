@@ -128,16 +128,16 @@ export async function sendTestEmail(to: string): Promise<boolean> {
   try {
     const emailOptions: EmailOptions = {
       to,
-      subject: "Test Email - Saigon International Dental Clinic",
+      subject: "Test Email - DR. MARIS AESTHETICS",
       html: `
         <div style="font-family: Arial, sans-serif; padding: 20px;">
           <h1 style="color: #2563eb;">Email Configuration Test</h1>
-          <p>This is a test email from Saigon International Dental Clinic.</p>
+          <p>This is a test email from DR. MARIS AESTHETICS.</p>
           <p>If you received this email, your email configuration is working correctly!</p>
           <hr style="margin: 20px 0; border: none; border-top: 1px solid #e2e8f0;" />
           <p style="color: #64748b; font-size: 13px;">
             Sent at: ${new Date().toISOString()}<br/>
-            From: Saigon International Dental Clinic Email System
+            From: DR. MARIS AESTHETICS Email System
           </p>
         </div>
       `,

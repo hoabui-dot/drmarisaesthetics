@@ -63,7 +63,7 @@ export default {
           "api::navigation.navigation.find",
           "api::homepage.homepage.find",
           "api::our-team.our-team.find",
-          "api::results.results.find",
+          "api::result.result.find",
           "api::footer.footer.find",
           "api::seo-manager-settings.seo-manager-settings.find",
           "api::canonical-rule.canonical-rule.find",
@@ -200,14 +200,14 @@ export default {
       } catch (seedError: any) {
         console.warn(`[BOOTSTRAP] Results seed file unavailable: ${seedError.message}`);
       }
-      const resultsPage = await strapi.documents("api::results.results").findMany({ limit: 1, status: "draft" });
+      const resultsPage = await strapi.documents("api::result.result").findMany({ limit: 1, status: "draft" });
       if (resultsPage.length > 0) {
-        await strapi.documents("api::results.results").update({ documentId: resultsPage[0].documentId, data: resultsSeed });
-        await strapi.documents("api::results.results").publish({ documentId: resultsPage[0].documentId });
+        await strapi.documents("api::result.result").update({ documentId: resultsPage[0].documentId, data: resultsSeed });
+        await strapi.documents("api::result.result").publish({ documentId: resultsPage[0].documentId });
         console.log("[BOOTSTRAP] Results page seeded and published.");
       } else {
-        const createdResults = await strapi.documents("api::results.results").create({ data: resultsSeed });
-        await strapi.documents("api::results.results").publish({ documentId: createdResults.documentId });
+        const createdResults = await strapi.documents("api::result.result").create({ data: resultsSeed });
+        await strapi.documents("api::result.result").publish({ documentId: createdResults.documentId });
         console.log("[BOOTSTRAP] Results page created, seeded and published.");
       }
 

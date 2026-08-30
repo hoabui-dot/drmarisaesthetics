@@ -15,7 +15,7 @@ interface StrapiResponse { data: BlogPost[]; meta?: any; }
 interface SidebarService { title: string; subtitle: string; imageUrl: string; href: string; }
 // Next Image fetches remote sources from inside the frontend container. Use the
 // Docker-internal Strapi URL there; browser-rendered Markdown uses the proxy.
-const STRAPI_INTERNAL_URL = (process.env.STRAPI_URL || 'http://smilux-strapi:1337').replace(/\/$/, '');
+const STRAPI_INTERNAL_URL = (process.env.STRAPI_URL || 'http://smilux-strapi:22345').replace(/\/$/, '');
 const fallbackImage = 'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?auto=format&fit=crop&q=85&w=1400';
 
 function mediaUrl(media: any) {

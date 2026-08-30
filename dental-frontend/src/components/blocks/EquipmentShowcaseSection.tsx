@@ -8,7 +8,7 @@ const DEFAULT_DEVICES = [
   { title: '3D Cone Beam CT', description: 'Accurate 3D imaging for precise diagnosis' },
   { title: 'Intraoral Scanner', description: 'Digital impressions for better comfort' },
   { title: 'CAD/CAM Technology', description: 'Precision smile design and restorations' },
-  { title: 'Laser Dental Care', description: 'Treatments with advanced laser technology' },
+  { title: 'Advanced Surgical Care', description: 'Hospital-based procedures supported by precise clinical planning' },
 ]
 
 export function EquipmentShowcaseSection({ data }: { data: HomepageEquipmentShowcaseBlock }) {
@@ -73,8 +73,8 @@ export function EquipmentShowcaseSection({ data }: { data: HomepageEquipmentShow
   return (
     <section id="home-devices" className="device-slider-section" aria-labelledby="home-devices-heading">
       <div className="mx-auto max-w-home-container px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
-        <div className="sr-only"><h2 id="home-devices-heading">{data.title || 'Advanced dental devices'}</h2></div>
-        <div ref={viewportRef} className="device-slider-viewport" aria-label="Dental devices">
+        <div className="sr-only"><h2 id="home-devices-heading">{data.title || 'Advanced surgical technology'}</h2></div>
+        <div ref={viewportRef} className="device-slider-viewport" aria-label="Surgical technology">
           <div ref={trackRef} className="device-slider-track">
             <div ref={firstSetRef} className="device-slider-set">{items.map(renderCard)}</div>
             <div className="device-slider-set" aria-hidden="true">{items.map(renderCard)}</div>

@@ -1,0 +1,647 @@
+<!DOCTYPE html><html lang="en" style=""><head></head><body class="bg-background font-body-md text-on-surface selection:bg-secondary-fixed selection:text-on-secondary-fixed"><svg class="inline-defs-container" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"></svg><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}.mega-menu{display:none;position:absolute;top:100%;left:0;width:100%;background-color:rgba(255,255,255,0.98);backdrop-blur:xl;border-bottom:1px solid rgba(196,198,210,0.2);}.group:hover .mega-menu{display:block;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "on-secondary-container": "#003e73",
+                "clinical-surface": "#F8FAFC",
+                "primary-container": "#002d72",
+                "on-error": "#ffffff",
+                "on-tertiary": "#ffffff",
+                "inverse-surface": "#303031",
+                "outline-variant": "#c4c6d2",
+                "primary-fixed": "#dae2ff",
+                "on-surface": "#1b1b1c",
+                "secondary-fixed": "#d4e3ff",
+                "outline": "#747782",
+                "surface-tint": "#3d5ca2",
+                "secondary": "#0060ac",
+                "primary-fixed-dim": "#b1c5ff",
+                "surface-variant": "#e5e2e3",
+                "on-primary-container": "#7a97e2",
+                "on-tertiary-container": "#979a9c",
+                "surface-dim": "#dcd9da",
+                "tertiary-fixed": "#e0e3e5",
+                "on-secondary-fixed-variant": "#004883",
+                "on-secondary-fixed": "#001c39",
+                "deep-navy": "#002D72",
+                "on-error-container": "#93000a",
+                "surface": "#ffffff",
+                "surface-container-lowest": "#ffffff",
+                "tertiary": "#1a1d1f",
+                "secondary-fixed-dim": "#a4c9ff",
+                "tertiary-container": "#2e3234",
+                "on-primary": "#ffffff",
+                "tertiary-fixed-dim": "#c4c7c9",
+                "error-container": "#ffdad6",
+                "secondary-container": "#68abff",
+                "surface-container-low": "#f8fafc",
+                "medical-white": "#FFFFFF",
+                "inverse-primary": "#b1c5ff",
+                "on-secondary": "#ffffff",
+                "on-surface-variant": "#444651",
+                "background": "#ffffff",
+                "surface-container": "#f0edee",
+                "glassy-blue": "#4A90E2",
+                "error": "#ba1a1a",
+                "on-background": "#1b1b1c",
+                "inverse-on-surface": "#f3f0f1",
+                "surface-container-high": "#eae7e8",
+                "on-primary-fixed-variant": "#224489",
+                "surface-container-highest": "#e5e2e3",
+                "primary": "#002D72",
+                "on-tertiary-fixed": "#191c1e",
+                "on-tertiary-fixed-variant": "#444749",
+                "on-primary-fixed": "#001946",
+                "surface-bright": "#ffffff",
+                "slate-gray": "#71717A"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.5rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "margin-mobile": "20px",
+                "margin-desktop": "64px",
+                "section-padding": "96px",
+                "section-padding-desktop": "96px",
+                "section-padding-mobile": "64px",
+                "gutter": "24px",
+                "container-max": "1280px",
+                "unit": "4px"
+        },
+        "fontFamily": {
+                "label-md": [
+                        "Plus Jakarta Sans"
+                ],
+                "headline-md": [
+                        "Bodoni Moda"
+                ],
+                "body-lg": [
+                        "Plus Jakarta Sans"
+                ],
+                "headline-lg-mobile": [
+                        "Bodoni Moda"
+                ],
+                "body-md": [
+                        "Plus Jakarta Sans"
+                ],
+                "display-lg": [
+                        "Bodoni Moda"
+                ],
+                "label-sm": [
+                        "Plus Jakarta Sans"
+                ],
+                "headline-lg": [
+                        "Bodoni Moda"
+                ]
+        },
+        "fontSize": {
+                "label-md": [
+                        "14px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "0.08em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "headline-md": [
+                        "32px",
+                        {
+                                "lineHeight": "1.3",
+                                "fontWeight": "500"
+                        }
+                ],
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-lg-mobile": [
+                        "32px",
+                        {
+                                "lineHeight": "1.2",
+                                "fontWeight": "500"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ],
+                "display-lg": [
+                        "64px",
+                        {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "label-sm": [
+                        "12px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "500"
+                        }
+                ],
+                "headline-lg": [
+                        "48px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "500"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@100..900&amp;family=Plus+Jakarta+Sans:wght@200..800&amp;display=swap" rel="stylesheet"><header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-xl border-b border-outline-variant/30"><div class="bg-primary text-on-primary py-2 px-margin-desktop"><div class="max-w-container-max mx-auto flex justify-between items-center font-label-sm text-label-sm"><div class="flex gap-6"><span class="flex items-center gap-2 uppercase tracking-widest"><span class="material-symbols-outlined text-[14px]">call</span> +1 (555) MARIS-MD</span><span class="flex items-center gap-2 uppercase tracking-widest"><span class="material-symbols-outlined text-[14px]">location_on</span> Beverly Hills, CA</span></div><div class="flex gap-4"><a class="hover:text-primary-fixed-dim transition-colors" href="#">Patient Portal</a><a class="hover:text-primary-fixed-dim transition-colors" href="#">Virtual Visit</a></div></div></div><div class="h-20 max-w-container-max mx-auto px-margin-desktop flex items-center justify-between"><div class="flex items-center gap-10"><div class="flex items-center gap-3"><img alt="Dr. Maris Aesthetic Logo" class="h-10 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsY25LJDs7tG95qdvmCulf0fYRQH-oIPH7pb4rJR9115pPMU3gdJlkrtYE3oXVgZUptiPRHQF4skGdHDKocmY-wt2t932l3JnLmk91Jo0keuwCl5Gk31x2vUOa1zZMg9y85-x1ZiyDpTIa5yuha0ZkpA5yxx-s_CE-xhYJLcHVh4V7wgIUxZmMqbAfYuBRcUT4ALHcktDp6LsNBfxAwOckLqO5DgxGP41ubVwAMFoH1HrGzcWMiTRB"><span class="font-headline-md text-headline-md leading-none tracking-tight">Dr. Maris</span></div><nav class="hidden xl:flex items-center gap-6" data-active-classes="text-primary font-bold"><a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" data-path="about" href="#">About</a><div class="group relative"><a aria-current="page" class="transition-colors flex items-center gap-1 text-primary font-bold" data-path="face" href="#">Face <span class="material-symbols-outlined text-[16px]">expand_more</span></a><div class="mega-menu px-margin-desktop py-10 shadow-lg bg-surface/95"><div class="max-w-container-max mx-auto grid grid-cols-4 gap-12"><div class="space-y-4"><h4 class="font-headline-md text-headline-md border-b border-outline-variant/30 pb-2">Lifting</h4><ul class="space-y-2"><li class=""><a class="text-body-md hover:text-primary" href="#">Facelift</a></li><li class=""><a class="text-body-md hover:text-primary" href="#">Neck Lift</a></li><li class=""><a class="text-body-md hover:text-primary" href="#">Brow Lift</a></li></ul></div><div class="space-y-4"><h4 class="font-headline-md text-headline-md border-b border-outline-variant/30 pb-2">Eyes &amp; Nose</h4><ul class="space-y-2"><li class=""><a class="text-body-md hover:text-primary" href="#">Blepharoplasty</a></li><li class=""><a class="text-body-md hover:text-primary" href="#">Rhinoplasty</a></li></ul></div></div></div></div><a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" data-path="breast" href="#">Breast</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" data-path="body" href="#">Body</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" data-path="non-surgical" href="#">Non-Surgical</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" data-path="results" href="#">Results</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" data-path="insights" href="#">Insights</a></nav></div><div class="flex items-center gap-6"><a class="bg-primary text-on-primary px-8 py-3 rounded font-label-md text-label-md hover:bg-on-primary-fixed-variant transition-all" data-path="consultation" href="#">BOOK A CONSULTATION</a><img alt="Profile" class="w-10 h-10 rounded-full object-cover border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTeb4K7icJOejOCNmhoM1L_97JimcI6Qtyot9YzMr51gD3_D096TT551datl7elzq4TGEQz-bEMf8KBAUaMGPSuRx-gXA7LQDE6AxQJeik8HAprXx5WLc0J8tMTKQRuN5tTfMsno6xTgx-ocAouFxiXWQRiCATFFvjwsLvpxprL1m7V9S-mUEXDc3L_aWSsmNthvE245NzLwUH0W-RYhnjXBO7LUB-OAqjk5SNLSZFeUzTH3V751D0"></div></div></header><main class="w-full pt-[112px] min-h-screen bg-background"><div class="flex flex-col w-full relative">
+<!-- Hero / Intro -->
+<section class="w-full bg-clinical-surface pt-margin-desktop pb-section-padding-desktop px-margin-desktop relative overflow-hidden">
+<!-- Abstract Shape Backdrop -->
+<div class="absolute inset-0 z-0 opacity-20">
+<svg class="w-full h-full" preserveAspectRatio="xMidYMid slice" viewBox="0 0 100 100">
+<defs>
+<radialGradient cx="50%" cy="50%" fx="50%" fy="50%" id="grad1" r="50%">
+<stop class="text-primary-fixed-dim" offset="0%" stop-color="currentColor"></stop>
+<stop offset="100%" stop-color="transparent"></stop>
+</radialGradient>
+</defs>
+<circle cx="20" cy="80" fill="url(#grad1)" r="40"></circle>
+<circle cx="90" cy="10" fill="url(#grad1)" opacity="0.6" r="60"></circle>
+</svg>
+</div>
+<div class="max-w-container-max mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
+<div class="lg:col-span-7 space-y-6">
+<!-- Breadcrumb -->
+<nav class="flex items-center gap-2 font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant mb-6">
+<a class="hover:text-primary transition-colors" href="#">Home</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Face</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-primary">Rhinoplasty</span>
+</nav>
+<div class="flex items-center gap-3 font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">
+<span class="w-8 h-[1px] bg-primary"></span>
+           Facial Procedures
+        </div>
+<h1 class="font-display-lg text-display-lg text-primary">Rhinoplasty Surgery</h1>
+<p class="font-body-lg text-body-lg max-w-2xl text-slate-gray">
+          A harmonious balance of artistic vision and structural engineering. Rhinoplasty refines nasal proportions to complement your unique facial architecture, addressing both aesthetic desires and functional breathing concerns with meticulous precision.
+        </p>
+</div>
+<!-- Quick Facts Card -->
+<div class="lg:col-span-5 bg-surface p-8 shadow-xl rounded-lg relative mt-8 lg:mt-0 lg:-mb-32 z-20 border border-outline-variant/20">
+<h3 class="font-headline-md text-headline-md mb-6 flex items-center gap-2 text-primary font-bold">
+<span class="material-symbols-outlined text-primary">info</span> Quick Facts
+        </h3>
+<div class="grid grid-cols-2 gap-y-8 gap-x-6">
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Duration</div>
+<div class="font-headline-md text-headline-md text-on-surface">2-3 Hrs</div>
+</div>
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Anesthesia</div>
+<div class="font-headline-md text-headline-md text-on-surface">General</div>
+</div>
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Recovery</div>
+<div class="font-headline-md text-headline-md text-on-surface">7-10 Days</div>
+</div>
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Longevity</div>
+<div class="font-headline-md text-headline-md text-on-surface">Permanent</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Content Layout -->
+<section class="max-w-container-max mx-auto px-margin-desktop py-section-padding-desktop grid grid-cols-1 lg:grid-cols-12 gap-16 relative">
+<!-- Sticky TOC -->
+<aside class="hidden lg:block lg:col-span-3">
+<div class="sticky top-32 space-y-8">
+<div>
+<h4 class="font-label-md text-label-md text-on-surface uppercase tracking-widest mb-6">Contents</h4>
+<nav class="space-y-4 font-body-md text-body-md text-on-surface-variant flex flex-col relative" id="toc-nav">
+<!-- Vertical timeline line -->
+<div class="absolute left-0 top-2 bottom-2 w-[1px] bg-outline-variant/30"></div>
+<a class="pl-4 border-l border-transparent hover:text-primary hover:border-primary transition-all relative group text-on-surface-variant" href="#overview">
+<span class="absolute left-[-2.5px] top-1/2 -translate-y-1/2 w-[4px] h-[4px] rounded-full bg-outline-variant group-hover:bg-primary transition-colors"></span>
+                What is Rhinoplasty?
+             </a>
+<a class="pl-4 border-l border-transparent hover:text-primary hover:border-primary transition-all relative group text-on-surface-variant" href="#anatomy">
+<span class="absolute left-[-2.5px] top-1/2 -translate-y-1/2 w-[4px] h-[4px] rounded-full bg-outline-variant group-hover:bg-primary transition-colors"></span>
+                Nasal Anatomy
+             </a>
+<a class="pl-4 border-l border-transparent hover:text-primary hover:border-primary transition-all relative group text-on-surface-variant" href="#consultation">
+<span class="absolute left-[-2.5px] top-1/2 -translate-y-1/2 w-[4px] h-[4px] rounded-full bg-outline-variant group-hover:bg-primary transition-colors"></span>
+                Consultation &amp; Planning
+             </a>
+<a class="pl-4 border-l border-transparent hover:text-primary hover:border-primary transition-all relative group text-on-surface-variant" href="#approach">
+<span class="absolute left-[-2.5px] top-1/2 -translate-y-1/2 w-[4px] h-[4px] rounded-full bg-outline-variant group-hover:bg-primary transition-colors"></span>
+                Surgical Approaches
+             </a>
+<a class="pl-4 border-l border-transparent hover:text-primary hover:border-primary transition-all relative group text-on-surface-variant" href="#timeline">
+<span class="absolute left-[-2.5px] top-1/2 -translate-y-1/2 w-[4px] h-[4px] rounded-full bg-outline-variant group-hover:bg-primary transition-colors"></span>
+                Recovery Timeline
+             </a>
+<a class="pl-4 border-l border-transparent hover:text-primary hover:border-primary transition-all relative group text-on-surface-variant" href="#results">
+<span class="absolute left-[-2.5px] top-1/2 -translate-y-1/2 w-[4px] h-[4px] rounded-full bg-outline-variant group-hover:bg-primary transition-colors"></span>
+                Before &amp; After
+             </a>
+<a class="pl-4 border-l border-transparent hover:text-primary hover:border-primary transition-all relative group text-on-surface-variant" href="#considerations">
+<span class="absolute left-[-2.5px] top-1/2 -translate-y-1/2 w-[4px] h-[4px] rounded-full bg-outline-variant group-hover:bg-primary transition-colors"></span>
+                Considerations
+             </a>
+<a class="pl-4 border-l border-transparent hover:text-primary hover:border-primary transition-all relative group text-on-surface-variant" href="#faq">
+<span class="absolute left-[-2.5px] top-1/2 -translate-y-1/2 w-[4px] h-[4px] rounded-full bg-outline-variant group-hover:bg-primary transition-colors"></span>
+                FAQ
+             </a>
+</nav>
+</div>
+<div class="bg-clinical-surface p-6 shadow-md rounded-lg border border-outline-variant/20">
+<h4 class="font-headline-md text-headline-md text-on-surface mb-2">Ready to discuss your goals?</h4>
+<p class="font-body-md text-body-md mb-6 text-slate-gray">Schedule a private consultation with Dr. Maris.</p>
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-3 px-4 rounded hover:bg-on-primary-fixed-variant transition-colors flex justify-center items-center gap-2">
+              Book Consultation <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Reading Column -->
+<article class="lg:col-span-9 max-w-[750px] space-y-20">
+<!-- Section: What is Rhinoplasty -->
+<div class="scroll-mt-32 space-y-8" id="overview">
+<h2 class="font-headline-lg text-headline-lg text-primary">What is Rhinoplasty?</h2>
+<p class="font-body-lg text-body-lg text-slate-gray">
+            Rhinoplasty, commonly known as a nose job, is a surgical procedure designed to alter the shape, size, or proportions of the nose. It is a highly customizable operation that addresses both aesthetic concerns and functional issues, such as breathing difficulties caused by a deviated septum or enlarged turbinates.
+         </p>
+<div class="space-y-4">
+<h3 class="font-headline-md text-headline-md text-primary font-bold">Common Concerns Addressed</h3>
+<ul class="space-y-4 font-body-md text-body-md text-on-surface-variant">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-1">check_circle</span>
+<div class="">
+<strong class="text-on-surface">Dorsal Hump:</strong> Reduction of a prominent bump on the bridge of the nose.
+               </div>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-1">check_circle</span>
+<div class="">
+<strong class="text-on-surface">Bulbous Tip:</strong> Refinement of a wide, rounded, or ill-defined nasal tip.
+               </div>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-1">check_circle</span>
+<div class="">
+<strong class="text-on-surface">Asymmetry:</strong> Correction of a crooked nose or uneven nostrils.
+               </div>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-1">check_circle</span>
+<div class="">
+<strong class="text-on-surface">Breathing Issues:</strong> Septoplasty and turbinate reduction to improve airflow.
+               </div>
+</li>
+</ul>
+</div>
+</div>
+<!-- Section: Candidate Considerations -->
+<div class="scroll-mt-32 space-y-8" id="candidates">
+<h2 class="font-headline-lg text-headline-lg text-primary">Are You a Good Candidate?</h2>
+<div class="bg-clinical-surface rounded-lg p-8 shadow-sm border border-outline-variant/30">
+<p class="font-body-md text-body-md mb-6 text-slate-gray">
+               Ideal candidates for rhinoplasty are individuals seeking improvement, not perfection, in the appearance of their nose. You may be a good candidate if:
+            </p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+<ul class="space-y-3 font-body-md text-body-md text-on-surface-variant">
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Your facial growth is complete (typically around age 16 for females, 18 for males).</li>
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> You are physically healthy.</li>
+</ul>
+<ul class="space-y-3 font-body-md text-body-md text-on-surface-variant">
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> You do not smoke or are willing to quit prior to surgery.</li>
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> You have realistic goals and a positive outlook.</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Section: Anatomy -->
+<div class="scroll-mt-32 space-y-8" id="anatomy">
+<h2 class="font-headline-lg text-headline-lg text-primary">Understanding Nasal Anatomy</h2>
+<p class="font-body-lg text-body-lg text-slate-gray">
+            Rhinoplasty is often considered the most complex of facial surgeries due to the intricate interplay of bone, cartilage, and soft tissue. A successful outcome requires a deep understanding of how these structures relate to one another and to the overall facial aesthetic.
+         </p>
+<div class="relative bg-surface-container p-8 shadow-sm group rounded-lg overflow-hidden">
+<div class="bg-cover bg-center w-full aspect-video mix-blend-multiply opacity-80 group-hover:opacity-100 transition-opacity duration-500" data-alt="Detailed medical illustration of nasal anatomy, showing bone structure, upper and lower lateral cartilages, septum, and soft tissue in a clean, minimalist editorial style with beige and soft grey tones." style="background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuA45c7644wADMDN6IXLAmYmmnhM0NLBxuB-_7XS14agtuIF07OqnSbezqAbHFHQHDeZhiPnqYHWq8fZq4O_FyF6TF8RMbcJum74mnSNjMM0qZbK3Ctbgp-ZpE_ABBuBKF0KjJjkp8gnG5PNGDkB4c6XtPoyBFJH0Q9HVIggvL-o9WLLrk__O3oIpDvmFpqsUTXeYq4zMGzTGFoxbmZA2UWwoWCbD4-8rvNEmYjrIkDolZptDDoihj3l&quot;);"></div>
+<!-- Anatomy Labels (Decorative) -->
+<div class="absolute top-1/4 left-[15%] flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-primary">Nasal Bone</span>
+</div>
+<div class="absolute top-1/2 right-[20%] flex items-center gap-2 flex-row-reverse">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-primary">Alar Cartilage</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="space-y-3">
+<h4 class="font-headline-md text-headline-md text-on-surface text-[24px]">The Dorsum (Bridge)</h4>
+<p class="font-body-md text-body-md text-slate-gray">
+                  Composed of bone in the upper third and cartilage in the middle third. Modifications here often involve reducing a dorsal hump or building up a flat bridge.
+               </p>
+</div>
+<div class="space-y-3">
+<h4 class="font-headline-md text-headline-md text-on-surface text-[24px]">The Apex (Tip)</h4>
+<p class="font-body-md text-body-md text-slate-gray">
+                  Formed entirely of cartilage (lower lateral cartilages). Tip refinement requires delicate reshaping to achieve symmetry, projection, and rotation.
+               </p>
+</div>
+</div>
+</div>
+<!-- Section: Consultation -->
+<div class="scroll-mt-32 space-y-8" id="consultation">
+<h2 class="font-headline-lg text-headline-lg text-primary">Consultation &amp; Planning</h2>
+<p class="font-body-lg text-body-lg text-slate-gray">
+            Your journey begins with a comprehensive consultation. Dr. Maris believes in a collaborative approach, ensuring your vision aligns with structural possibilities.
+         </p>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-clinical-surface rounded-lg p-6 border border-outline-variant/20 shadow-sm">
+<span class="material-symbols-outlined text-[32px] text-primary mb-4">face</span>
+<h4 class="font-headline-md text-headline-md text-on-surface text-[20px] mb-2">Facial Analysis</h4>
+<p class="font-body-md text-body-md text-sm text-slate-gray">Detailed assessment of your facial proportions, skin thickness, and nasal structure to develop a customized surgical plan.</p>
+</div>
+<div class="bg-clinical-surface rounded-lg p-6 border border-outline-variant/20 shadow-sm">
+<span class="material-symbols-outlined text-[32px] text-primary mb-4">photo_camera</span>
+<h4 class="font-headline-md text-headline-md text-on-surface text-[20px] mb-2">Imaging &amp; Morphing</h4>
+<p class="font-body-md text-body-md text-sm text-slate-gray">Advanced computer imaging helps visualize potential outcomes, ensuring mutual understanding of realistic goals.</p>
+</div>
+<div class="bg-clinical-surface rounded-lg p-6 border border-outline-variant/20 shadow-sm">
+<span class="material-symbols-outlined text-[32px] text-primary mb-4">medical_information</span>
+<h4 class="font-headline-md text-headline-md text-on-surface text-[20px] mb-2">Functional Assessment</h4>
+<p class="font-body-md text-body-md text-sm text-slate-gray">Thorough evaluation of your airway to identify and address any breathing difficulties simultaneously.</p>
+</div>
+</div>
+</div>
+<!-- Signature Divider -->
+<div class="flex items-center justify-center w-full opacity-30">
+<div class="h-[1px] w-24 bg-outline"></div>
+<div class="w-2 h-2 rotate-45 bg-primary mx-4"></div>
+<div class="h-[1px] w-24 bg-outline"></div>
+</div>
+<!-- Section: Surgical Approach -->
+<div class="scroll-mt-32 space-y-8" id="approach">
+<h2 class="font-headline-lg text-headline-lg text-primary">Surgical Approaches</h2>
+<p class="font-body-lg text-body-lg text-slate-gray">
+            Dr. Maris employs advanced techniques tailored to each patient's anatomy. The choice between an open or closed approach depends on the complexity of the required alterations.
+         </p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+<!-- Open Rhinoplasty -->
+<div class="bg-surface p-8 shadow-md rounded-lg border-t-4 border-primary hover:-translate-y-1 transition-transform duration-300">
+<h3 class="font-headline-md text-headline-md mb-4 text-primary font-bold">Open Rhinoplasty</h3>
+<ul class="space-y-4 font-body-md text-body-md text-on-surface-variant">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-[20px] mt-1">check</span>
+<span class="">Involves a small, discreet incision across the columella.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-[20px] mt-1">check</span>
+<span class="">Provides unparalleled visibility of the nasal structures.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-[20px] mt-1">check</span>
+<span class="">Ideal for complex cases, significant tip refinement, or revision surgery.</span>
+</li>
+</ul>
+</div>
+<!-- Closed Rhinoplasty -->
+<div class="bg-surface p-8 shadow-md rounded-lg border-t-4 border-secondary hover:-translate-y-1 transition-transform duration-300">
+<h3 class="font-headline-md text-headline-md mb-4 text-primary font-bold">Closed Rhinoplasty</h3>
+<ul class="space-y-4 font-body-md text-body-md text-on-surface-variant">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-[20px] mt-1">check</span>
+<span class="">All incisions are concealed entirely inside the nostrils.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-[20px] mt-1">check</span>
+<span class="">Generally results in slightly less initial swelling.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-[20px] mt-1">check</span>
+<span class="">Best suited for straightforward dorsal hump reductions or minor adjustments.</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Section: Timeline -->
+<div class="scroll-mt-32 bg-clinical-surface rounded-xl -mx-margin-mobile md:-mx-margin-desktop px-margin-mobile md:px-margin-desktop py-16 shadow-sm border border-outline-variant/20" id="timeline">
+<h2 class="font-headline-lg text-headline-lg mb-12 text-primary">Recovery Timeline</h2>
+<div class="relative">
+<!-- Vertical Line -->
+<div class="absolute left-[15px] md:left-[23px] top-0 bottom-0 w-[2px] bg-outline-variant/50"></div>
+<div class="space-y-12">
+<!-- Day 1-3 -->
+<div class="relative pl-12 md:pl-20">
+<div class="absolute left-0 top-1 w-8 h-8 md:w-12 md:h-12 bg-primary rounded-full flex items-center justify-center text-on-primary font-label-md text-label-md shadow-md z-10">
+                     1-3
+                  </div>
+<h4 class="font-headline-md text-headline-md text-on-surface mb-2">Days 1-3: Initial Healing</h4>
+<p class="font-body-md text-body-md text-slate-gray">
+                     Maximum swelling and bruising peak. You will wear a nasal splint to protect the new structure. Discomfort is managed with prescribed medication. Head elevation is crucial.
+                  </p>
+</div>
+<!-- Day 7 -->
+<div class="relative pl-12 md:pl-20">
+<div class="absolute left-0 top-1 w-8 h-8 md:w-12 md:h-12 bg-surface border-2 border-primary rounded-full flex items-center justify-center text-primary font-label-md text-label-md shadow-md z-10">
+                     7
+                  </div>
+<h4 class="font-headline-md text-headline-md text-on-surface mb-2">Day 7: Splint Removal</h4>
+<p class="font-body-md text-body-md text-slate-gray">
+                     The external splint and any sutures are removed in the office. You will get your first look at the new contour, though the nose will still be significantly swollen. Most patients return to work or school.
+                  </p>
+</div>
+<!-- Weeks 2-4 -->
+<div class="relative pl-12 md:pl-20">
+<div class="absolute left-0 top-1 w-8 h-8 md:w-12 md:h-12 bg-surface border-2 border-primary rounded-full flex items-center justify-center text-primary font-label-md text-label-md shadow-md z-10">
+                     2-4w
+                  </div>
+<h4 class="font-headline-md text-headline-md text-on-surface mb-2">Weeks 2-4: Subsiding Swelling</h4>
+<p class="font-body-md text-body-md text-slate-gray">
+                     The majority of obvious swelling resolves. You feel comfortable in social settings. Light cardiovascular exercise can gradually resume, avoiding contact sports or heavy lifting.
+                  </p>
+</div>
+<!-- 1 Year -->
+<div class="relative pl-12 md:pl-20">
+<div class="absolute left-0 top-1 w-8 h-8 md:w-12 md:h-12 bg-secondary rounded-full flex items-center justify-center text-on-secondary font-label-md text-label-md shadow-md z-10">
+                     1y
+                  </div>
+<h4 class="font-headline-md text-headline-md text-on-surface mb-2">1 Year: Final Refinement</h4>
+<p class="font-body-md text-body-md text-slate-gray">
+                     Micro-swelling, particularly in the nasal tip, finally dissipates. The ultimate refined shape and crispness of the results are fully realized.
+                  </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Section: Results -->
+<div class="scroll-mt-32 space-y-8" id="results">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary">Before &amp; After</h2>
+<p class="font-body-lg text-body-lg mt-2 max-w-lg text-slate-gray">
+                  Subtle refinement yielding dramatic harmony. View representative outcomes of Dr. Maris's rhinoplasty procedures.
+               </p>
+</div>
+<a class="inline-flex items-center gap-2 font-label-md text-label-md text-primary uppercase tracking-widest hover:opacity-70 transition-opacity" href="#">
+               View Full Gallery <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Case 1 -->
+<div class="space-y-4 group cursor-pointer">
+<div class="relative overflow-hidden rounded-lg aspect-[4/3] bg-surface-variant">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Split screen profile view before and after rhinoplasty. Left shows a slight dorsal hump, right shows a straight, refined bridge with a natural slope. Soft, professional studio lighting." style="background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuDnHjZmIOT2CULdwtLqzLFWYQuSkwpbMD_QFJMz9LPNSb0W2li2Bect_G71yyk8p9tq6iZzcyKJpca2aknEY_BZW2yxnvsRppH3xVCiKVS9xUmhCBpXtOELtJSSx4wlUhMMl_STg4uWImt6GVHU3cHhIetynrTnJtNC1gAyufztC3wqQfeNuSf7aIsLtelnsjiEoKMbeMZDXrh96fpeITBciNLW1gq-trzNgN4Iyo1zmZu65xvuvTGV&quot;);"></div>
+<!-- Vertical Split Line -->
+<div class="absolute left-1/2 top-0 bottom-0 w-[1px] bg-white/50"></div>
+<div class="absolute bottom-4 left-4 bg-surface/90 backdrop-blur px-3 py-1 font-label-sm text-label-sm uppercase tracking-widest shadow-sm rounded">Before</div>
+<div class="absolute bottom-4 right-4 bg-surface/90 backdrop-blur px-3 py-1 font-label-sm text-label-sm uppercase tracking-widest shadow-sm rounded">After</div>
+</div>
+<div>
+<h4 class="font-headline-md text-headline-md text-on-surface text-[20px]">Profile Refinement</h4>
+<p class="font-body-md text-body-md text-slate-gray">Dorsal hump reduction and tip rotation.</p>
+</div>
+</div>
+<!-- Case 2 -->
+<div class="space-y-4 group cursor-pointer">
+<div class="relative overflow-hidden rounded-lg aspect-[4/3] bg-surface-variant">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Split screen frontal view before and after rhinoplasty. Left shows a bulbous tip, right shows a refined, symmetrical tip. Soft, professional studio lighting." style="background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuAWxOF_HIYVNp1HXLJB9xdOqSn2caNXCAkrVOc7I_Di_32_vcuKilj-AhbcGkGMW0jX6M7EE8jM4duKO7MYmFFGQm2u2LXxtop_aN17XFPhMtFf-ClhZcwcYuWdmApGmrFRrriAruIJG25sFaBANMEF-O0OqgSScJmJj7fpqhCqhjn2Y9kphUbJNxaSApZjVC5BVYzpJZ4yh7OKfDVuIwwYsVesV3l9a9asABRIDFghnYgnyWom_3w5&quot;);"></div>
+<!-- Vertical Split Line -->
+<div class="absolute left-1/2 top-0 bottom-0 w-[1px] bg-white/50"></div>
+<div class="absolute bottom-4 left-4 bg-surface/90 backdrop-blur px-3 py-1 font-label-sm text-label-sm uppercase tracking-widest shadow-sm rounded">Before</div>
+<div class="absolute bottom-4 right-4 bg-surface/90 backdrop-blur px-3 py-1 font-label-sm text-label-sm uppercase tracking-widest shadow-sm rounded">After</div>
+</div>
+<div>
+<h4 class="font-headline-md text-headline-md text-on-surface text-[20px]">Tip Contouring</h4>
+<p class="font-body-md text-body-md text-slate-gray">Refinement of bulbous tip and alar base reduction.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Section: Considerations / Medical Review -->
+<div class="scroll-mt-32 space-y-8" id="considerations">
+<h2 class="font-headline-lg text-headline-lg text-primary">Risks &amp; Considerations</h2>
+<div class="bg-surface rounded-lg p-8 shadow-sm border border-outline-variant/30 flex flex-col md:flex-row gap-8">
+<div class="md:w-1/3 space-y-4">
+<h4 class="font-headline-md text-headline-md text-on-surface text-[24px]">Is it right for you?</h4>
+<p class="font-body-md text-body-md text-slate-gray">
+                  Rhinoplasty requires emotional maturity and realistic expectations. The goal is improvement, not perfection.
+               </p>
+</div>
+<div class="md:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-6">
+<div>
+<h5 class="font-label-md text-label-md uppercase tracking-widest text-on-surface mb-2">Potential Risks</h5>
+<ul class="space-y-2 font-body-md text-body-md text-on-surface-variant">
+<li class="">• Infection or bleeding</li>
+<li class="">• Asymmetry</li>
+<li class="">• Temporary changes in skin sensation</li>
+<li class="">• Breathing difficulties (rare)</li>
+</ul>
+</div>
+<div>
+<h5 class="font-label-md text-label-md uppercase tracking-widest text-on-surface mb-2">Prerequisites</h5>
+<ul class="space-y-2 font-body-md text-body-md text-on-surface-variant">
+<li class="">• Facial growth is complete</li>
+<li class="">• Physically healthy</li>
+<li class="">• Non-smoker</li>
+<li class="">• Positive outlook and specific goals</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<!-- Section: FAQ -->
+<div class="scroll-mt-32 space-y-8" id="faq">
+<h2 class="font-headline-lg text-headline-lg text-primary">Frequently Asked Questions</h2>
+<div class="space-y-4">
+<!-- FAQ Item 1 -->
+<details class="group border-b border-outline-variant/30 pb-4">
+<summary class="flex justify-between items-center cursor-pointer list-none font-headline-md text-[20px] text-on-surface">
+               Does rhinoplasty hurt?
+               <span class="transition group-open:rotate-180">
+<span class="material-symbols-outlined">expand_more</span>
+</span>
+</summary>
+<p class="mt-4 font-body-md text-body-md text-slate-gray">
+               Most patients report discomfort rather than severe pain. This is typically managed well with prescribed pain medication for the first few days, after which over-the-counter pain relievers are usually sufficient.
+            </p>
+</details>
+<!-- FAQ Item 2 -->
+<details class="group border-b border-outline-variant/30 pb-4" open="">
+<summary class="flex justify-between items-center cursor-pointer list-none font-headline-md text-[20px] text-on-surface">
+               When can I return to exercise?
+               <span class="transition group-open:rotate-180">
+<span class="material-symbols-outlined">expand_more</span>
+</span>
+</summary>
+<p class="mt-4 font-body-md text-body-md text-slate-gray">
+               Light walking is encouraged immediately to promote circulation. More strenuous cardiovascular exercise can generally resume at 3-4 weeks. Contact sports should be avoided for at least 6 weeks.
+            </p>
+</details>
+<!-- FAQ Item 3 -->
+<details class="group border-b border-outline-variant/30 pb-4">
+<summary class="flex justify-between items-center cursor-pointer list-none font-headline-md text-[20px] text-on-surface">
+               Will my insurance cover rhinoplasty?
+               <span class="transition group-open:rotate-180">
+<span class="material-symbols-outlined">expand_more</span>
+</span>
+</summary>
+<p class="mt-4 font-body-md text-body-md text-slate-gray">
+               Rhinoplasty performed purely for aesthetic reasons is not covered by insurance. However, if the procedure includes correction of a functional breathing issue, such as a deviated septum, a portion of the surgery may be covered.
+            </p>
+</details>
+</div>
+</div>
+<!-- Final CTA & Medical Reviewer -->
+
+</article>
+</section>
+<!-- Script for simple TOC highlight -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            document.querySelectorAll('#toc-nav a').forEach(link => {
+              const targetId = link.getAttribute('href').substring(1);
+              if (targetId === entry.target.id) {
+                link.classList.add('text-primary', 'font-bold');
+                link.classList.remove('text-on-surface-variant');
+              } else {
+                link.classList.remove('text-primary', 'font-bold');
+                link.classList.add('text-on-surface-variant');
+              }
+            });
+          }
+        });
+      }, { rootMargin: '-20% 0px -60% 0px' });
+
+      document.querySelectorAll('article > div[id]').forEach((section) => {
+        observer.observe(section);
+      });
+    });
+  </script>
+</div></main><footer class="w-full bg-clinical-surface border-t border-outline-variant/30"><div class="max-w-container-max mx-auto px-margin-desktop py-20"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12"><div class="space-y-6"><div><h5 class="font-headline-md text-headline-md mb-4">Procedures</h5><ul class="space-y-3 font-body-md text-on-surface-variant"><li class=""><a class="hover:text-primary" href="#">Facelift &amp; Neck Lift</a></li><li class=""><a class="hover:text-primary" href="#">Breast Augmentation</a></li><li class=""><a class="hover:text-primary" href="#">Liposuction</a></li><li class=""><a class="hover:text-primary" href="#">Rhinoplasty</a></li><li class=""><a class="hover:text-primary" href="#">Abdominoplasty</a></li></ul></div></div><div class="space-y-6"><div><h5 class="font-headline-md text-headline-md mb-4">Popular</h5><ul class="space-y-3 font-body-md text-on-surface-variant"><li class=""><a class="hover:text-primary" href="#">Mommy Makeover</a></li><li class=""><a class="hover:text-primary" href="#">Brazilian Butt Lift</a></li><li class=""><a class="hover:text-primary" href="#">Botox Cosmetic</a></li><li class=""><a class="hover:text-primary" href="#">Dermal Fillers</a></li><li class=""><a class="hover:text-primary" href="#">Skin Tightening</a></li></ul></div></div><div class="space-y-6"><div><h5 class="font-headline-md text-headline-md mb-4">Resources</h5><ul class="space-y-3 font-body-md text-on-surface-variant"><li class=""><a class="hover:text-primary" href="#">Financing Options</a></li><li class=""><a class="hover:text-primary" href="#">Out of Town Patients</a></li><li class=""><a class="hover:text-primary" href="#">Pre-Op Instructions</a></li><li class=""><a class="hover:text-primary" href="#">Post-Op Care</a></li><li class=""><a class="hover:text-primary" href="#">Patient Gallery</a></li></ul></div></div><div class="space-y-6"><div><h5 class="font-headline-md text-headline-md mb-4">Practice</h5><ul class="space-y-3 font-body-md text-on-surface-variant"><li class=""><a class="hover:text-primary" href="#">About Dr. Maris</a></li><li class=""><a class="hover:text-primary" href="#">Meet the Staff</a></li><li class=""><a class="hover:text-primary" href="#">Our Facility</a></li><li class=""><a class="hover:text-primary" href="#">Careers</a></li><li class=""><a class="hover:text-primary" href="#">Press &amp; Media</a></li></ul></div></div><div class="space-y-6"><div><h5 class="font-headline-md text-headline-md mb-4">Visit</h5><p class="font-body-md mb-4 text-slate-gray">450 N Bedford Dr,<br>Beverly Hills, CA 90210</p><div class="flex gap-4"><a class="text-primary hover:opacity-70" href="#"><span class="material-symbols-outlined">share_reviews</span></a><a class="text-primary hover:opacity-70" href="#"><span class="material-symbols-outlined">cloud_download</span></a></div></div></div></div><div class="mt-20 pt-10 border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center gap-6 font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant"><div class="flex gap-8"><a class="hover:text-primary" href="#">Privacy Policy</a><a class="hover:text-primary" href="#">Terms of Use</a><a class="hover:text-primary" href="#">Medical Disclaimer</a><a class="hover:text-primary" href="#">Accessibility</a></div><p class="">© 2024 Dr. Maris Aesthetic Surgery. All Rights Reserved.</p></div></div></footer>
+
+</body></html>

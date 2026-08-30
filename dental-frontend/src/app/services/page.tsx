@@ -59,7 +59,7 @@ async function getServiceDetails(isDraftMode: boolean = false) {
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getServicesListingData();
-  return buildSeoMetadata({ path: '/services', pageSeo: data?.seo, title: 'Dental Services', description: 'Premium dental services in Ho Chi Minh City — evidence-based care by internationally trained specialists.' });
+  return buildSeoMetadata({ path: '/services', pageSeo: data?.seo, title: 'Cosmetic Surgery Services', description: 'Surgeon-led cosmetic surgery services in Ho Chi Minh City for international patients.' });
 }
 
 export default async function ServicesPage() {
@@ -75,7 +75,7 @@ export default async function ServicesPage() {
   // Render the new Premium UI using real CMS data inside the client component
   const structuredData = await resolveStructuredData({
     pageType: 'services', path: '/services', pageSeo: listingData.seo,
-    title: 'Dental Services', description: 'Premium dental services in Ho Chi Minh City — evidence-based care by internationally trained specialists.',
+    title: 'Cosmetic Surgery Services', description: 'Surgeon-led cosmetic surgery services in Ho Chi Minh City for international patients.',
     breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Services', path: '/services' }],
   });
   return <><StructuredDataScript data={structuredData} /><ServicesPageClient data={listingData} serviceDetails={serviceDetails} /></>;

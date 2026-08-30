@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { useState, useEffect } from 'react';
 
 /**
@@ -78,13 +78,20 @@ export function NavLink({ href, label, className = '', isActive: propIsActive, o
         relative font-medium transition-colors group
         px-3 py-2 rounded-lg
         ${isActive 
-          ? 'text-primary-600' 
-          : 'text-foreground-secondary hover:text-primary-500'
+          ? 'text-primary-600 hover:text-white' 
+          : 'text-foreground-secondary hover:text-white'
         }
         ${isLoading ? 'animate-pulse' : ''}
         ${className}
       `.trim()}
     >
+      <motion.span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-0 rounded-lg bg-smilux-primary opacity-0 scale-[0.92] transition-opacity"
+        initial={{ opacity: 0, scale: 0.92 }}
+        whileHover={{ opacity: 1, scale: 1 }}
+        transition={{ type: 'spring', stiffness: 520, damping: 34, mass: 0.6 }}
+      />
       <span className="relative z-10">{label}</span>
       
       {/* Smooth sliding underline animation */}
@@ -98,7 +105,7 @@ export function NavLink({ href, label, className = '', isActive: propIsActive, o
           scaleX: isActive ? 1 : 0,
           opacity: isLoading ? [1, 0.7, 1] : 1
         }}
-        whileHover={{ scaleX: 1 }}
+        whileHover={{ scaleX: 1, backgroundColor: 'var(--smilux-primary)' }}
         transition={{ 
           scaleX: { duration: 0.25, ease: 'easeOut' },
           opacity: { duration: 0.5, repeat: isLoading ? Infinity : 0 }

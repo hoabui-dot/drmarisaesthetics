@@ -18,7 +18,7 @@ export function ConsultationSection({ data }: { data: HomepageConsultationBlock 
         <HomeBookingForm serviceOptions={data.serviceOptions} submitLabel={data.submitLabel} />
       </div>
       <aside className="home-booking-column home-booking-info">
-        <p className="eyebrow">{data.clinicEyebrow || "SMILUX DENTAL CLINIC"}</p>
+        <p className="eyebrow">{data.clinicEyebrow || "DR. MARIS AESTHETICS"}</p>
         <h2>{data.contactHeading || "Consult With Our Experts"}</h2>
         {data.description ? <p className="home-booking-description">{data.description}</p> : null}
         <div className="home-booking-details">

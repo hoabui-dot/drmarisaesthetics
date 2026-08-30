@@ -58,7 +58,7 @@ export function AboutHero({ data }: { data: AboutHeroData }) {
       <p className="home-content mt-6 max-w-lg text-smilux-navy">
         {data.supportingParagraph}
       </p>
-    <div className="mt-10 grid w-full max-w-2xl grid-cols-3 divide-x divide-smilux-border" aria-label="Smilux Dental statistics">
+    <div className="mt-10 grid w-full max-w-2xl grid-cols-3 divide-x divide-smilux-border" aria-label="DR. MARIS AESTHETICS statistics">
         {stats.map((stat, index) => <AboutHeroStatItem key={`${stat.label}-${index}`} stat={stat} />)}
       </div>
     </HeroShell>

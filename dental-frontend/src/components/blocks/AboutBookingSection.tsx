@@ -30,7 +30,7 @@ function ContactRow({ icon: Icon, label, value, href }: { icon: typeof MapPin; l
 }
 
 export function AboutBookingSection({ data, serviceOptions = [] }: { data?: AboutBookingData | null; serviceOptions?: ServiceOption[] }) {
-  const clinicName = data?.clinicName || 'Smilux Dental Clinic'
+  const clinicName = data?.clinicName || 'DR. MARIS AESTHETICS'
   const address = data?.address || CLINIC_INFO.address
   const phone = data?.phone || CLINIC_INFO.phone1
   const email = data?.email || CLINIC_INFO.email

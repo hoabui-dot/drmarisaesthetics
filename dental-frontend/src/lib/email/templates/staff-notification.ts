@@ -30,7 +30,7 @@ const wrapHTML = (content: string) => `
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Saigon International Dental Clinic</title>
+  <title>DR. MARIS AESTHETICS</title>
   <!--[if mso]>
   <style type="text/css">
     body, table, td {font-family: Arial, Helvetica, sans-serif !important;}
@@ -73,7 +73,7 @@ export function generateBookingNotificationEmail(
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
       </div>
       <h1 style="color: #FFFFFF; font-size: 22px; font-weight: 600; margin: 0 0 6px 0; letter-spacing: -0.5px;">New Booking Submission</h1>
-      <p style="color: #DBEAFE; font-size: 15px; margin: 0; font-weight: 400;">Saigon International Dental Clinic</p>
+      <p style="color: #DBEAFE; font-size: 15px; margin: 0; font-weight: 400;">DR. MARIS AESTHETICS</p>
     </div>
 
     <!-- Body -->
@@ -162,7 +162,7 @@ export function generatePromotionNotificationEmail(
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>
       </div>
       <h1 style="color: #FFFFFF; font-size: 22px; font-weight: 600; margin: 0 0 6px 0; letter-spacing: -0.5px;">New Promotion Claim</h1>
-      <p style="color: #DBEAFE; font-size: 15px; margin: 0; font-weight: 400;">Saigon International Dental Clinic</p>
+      <p style="color: #DBEAFE; font-size: 15px; margin: 0; font-weight: 400;">DR. MARIS AESTHETICS</p>
     </div>
 
     <!-- Body -->

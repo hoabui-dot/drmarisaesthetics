@@ -47,12 +47,13 @@ import Link from 'next/link';
 import { CalendarDays } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { NavLink } from './NavLink';
-import { NavDropdown } from './NavDropdown';
+import { DesktopMegaNavigation } from './DesktopMegaNavigation';
 import { TopProgressBar } from './TopProgressBar';
 import { useBookingModal } from '@/src/components/booking-modal/BookingModalContext';
 import { useMobileAnimation } from '@/src/hooks/useMobileAnimation';
 import { PerformanceAnimation } from '@/src/components/ui/PerformanceAnimation';
 import type { Navigation } from '@/src/types/strapi';
+import { BrandLogo } from '@/src/components/brand/BrandLogo';
 
 interface HeaderProps {
   navigation: Navigation;
@@ -65,7 +66,17 @@ export function Header({ navigation }: HeaderProps) {
   const pathname = usePathname();
   // Content pages use the same transparent, compact initial header as the
   // homepage. It becomes the solid/scrolled header after the first scroll.
-  const isHeroRoute = pathname === '/' || pathname === '/about-us' || pathname === '/services' || pathname === '/contact' || pathname.startsWith('/news');
+  // Keep the branded header treatment consistent across every editorial route.
+  // Service detail pages must use the same compact/transparent header as their
+  // parent service page instead of falling into the legacy large solid variant.
+  const isHeroRoute = pathname === '/'
+    || pathname === '/about-us'
+    || pathname === '/contact'
+    || pathname === '/results'
+    || pathname === '/our-team'
+    || pathname === '/services'
+    || pathname.startsWith('/services/')
+    || pathname.startsWith('/news');
   const { open: openBookingModal } = useBookingModal();
   const { shouldSimplify } = useMobileAnimation();
 
@@ -175,63 +186,20 @@ export function Header({ navigation }: HeaderProps) {
                * at its natural 1.0 to save the style recalc.
                */}
               <div ref={logoRef} className="logo-scale-wrapper">
-                {navigation.logo ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={navigation.logo.url}
-                    alt={navigation.logo.alt}
-                    className={`
-                      w-auto transition-all duration-300
-                      rounded-none
-                      ${isHeroRoute ? 'h-10 sm:h-10 lg:h-10' : scrolled ? 'h-12 sm:h-10' : 'h-16 sm:h-12 lg:h-14'}
-                    `}
-                  />
-                ) : (
-                  <span className={`
-                    font-bold text-foreground transition-all duration-300
-                    ${scrolled ? 'text-xl sm:text-xl' : 'text-2xl sm:text-2xl'}
-                  `}>
-                    International Dental Clinic
-                  </span>
-                )}
+                <BrandLogo
+                  size="md"
+                  priority
+                  imageClassName={`w-auto transition-all duration-300 rounded-none ${isHeroRoute ? 'h-10 sm:h-10 lg:h-10' : scrolled ? 'h-12 sm:h-10' : 'h-16 sm:h-12 lg:h-14'}`}
+                />
               </div>
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-1">
-              {navigation.navigation.length > 0 ? (
-                navigation.navigation.map((item) => {
-                  const hasChildren = item.children && item.children.length > 0;
-                  const isAnchorLink = item.href.startsWith('#');
-                  const isActive = isAnchorLink
-                    ? activeSection === item.href.replace('#', '')
-                    : undefined;
-
-                  return hasChildren ? (
-                    <NavDropdown
-                      key={item.id}
-                      label={item.label}
-                      href={item.href}
-                      isActive={isActive}
-                      onNavigate={handleNavigate}
-                    >
-                      {item.children!}
-                    </NavDropdown>
-                  ) : (
-                      <NavLink
-                        key={item.id}
-                        href={item.href}
-                        label={item.label}
-                        isActive={isActive}
-                        onNavigate={handleNavigate}
-                      className={isHeroRoute ? 'homepage-header-link px-2 py-2' : ''}
-                    />
-                  );
-                })
-              ) : (
-                <span className="text-sm text-foreground-muted">No menu items</span>
-              )}
-            </nav>
+            <div className="hidden lg:block">
+              {navigation.navigation.length > 0
+                ? <DesktopMegaNavigation items={navigation.navigation} activeSection={activeSection} onNavigate={handleNavigate} />
+                : <span className="text-sm text-foreground-muted">No menu items</span>}
+            </div>
 
             {/* Desktop CTA */}
             <div className="hidden lg:flex items-center space-x-3 xl:space-x-4">

@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import { useRef, useState, type FormEvent } from "react";
-import { CalendarDays, Check, CirclePlay, Heart, ShieldCheck, Sparkles, Star, Users, Wrench, Bone, Crown, Cpu, ScanLine, MonitorCog, Crosshair, Clock3, Workflow, ClipboardList, HeartPulse, Plus, Minus, MapPin, Phone, Mail, Clock } from "lucide-react";
+import { CalendarDays, Check, CirclePlay, Heart, ShieldCheck, Sparkles, Star, Users, Wrench, Bone, Crown, Cpu, ScanLine, MonitorCog, Crosshair, Clock3, Workflow, ClipboardList, HeartPulse, MapPin, Phone, Mail, Clock } from "lucide-react";
 import { NavigationLink } from "@/src/components/ui/NavigationLink";
 import { SelectBase } from "@/src/components/ui/SelectBase";
 import { useBookingModal } from "@/src/components/booking-modal/BookingModalContext";
+import { MotionFaqAccordion } from "@/src/components/ui/motion-faq-accordion";
 
 function mediaUrl(media: any): string {
   const url = media?.url || media?.data?.attributes?.url || "";
@@ -75,7 +76,7 @@ function Hero({ data }: { data: any }) {
           <div><strong>{data.trust_label}</strong><div className="service-detail-rating"><span aria-label="5 out of 5 stars">{[0, 1, 2, 3, 4].map((star) => <Star key={star} size={12} fill="currentColor" aria-hidden="true" />)}</span><b>{data.trust_rating}</b></div></div>
         </div>
       </div>
-      <div className="service-detail-hero__media"><DetailImage media={data.hero_image} alt={`${data.title} dental treatment`} /></div>
+      <div className="service-detail-hero__media"><DetailImage media={data.hero_image} alt={`${data.title} cosmetic surgery`} /></div>
       <AnchorNav sections={data.sections} />
     </section>
   );
@@ -115,7 +116,7 @@ function TechnologySection({ section }: { section: any }) {
     <div className="service-detail-technology-grid">
       <article className="service-detail-technology-feature">
         <div><h3>{section.featured_title}</h3><p>{section.featured_description}</p><span className="service-detail-technology-cta">{section.featured_cta}</span></div>
-        <div className="service-detail-technology-feature-image"><DetailImage media={section.featured_image} alt="3D guided dental implant planning and surgical guide" /></div>
+        <div className="service-detail-technology-feature-image"><DetailImage media={section.featured_image} alt="Advanced surgical planning and clinical imaging" /></div>
       </article>
       {(section.technologies || []).map((item: any) => { const Icon = iconFor(item.icon); return <article className="service-detail-technology-card" key={item.id || item.title}><Icon size={44} strokeWidth={1.5} aria-hidden="true" /><h3>{item.title}</h3><p>{item.description}</p></article>; })}
     </div>
@@ -180,10 +181,8 @@ function PricingSection({ section }: { section: any }) {
 }
 
 function FaqSection({ section }: { section: any }) {
-  const [openItems, setOpenItems] = useState<number[]>([]);
-  const toggle = (index: number) => setOpenItems((current) => current.includes(index) ? current.filter((item) => item !== index) : [...current, index]);
   return <section id={`service-detail-faq-${section.id}`} className="service-detail-faq service-detail-container" aria-labelledby="service-detail-faq-title">
-    <h2 id="service-detail-faq-title">{section.title}</h2><div className="service-detail-faq-grid">{(section.items || []).map((item: any, index: number) => { const open = openItems.includes(index); const answerId = `service-detail-faq-answer-${section.id}-${index}`; return <article className={`service-detail-faq-item${open ? " is-open" : ""}`} key={item.id || item.question}><button type="button" aria-expanded={open} aria-controls={answerId} onClick={() => toggle(index)}><span>{item.question}</span>{open ? <Minus size={17} aria-hidden="true" /> : <Plus size={17} aria-hidden="true" />}</button><div id={answerId} className="service-detail-faq-answer" hidden={!open}><p>{item.answer}</p></div></article>; })}</div>
+    <h2 id="service-detail-faq-title">{section.title}</h2><MotionFaqAccordion allowMultiple className="service-detail-faq-grid" itemClassName="service-detail-faq-item" triggerClassName="service-detail-faq-trigger" contentClassName="service-detail-faq-answer" items={(section.items || []).map((item: any) => ({ id: item.id, question: item.question, answer: item.answer }))} />
   </section>;
 }
 
@@ -196,7 +195,7 @@ function ConsultationSection({ section, serviceList = [] }: { section: any; serv
   return <section id={`service-detail-consultation-${section.id}`} className="service-detail-consultation service-detail-container" aria-labelledby="service-detail-consultation-title">
     <div className="service-detail-consultation-form"><div className="service-detail-consultation-heading"><span>{section.step_number}</span><div><h2 id="service-detail-consultation-title">{section.title}</h2><p>{section.subtitle}</p></div></div><form onSubmit={submit}><div className="service-detail-consultation-fields"><label>Full Name<input value={form.name} onChange={(event) => update("name", event.target.value)} placeholder="Your full name" required /></label><label>Phone Number<input value={form.phone} onChange={(event) => update("phone", event.target.value)} placeholder="Enter your phone number" type="tel" required /></label><label>Email Address<input value={form.email} onChange={(event) => update("email", event.target.value)} placeholder="Enter your email" type="email" /></label><label>Preferred Service<SelectBase value={form.service} options={options} onChange={(value) => update("service", value)} ariaLabel="Preferred Service" placeholder="Select a service" /></label><label className="service-detail-consultation-message">Your Message<textarea value={form.message} onChange={(event) => update("message", event.target.value)} placeholder="Tell us about your concerns or any questions you have." rows={4} /></label></div><button className="service-detail-consultation-submit" type="submit" disabled={status === "sending"}><CalendarDays size={16} aria-hidden="true" />{status === "sending" ? "SENDING..." : "BOOK CONSULTATION →"}</button>{status === "success" ? <p className="service-detail-form-status is-success" role="status">Thank you. We&apos;ll contact you within 24 hours.</p> : null}{status === "error" ? <p className="service-detail-form-status is-error" role="alert">Unable to send your request. Please try again.</p> : null}</form></div>
     <aside className="service-detail-consultation-info" aria-label="Clinic contact information"><div className="service-detail-contact-row"><MapPin size={18} aria-hidden="true" /><div><strong>Visit Us</strong><span>{section.address}</span></div></div><div className="service-detail-contact-row"><Phone size={18} aria-hidden="true" /><div><strong>Hotline</strong><a href={`tel:${section.hotline.replace(/[^\d+]/g, "")}`}>{section.hotline}</a></div></div><div className="service-detail-contact-row"><Mail size={18} aria-hidden="true" /><div><strong>Email</strong><a href={`mailto:${section.email}`}>{section.email}</a></div></div><div className="service-detail-contact-row"><Clock size={18} aria-hidden="true" /><div><strong>Working Hours</strong><span>{section.working_hours}</span></div></div></aside>
-    <div className="service-detail-consultation-map"><iframe title="Smilux Dental clinic map" src={section.map_embed_url} loading="lazy" /></div>
+    <div className="service-detail-consultation-map"><iframe title="DR. MARIS AESTHETICS hospital map" src={section.map_embed_url} loading="lazy" /></div>
   </section>;
 }
 

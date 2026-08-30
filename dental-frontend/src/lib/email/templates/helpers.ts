@@ -70,14 +70,14 @@ export function formatDateTime(
 export function getServiceDisplayName(service: string): string {
   const serviceMap: Record<string, string> = {
     "general-checkup": "General Check-up",
-    "dental-implants": "Dental Implants",
-    "teeth-whitening": "Teeth Whitening",
-    "dental-braces": "Dental Braces",
-    veneers: "Dental Veneers",
-    "root-canal": "Root Canal Treatment",
-    "tooth-extraction": "Tooth Extraction",
-    "dental-cleaning": "Dental Cleaning",
-    other: "Other Services",
+    "dental-implants": "Rhinoplasty",
+    "teeth-whitening": "Revision Surgery",
+    "dental-braces": "Facial Contouring",
+    veneers: "Breast Surgery",
+    "root-canal": "Body Contouring",
+    "tooth-extraction": "Other Cosmetic Surgery",
+    "dental-cleaning": "Clinical Consultation",
+    other: "Other Cosmetic Surgery",
   };
 
   // Try to find in map (case-insensitive)

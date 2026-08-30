@@ -159,15 +159,15 @@ export function BookingForm({ onSuccess }: BookingFormProps) {
                     General Checkup
                   </SelectItem>
                   <SelectItem value="dental-implants">
-                    Dental Implants
+                    Rhinoplasty
                   </SelectItem>
                   <SelectItem value="teeth-whitening">
-                    Teeth Whitening
+                    Revision Surgery
                   </SelectItem>
                   <SelectItem value="orthodontics">Orthodontics</SelectItem>
                   <SelectItem value="root-canal">Root Canal</SelectItem>
-                  <SelectItem value="cosmetic-dentistry">
-                    Cosmetic Dentistry
+                  <SelectItem value="facial-contouring">
+                    Facial Contouring
                   </SelectItem>
                 </SelectContent>
               </Select>
@@ -203,7 +203,7 @@ export function BookingForm({ onSuccess }: BookingFormProps) {
               <FormLabel>Additional Information</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Tell us about your dental concerns or any questions you have..."
+                  placeholder="Tell us about your surgical goals or any questions you have..."
                   {...field}
                 />
               </FormControl>

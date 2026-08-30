@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { ArrowRight } from 'lucide-react'
 import { Clock3, Mail, MapPin, Phone } from 'lucide-react'
 
 type ContactCard = {
@@ -50,14 +51,18 @@ export function ContactHeroSection({ data }: { data: ContactHeroData }) {
 
         <div className="contact-hero-top">
           <div className="contact-hero-intro">
-            <h1 id="contact-hero-heading">{data.title || 'Liên hệ Smilux'}</h1>
+            <h1 id="contact-hero-heading">{data.title || 'Liên hệ DR. MARIS AESTHETICS'}</h1>
             <p className="contact-hero-subtitle">{data.subtitle || 'Tư vấn – Đặt lịch – Hỗ trợ điều trị Implant'}</p>
-            <p className="contact-hero-description">{data.description || 'Đội ngũ chuyên gia của Smilux luôn sẵn sàng lắng nghe và đồng hành cùng bạn trên hành trình kiến tạo nụ cười khỏe đẹp. Liên hệ với chúng tôi để được tư vấn và đặt lịch khám nhanh chóng.'}</p>
+            <p className="contact-hero-description">{data.description || 'Đội ngũ phẫu thuật của DR. MARIS AESTHETICS sẵn sàng lắng nghe và đồng hành cùng bạn trong quá trình đánh giá, lập kế hoạch và chăm sóc hậu phẫu.'}</p>
+            <div className="contact-hero-actions">
+              <a href="#form-section" className="contact-editorial-button">Request an Online Consultation <ArrowRight size={16} aria-hidden="true" /></a>
+              <Link href="/contact?case=revision" className="contact-editorial-link">Submit a Revision Case</Link>
+            </div>
           </div>
 
           {data.heroImageUrl ? (
             <div className="contact-hero-image">
-              <Image src={data.heroImageUrl} alt="Bác sĩ Smilux tư vấn điều trị nha khoa cho bệnh nhân" fill priority sizes="(max-width: 1023px) 100vw, 55vw" className="object-cover" />
+              <Image src={data.heroImageUrl} alt="Dr. Maris consulting with a patient" fill priority sizes="(max-width: 1023px) 100vw, 55vw" className="object-cover" />
             </div>
           ) : null}
         </div>

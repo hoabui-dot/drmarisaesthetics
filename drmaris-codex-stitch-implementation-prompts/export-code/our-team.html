@@ -1,741 +1,546 @@
-<!DOCTYPE html><html lang="en" style=""><head>
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<style>
-@layer base {
-  html, body { margin: 0; padding: 0; }
-  body { overscroll-behavior: none; }
-  main > :first-child { margin-top: 0 !important; }
-  main > :last-child { margin-bottom: 0 !important; }
-}
-::-webkit-scrollbar { display: none; }
-.mega-menu { display: none; position: absolute; top: 100%; left: 0; width: 100%; background-color: rgba(255, 255, 255, 0.98); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(113, 113, 122, 0.2); }
-.group:hover .mega-menu { display: block; }
-</style>
+<title>Dr. A. Maris, MD | Maris Aesthetics</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script id="tailwind-config">
-  tailwind.config = {
-    darkMode: "class",
-    theme: {
-      extend: {
-        "colors": {
-                "on-error-container": "#93000a",
-                "secondary-fixed": "#d4e3ff",
-                "on-secondary-container": "#003e73",
-                "medical-white": "#FFFFFF",
-                "surface-tint": "#3d5ca2",
-                "on-primary-fixed": "#001946",
-                "surface-container-lowest": "#ffffff",
-                "tertiary-fixed": "#e0e3e5",
-                "glassy-blue": "#4A90E2",
-                "surface-container": "#f0edee",
-                "on-background": "#1b1b1c",
-                "surface-container-high": "#eae7e8",
-                "on-primary": "#ffffff",
-                "on-primary-container": "#7a97e2",
-                "on-secondary-fixed": "#001c39",
-                "surface-container-highest": "#e5e2e3",
-                "on-tertiary": "#ffffff",
-                "tertiary-container": "#2e3234",
-                "on-secondary-fixed-variant": "#004883",
-                "on-error": "#ffffff",
-                "surface": "#fcf8f9",
-                "primary": "#001a48",
-                "deep-navy": "#002D72",
-                "error": "#ba1a1a",
-                "outline-variant": "#c4c6d2",
-                "surface-dim": "#dcd9da",
-                "background": "#fcf8f9",
-                "secondary": "#0060ac",
-                "primary-container": "#002d72",
-                "primary-fixed-dim": "#b1c5ff",
-                "outline": "#747782",
-                "surface-variant": "#e5e2e3",
-                "tertiary-fixed-dim": "#c4c7c9",
-                "secondary-fixed-dim": "#a4c9ff",
-                "on-tertiary-fixed": "#191c1e",
-                "surface-container-low": "#f6f3f4",
-                "on-tertiary-container": "#979a9c",
-                "tertiary": "#1a1d1f",
-                "inverse-on-surface": "#f3f0f1",
-                "on-primary-fixed-variant": "#224489",
-                "error-container": "#ffdad6",
-                "on-tertiary-fixed-variant": "#444749",
-                "slate-gray": "#71717A",
-                "clinical-surface": "#F8FAFC",
-                "inverse-primary": "#b1c5ff",
-                "inverse-surface": "#303031",
-                "primary-fixed": "#dae2ff",
-                "on-surface": "#1b1b1c",
-                "on-surface-variant": "#444651",
-                "surface-bright": "#fcf8f9",
-                "on-secondary": "#ffffff",
-                "secondary-container": "#68abff"
-        },
-        "borderRadius": {
-                "DEFAULT": "0.25rem",
-                "lg": "0.5rem",
-                "xl": "0.75rem",
-                "full": "9999px"
-        },
-        "spacing": {
-                "container-max": "1280px",
-                "margin-desktop": "64px",
-                "margin-mobile": "20px",
-                "gutter": "24px",
-                "section-padding": "96px",
-                "unit": "4px"
-        },
-        "fontFamily": {
-                "label-md": [
-                        "Plus Jakarta Sans"
-                ],
-                "body-md": [
-                        "Plus Jakarta Sans"
-                ],
-                "headline-lg": [
-                        "Cormorant Garamond", "serif"
-                ],
-                "headline-md": [
-                        "Cormorant Garamond", "serif"
-                ],
-                "display-lg": [
-                        "Cormorant Garamond", "serif"
-                ],
-                "label-sm": [
-                        "Plus Jakarta Sans"
-                ],
-                "headline-lg-mobile": [
-                        "Cormorant Garamond", "serif"
-                ],
-                "body-lg": [
-                        "Plus Jakarta Sans"
-                ]
-        },
-        "fontSize": {
-                "label-md": [
-                        "14px",
-                        {
-                                "lineHeight": "1.2",
-                                "letterSpacing": "0.08em",
-                                "fontWeight": "600"
-                        }
-                ],
-                "body-md": [
-                        "16px",
-                        {
-                                "lineHeight": "1.6",
-                                "fontWeight": "400"
-                        }
-                ],
-                "headline-lg": [
-                        "48px",
-                        {
-                                "lineHeight": "1.2",
-                                "letterSpacing": "-0.01em",
-                                "fontWeight": "500"
-                        }
-                ],
-                "headline-md": [
-                        "32px",
-                        {
-                                "lineHeight": "1.3",
-                                "fontWeight": "500"
-                        }
-                ],
-                "display-lg": [
-                        "64px",
-                        {
-                                "lineHeight": "1.1",
-                                "letterSpacing": "-0.02em",
-                                "fontWeight": "600"
-                        }
-                ],
-                "label-sm": [
-                        "12px",
-                        {
-                                "lineHeight": "1.2",
-                                "letterSpacing": "0.05em",
-                                "fontWeight": "500"
-                        }
-                ],
-                "headline-lg-mobile": [
-                        "32px",
-                        {
-                                "lineHeight": "1.2",
-                                "fontWeight": "500"
-                        }
-                ],
-                "body-lg": [
-                        "18px",
-                        {
-                                "lineHeight": "1.6",
-                                "fontWeight": "400"
-                        }
-                ]
-        }
-},
-    },
-  }
-</script>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&amp;family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@100..900&amp;family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&amp;family=Plus+Jakarta+Sans:wght@200..800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#f0edee",
+                        "on-primary-container": "#7a97e2",
+                        "inverse-surface": "#303031",
+                        "on-surface-variant": "#444651",
+                        "on-secondary": "#ffffff",
+                        "outline-variant": "#c4c6d2",
+                        "tertiary-fixed-dim": "#c4c7c9",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#2e3234",
+                        "secondary-fixed": "#d4e3ff",
+                        "on-secondary-fixed-variant": "#004883",
+                        "glassy-blue": "#4A90E2",
+                        "surface-bright": "#fcf8f9",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#fcf8f9",
+                        "slate-gray": "#71717A",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "primary-fixed": "#dae2ff",
+                        "surface-variant": "#e5e2e3",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#191c1e",
+                        "on-secondary-container": "#003e73",
+                        "outline": "#747782",
+                        "inverse-on-surface": "#f3f0f1",
+                        "on-primary-fixed": "#001946",
+                        "surface-container-low": "#f6f3f4",
+                        "surface-container-highest": "#e5e2e3",
+                        "background": "#fcf8f9",
+                        "clinical-surface": "#F8FAFC",
+                        "error-container": "#ffdad6",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed-dim": "#b1c5ff",
+                        "on-primary-fixed-variant": "#224489",
+                        "on-background": "#1b1b1c",
+                        "inverse-primary": "#b1c5ff",
+                        "surface-tint": "#3d5ca2",
+                        "primary": "#001a48",
+                        "tertiary": "#1a1d1f",
+                        "tertiary-fixed": "#e0e3e5",
+                        "surface-container-high": "#eae7e8",
+                        "on-tertiary-container": "#979a9c",
+                        "primary-container": "#002d72",
+                        "secondary": "#0060ac",
+                        "secondary-container": "#68abff",
+                        "medical-white": "#FFFFFF",
+                        "secondary-fixed-dim": "#a4c9ff",
+                        "on-secondary-fixed": "#001c39",
+                        "on-error-container": "#93000a",
+                        "surface-dim": "#dcd9da",
+                        "deep-navy": "#002D72",
+                        "on-surface": "#1b1b1c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "margin-desktop": "64px",
+                        "section-padding": "96px",
+                        "container-max": "1280px",
+                        "unit": "4px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Bodoni Moda"],
+                        "label-sm": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Bodoni Moda"],
+                        "display-lg": ["Bodoni Moda"],
+                        "headline-lg-mobile": ["Bodoni Moda"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["32px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "label-sm": ["12px", { "lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "label-md": ["14px", { "lineHeight": "1.2", "letterSpacing": "0.08em", "fontWeight": "600" }],
+                        "headline-lg": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+                        "display-lg": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .ambient-shadow {
+            box-shadow: 0px 12px 32px rgba(0, 45, 114, 0.05);
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
 </head>
-<body class="bg-medical-white font-body-md text-slate-800 selection:bg-glassy-blue/20 selection:text-deep-navy">
-<header class="fixed top-0 w-full z-50 bg-medical-white/90 backdrop-blur-xl border-b border-slate-200">
-<div class="bg-deep-navy text-medical-white py-2 px-margin-desktop">
-<div class="max-w-container-max mx-auto flex justify-between items-center font-label-sm text-label-sm">
-<div class="flex gap-6">
-<span class="flex items-center gap-2 uppercase tracking-widest"><span class="material-symbols-outlined text-[14px]">call</span> +84 123 456 789</span>
-<span class="flex items-center gap-2 uppercase tracking-widest"><span class="material-symbols-outlined text-[14px]">location_on</span> Ho Chi Minh City, Vietnam</span>
+<body class="text-on-background font-body-md antialiased selection:bg-glassy-blue/20 selection:text-deep-navy bg-white">
+<!-- Navigation -->
+<nav class="fixed w-full top-0 z-50 bg-white/90 backdrop-blur-md dark:bg-surface/90 shadow-[0px_10px_40px_rgba(0,45,114,0.04)]">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<a class="font-headline-md text-headline-md tracking-tighter text-primary dark:text-inverse-primary font-bold" href="#">
+                MARIS AESTHETICS
+            </a>
+<div class="hidden md:flex items-center space-x-8">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Treatments</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Results</a>
+<a class="font-label-md text-label-md text-primary border-b-2 border-primary pb-1" href="#">Our Team</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">About</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Contact</a>
 </div>
-<div class="flex gap-4">
-<a class="hover:text-glassy-blue transition-colors" href="#">International Patients</a>
-<a class="hover:text-glassy-blue transition-colors" href="#">Online Consultation</a>
+<button class="hidden md:inline-flex bg-deep-navy text-medical-white font-label-md text-label-md px-6 py-3 rounded hover:bg-glassy-blue transition-colors duration-300">
+                Book Consultation
+            </button>
+<button class="md:hidden text-primary">
+<span class="material-symbols-outlined">menu</span>
+</button>
 </div>
-</div>
-</div>
-<div class="h-20 max-w-container-max mx-auto px-margin-desktop flex items-center justify-between">
-<div class="flex items-center gap-10">
-<div class="flex items-center gap-3 text-deep-navy">
-<img alt="Dr. Maris Aesthetic Logo" class="h-10 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsY25LJDs7tG95qdvmCulf0fYRQH-oIPH7pb4rJR9115pPMU3gdJlkrtYE3oXVgZUptiPRHQF4skGdHDKocmY-wt2t932l3JnLmk91Jo0keuwCl5Gk31x2vUOa1zZMg9y85-x1ZiyDpTIa5yuha0ZkpA5yxx-s_CE-xhYJLcHVh4V7wgIUxZmMqbAfYuBRcUT4ALHcktDp6LsNBfxAwOckLqO5DgxGP41ubVwAMFoH1HrGzcWMiTRB">
-<span class="font-headline-md text-[24px] leading-none tracking-tight font-bold">Dr. Maris</span>
-</div>
-<nav class="hidden xl:flex items-center gap-6" data-active-classes="text-deep-navy font-bold">
-<a class="font-label-md text-label-md text-slate-gray hover:text-glassy-blue transition-colors" data-path="about" href="#">About</a>
-<a class="font-label-md text-label-md text-slate-gray hover:text-glassy-blue transition-colors" data-path="dr-maris" href="#">Dr. Maris</a>
-<a class="font-label-md text-label-md text-slate-gray hover:text-glassy-blue transition-colors" data-path="procedures" href="#">Procedures</a>
-<a class="font-label-md text-label-md text-deep-navy font-semibold hover:text-glassy-blue transition-colors" data-path="revision" href="#">Revision Surgery</a>
-<a class="font-label-md text-label-md text-slate-gray hover:text-glassy-blue transition-colors" data-path="international" href="#">International Patients</a>
-<a class="font-label-md text-label-md text-slate-gray hover:text-glassy-blue transition-colors" data-path="hospital" href="#">Hospital</a>
-<a class="font-label-md text-label-md text-slate-gray hover:text-glassy-blue transition-colors" data-path="pricing" href="#">Pricing</a>
-<a class="font-label-md text-label-md text-slate-gray hover:text-glassy-blue transition-colors" data-path="contact" href="#">Contact</a>
 </nav>
-</div>
-<div class="flex items-center gap-6">
-<a class="bg-glassy-blue text-medical-white px-8 py-3 rounded-lg font-label-md text-label-md hover:bg-deep-navy transition-all" data-path="consultation" href="#consultation">ONLINE CONSULTATION</a>
-</div>
-</div>
-</header>
-<main class="w-full pt-[112px] min-h-screen bg-medical-white">
-<div class="flex flex-col w-full">
+<main class="pt-24 md:pt-32">
 <!-- Hero Section -->
-<section class="relative w-full min-h-[620px] md:min-h-[700px] flex flex-col md:flex-row items-stretch bg-medical-white">
-<!-- Content (55%) -->
-<div class="w-full md:w-[55%] flex flex-col justify-center px-margin-mobile md:px-margin-desktop py-section-padding z-10 relative bg-clinical-surface">
-<div class="max-w-2xl">
-<div class="flex items-center gap-4 mb-8">
-<div class="w-8 h-px bg-glassy-blue"></div>
-<span class="font-label-md text-label-md uppercase tracking-[0.1em] text-glassy-blue">HOSPITAL-BASED COSMETIC SURGERY · HO CHI MINH CITY</span>
-</div>
-<h1 class="font-display-lg text-5xl md:text-6xl font-bold text-deep-navy leading-[1.05] mb-10 max-w-[700px]">Plastic Surgery in Vietnam for International Patients</h1>
-<p class="font-body-lg text-body-lg text-slate-gray mb-6 leading-relaxed">Cosmetic surgery is a medical decision before it is an aesthetic one. At DR. MARIS AESTHETICS, your case is personally assessed and managed by Dr. Maris, with surgery performed at City International Hospital (CIH) in Ho Chi Minh City.</p><p class="font-body-lg text-body-lg text-slate-gray mb-10 max-w-xl leading-relaxed">From primary cosmetic procedures to complex revision surgery, every surgical plan begins with your anatomy, medical history, previous procedures and individual goals.</p>
-<div class="flex flex-wrap items-center gap-6 mb-12">
-<a class="bg-deep-navy text-medical-white px-8 py-4 font-label-md text-label-md uppercase hover:bg-glassy-blue transition-colors shadow-md rounded-DEFAULT" href="#consultation">Request an Online Consultation</a>
-<a class="text-deep-navy font-label-md text-label-md uppercase hover:text-glassy-blue transition-colors flex items-center gap-2" href="#international-journey">Explore Surgical Procedures <span class="material-symbols-outlined">arrow_forward</span></a>
-</div>
-<div class="flex flex-wrap gap-4 text-sm font-label-md text-slate-500 uppercase tracking-wider"><span class="">Direct Surgeon Care</span><span class="text-slate-200">|</span><span class="">Hospital-Based Surgery</span><span class="text-slate-200">|</span><span class="">International Patients</span><span class="text-slate-200">|</span><span class="">Revision Surgery</span></div>
+<section class="relative overflow-hidden px-margin-mobile md:px-margin-desktop py-section-padding max-w-container-max mx-auto bg-white">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-16 items-center">
+<!-- Text Column (45%) -->
+<div class="md:col-span-5 space-y-8 z-10">
+<div class="space-y-4">
+<span class="font-label-sm text-label-sm text-glassy-blue uppercase tracking-widest block">COSMETIC &amp; PLASTIC SURGERY · HO CHI MINH CITY</span>
+<h1 class="font-headline-lg-mobile md:font-display-lg text-headline-lg-mobile md:text-display-lg text-deep-navy leading-tight">Team Doctor</h1>
+<div class="space-y-1">
+<p class="font-headline-md text-headline-md text-primary font-bold">&nbsp;Dr. Tran Minh Huy</p>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Specialist Level I in Aesthetic Surgery, Vietnam</p>
 </div>
 </div>
-<!-- Image (45%) -->
-<div class="w-full md:w-[45%] relative h-[50vh] md:h-auto overflow-hidden bg-medical-white">
-<div class="absolute inset-0 bg-deep-navy mix-blend-multiply opacity-10 z-10"></div>
-<div class="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105 hover:scale-100 transition-transform duration-[2s] ease-out" data-alt="Portrait of Dr. Maris in clinical setting" style="background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuCTeb4K7icJOejOCNmhoM1L_97JimcI6Qtyot9YzMr51gD3_D096TT551datl7elzq4TGEQz-bEMf8KBAUaMGPSuRx-gXA7LQDE6AxQJeik8HAprXx5WLc0J8tMTKQRuN5tTfMsno6xTgx-ocAouFxiXWQRiCATFFvjwsLvpxprL1m7V9S-mUEXDc3L_aWSsmNthvE245NzLwUH0W-RYhnjXBO7LUB-OAqjk5SNLSZFeUzTH3V751D0&quot;);">
+<div class="space-y-6">
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+                    Dr. Maris is a cosmetic and plastic surgeon in Ho Chi Minh City providing individualized surgical planning for primary aesthetic procedures and patients seeking revision or corrective surgery after previous operations.
+                </p>
+<p class="font-body-md text-body-md text-on-surface-variant opacity-80">
+                    He remains directly involved from consultation and examination through surgical planning, surgery and postoperative follow-up.
+                </p>
+</div>
+<div class="flex flex-wrap gap-4 pt-4">
+<button class="bg-deep-navy text-medical-white font-label-md text-label-md px-8 py-4 rounded hover:bg-glassy-blue transition-colors duration-300 shadow-lg">
+                    Request a Consultation
+                </button>
+<button class="border border-deep-navy text-deep-navy font-label-md text-label-md px-8 py-4 rounded hover:bg-deep-navy hover:text-medical-white transition-colors duration-300">
+                    Explore Surgical Expertise
+                </button>
 </div>
 </div>
-</section><section class="w-full py-section-padding px-margin-desktop bg-medical-white overflow-hidden">
-<div class="max-w-container-max mx-auto">
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-<!-- Left: Editorial Content -->
-<div class="lg:col-span-7">
+<!-- Image Column (55%) -->
+<div class="md:col-span-7 relative">
+<div class="aspect-[4/5] md:aspect-auto md:h-[700px] rounded-2xl overflow-hidden shadow-2xl">
+<img alt="Professional portrait of Dr. Maris" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1VJgsEWyGmfDFSAH60TpejN1jfTPmYouVsZ6nzGtFO-mzWXDj4ML916mc1zchSnpvY7m88L1KOFHMClbU6PRUGQVk20RWEOObY-Azg1runApDtoRFTNBpZnQXPxQv8lEKzGLEtfQlKASUeJ1Z5sq0SVnz15YOQcXehydlpLHsYXKhD855cjiMUGm4GDxrrvSsczZAH4ZDei4aqQkEzjXiaIG6taexRlthR5fWzpWqGrG1XApRqhfUWwKchJ">
+</div>
+<!-- Vertical Label -->
+<div class="absolute -right-12 top-1/2 -translate-y-1/2 rotate-90 hidden lg:block">
+<span class="font-label-sm text-label-sm text-deep-navy/20 uppercase tracking-[0.5em] whitespace-nowrap">DR. MARIS / SURGEON PROFILE</span>
+</div>
+</div>
+</div>
+</section><section class="bg-white py-24 md:py-32 px-margin-mobile md:px-margin-desktop border-b border-outline-variant/10">
+  <div class="max-w-container-max mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-16">
+      <!-- Left Column (40%) -->
+      <div class="md:col-span-5 space-y-8">
+        <div class="space-y-4">
+          <span class="font-label-sm text-label-sm text-glassy-blue uppercase tracking-widest block">THE PRINCIPLES BEHIND THE PRACTICE</span>
+          <h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-deep-navy leading-tight">
+            Clear Advice. Individual Planning. <span class="italic">Responsible Surgery.</span>
+          </h2>
+        </div>
+        <p class="font-body-lg text-body-lg text-deep-navy font-medium italic border-l-4 border-glassy-blue pl-6">
+          “Aesthetic goals should never remove the need for medical judgment.”
+        </p>
+      </div>
 
-<h2 class="font-headline-lg font-bold tracking-wide text-deep-navy text-64px leading-tight mb-16 mt-16 block text-6xl" data-stitch-orig-opacity="0">Your surgical care process</h2>
-<div class="mb-10">
-<h3 class="text-[32px] font-bold text-glassy-blue italic mb-6 leading-tight">Who will actually perform my surgery?</h3>
-<p class="font-body-lg text-slate-gray mb-6 leading-relaxed">
-            Dr. Maris (Dr. Tran Minh Huy) brings 6+ years of specialized cosmetic surgery experience to every case. Unlike high-volume clinics, we strictly limit our surgical schedule to ensure that Dr. Maris is personally involved in every critical step of your journey.
-          </p>
-<p class="font-body-lg text-slate-gray leading-relaxed">
-            This commitment to individualized planning means your anatomy, medical history, and aesthetic goals receive the undivided attention they deserve, from the first incision to the final stitch.
-          </p>
-</div>
-<!-- Minimalist Timeline -->
-<div class="relative mt-12">
-<div class="hidden md:block absolute top-4 left-0 right-0 h-px bg-slate-200"></div>
-<div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-<div class="relative pt-8">
-<span class="absolute top-0 left-0 font-label-sm text-glassy-blue">01</span>
-<span class="font-label-md uppercase text-deep-navy text-[12px]">Consultation</span>
-</div>
-<div class="relative pt-8">
-<span class="absolute top-0 left-0 font-label-sm text-glassy-blue">02</span>
-<span class="font-label-md uppercase text-deep-navy text-[12px]">Examination</span>
-</div>
-<div class="relative pt-8">
-<span class="absolute top-0 left-0 font-label-sm text-glassy-blue">03</span>
-<span class="font-label-md uppercase text-deep-navy text-[12px]">Planning</span>
-</div>
-<div class="relative pt-8">
-<span class="absolute top-0 left-0 font-label-sm text-glassy-blue">04</span>
-<span class="font-label-md uppercase text-deep-navy text-[12px]">Surgery</span>
-</div>
-<div class="relative pt-8">
-<span class="absolute top-0 left-0 font-label-sm text-glassy-blue">05</span>
-<span class="font-label-md uppercase text-deep-navy text-[12px]">Follow-Up</span>
-</div>
-</div>
-</div>
-<div class="mt-12">
-<a class="inline-flex items-center gap-2 font-label-md uppercase text-deep-navy hover:text-glassy-blue transition-colors group" href="#">
-            Meet Dr. Maris 
-            <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
-</a>
-</div>
-</div>
-<!-- Right: Visual -->
-<div class="lg:col-span-5 relative">
-<div class="aspect-[4/5] rounded-xl overflow-hidden shadow-2xl">
-<img alt="Dr. Tran Minh Huy - Lead Surgeon" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1WfULKLvdA7A_Rj8nBOX_Kn4LmHjU2-su8dEHYnuCNvWH8zGH2VDEOxtFMgWgeR6If4x7n5vdvVky1h0MeTtSV8PStHQs2fsgjwbQZmU1Q1PgUg6dJdriyJXI1p5Bn9OTSDBvBwctYIf2mrg6TFJIMeg3auoz96farOQg5_OfYLFN0fu-A5WYBZolrU8LjIPAQ5J6My4bPbRib4k0H1rV7OGK8kdzTOHwxqk7KYMM_icNzO6KJ7Pjb1nJ4r">
-</div>
-<div class="absolute -bottom-6 -left-6 bg-deep-navy text-medical-white p-8 rounded-lg shadow-xl hidden md:block">
-<p class="font-label-sm uppercase tracking-widest opacity-70 mb-1">Experience</p>
-<p class="font-headline-md font-bold">6+ Years</p>
-<p class="text-sm opacity-80">Specialized Cosmetic Surgery</p>
-</div>
-</div>
-</div>
-</div>
+      <!-- Right Column (60%) -->
+      <div class="md:col-span-7">
+        <div class="divide-y divide-outline-variant/20">
+          <div class="py-8 first:pt-0">
+            <div class="flex gap-6">
+              <span class="font-headline-md text-headline-md text-deep-navy/20 font-bold">01</span>
+              <div class="space-y-2">
+                <h3 class="font-label-md text-label-md text-deep-navy uppercase tracking-wider">Medical Assessment First</h3>
+                <p class="font-body-md text-body-md text-on-surface-variant">Surgery begins with understanding the patient's actual condition.</p>
+              </div>
+            </div>
+          </div>
+          <div class="py-8">
+            <div class="flex gap-6">
+              <span class="font-headline-md text-headline-md text-deep-navy/20 font-bold">02</span>
+              <div class="space-y-2">
+                <h3 class="font-label-md text-label-md text-deep-navy uppercase tracking-wider">Realistic Expectations</h3>
+                <p class="font-body-md text-body-md text-on-surface-variant">Possible outcomes and limitations should be discussed honestly.</p>
+              </div>
+            </div>
+          </div>
+          <div class="py-8">
+            <div class="flex gap-6">
+              <span class="font-headline-md text-headline-md text-deep-navy/20 font-bold">03</span>
+              <div class="space-y-2">
+                <h3 class="font-label-md text-label-md text-deep-navy uppercase tracking-wider">Direct Responsibility</h3>
+                <p class="font-body-md text-body-md text-on-surface-variant">Dr. Maris remains personally involved in the surgical pathway.</p>
+              </div>
+            </div>
+          </div>
+          <div class="py-8 last:pb-0">
+            <div class="flex gap-6">
+              <span class="font-headline-md text-headline-md text-deep-navy/20 font-bold">04</span>
+              <div class="space-y-2">
+                <h3 class="font-label-md text-label-md text-deep-navy uppercase tracking-wider">No Surgical Guarantees</h3>
+                <p class="font-body-md text-body-md text-on-surface-variant">Every operation carries potential risks and results vary according to individual factors.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
-<!-- Direct Surgeon Care Process -->
-<!-- Surgical Procedures Directory -->
-<!-- Revision Surgery Feature (CRITICAL) -->
-<section class="w-full py-section-padding px-margin-desktop bg-deep-navy text-medical-white" id="revision">
+<!-- Credentials Section -->
+<section class="border-y border-outline-variant/30 py-section-padding px-margin-mobile md:px-margin-desktop bg-white">
 <div class="max-w-container-max mx-auto">
-<div class="flex flex-col lg:flex-row gap-16 items-start">
-<div class="w-full lg:w-1/2">
-<span class="font-label-md uppercase text-glassy-blue tracking-widest mb-4 block">Specialized Care</span>
-<h2 class="font-headline-lg font-bold tracking-wide text-medical-white mb-8 text-[64px] mt-16 mb-12">Revision Cosmetic Surgery Vietnam</h2>
-<h3 class="font-headline-md font-bold text-medical-white/90 italic mb-10">When Your First Surgery Did Not Go as Planned</h3>
-<div class="max-w-[700px]">
-<p class="font-body-lg text-medical-white/80 mb-8 leading-relaxed">
-            Revision surgery requires a significantly higher level of expertise, precision, and understanding of altered anatomy. Dr. Maris specializes in complex reconstructive and secondary cosmetic procedures, providing honest assessments and realistic pathways to restoration.
-          </p>
+<div class="mb-16 text-center max-w-3xl mx-auto">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-deep-navy mb-4">Medical Authority &amp; Expertise</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Combining rigorous medical training with over 6 years of specialized surgical experience.</p>
 </div>
-<div class="bg-medical-white/5 p-8 rounded-lg border border-medical-white/10 mt-8">
-<h4 class="font-headline-md font-bold text-medical-white mb-6">Can My Previous Cosmetic Surgery Be Corrected?</h4>
-<p class="font-body-md text-medical-white/80 leading-relaxed mb-6">
-              The first step in any revision journey is determining if a secondary surgery is medically advisable and likely to achieve an improvement. We require detailed medical records, operative reports (if available), and high-resolution images to conduct a thorough preliminary assessment before you travel.
-            </p>
-<a class="inline-block font-label-md uppercase text-glassy-blue hover:text-medical-white transition-colors flex items-center gap-2" href="#consultation">
-              Request a Revision Assessment <span class="material-symbols-outlined">arrow_forward</span>
-</a>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Card 1 -->
+<div class="bg-medical-white p-8 rounded-xl ambient-shadow border border-transparent hover:border-glassy-blue/20 transition-all duration-300">
+<div class="w-12 h-12 bg-clinical-surface rounded-full flex items-center justify-center mb-6 text-glassy-blue">
+<span class="material-symbols-outlined icon-fill">school</span>
 </div>
+<h3 class="font-label-md text-label-md text-deep-navy uppercase tracking-wider mb-4">Education &amp; Degrees</h3>
+<ul class="space-y-3 font-body-md text-body-md text-on-surface-variant">
+<li class="flex items-start">
+<span class="material-symbols-outlined text-glassy-blue text-sm mr-2 mt-1">check</span>
+<span class="">[INFORMATION TO VERIFY] Medical Degree</span>
+</li>
+<li class="flex items-start">
+<span class="material-symbols-outlined text-glassy-blue text-sm mr-2 mt-1">check</span>
+<span class="">[INFORMATION TO VERIFY] Residency Training</span>
+</li>
+</ul>
 </div>
-<div class="w-full lg:w-1/2 lg:pt-16">
-<h4 class="font-headline-md font-bold text-medical-white mb-10 border-b border-medical-white/20 pb-4">Common Revision Concerns We Address</h4>
-<ul class="space-y-6 font-body-lg text-medical-white/80">
-<li class="flex items-start gap-4">
-<span class="material-symbols-outlined text-glassy-blue shrink-0">check_circle</span>
-<div class="">
-<strong class="text-medical-white block mb-1">Capsular Contracture</strong>
-                  Addressing hardened or distorted breast implants.
-                </div>
+<!-- Card 2 -->
+<div class="bg-medical-white p-8 rounded-xl ambient-shadow border border-transparent hover:border-glassy-blue/20 transition-all duration-300">
+<div class="w-12 h-12 bg-clinical-surface rounded-full flex items-center justify-center mb-6 text-glassy-blue">
+<span class="material-symbols-outlined icon-fill">verified</span>
+</div>
+<h3 class="font-label-md text-label-md text-deep-navy uppercase tracking-wider mb-4">Certifications</h3>
+<ul class="space-y-3 font-body-md text-body-md text-on-surface-variant">
+<li class="flex items-start">
+<span class="material-symbols-outlined text-glassy-blue text-sm mr-2 mt-1">check</span>
+<span class="">Board Certified Plastic Surgeon</span>
 </li>
-<li class="flex items-start gap-4">
-<span class="material-symbols-outlined text-glassy-blue shrink-0">check_circle</span>
-<div class="">
-<strong class="text-medical-white block mb-1">Asymmetry Correction</strong>
-                  Balancing uneven results from previous breast, facial, or body procedures.
-                </div>
+<li class="flex items-start">
+<span class="material-symbols-outlined text-glassy-blue text-sm mr-2 mt-1">check</span>
+<span class="">[INFORMATION TO VERIFY] Advanced Surgical License</span>
 </li>
-<li class="flex items-start gap-4">
-<span class="material-symbols-outlined text-glassy-blue shrink-0">check_circle</span>
-<div class="">
-<strong class="text-medical-white block mb-1">Excessive Scar Tissue</strong>
-                  Scar revision and tissue realignment.
-                </div>
+</ul>
+</div>
+<!-- Card 3 -->
+<div class="bg-medical-white p-8 rounded-xl ambient-shadow border border-transparent hover:border-glassy-blue/20 transition-all duration-300">
+<div class="w-12 h-12 bg-clinical-surface rounded-full flex items-center justify-center mb-6 text-glassy-blue">
+<span class="material-symbols-outlined icon-fill">workspace_premium</span>
+</div>
+<h3 class="font-label-md text-label-md text-deep-navy uppercase tracking-wider mb-4">Memberships</h3>
+<ul class="space-y-3 font-body-md text-body-md text-on-surface-variant">
+<li class="flex items-start">
+<span class="material-symbols-outlined text-glassy-blue text-sm mr-2 mt-1">check</span>
+<span class="">[INFORMATION TO VERIFY] Plastic Surgery Society</span>
 </li>
-<li class="flex items-start gap-4">
-<span class="material-symbols-outlined text-glassy-blue shrink-0">check_circle</span>
-<div class="">
-<strong class="text-medical-white block mb-1">Implant Malposition</strong>
-                  Correcting implants that have shifted, bottomed out, or appear unnatural.
-                </div>
-</li>
-<li class="flex items-start gap-4">
-<span class="material-symbols-outlined text-glassy-blue shrink-0">check_circle</span>
-<div class="">
-<strong class="text-medical-white block mb-1">Over-resected Rhinoplasty</strong>
-                  Rebuilding nasal structures compromised by previous aggressive surgeries.
-                </div>
-</li>
-<li class="flex items-start gap-4">
-<span class="material-symbols-outlined text-glassy-blue shrink-0">check_circle</span>
-<div class="">
-<strong class="text-medical-white block mb-1">Contour Irregularities</strong>
-                  Smoothing indentations or lumpiness following primary liposuction.
-                </div>
-</li>
-<li class="flex items-start gap-4">
-<span class="material-symbols-outlined text-glassy-blue shrink-0">check_circle</span>
-<div class="">
-<strong class="text-medical-white block mb-1">Unsatisfactory Functional Outcomes</strong>
-                  Addressing breathing difficulties or other functional impairments resulting from initial cosmetic procedures.
-                </div>
+<li class="flex items-start">
+<span class="material-symbols-outlined text-glassy-blue text-sm mr-2 mt-1">check</span>
+<span class="">[INFORMATION TO VERIFY] International Medical Association</span>
 </li>
 </ul>
 </div>
 </div>
 </div>
-</section><section class="w-full py-section-padding px-margin-desktop bg-medical-white overflow-hidden">
+</section><section class="bg-medical-white py-section-padding px-margin-mobile md:px-margin-desktop overflow-hidden">
 <div class="max-w-container-max mx-auto">
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-<div class="lg:col-span-5">
-<div class="aspect-[4/5] rounded-xl overflow-hidden shadow-2xl">
-<img alt="Dr. Maris - Lead Surgeon" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTeb4K7icJOejOCNmhoM1L_97JimcI6Qtyot9YzMr51gD3_D096TT551datl7elzq4TGEQz-bEMf8KBAUaMGPSuRx-gXA7LQDE6AxQJeik8HAprXx5WLc0J8tMTKQRuN5tTfMsno6xTgx-ocAouFxiXWQRiCATFFvjwsLvpxprL1m7V9S-mUEXDc3L_aWSsmNthvE245NzLwUH0W-RYhnjXBO7LUB-OAqjk5SNLSZFeUzTH3V751D0">
-</div>
-</div>
-<div class="lg:col-span-7">
-<h2 class="font-headline-lg font-bold tracking-wide text-deep-navy mb-10 leading-tight text-[64px] mt-16 mb-12">Your Case Is Personally Assessed by Dr. Maris</h2>
-<div class="mb-8">
-<p class="font-headline-md font-bold text-deep-navy mb-2">Dr. Maris / Dr. Tran Minh Huy</p>
-<p class="font-body-lg text-slate-gray">Cosmetic &amp; Plastic Surgeon, 6+ Years of Cosmetic Surgery Experience.</p>
-</div>
-<div class="bg-clinical-surface p-8 rounded-lg border-l-4 border-glassy-blue mb-10">
-<p class="font-body-lg text-deep-navy italic leading-relaxed">
-            "Your surgical plan begins with understanding your actual condition — not simply selecting a procedure from a menu."
-          </p>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 mb-12">
-<div class="flex items-center gap-3 text-slate-gray font-body-md">
-<span class="material-symbols-outlined text-glassy-blue text-[20px]">check_circle</span> Anatomy assessment
-          </div>
-<div class="flex items-center gap-3 text-slate-gray font-body-md">
-<span class="material-symbols-outlined text-glassy-blue text-[20px]">check_circle</span> Previous procedures
-          </div>
-<div class="flex items-center gap-3 text-slate-gray font-body-md">
-<span class="material-symbols-outlined text-glassy-blue text-[20px]">check_circle</span> Implant history
-          </div>
-<div class="flex items-center gap-3 text-slate-gray font-body-md">
-<span class="material-symbols-outlined text-glassy-blue text-[20px]">check_circle</span> Surgical goals
-          </div>
-<div class="flex items-center gap-3 text-slate-gray font-body-md">
-<span class="material-symbols-outlined text-glassy-blue text-[20px]">check_circle</span> Limitations
-          </div>
-<div class="flex items-center gap-3 text-slate-gray font-body-md">
-<span class="material-symbols-outlined text-glassy-blue text-[20px]">check_circle</span> Recovery expectations
-          </div>
-<div class="flex items-center gap-3 text-slate-gray font-body-md">
-<span class="material-symbols-outlined text-glassy-blue text-[20px]">check_circle</span> Revision considerations
-          </div>
-</div>
-<a class="inline-flex items-center gap-2 font-label-md uppercase text-deep-navy hover:text-glassy-blue transition-colors group" href="#">
-          Meet Dr. Maris 
-          <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
-</a>
-</div>
-</div>
-</div>
-</section><section class="w-full py-section-padding px-margin-desktop bg-clinical-surface overflow-hidden">
-<div class="max-w-container-max mx-auto">
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-<div class="lg:col-span-7 order-2 lg:order-1">
-<span class="font-label-md text-glassy-blue uppercase tracking-widest mb-6 block">HOSPITAL-BASED SURGERY</span>
-<h2 class="font-headline-lg font-bold tracking-wide text-deep-navy mb-10 leading-tight text-[64px] mt-16 mb-12">Surgery Performed at City International Hospital (CIH)</h2>
-<div class="space-y-6 mb-10">
-<p class="font-body-lg text-slate-gray leading-relaxed">
-            Major cosmetic and reconstructive procedures require more than just a surgical suite. We operate within a comprehensive medical infrastructure that provides 24/7 emergency support, advanced resuscitation capabilities, and specialized nursing care.
-          </p>
-<p class="font-body-lg text-slate-gray leading-relaxed">
-            This hospital-based environment is critical for patient safety, particularly for complex revision cases and multi-procedure surgeries that require intensive monitoring and professional medical oversight.
-          </p>
-</div>
-<div class="border-t border-slate-200 pt-6 mb-10">
-<p class="text-sm text-slate-500 italic">
-            Disclaimer: DR. MARIS AESTHETICS and City International Hospital are separate entities. CIH is the hospital where surgical procedures are performed.
-          </p>
-</div>
-<a class="inline-flex items-center gap-2 font-label-md uppercase text-deep-navy hover:text-glassy-blue transition-colors group" href="#">
-          Explore Hospital &amp; Facilities 
-          <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
-</a>
-</div>
-<div class="lg:col-span-5 order-1 lg:order-2">
-<div class="aspect-[4/3] rounded-xl overflow-hidden shadow-xl">
-<img alt="City International Hospital Facility" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxLNXCFVyLcdlfs3uKkXCF1nWzjOTlVHjbpSP07wg76cD4otnSBnmCAAt1Q57Tyj15rO6f8Z6857zzPhjjWAmXaeErAAZnwu6mADqs3tc98ftky9z2AYeSGQb0fDf_TJgY_52sEsTvavziZQJlySwrko2v_jKxGIpfSjrhbY2TDZfq64krwVmF90rBv7n4UMWEk2pyh4qcEwDImDsvTDEw7iLuJAeoRqbp3rlrmpdS1aQ7tLL7vbdw5g">
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- REDESIGNED SECTION -->
-<section class="w-full py-[120px] px-margin-desktop bg-medical-white border-t border-slate-200">
-<div class="max-w-container-max mx-auto">
-<div class="mb-20 text-center md:text-left">
-<span class="font-label-md text-glassy-blue uppercase tracking-[0.15em] mb-4 block">International Patients</span>
-<h2 class="font-headline-lg font-bold text-[72px] tracking-tight text-deep-navy mb-8 max-w-4xl leading-none">Planning Plastic Surgery in Vietnam From Overseas</h2>
-<p class="font-body-lg text-slate-gray max-w-3xl leading-relaxed text-xl">
-        Patients from Australia, New Zealand, the United States, Europe and other international markets can begin their consultation process before traveling.
-      </p>
-</div>
-<!-- Horizontal Timeline -->
-<div class="relative mb-24">
-<div class="hidden md:block absolute top-12 left-0 right-0 h-px bg-slate-200 z-0"></div>
-<div class="grid grid-cols-1 md:grid-cols-6 gap-x-8 gap-y-16 relative z-10">
-<div class="flex flex-col bg-medical-white px-2">
-<span class="font-display-lg text-deep-navy text-[72px] leading-none mb-6 font-bold tracking-tighter">01</span>
-<h4 class="font-headline-md font-bold uppercase text-deep-navy mb-4 text-[20px] leading-tight">Send Your Case</h4>
-<p class="font-body-md text-slate-gray">
-          Provide relevant concerns, photographs, medical history, previous surgical information, and implant details where applicable.
-        </p>
-</div>
-<div class="flex flex-col bg-medical-white px-2">
-<span class="font-display-lg text-deep-navy text-[72px] leading-none mb-6 font-bold tracking-tighter">02</span>
-<h4 class="font-headline-md font-bold uppercase text-deep-navy mb-4 text-[20px] leading-tight">Online Consultation</h4>
-<p class="font-body-md text-slate-gray">
-          Preliminary consultation before travel. <span class="italic">Note: Remote consultation does not replace physical examination.</span>
-</p>
-</div>
-<div class="flex flex-col bg-medical-white px-2">
-<span class="font-display-lg text-deep-navy text-[72px] leading-none mb-6 font-bold tracking-tighter">03</span>
-<h4 class="font-headline-md font-bold uppercase text-deep-navy mb-4 text-[20px] leading-tight">Travel to Ho Chi Minh City</h4>
-<p class="font-body-md text-slate-gray">
-          Patient arrives for in-person assessment and clinical evaluation at our facility.
-        </p>
-</div>
-<div class="flex flex-col bg-medical-white px-2">
-<span class="font-display-lg text-deep-navy text-[72px] leading-none mb-6 font-bold tracking-tighter">04</span>
-<h4 class="font-headline-md font-bold uppercase text-deep-navy mb-4 text-[20px] leading-tight">Final Examination &amp; Surgical Planning</h4>
-<p class="font-body-md text-slate-gray">
-          Dr. Maris confirms suitability and finalizes the surgical plan based on physical findings.
-        </p>
-</div>
-<div class="flex flex-col bg-medical-white px-2">
-<span class="font-display-lg text-deep-navy text-[72px] leading-none mb-6 font-bold tracking-tighter">05</span>
-<h4 class="font-headline-md font-bold uppercase text-deep-navy mb-4 text-[20px] leading-tight">Surgery at CIH</h4>
-<p class="font-body-md text-slate-gray">
-          Hospital-based cosmetic surgery performed in a fully accredited international hospital setting.
-        </p>
-</div>
-<div class="flex flex-col bg-medical-white px-2">
-<span class="font-display-lg text-deep-navy text-[72px] leading-none mb-6 font-bold tracking-tighter">06</span>
-<h4 class="font-headline-md font-bold uppercase text-deep-navy mb-4 text-[20px] leading-tight">Recovery &amp; Follow-Up</h4>
-<p class="font-body-md text-slate-gray">
-          Recovery and return travel timing depend on the procedure and individual condition.
-        </p>
-</div>
-</div>
-</div>
-<div class="flex flex-wrap justify-center md:justify-start gap-6">
-<a class="bg-deep-navy text-medical-white px-10 py-4 font-label-md uppercase hover:bg-glassy-blue transition-colors rounded-DEFAULT shadow-md" href="#">Plan Your Surgery in Vietnam</a>
-<a class="border-2 border-deep-navy text-deep-navy px-10 py-4 font-label-md uppercase hover:bg-deep-navy hover:text-medical-white transition-colors rounded-DEFAULT" href="#">Request an Online Consultation</a>
-</div>
-</div>
-</section>
-<!-- END REDESIGNED SECTION -->
-<section class="w-full py-section-padding px-margin-desktop bg-[#F4F8FB]" id="international-journey">
-<div class="max-w-container-max mx-auto">
-<div class="text-center mb-24">
-<span class="font-label-md uppercase text-glassy-blue tracking-[0.2em] mb-6 block">The Process</span>
-<h2 class="font-display-lg font-bold tracking-tight text-deep-navy mb-8 text-[72px] leading-none max-w-4xl mx-auto">Your International Patient Journey</h2>
-<p class="font-body-lg text-slate-gray max-w-[850px] mx-auto text-xl">A seamless, medically-supervised experience from your first inquiry to your final recovery.</p>
-</div>
-<div class="relative max-w-6xl mx-auto">
-<!-- Row 1 -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-x-16 gap-y-24 mb-24 relative">
-<!-- Connecting Line Row 1 -->
-<div class="hidden md:block absolute top-12 left-[15%] right-[15%] h-px bg-slate-200 z-0"></div>
-<div class="flex flex-col items-center text-center relative z-10">
-<span class="font-display-lg text-glassy-blue text-[80px] leading-none mb-8 font-bold tracking-tighter bg-[#F4F8FB] px-4">01</span>
-<h4 class="font-headline-md font-bold uppercase text-deep-navy mb-6 text-[24px] tracking-wide">Send Your Case</h4>
-<p class="font-body-lg text-slate-gray leading-relaxed">Submit your medical history, goals, and high-resolution photos for a preliminary clinical review.</p>
-</div>
-<div class="flex flex-col items-center text-center relative z-10">
-<span class="font-display-lg text-glassy-blue text-[80px] leading-none mb-8 font-bold tracking-tighter bg-[#F4F8FB] px-4">02</span>
-<h4 class="font-headline-md font-bold uppercase text-deep-navy mb-6 text-[24px] tracking-wide">Video Consultation</h4>
-<p class="font-body-lg text-slate-gray leading-relaxed">A direct 1-on-1 video call with Dr. Maris to discuss your surgical plan, expectations, and safety.</p>
-</div>
-<div class="flex flex-col items-center text-center relative z-10">
-<span class="font-display-lg text-glassy-blue text-[80px] leading-none mb-8 font-bold tracking-tighter bg-[#F4F8FB] px-4">03</span>
-<h4 class="font-headline-md font-bold uppercase text-deep-navy mb-6 text-[24px] tracking-wide">Travel Planning</h4>
-<p class="font-body-lg text-slate-gray leading-relaxed">Receive a detailed itinerary, including hospital booking and recommended recovery accommodation.</p>
-</div>
-</div>
-<!-- Row 2 -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-x-16 gap-y-24 relative">
-<!-- Connecting Line Row 2 -->
-<div class="hidden md:block absolute top-12 left-[15%] right-[15%] h-px bg-slate-200 z-0"></div>
-<div class="flex flex-col items-center text-center relative z-10">
-<span class="font-display-lg text-glassy-blue text-[80px] leading-none mb-8 font-bold tracking-tighter bg-[#F4F8FB] px-4">04</span>
-<h4 class="font-headline-md font-bold uppercase text-deep-navy mb-6 text-[24px] tracking-wide">In-Person Exam</h4>
-<p class="font-body-lg text-slate-gray leading-relaxed">Final clinical examination and pre-operative testing at City International Hospital (CIH).</p>
-</div>
-<div class="flex flex-col items-center text-center relative z-10">
-<span class="font-display-lg text-glassy-blue text-[80px] leading-none mb-8 font-bold tracking-tighter bg-[#F4F8FB] px-4">05</span>
-<h4 class="font-headline-md font-bold uppercase text-deep-navy mb-6 text-[24px] tracking-wide">Your Procedure</h4>
-<p class="font-body-lg text-slate-gray leading-relaxed">Surgery performed by Dr. Maris in a fully accredited international hospital setting.</p>
-</div>
-<div class="flex flex-col items-center text-center relative z-10">
-<span class="font-display-lg text-glassy-blue text-[80px] leading-none mb-8 font-bold tracking-tighter bg-[#F4F8FB] px-4">06</span>
-<h4 class="font-headline-md font-bold uppercase text-deep-navy mb-6 text-[24px] tracking-wide">Recovery &amp; Follow-Up</h4>
-<p class="font-body-lg text-slate-gray leading-relaxed">Post-operative care and long-term follow-up schedule to ensure optimal healing results.</p>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- Final CTA -->
-<section class="w-full bg-clinical-surface text-deep-navy py-section-padding px-margin-desktop relative text-center border-t border-slate-200" id="consultation"><div class="max-w-4xl mx-auto relative z-10">
-<div class="text-center mb-16">
-<h2 class="font-headline-lg font-bold tracking-wide mb-8 text-[48px] md:text-[64px] leading-tight text-deep-navy">Begin Your Journey</h2>
-<p class="font-body-lg text-slate-gray max-w-2xl mx-auto">
-      We do not offer generic tourism packages. We provide individualized medical assessments to determine the safest and most effective approach for your goals.
-    </p>
-</div>
-<form class="bg-medical-white p-8 md:p-12 rounded-xl shadow-xl border border-slate-200 text-left">
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-<div class="flex flex-col gap-2">
-<label class="font-label-sm uppercase tracking-wider text-slate-gray" for="full-name">Full Name</label>
-<input class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-glassy-blue focus:ring-1 focus:ring-glassy-blue outline-none transition-all font-body-md" id="full-name" placeholder="Enter your full name" type="text">
-</div>
-<div class="flex flex-col gap-2">
-<label class="font-label-sm uppercase tracking-wider text-slate-gray" for="email">Email Address</label>
-<input class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-glassy-blue focus:ring-1 focus:ring-glassy-blue outline-none transition-all font-body-md" id="email" placeholder="email@example.com" type="email">
-</div>
-<div class="flex flex-col gap-2">
-<label class="font-label-sm uppercase tracking-wider text-slate-gray" for="phone">Phone Number</label>
-<input class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-glassy-blue focus:ring-1 focus:ring-glassy-blue outline-none transition-all font-body-md" id="phone" placeholder="+1 (555) 000-0000" type="tel">
-</div>
-<div class="flex flex-col gap-2">
-<label class="font-label-sm uppercase tracking-wider text-slate-gray" for="interest">Primary Area of Interest</label>
-<select class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-glassy-blue focus:ring-1 focus:ring-glassy-blue outline-none transition-all font-body-md bg-medical-white" id="interest">
-<option value="">Select a procedure</option>
-<option value="rhinoplasty">Rhinoplasty</option>
-<option value="revision">Revision Surgery</option>
-<option value="facial-contouring">Facial Contouring</option>
-<option value="breast-augmentation">Breast Augmentation</option>
-<option value="other">Other Procedure</option>
-</select>
-</div>
-</div>
-<div class="flex flex-col gap-2 mb-10">
-<label class="font-label-sm uppercase tracking-wider text-slate-gray" for="description">Brief Case Description</label>
-<textarea class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-glassy-blue focus:ring-1 focus:ring-glassy-blue outline-none transition-all font-body-md resize-none" id="description" placeholder="Please describe your concerns or previous surgical history..." rows="4"></textarea>
-</div>
-<div class="flex flex-col items-center gap-6">
-<button class="w-full md:w-auto bg-deep-navy text-medical-white px-12 py-4 font-label-md uppercase tracking-widest hover:bg-glassy-blue transition-all rounded-DEFAULT shadow-lg" type="submit">
-        Submit Your Case for Review
-      </button>
-<a class="inline-flex items-center gap-2 text-deep-navy font-label-md uppercase tracking-wider hover:text-glassy-blue transition-colors" href="#">
-<span class="material-symbols-outlined text-[20px]">chat</span>
-        Contact via WhatsApp
-      </a>
-</div>
-</form>
-</div></section><section class="w-full py-section-padding px-margin-desktop bg-medical-white border-t border-slate-200">
-<div class="max-w-container-max mx-auto">
-<div class="mb-16">
-<span class="font-label-md text-glassy-blue uppercase tracking-[0.2em] mb-4 block">SURGICAL PLANNING</span>
-<h2 class="font-headline-lg font-bold text-deep-navy text-[48px] md:text-[64px] leading-tight mb-12">Frequently Asked Questions About Plastic Surgery in Vietnam</h2>
-</div>
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-4">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-16 items-center">
+<!-- Left Column: Text & Timeline (60%) -->
+<div class="md:col-span-7 space-y-8">
 <div class="space-y-4">
-<div class="border-b border-slate-200 py-6">
-<h4 class="font-headline-md font-bold text-deep-navy mb-4 text-[20px]">Is DR. MARIS AESTHETICS a spa or cosmetic surgery provider?</h4>
-<p class="font-body-md text-slate-gray leading-relaxed">We are a specialized cosmetic surgery provider. Unlike spas or beauty clinics, all surgical procedures are performed in a fully accredited international hospital (CIH) with comprehensive medical infrastructure.</p>
+<span class="font-label-sm text-label-sm text-glassy-blue uppercase tracking-widest block">PROFESSIONAL JOURNEY</span>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-deep-navy">Experience Across Cosmetic Surgery &amp; Hospital Environments</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-lg mb-12">Dr. Maris's professional background includes experience across cosmetic surgery institutions and a hospital environment in Ho Chi Minh City.</p>
 </div>
-<div class="border-b border-slate-200 py-6">
-<h4 class="font-headline-md font-bold text-deep-navy mb-4 text-[20px]">Who performs my cosmetic surgery?</h4>
-<p class="font-body-md text-slate-gray leading-relaxed">Every surgery is personally performed by Dr. Maris (Dr. Tran Minh Huy). We do not use 'ghost surgeons' or junior residents; your care is managed directly by the lead surgeon from planning to follow-up.</p>
+<!-- Horizontal Editorial Timeline -->
+<div class="relative pt-8">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-8 relative">
+<!-- Timeline Item 01 -->
+<div class="space-y-4 relative">
+<div class="font-headline-md text-headline-md text-deep-navy/20 font-bold">01</div>
+<p class="font-label-md text-label-md text-deep-navy leading-tight">Koren Star Cosmetic Hospital</p>
 </div>
-<div class="border-b border-slate-200 py-6">
-<h4 class="font-headline-md font-bold text-deep-navy mb-4 text-[20px]">Can I speak with Dr. Maris before travelling to Vietnam?</h4>
-<p class="font-body-md text-slate-gray leading-relaxed">Yes. We require an online consultation via video call to review your medical history, photographs, and surgical goals before any travel arrangements are finalized.</p>
+<!-- Timeline Item 02 -->
+<div class="space-y-4 relative">
+<div class="font-headline-md text-headline-md text-deep-navy/20 font-bold">02</div>
+<p class="font-label-md text-label-md text-deep-navy leading-tight">Asia International Cosmetic Hospital</p>
 </div>
-<div class="border-b border-slate-200 py-6">
-<h4 class="font-headline-md font-bold text-deep-navy mb-4 text-[20px]">Does Dr. Maris perform revision plastic surgery?</h4>
-<p class="font-body-md text-slate-gray leading-relaxed">Dr. Maris specializes in complex revision cases, including corrective rhinoplasty, breast implant revision, and scar management for patients who had unsatisfactory results elsewhere.</p>
+<!-- Timeline Item 03 -->
+<div class="space-y-4 relative">
+<div class="font-headline-md text-headline-md text-deep-navy/20 font-bold">03</div>
+<p class="font-label-md text-label-md text-deep-navy leading-tight">Medika Cosmetic Hospital</p>
+</div>
+<!-- Timeline Item 04 -->
+<div class="space-y-4 relative">
+<div class="font-headline-md text-headline-md text-deep-navy/20 font-bold">04</div>
+<p class="font-label-md text-label-md text-deep-navy leading-tight">City International Hospital (CIH)</p>
 </div>
 </div>
+<!-- Connecting Line (Desktop) -->
+<div class="hidden md:block absolute top-[2.25rem] left-0 w-full h-px bg-outline-variant/20 -z-10"></div>
+</div>
+</div>
+<!-- Right Column: Image (40%) -->
+<div class="md:col-span-5">
+<div class="p-4 bg-clinical-surface rounded-2xl border border-outline-variant/10">
+<div class="aspect-[4/5] rounded-xl overflow-hidden">
+<img alt="Modern premium clinic hallway in Ho Chi Minh City" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1XXbq0nEsgYvRypCDIPl7aYFjLX9jK_4XdlD_cfBculkZTdj5M2lnd9-W1CXBjRYBrDa1nXZqbd-iZUYb1Q7Vi1trslqcuOB4el34aOEFT6XGhIihyHsb_t3BGfWObKnT3UXlvYfzYkzOyHmJWHuhvCsUo0zZ-lbVEw_J-hkqA-JofgimRbz3kNUwXTYtwpLw-ZQi1AXtd-zJ2XICOQ2o-MAFpQA6KGdJnfwk7YcJcVasZJbRsdCYOAt_5n">
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section class="py-section-padding px-margin-mobile md:px-margin-desktop border-b border-outline-variant/10 bg-[#F4F8FB]">
+<div class="max-w-container-max mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-16">
+<!-- Left Column: Heading & Bio (40%) -->
+<div class="md:col-span-5 space-y-6">
 <div class="space-y-4">
-<div class="border-b border-slate-200 py-6">
-<h4 class="font-headline-md font-bold text-deep-navy mb-4 text-[20px]">Can failed cosmetic surgery always be corrected?</h4>
-<p class="font-body-md text-slate-gray leading-relaxed">While many issues can be significantly improved, correction depends on the amount of healthy tissue remaining and the nature of the previous surgery. A thorough assessment is required to determine realistic outcomes.</p>
+<span class="font-label-sm text-label-sm text-glassy-blue uppercase tracking-widest block">QUALIFICATIONS</span>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-deep-navy">Medical Training &amp; Professional Credentials</h2>
 </div>
-<div class="border-b border-slate-200 py-6">
-<h4 class="font-headline-md font-bold text-deep-navy mb-4 text-[20px]">How long should I stay in Vietnam after plastic surgery?</h4>
-<p class="font-body-md text-slate-gray leading-relaxed">Stay duration varies by procedure, typically ranging from 7 to 14 days. This ensures you are past the immediate post-operative phase and have had your initial follow-up examinations before flying.</p>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                    Dr. Tran Minh Huy maintains a rigorous commitment to verified medical standards and continuous professional development. His credentials represent a foundation of academic excellence and clinical certification recognized by the Vietnam Ministry of Health.
+                </p>
 </div>
-<div class="border-b border-slate-200 py-6">
-<h4 class="font-headline-md font-bold text-deep-navy mb-4 text-[20px]">How much does plastic surgery cost in Vietnam?</h4>
-<p class="font-body-md text-slate-gray leading-relaxed">Costs are significantly more competitive than in Australia or the US, but we prioritize safety and hospital-based care over 'budget' pricing. Quotes are provided after your clinical assessment.</p>
+<!-- Right Column: Credential Rows (60%) -->
+<div class="md:col-span-7 flex flex-col justify-center">
+<div class="divide-y divide-outline-variant/20">
+<div class="py-4 flex flex-col md:flex-row md:justify-between md:items-center gap-2">
+<span class="font-label-sm text-label-sm text-deep-navy uppercase tracking-wider">SPECIALTY</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Specialist Level I in Aesthetic Surgery (Vietnam)</span>
 </div>
-<div class="border-b border-slate-200 py-6">
-<h4 class="font-headline-md font-bold text-deep-navy mb-4 text-[20px]">What should I send if I need revision surgery?</h4>
-<p class="font-body-md text-slate-gray leading-relaxed">Please provide your previous operative reports, the date of your last surgery, high-resolution photos of the area, and a detailed description of your specific concerns.</p>
+<div class="py-4 flex flex-col md:flex-row md:justify-between md:items-center gap-2">
+<span class="font-label-sm text-label-sm text-deep-navy uppercase tracking-wider">TRAINING</span>
+<span class="font-body-md text-body-md text-on-surface-variant">University of Medicine and Pharmacy at Ho Chi Minh City</span>
+</div>
+<div class="py-4 flex flex-col md:flex-row md:justify-between md:items-center gap-2">
+<span class="font-label-sm text-label-sm text-deep-navy uppercase tracking-wider">PRACTICE CERTIFICATE</span>
+<span class="font-body-md text-body-md text-on-surface-variant">0011736/BYT-CCHN</span>
+</div>
+<div class="py-4 flex flex-col md:flex-row md:justify-between md:items-center gap-2">
+<span class="font-label-sm text-label-sm text-deep-navy uppercase tracking-wider">ISSUED</span>
+<span class="font-body-md text-body-md text-on-surface-variant">26.12.2013</span>
+</div>
+<div class="py-4 flex flex-col md:flex-row md:justify-between md:items-center gap-2">
+<span class="font-label-sm text-label-sm text-deep-navy uppercase tracking-wider">ISSUING AUTHORITY</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Vietnam Ministry of Health</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section class="bg-[#132B43] text-medical-white py-24 px-margin-mobile md:px-margin-desktop overflow-hidden">
+<div class="max-w-container-max mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-16 items-center">
+<div class="md:col-span-7 space-y-8">
+<div class="space-y-4">
+<span class="font-label-sm text-label-sm text-glassy-blue uppercase tracking-widest block">REVISION &amp; COMPLEX CASES</span>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg leading-tight">A Focus on Surgery After Previous Procedures</h2>
+<p class="font-body-lg text-body-lg text-medical-white/80">
+                        Revision surgery requires a different assessment from primary cosmetic surgery because previous operations may have changed tissue, anatomy, implant pockets, scar patterns and structural support.
+                    </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 border-t border-white/10 pt-8">
+<ul class="space-y-3">
+<li class="flex items-center text-body-md text-medical-white/70 border-b border-white/10 pb-2"><span class="material-symbols-outlined text-glassy-blue mr-3 text-sm">arrow_forward</span>capsular contracture</li>
+<li class="flex items-center text-body-md text-medical-white/70 border-b border-white/10 pb-2"><span class="material-symbols-outlined text-glassy-blue mr-3 text-sm">arrow_forward</span>implant rupture</li>
+<li class="flex items-center text-body-md text-medical-white/70 border-b border-white/10 pb-2"><span class="material-symbols-outlined text-glassy-blue mr-3 text-sm">arrow_forward</span>implant displacement</li>
+<li class="flex items-center text-body-md text-medical-white/70 border-b border-white/10 pb-2"><span class="material-symbols-outlined text-glassy-blue mr-3 text-sm">arrow_forward</span>breast asymmetry</li>
+<li class="flex items-center text-body-md text-medical-white/70 pb-2"><span class="material-symbols-outlined text-glassy-blue mr-3 text-sm">arrow_forward</span>symmastia</li>
+</ul>
+<ul class="space-y-3">
+<li class="flex items-center text-body-md text-medical-white/70 border-b border-white/10 pb-2"><span class="material-symbols-outlined text-glassy-blue mr-3 text-sm">arrow_forward</span>implant removal</li>
+<li class="flex items-center text-body-md text-medical-white/70 border-b border-white/10 pb-2"><span class="material-symbols-outlined text-glassy-blue mr-3 text-sm">arrow_forward</span>excessive scar tissue</li>
+<li class="flex items-center text-body-md text-medical-white/70 border-b border-white/10 pb-2"><span class="material-symbols-outlined text-glassy-blue mr-3 text-sm">arrow_forward</span>free silicone</li>
+<li class="flex items-center text-body-md text-medical-white/70 border-b border-white/10 pb-2"><span class="material-symbols-outlined text-glassy-blue mr-3 text-sm">arrow_forward</span>silicone migration or leakage</li>
+<li class="flex items-center text-body-md text-medical-white/70 pb-2"><span class="material-symbols-outlined text-glassy-blue mr-3 text-sm">arrow_forward</span>failed breast augmentation</li>
+</ul>
+</div>
+<div class="space-y-8 pt-4">
+<p class="font-body-md text-body-md text-medical-white/60 italic">
+                        Not every previous surgical problem can be corrected in the same way. Suitability depends on individual examination, previous procedures, current anatomy and the patient's goals.
+                    </p>
+<button class="bg-glassy-blue text-medical-white font-label-md text-label-md px-8 py-4 rounded hover:bg-medical-white hover:text-deep-navy transition-colors duration-300 shadow-lg">
+                        Request a Revision Surgery Assessment
+                    </button>
+</div>
+</div>
+<div class="md:col-span-5">
+<div class="aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+<img alt="Specialist surgeon examining medical scans for revision planning" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdQyeOuQas2HDVrVcVv0mWZjxK3NWf1aDA_QEng9nRjmoK2pYH1XjEumfk0988xq1TbuDpUye-R2kcmzj_NraeiFCSU7EiiUQcK5Wg-heWJarwStAYZNOfwi30sJc6xoXm5FXiLNhEnrR_0IJEJov2CIwFzzznKxxh2ptDNszjA5d22zwbu-pLLc42i4MJd3LN6i-eVWO1UU6D7Q1SWaZuz51f0dMV7ZyaKKxbyKgxHxbTC40sadlI8Q">
 </div>
 </div>
 </div>
 </div>
 </section>
-<footer class="w-full bg-deep-navy text-medical-white">
-  
-  <div class="max-w-container-max mx-auto px-margin-desktop py-20">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-      <div class="space-y-6">
-        <div class="flex items-center gap-3">
-          <span class="font-headline-md text-[28px] tracking-tight font-bold uppercase">Maris Aesthetics</span>
-        </div>
-        <p class="font-body-md text-medical-white/70 leading-relaxed">
-          Hospital-Based Surgical Excellence in Ho Chi Minh City. Specialized in complex revision and primary cosmetic procedures.
-        </p>
-        <div class="space-y-3 text-sm text-medical-white/60">
-          <p class="flex items-start gap-3"><span class="material-symbols-outlined text-[18px] text-glassy-blue">location_on</span> City International Hospital (CIH), Ho Chi Minh City, Vietnam</p>
-          <p class="flex items-start gap-3"><span class="material-symbols-outlined text-[18px] text-glassy-blue">schedule</span> Mon - Sat: 09:00 - 18:00</p>
-        </div>
-      </div>
-      <div>
-        <h4 class="font-label-md uppercase tracking-widest mb-8 text-glassy-blue">Procedures</h4>
-        <ul class="space-y-4 text-medical-white/70 font-body-md">
-          <li class=""><a href="#" class="hover:text-glassy-blue transition-colors">Mini Facelift</a></li>
-          <li class=""><a href="#" class="hover:text-glassy-blue transition-colors">Rhinoplasty</a></li>
-          <li class=""><a href="#" class="hover:text-glassy-blue transition-colors">Revision Surgery</a></li>
-          <li class=""><a href="#" class="hover:text-glassy-blue transition-colors">Breast Surgery</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="font-label-md uppercase tracking-widest mb-8 text-glassy-blue">Patient Info</h4>
-        <ul class="space-y-4 text-medical-white/70 font-body-md">
-          <li class=""><a href="#" class="hover:text-glassy-blue transition-colors">International Patients</a></li>
-          <li class=""><a href="#" class="hover:text-glassy-blue transition-colors">Pricing</a></li>
-          <li class=""><a href="#" class="hover:text-glassy-blue transition-colors">Clinic Experience</a></li>
-          <li class=""><a href="#" class="hover:text-glassy-blue transition-colors">About Us</a></li>
-        </ul>
-      </div>
-      <div class="space-y-8">
-        <div>
-          <h4 class="font-label-md uppercase tracking-widest mb-6 text-glassy-blue">Contact</h4>
-          <div class="flex gap-4 mb-8">
-            <a href="#" class="w-10 h-10 rounded-full border border-medical-white/10 flex items-center justify-center hover:bg-glassy-blue transition-all"><span class="material-symbols-outlined text-[20px]">share</span></a>
-            <a href="#" class="w-10 h-10 rounded-full border border-medical-white/10 flex items-center justify-center hover:bg-glassy-blue transition-all"><span class="material-symbols-outlined text-[20px]">mail</span></a>
-          </div>
-          
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="border-t border-medical-white/10 py-8 px-margin-desktop">
-    <div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-medical-white/40">
-      <p class="">© 2024 MARIS AESTHETICS. All Rights Reserved.</p>
-      <div class="flex gap-8">
-        <a href="#" class="hover:text-medical-white transition-colors">Privacy Policy</a>
-        <a href="#" class="hover:text-medical-white transition-colors">Terms of Service</a>
-      </div>
-    </div>
-  </div>
-</footer>
+<!-- Surgical Philosophy & Expertise (Bento Grid) -->
+<!-- Revision & Complex Surgery -->
+
+<!-- Hospital & International (Asymmetric Layout) -->
+<section class="py-section-padding px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto bg-[#F4F8FB] bg-medical-white">
+<div class="flex flex-col md:flex-row gap-16 mb-24">
+<div class="md:w-1/2 aspect-[4/3] rounded-xl overflow-hidden ambient-shadow order-2 md:order-1">
+<img alt="Modern surgical theater at City International Hospital, highly sterile and advanced equipment" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1WfULKLvdA7A_Rj8nBOX_Kn4LmHjU2-su8dEHYnuCNvWH8zGH2VDEOxtFMgWgeR6If4x7n5vdvVky1h0MeTtSV8PStHQs2fsgjwbQZmU1Q1PgUg6dJdriyJXI1p5Bn9OTSDBvBwctYIf2mrg6TFJIMeg3auoz96farOQg5_OfYLFN0fu-A5WYBZolrU8LjIPAQ5J6My4bPbRib4k0H1rV7OGK8kdzTOHwxqk7KYMM_icNzO6KJ7Pjb1nJ4r">
 </div>
+<div class="md:w-1/2 flex flex-col justify-center order-1 md:order-2">
+<span class="material-symbols-outlined text-4xl text-glassy-blue mb-6">local_hospital</span>
+<h2 class="font-headline-lg-mobile md:font-headline-md text-headline-lg-mobile md:text-headline-md text-deep-navy mb-4">Surgery at City International Hospital (CIH)</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+                        Patient safety is paramount. All major surgical procedures are performed within the state-of-the-art operating theaters at City International Hospital. This ensures access to comprehensive medical infrastructure, specialized anesthesiology teams, and rigorous sterilization protocols that only a full-scale hospital can provide.
+                    </p>
+<ul class="space-y-2 font-body-md text-body-md text-deep-navy font-medium">
+<li class="flex items-center"><span class="material-symbols-outlined text-glassy-blue mr-3 text-sm">check_circle</span> JCI Accredited Standards</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-glassy-blue mr-3 text-sm">check_circle</span> 24/7 Intensive Care Support</li>
+</ul>
+</div>
+</div>
+
+</section>
+<!-- Consultation CTA -->
+
 </main>
+<!-- Footer -->
+<section class="bg-[#F4F8FB] py-section-padding px-margin-mobile md:px-margin-desktop overflow-hidden">
+  <div class="max-w-container-max mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-16 items-center">
+      <!-- Left Column: Content -->
+      <div class="md:col-span-7 space-y-8">
+        <div class="space-y-4">
+          <span class="font-label-sm text-label-sm text-glassy-blue uppercase tracking-widest block">INTERNATIONAL PATIENTS</span>
+          <h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-deep-navy leading-tight">Consult Dr. Maris Before Travelling to Vietnam</h2>
+          <p class="font-body-lg text-body-lg text-on-surface-variant">
+            “Patients from Australia, New Zealand, the United States, Europe and other international markets can begin discussing their case before travelling to Ho Chi Minh City.”
+          </p>
+        </div>
+        
+        <div class="space-y-4">
+          <p class="font-label-md text-label-md text-deep-navy uppercase tracking-wider">What you can provide for preliminary review:</p>
+          <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
+            <li class="flex items-center text-body-md text-on-surface-variant"><span class="material-symbols-outlined text-glassy-blue mr-3 text-sm">check_circle</span>current concerns</li>
+            <li class="flex items-center text-body-md text-on-surface-variant"><span class="material-symbols-outlined text-glassy-blue mr-3 text-sm">check_circle</span>recent photographs</li>
+            <li class="flex items-center text-body-md text-on-surface-variant"><span class="material-symbols-outlined text-glassy-blue mr-3 text-sm">check_circle</span>medical history</li>
+            <li class="flex items-center text-body-md text-on-surface-variant"><span class="material-symbols-outlined text-glassy-blue mr-3 text-sm">check_circle</span>previous surgery information</li>
+            <li class="flex items-center text-body-md text-on-surface-variant"><span class="material-symbols-outlined text-glassy-blue mr-3 text-sm">check_circle</span>implant details</li>
+            <li class="flex items-center text-body-md text-on-surface-variant"><span class="material-symbols-outlined text-glassy-blue mr-3 text-sm">check_circle</span>previous operation reports</li>
+            <li class="flex items-center text-body-md text-on-surface-variant"><span class="material-symbols-outlined text-glassy-blue mr-3 text-sm">check_circle</span>relevant investigations</li>
+          </ul>
+        </div>
+
+        <div class="bg-medical-white p-6 border-l-4 border-glassy-blue rounded-r-lg shadow-sm">
+          <p class="font-headline-md text-2xl text-deep-navy italic">"Your trip should begin with information — not uncertainty."</p>
+        </div>
+
+        <p class="font-body-md text-body-md text-on-surface-variant opacity-70 italic">
+          Note: Remote consultation supports preliminary planning but does not replace the in-person examination required before a final surgical decision.
+        </p>
+
+        <div class="flex flex-wrap items-center gap-8 pt-4">
+          <button class="bg-deep-navy text-medical-white font-label-md text-label-md px-8 py-4 rounded hover:bg-glassy-blue transition-colors duration-300 shadow-lg">
+            Request an Online Consultation
+          </button>
+          <a href="#" class="inline-flex items-center space-x-2 font-label-md text-label-md text-deep-navy hover:text-glassy-blue transition-colors">
+            <span class="">International Patient Guide</span>
+            <span class="material-symbols-outlined text-sm">arrow_right_alt</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Column: Image -->
+      <div class="md:col-span-5">
+        <div class="aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl border border-outline-variant/10">
+          <img alt="Dr. Maris conducting a remote patient consultation" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1UyuNh8ose2rDhcXXEcTYoAdy4x4Ry3MwC3pg_wXtQn4c63X1-UQdzF14j9kip2XLiqMvjaesf48BCWcM1Dqw1Clq1SzLJU6HUXKTRwKYAjnv1O8y-ZZ8EgA2jGpludA-yFWXoN6vSOb7-Bpa1pIcKLnhasL4U6-8QBhJmhnlM0_pftftjplRV_VA8mM9Nx_z24iA7y5fVSFl6vtZ6rOO5GTlKvBKPeMWYartYc6acnLzIToaIIAzE2Qcg">
+        </div>
+      </div>
+    </div>
+  </div>
+</section><footer class="bg-primary dark:bg-primary-container border-t border-white/10 w-full">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-margin-desktop py-12 max-w-container-max mx-auto">
+<div class="font-headline-md text-headline-md text-on-primary dark:text-on-primary-container mb-6 md:mb-0">
+                MARIS AESTHETICS
+            </div>
+<div class="flex flex-wrap justify-center md:justify-end gap-6 md:gap-8 mb-6 md:mb-0">
+<a class="font-body-md text-body-md text-on-primary/70 hover:text-on-primary hover:text-secondary-container transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-md text-body-md text-on-primary/70 hover:text-on-primary hover:text-secondary-container transition-colors" href="#">Terms of Service</a>
+<a class="font-body-md text-body-md text-on-primary/70 hover:text-on-primary hover:text-secondary-container transition-colors" href="#">Medical Disclaimer</a>
+<a class="font-body-md text-body-md text-on-primary/70 hover:text-on-primary hover:text-secondary-container transition-colors" href="#">Accessibility</a>
+</div>
+<div class="font-body-md text-body-md text-on-primary dark:text-on-primary-container text-sm mt-6 md:mt-0 opacity-60">
+                © 2024 MARIS AESTHETICS. ALL RIGHTS RESERVED.
+            </div>
+</div>
+</footer>
+
+
+
+
+
+
 
 
 

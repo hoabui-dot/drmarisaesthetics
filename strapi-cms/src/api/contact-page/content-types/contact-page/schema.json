@@ -34,7 +34,9 @@
       "components": [
         "contact.hero",
         "contact.consultation-section",
-        "contact.map-section"
+        "contact.map-section",
+        "contact.expectation",
+        "contact.faq"
       ]
     }
   }

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const STRAPI_URL = (process.env.STRAPI_URL || "http://smilux-strapi:1337").replace(/\/$/, "");
+const STRAPI_URL = (process.env.STRAPI_URL || "http://smilux-strapi:22345").replace(/\/$/, "");
 
 type RouteContext = {
   params: Promise<{ path: string[] }>;
@@ -10,8 +10,8 @@ type RouteContext = {
  * Serves public Strapi uploads through the frontend origin.
  *
  * Browser requests use /api/strapi-media/... while the server fetches
- * STRAPI_URL (.../smilux-strapi:1337 in Docker). This is required because
- * localhost:1337 is the host's address in a browser, but is the frontend
+ * STRAPI_URL (.../smilux-strapi:22345 in Docker). This is required because
+ * localhost:22345 is the host's address in a browser, but is the frontend
  * container itself when Next Image optimizes an image server-side.
  */
 export async function GET(request: NextRequest, context: RouteContext) {

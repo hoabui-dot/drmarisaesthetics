@@ -27,9 +27,9 @@ interface SeoDefaults {
 }
 
 const FALLBACKS = {
-  title: "Smilux Dental | Saigon International Dental Clinic",
-  description: "Trusted dental care with advanced technology and experienced specialists in Ho Chi Minh City.",
-  siteName: "Smilux Dental",
+  title: "DR. MARIS AESTHETICS | Plastic Surgery in Vietnam",
+  description: "Surgeon-led, hospital-based cosmetic surgery in Ho Chi Minh City for international patients.",
+  siteName: "DR. MARIS AESTHETICS",
 };
 
 function first<T>(...values: Array<T | null | undefined | "">): T | undefined {

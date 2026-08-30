@@ -53,7 +53,7 @@ export function TestimonialsSection({ data }: { data: HomepageTestimonialsSectio
         )}
       </div>
       <div className="testimonials-section-image">
-        {data.sectionImage?.url ? <Image src={data.sectionImage.url} alt={data.sectionImageAlt || data.sectionImage.alt || 'Smiling Smilux Dental patient'} fill className="object-cover" sizes="(max-width: 1023px) 100vw, 31vw" priority /> : null}
+        {data.sectionImage?.url ? <Image src={data.sectionImage.url} alt={data.sectionImageAlt || data.sectionImage.alt || 'DR. MARIS AESTHETICS patient result'} fill className="object-cover" sizes="(max-width: 1023px) 100vw, 31vw" priority /> : null}
       </div>
     </section>
   )

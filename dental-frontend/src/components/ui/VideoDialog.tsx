@@ -51,14 +51,14 @@ export function VideoDialog({ open, source, onClose }: { open: boolean; source?:
         <iframe
           className="aspect-video w-full rounded-lg bg-black"
           src={youtubeEmbedUrl}
-          title="Smilux Dental video"
+          title="DR. MARIS AESTHETICS video"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
         />
       ) : source ? (
         <video className="aspect-video w-full rounded-lg bg-black" controls autoPlay src={source} />
       ) : (
-        <p className="aspect-video rounded-lg bg-black p-8 text-center text-smilux-body">The clinic video is not configured yet.</p>
+          <p className="aspect-video rounded-lg bg-black p-8 text-center text-smilux-body">The clinical video is not configured yet.</p>
       )}
     </div>
   </div>
