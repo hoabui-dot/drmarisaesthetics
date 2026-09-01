@@ -17,11 +17,12 @@ const staticNavigation: Navigation = {
   navigation: [
     { id: 1, label: 'About', href: '/about-us' },
     { id: 2, label: 'Our Team', href: '/our-team' },
-    { id: 3, label: 'Treatments', href: '/services/rhinoplasty', children: [
-      { id: 31, label: 'Rhinoplasty', href: '/services/rhinoplasty' },
+    { id: 3, label: 'Face', href: '/face/rhinoplasty', children: [
+      { id: 31, label: 'Rhinoplasty', href: '/face/rhinoplasty' },
     ] },
-    { id: 4, label: 'Results', href: '/results' },
-    { id: 5, label: 'Contact', href: '/contact' },
+    { id: 4, label: 'Treatments', href: '/treatments' },
+    { id: 5, label: 'Results', href: '/results' },
+    { id: 6, label: 'Contact', href: '/contact' },
   ],
   ctaText: 'BOOK A CONSULTATION',
   ctaLink: '/contact#form-section',
@@ -33,7 +34,7 @@ const staticFooter: FooterData = {
   links: [],
   linkGroups: [
     { id: 1, heading: 'EXPLORE', links: [{ id: 1, label: 'About Us', href: '/about-us' }, { id: 2, label: 'Our Team', href: '/our-team' }, { id: 3, label: 'Patient Results', href: '/results' }] },
-    { id: 2, heading: 'PATIENTS', links: [{ id: 4, label: 'Rhinoplasty', href: '/services/rhinoplasty' }, { id: 5, label: 'Contact & Consultation', href: '/contact' }, { id: 6, label: 'Medical Disclaimer', href: '/medical-disclaimer' }] },
+    { id: 2, heading: 'PATIENTS', links: [{ id: 4, label: 'Rhinoplasty', href: '/face/rhinoplasty' }, { id: 5, label: 'Contact & Consultation', href: '/contact' }, { id: 6, label: 'Medical Disclaimer', href: '/medical-disclaimer' }] },
   ],
   socialLinks: [],
   appointmentLabel: 'BOOK A CONSULTATION',

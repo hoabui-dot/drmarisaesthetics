@@ -17,7 +17,11 @@
  * NO hardcoded defaults — missing vars throw at startup.
  */
 
-export default ({ env }) => ({
+export default ({ env }) => {
+  const publicUrl = env("PUBLIC_URL")
+  const publicHostname = new URL(publicUrl).hostname
+
+  return {
   // Internal binding — always 0.0.0.0:1337 inside the container/host
   host: env("HOST"),
   port: env.int("PORT"),
@@ -28,12 +32,12 @@ export default ({ env }) => ({
     populateRelations: env.bool("WEBHOOKS_POPULATE_RELATIONS", false),
   },
   // Public-facing URL (the Cloudflare https:// URL)
-  url: env("PUBLIC_URL"),
+  url: publicUrl,
   // Vite host-header check — add Cloudflare hostname so admin panel loads
   allowedHosts: [
     "localhost",
     "127.0.0.1",
-    "100.68.50.41",
+    publicHostname,
     // e.g. "guild-biblical-expectations-easily.trycloudflare.com"
     env("CLOUDFLARE_TUNNEL_HOST", ""),
   ].filter(Boolean),
@@ -48,4 +52,5 @@ export default ({ env }) => ({
     ].filter(Boolean),
     credentials: true,
   },
-});
+  }
+}

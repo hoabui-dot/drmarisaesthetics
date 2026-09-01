@@ -227,7 +227,7 @@ export function useHomepageMotion(root: RefObject<HTMLElement | null>) {
       // Hospital is owned by the isolated Observer swipe system above. A
       // second generic reveal trigger here would fight its autoAlpha/y state
       // exactly as the slide enters or exits the pinned chapter.
-      if (['process', 'revision', 'hospital'].includes(section.getAttribute('data-motion-section') || '')) return
+      if (['process', 'procedures', 'revision', 'hospital'].includes(section.getAttribute('data-motion-section') || '')) return
       const elements = section.querySelectorAll('[data-reveal], .stitch-kicker, h2, h3, .stitch-clinic-image, .stitch-portrait, .stitch-faq-grid article')
       if (!elements.length) return
       gsap.from(elements, {

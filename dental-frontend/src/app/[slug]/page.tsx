@@ -187,7 +187,20 @@ export default async function LandingPage({ params }: PageProps) {
       </>
     )
   } catch (error) {
-    // Return error UI instead of crashing
+    // `notFound()` throws an internal Next.js control-flow error. Re-throw it
+    // so unknown slugs reach the app-level 404 instead of being rendered as a
+    // generic CMS loading error.
+    if (
+      error &&
+      typeof error === 'object' &&
+      'digest' in error &&
+      typeof error.digest === 'string' &&
+      error.digest.startsWith('NEXT_HTTP_ERROR_FALLBACK')
+    ) {
+      throw error
+    }
+
+    // Keep a recoverable error state for genuine CMS/runtime failures.
     return (
       <main className="min-h-screen flex items-center justify-center bg-background">
         <div className="max-w-md w-full text-center space-y-4 px-4">

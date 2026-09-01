@@ -76,6 +76,8 @@ export function Header({ navigation }: HeaderProps) {
     || pathname === '/our-team'
     || pathname === '/services'
     || pathname.startsWith('/services/')
+    || pathname === '/treatments'
+    || pathname.startsWith('/face/')
     || pathname.startsWith('/news');
   const { open: openBookingModal } = useBookingModal();
   const { shouldSimplify } = useMobileAnimation();

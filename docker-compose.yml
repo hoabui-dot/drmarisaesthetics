@@ -26,6 +26,7 @@ services:
       context: ./strapi-cms
       dockerfile: Dockerfile
       args:
+        PUBLIC_URL: ${STRAPI_PUBLIC_URL}
         STRAPI_ADMIN_BACKEND_URL: ${STRAPI_PUBLIC_URL}
     image: drmaris-dentist-cms:1.0.0
     platform: linux/amd64

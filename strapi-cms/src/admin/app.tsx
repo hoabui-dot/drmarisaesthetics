@@ -25,9 +25,91 @@ const readResponsePayload = async (response: Response): Promise<AdminResponsePay
   }
 }
 
+type ClipboardWithFallback = Clipboard & {
+  __smiluxClipboardFallbackInstalled?: boolean
+}
+
+const copyWithExecCommand = (text: string) => {
+  const textarea = document.createElement('textarea')
+  const activeElement = document.activeElement as HTMLElement | null
+
+  textarea.value = text
+  textarea.setAttribute('readonly', '')
+  textarea.style.position = 'fixed'
+  textarea.style.top = '0'
+  textarea.style.left = '-9999px'
+  textarea.style.opacity = '0'
+  textarea.style.pointerEvents = 'none'
+
+  document.body.appendChild(textarea)
+  textarea.focus()
+  textarea.select()
+  textarea.setSelectionRange(0, textarea.value.length)
+
+  let copied = false
+  try {
+    copied = document.execCommand('copy')
+  } finally {
+    textarea.remove()
+    activeElement?.focus?.({ preventScroll: true })
+  }
+
+  return copied
+}
+
+const installClipboardFallback = () => {
+  if (typeof navigator === 'undefined' || typeof document === 'undefined') return
+
+  const navigatorWithClipboard = navigator as Navigator & {
+    clipboard?: ClipboardWithFallback
+  }
+  const clipboard = navigatorWithClipboard.clipboard
+
+  if (clipboard?.__smiluxClipboardFallbackInstalled) return
+
+  const nativeWriteText = clipboard?.writeText?.bind(clipboard)
+  const writeText = async (text: string) => {
+    if (typeof text !== 'string') {
+      throw new TypeError('Clipboard text must be a string')
+    }
+
+    try {
+      if (nativeWriteText) {
+        await nativeWriteText(text)
+        return
+      }
+    } catch (error) {
+      console.warn('[Smilux Admin] Native clipboard unavailable; using document fallback', error)
+    }
+
+    if (!copyWithExecCommand(text)) {
+      throw new Error('Clipboard fallback failed')
+    }
+  }
+
+  const fallbackClipboard = (clipboard || {}) as ClipboardWithFallback
+  Object.defineProperty(fallbackClipboard, 'writeText', {
+    configurable: true,
+    value: writeText,
+  })
+  Object.defineProperty(fallbackClipboard, '__smiluxClipboardFallbackInstalled', {
+    configurable: true,
+    value: true,
+  })
+
+  if (!clipboard) {
+    Object.defineProperty(navigatorWithClipboard, 'clipboard', {
+      configurable: true,
+      value: fallbackClipboard,
+    })
+  }
+}
+
 export default {
   bootstrap() {
     if (typeof window === 'undefined') return
+
+    installClipboardFallback()
 
     const debugWindow = window as typeof window & { __smiluxAdminFetchDebug?: boolean }
     if (debugWindow.__smiluxAdminFetchDebug) return
