@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   postgres:
     image: postgres:16-alpine
@@ -21,7 +19,7 @@ services:
       timeout: 5s
       retries: 5
 
-  smilux-strapi:
+  drmaris-strapi:
     build:
       context: ./strapi-cms
       dockerfile: Dockerfile
@@ -59,7 +57,7 @@ services:
       PUBLIC_URL: ${STRAPI_PUBLIC_URL}
       FRONTEND_URL: ${FRONTEND_URL}
       # Internal Docker URL; localhost inside Strapi points back to Strapi itself.
-      NEXTJS_URL: http://smilux-frontend:2234
+      NEXTJS_URL: http://drmaris-frontend:2234
       PREVIEW_SECRET: ${NEXT_PREVIEW_SECRET}
       STRAPI_WEBHOOK_SECRET: ${STRAPI_WEBHOOK_SECRET}
       # Cloudflare tunnel — hostname only (no https://), used by allowedHosts + CORS
@@ -88,7 +86,7 @@ services:
       start_period: 60s
       retries: 3
 
-  smilux-frontend:
+  drmaris-frontend:
     build:
       context: ./dental-frontend
       dockerfile: Dockerfile
@@ -149,17 +147,17 @@ services:
 
 volumes:
   postgres_data:
-    driver: local
     name: dental-postgres-data
+    external: true
 
   strapi_uploads:
-    driver: local
     name: dental-strapi-uploads
+    external: true
 
   strapi_cache:
-    driver: local
     name: dental-strapi-cache
+    external: true
 networks:
   dental-network:
-    driver: bridge
     name: dental-network
+    external: true

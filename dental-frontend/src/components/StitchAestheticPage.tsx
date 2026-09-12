@@ -9,18 +9,32 @@ import { useHomepageMotion } from '@/src/hooks/useHomepageMotion'
 import { useSignatureProceduresMotion } from '@/src/hooks/useSignatureProceduresMotion'
 import { resultsMockData } from '@/src/data/results'
 import { InternationalPatientJourneySection } from '@/src/components/homepage/InternationalPatientJourneySection'
-import { PlanningProcessSection } from '@/src/components/homepage/PlanningProcessSection'
+import { PlanningProcessSection, planningSteps } from '@/src/components/homepage/PlanningProcessSection'
 import { PatientResultsGallerySection } from '@/src/components/homepage/PatientResultsGallerySection'
 import { MotionFaqAccordion } from '@/src/components/ui/motion-faq-accordion'
+import { ConsultationCtaSection } from '@/src/components/blocks/ConsultationCtaSection'
+import { useOurTeamMotion } from '@/src/hooks/useOurTeamMotion'
 import { useRef } from 'react'
+import type { HomepageEditorialData } from '@/src/types/homepage-editorial'
 
-const images = {
+/* const legacyImages = {
   hero: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCTeb4K7icJOejOCNmhoM1L_97JimcI6Qtyot9YzMr51gD3_D096TT551datl7elzq4TGEQz-bEMf8KBAUaMGPSuRx-gXA7LQDE6AxQJeik8HAprXx5WLc0J8tMTKQRuN5tTfMsno6xTgx-ocAouFxiXWQRiCATFFvjwsLvpxprL1m7V9S-mUEXDc3L_aWSsmNthvE245NzLwUH0W-RYhnjXBO7LUB-OAqjk5SNLSZFeUzTH3V751D0',
   heroDoctor: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCTeb4K7icJOejOCNmhoM1L_97JimcI6Qtyot9YzMr51gD3_D096TT551datl7elzq4TGEQz-bEMf8KBAUaMGPSuRx-gXA7LQDE6AxQJeik8HAprXx5WLc0J8tMTKQRuN5tTfMsno6xTgx-ocAouFxiXWQRiCATFFvjwsLvpxprL1m7V9S-mUEXDc3L_aWSsmNthvE245NzLwUH0W-RYhnjXBO7LUB-OAqjk5SNLSZFeUzTH3V751D0',
   doctor: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCTeb4K7icJOejOCNmhoM1L_97JimcI6Qtyot9YzMr51gD3_D096TT551datl7elzq4TGEQz-bEMf8KBAUaMGPSuRx-gXA7LQDE6AxQJeik8HAprXx5WLc0J8tMTKQRuN5tTfMsno6xTgx-ocAouFxiXWQRiCATFFvjwsLvpxprL1m7V9S-mUEXDc3L_aWSsmNthvE245NzLwUH0W-RYhnjXBO7LUB-OAqjk5SNLSZFeUzTH3V751D0',
   clinic: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDxLNXCFVyLcdlfs3uKkXCF1nWzjOTlVHjbpSP07wg76cD4otnSBnmCAAt1Q57Tyj15rO6f8Z6857zzPhjjWAmXaeErAAZnwu6mADqs3tc98ftky9z2AYeSGQb0fDf_TJgY_52sEsTvavziZQJlySwrko2v_jKxGIpfSjrhbY2TDZfq64krwVmF90rBv7n4UMWEk2pyh4qcEwDImDsvTDEw7iLuJAeoRqbp3rlrmpdS1aQ7tLL7vbdw5g',
   aboutHospital: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA1LCeH-Ppjwbtbg4zULKHP3OYSwQrWS6JnKRpkXMJKfp-4xvfAuEibObKn17fqXDLCQqZ35tFmBIgGFP_Cb7BXwHWQE3g35huXXerG_hLfwuFpyoDtba24X29bZ1Tu7ki0OyueVd7K1JGxneXkimaHpIVJhm8fXx9mYYvtyW5FyZ3en95kLINrU96c5hMMz991fP7-hMAfwKX2w1wBd_ry7gZ-kQ-qs3c399WfmNb4I8xBUGfCVVs3HQ',
   technology: 'https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&w=1800&q=85',
+} */
+
+// CMS media is the source of truth. These local proxy paths are only a safe
+// fallback for the static editorial variants rendered by this component.
+const images = {
+  hero: '/api/strapi-media/uploads/homepage_AB_6_A_Xu_C_Teb4_K7ic_J_Oej_OC_Nmho_M1_L_97_Jimc_I6_Qtyot9_Yz_Mr51g_D3_D096_TT_551datl7elzq4_TGE_Qz_b_E_Mf8_KBA_Ua_MG_3bad945119.jpg',
+  heroDoctor: '/api/strapi-media/uploads/homepage_AB_6_A_Xu_C_Teb4_K7ic_J_Oej_OC_Nmho_M1_L_97_Jimc_I6_Qtyot9_Yz_Mr51g_D3_D096_TT_551datl7elzq4_TGE_Qz_b_E_Mf8_KBA_Ua_MG_3bad945119.jpg',
+  doctor: '/api/strapi-media/uploads/homepage_AB_6_A_Xu_C_Teb4_K7ic_J_Oej_OC_Nmho_M1_L_97_Jimc_I6_Qtyot9_Yz_Mr51g_D3_D096_TT_551datl7elzq4_TGE_Qz_b_E_Mf8_KBA_Ua_MG_3bad945119.jpg',
+  clinic: '/api/strapi-media/uploads/clinic_b23afb0268.jpg',
+  aboutHospital: '/api/strapi-media/uploads/about_clinic_reception_42f5c64fe4.jpg',
+  technology: '/api/strapi-media/uploads/homepage_photo_1551076805_e1869033e561_8692844173.jpg',
 }
 
 function ConsultationButton({ children = 'REQUEST A CONSULTATION', className = 'stitch-button stitch-button--dark' }: { children?: React.ReactNode; className?: string }) {
@@ -36,6 +50,19 @@ const process = [
   ['05', 'Follow-Up', 'Recovery and postoperative progress remain part of the surgical process.'],
 ]
 
+const aboutPlanningSteps = planningSteps.map((step, index) => {
+  const content = [
+    ['Consultation', 'Discuss concerns, goals, medical history and previous procedures directly with the surgeon.'],
+    ['Examination', 'Assess anatomy, tissue condition and individual suitability before discussing a procedure.'],
+    ['Surgical Planning', 'Develop a plan around the patient rather than a standard package or procedure menu.'],
+    ['Surgery', 'Dr. Maris personally performs the procedure in an accredited hospital environment.'],
+    ['Recovery & Follow-Up', 'Recovery and postoperative progress remain part of the surgeon-led process.'],
+    ['Long-Term Care', 'Follow-up remains available as your result settles and your long-term goals evolve.'],
+  ][index]
+
+  return { ...step, title: content[0], description: content[1] }
+})
+
 const revisionConcerns = ['Capsular Contracture', 'Asymmetry Correction', 'Excessive Scar Tissue', 'Implant Malposition', 'Over-resected Rhinoplasty', 'Contour Irregularities', 'Unsatisfactory Functional Outcomes']
 
 const signatureProcedures = [
@@ -49,44 +76,79 @@ function StitchImage({ src, alt, className = '' }: { src: string; alt: string; c
   return <Image src={src} alt={alt} fill sizes="(max-width: 768px) 100vw, 50vw" className={`object-cover ${className}`} unoptimized />
 }
 
-export function StitchHomepage() {
+export function StitchHomepage({ data }: { data?: HomepageEditorialData }) {
   const homepageRef = useRef<HTMLDivElement>(null)
   useHomepageMotion(homepageRef)
   useSignatureProceduresMotion(homepageRef)
+  const hero = data?.hero_content ?? {}
+  const signature = data?.signature_procedures ?? {}
+  const method = data?.maris_method ?? data?.surgical_care_process ?? {}
+  const revision = data?.revision_surgery ?? {}
+  const hospital = data?.hospital_based_surgery ?? {}
+  const journey = data?.international_journey ?? {}
+  const consultation = data?.consultation ?? {}
+  const faqContent = data?.frequently_asked_questions
+  const faq = Array.isArray(faqContent)
+    ? faqContent
+    : faqContent && typeof faqContent === 'object' && Array.isArray((faqContent as Record<string, unknown>).items)
+      ? (faqContent as Record<string, unknown>).items
+      : homepageFaq
+  const titleLines = Array.isArray(hero.title_lines) && hero.title_lines.length >= 2
+    ? hero.title_lines.map(String)
+    : typeof hero.title_line_1 === 'string'
+      ? [hero.title_line_1, typeof hero.title_line_2 === 'string' ? hero.title_line_2 : '']
+    : typeof hero.title === 'string' && hero.title === 'Plastic Surgery in Vietnam for International Patients'
+      ? ['Plastic Surgery in', 'Vietnam for International Patients']
+      : typeof hero.title === 'string' ? [hero.title, ''] : ['Plastic Surgery in', 'Vietnam for International Patients']
+  const heroParagraphs = Array.isArray(hero.paragraphs) ? hero.paragraphs.filter((value): value is string => typeof value === 'string') : []
+  const heroDescription = heroParagraphs[0] || (typeof hero.description === 'string' ? hero.description : '')
+  const heroSecondary = heroParagraphs[1] || (typeof hero.paragraph_two === 'string' ? hero.paragraph_two : typeof hero.secondary_description === 'string' ? hero.secondary_description : '')
+  const signatureTitleLines = Array.isArray(signature.title_lines) ? signature.title_lines.map(String) : [signature.title_line_1, signature.title_line_2].filter((value): value is string => typeof value === 'string')
+  const signatureItems = Array.isArray(signature.items) ? signature.items : []
+  const procedureItems = signatureItems.length ? signatureItems : signatureProcedures.map(([number, title, copy, image, alt]) => ({ number, title, description: copy, image, image_alt: alt }))
+  const cmsImage = (value: unknown, fallback: string): string => {
+    const resolve = (url: string) => url.startsWith('/') ? `/api/strapi-media${url}` : url
+    if (typeof value === 'string' && value.length > 0) return resolve(value)
+    if (value && typeof value === 'object') {
+      const record = value as Record<string, unknown>
+      const nested = record.data && typeof record.data === 'object' ? record.data as Record<string, unknown> : record
+      const attributes = nested.attributes && typeof nested.attributes === 'object' ? nested.attributes as Record<string, unknown> : nested
+      if (typeof attributes.url === 'string') return resolve(attributes.url)
+    }
+    return fallback
+  }
 
   return <div ref={homepageRef} className="stitch-page stitch-homepage">
     <section className="stitch-home-hero" data-motion-section="hero"><div className="stitch-home-hero__inner">
       <div className="stitch-home-hero__copy" data-hero-copy-wrap>
-        <span className="stitch-kicker" data-hero-kicker><i data-hero-divider /> <span data-hero-kicker-text>HOSPITAL-BASED COSMETIC SURGERY · HO CHI MINH CITY</span></span>
-        <h1><span className="stitch-hero-line"><span data-hero-title-line>Plastic Surgery in</span></span><span className="stitch-hero-line"><span data-hero-title-line>Vietnam for International Patients</span></span></h1>
-        <p className="stitch-editorial-lead" data-hero-copy>Cosmetic surgery is a medical decision before it is an aesthetic one.</p>
-        <p data-hero-copy>At DR. MARIS AESTHETICS, your case is personally assessed and managed by Dr. Maris, with surgery performed at City International Hospital (CIH) in Ho Chi Minh City.</p>
-        <p data-hero-copy>From primary cosmetic procedures to complex revision surgery, every surgical plan begins with your anatomy, medical history, previous procedures and individual goals.</p>
+        <span className="stitch-kicker" data-hero-kicker><i data-hero-divider /> <span data-hero-kicker-text>{typeof hero.eyebrow === 'string' ? hero.eyebrow : 'HOSPITAL-BASED COSMETIC SURGERY · HO CHI MINH CITY'}</span></span>
+        <h1><span className="stitch-hero-line"><span data-hero-title-line>{titleLines[0]}</span></span><span className="stitch-hero-line"><span data-hero-title-line>{titleLines[1] || 'Vietnam for International Patients'}</span></span></h1>
+        <p className="stitch-editorial-lead" data-hero-copy>{typeof hero.editorial_lead === 'string' ? hero.editorial_lead : 'Cosmetic surgery is a medical decision before it is an aesthetic one.'}</p>
+        <p data-hero-copy>{heroDescription || 'At DR. MARIS AESTHETICS, your case is personally assessed and managed by Dr. Maris, with surgery performed at City International Hospital (CIH) in Ho Chi Minh City.'}</p>
+        <p data-hero-copy>{heroSecondary || 'From primary cosmetic procedures to complex revision surgery, every surgical plan begins with your anatomy, medical history, previous procedures and individual goals.'}</p>
         <div className="stitch-actions" data-hero-actions><ConsultationButton /><a className="stitch-link" href="#journey">Explore Surgical Procedures <ArrowRight size={17} /></a></div>
         <div className="stitch-proof-row" data-hero-proof><span>Direct Surgeon Care</span><b>|</b><span>Hospital-Based Surgery</span><b>|</b><span>International Patients</span><b>|</b><span>Revision Surgery</span></div>
       </div>
-      <div className="stitch-home-hero__image" data-hero-image><div className="stitch-image-wash" /><div data-hero-image-media className="stitch-motion-image"><StitchImage src={images.heroDoctor} alt="Dr. Maris in a clinical setting" /></div></div>
+      <div className="stitch-home-hero__image" data-hero-image><div className="stitch-image-wash" /><div data-hero-image-media className="stitch-motion-image"><StitchImage src={cmsImage(hero.image || hero.image_url || hero.doctor_image, images.heroDoctor)} alt={typeof hero.image_alt === 'string' ? hero.image_alt : 'Dr. Maris in a clinical setting'} /></div></div>
     </div></section>
 
-    <section className="stitch-section stitch-procedures" data-motion-section="procedures" data-signature-procedures><div className="stitch-container"><div className="stitch-section-heading"><span className="stitch-kicker" data-signature-motion data-signature-eyebrow>SIGNATURE PROCEDURES</span><h2><span className="stitch-hero-line"><span data-signature-motion data-signature-title-line>Designed around anatomy, not</span></span><span className="stitch-hero-line"><span data-signature-motion data-signature-title-line>trends.</span></span></h2><p className="stitch-lead" data-signature-motion data-signature-copy>Explore the procedures Dr. Maris performs with the same clinical discipline: careful assessment, transparent planning and a recovery strategy that respects the individual.</p></div><div className="stitch-procedure-grid">{signatureProcedures.map(([number, title, copy, image, alt], index) => <a className="stitch-procedure-panel" href={title === 'Rhinoplasty' ? '/face/rhinoplasty' : `/treatments#${title.toLowerCase().replaceAll(' ', '-')}`} key={title} data-procedure-panel data-signature-panel data-procedure-index={index}><div className="stitch-procedure-panel__image"><StitchImage src={image} alt={alt} /><span className="stitch-procedure-panel__curtain" data-signature-curtain aria-hidden="true" /></div><div className="stitch-procedure-panel__body"><b data-signature-motion data-signature-number>{number}</b><div><h3 data-signature-motion data-signature-panel-title>{title}</h3><p data-signature-motion data-signature-panel-description>{copy}</p><span className="stitch-link" data-signature-motion data-signature-panel-cta>Explore Procedure <ArrowRight size={16} /></span></div></div></a>)}</div></div></section>
+      <section className="stitch-section stitch-procedures" data-motion-section="procedures" data-signature-procedures><div className="stitch-container"><div className="stitch-section-heading"><span className="stitch-kicker" data-signature-motion data-signature-eyebrow>{typeof signature.eyebrow === 'string' ? signature.eyebrow : 'SIGNATURE PROCEDURES'}</span><h2><span className="stitch-hero-line"><span data-signature-motion data-signature-title-line>{signatureTitleLines[0] || (typeof signature.title === 'string' ? signature.title : 'Designed around anatomy, not')}</span></span><span className="stitch-hero-line"><span data-signature-motion data-signature-title-line>{signatureTitleLines[1] || (typeof signature.title_accent === 'string' ? signature.title_accent : 'trends.')}</span></span></h2><p className="stitch-lead" data-signature-motion data-signature-copy>{typeof signature.description === 'string' ? signature.description : 'Explore the procedures Dr. Maris performs with the same clinical discipline: careful assessment, transparent planning and a recovery strategy that respects the individual.'}</p></div><div className="stitch-procedure-grid">{procedureItems.map((item, index) => { const record = item as Record<string, unknown>; const number = String(record.number || `0${index + 1}`); const title = String(record.title || 'Procedure'); const copy = String(record.description || ''); const image = cmsImage(record.image_url || record.image, images.technology); const alt = String(record.image_alt || record.imageAlt || title); return <a className="stitch-procedure-panel" href={title === 'Rhinoplasty' ? '/face/rhinoplasty' : `/treatments#${title.toLowerCase().replaceAll(' ', '-')}`} key={title} data-procedure-panel data-signature-panel data-procedure-index={index}><div className="stitch-procedure-panel__image"><StitchImage src={image} alt={alt} /><span className="stitch-procedure-panel__curtain" data-signature-curtain aria-hidden="true" /></div><div className="stitch-procedure-panel__body"><b data-signature-motion data-signature-number>{number}</b><div><h3 data-signature-motion data-signature-panel-title>{title}</h3><p data-signature-motion data-signature-panel-description>{copy}</p><span className="stitch-link" data-signature-motion data-signature-panel-cta>Explore Procedure <ArrowRight size={16} /></span></div></div></a> })}</div></div></section>
 
-    <section className="stitch-section stitch-method" data-motion-section="process"><div className="stitch-container stitch-grid stitch-grid--two"><div><span className="stitch-kicker">THE MARIS METHOD</span><h2 className="stitch-editorial-lead">Every case begins with the surgeon, not a procedure menu.</h2><p>Dr. Maris brings 6+ years of specialized cosmetic surgery experience to every case. Unlike high-volume clinics, we strictly limit our surgical schedule so that the surgeon responsible for your plan remains involved throughout your care.</p><blockquote>“Good surgery begins with listening, examination and a clear plan—not with a package or a promise.”</blockquote><div className="stitch-process-line" data-process-line><span className="stitch-process-line__progress" aria-hidden="true" />{process.map(([n, title]) => <div key={n} data-process-step><b>{n}</b><span>{title}</span></div>)}</div><a className="stitch-link" href="/about-us">Meet Dr. Maris <ArrowRight size={17} /></a></div><div className="stitch-method__portrait stitch-portrait" data-process-image><StitchImage src={images.doctor} alt="Dr. Maris, lead surgeon" /><div className="stitch-stat" data-process-stat><strong>Direct care</strong><span>From assessment through follow-up</span></div></div></div></section>
+      <section className="stitch-section stitch-method" data-motion-section="process"><div className="stitch-container stitch-grid stitch-grid--two"><div><span className="stitch-kicker">{typeof method.eyebrow === 'string' ? method.eyebrow : 'THE MARIS METHOD'}</span><h2 className="stitch-editorial-lead">{typeof method.title === 'string' ? method.title : 'Every case begins with the surgeon, not a procedure menu.'}</h2><p>{typeof method.description === 'string' ? method.description : 'Dr. Maris brings 6+ years of specialized cosmetic surgery experience to every case. Unlike high-volume clinics, we strictly limit our surgical schedule so that the surgeon responsible for your plan remains involved throughout your care.'}</p><blockquote>{typeof method.quote === 'string' ? method.quote : '“Good surgery begins with listening, examination and a clear plan—not with a package or a promise.”'}</blockquote><div className="stitch-process-line" data-process-line><span className="stitch-process-line__progress" aria-hidden="true" />{process.map(([n, title]) => <div key={n} data-process-step><b>{n}</b><span>{title}</span></div>)}</div><a className="stitch-link" href="/about-us">Meet Dr. Maris <ArrowRight size={17} /></a></div><div className="stitch-method__portrait stitch-portrait" data-process-image><StitchImage src={cmsImage(method.image, images.doctor)} alt={typeof method.image_alt === 'string' ? method.image_alt : 'Dr. Maris, lead surgeon'} /><div className="stitch-stat" data-process-stat><strong>Direct care</strong><span>From assessment through follow-up</span></div></div></div></section>
 
     <div className="stitch-swipe-chapter" data-swipe-chapter aria-label="Specialized care and hospital-based surgery">
-      <section className="stitch-section stitch-dark stitch-revision" data-motion-section="revision" data-swipe-slide><div className="stitch-swipe-outer" data-swipe-outer><div className="stitch-swipe-inner" data-swipe-inner><div className="stitch-revision__image" data-swipe-visual aria-hidden="true"><StitchImage src={images.technology} alt="" /></div><div className="stitch-revision__wash" aria-hidden="true" /><span className="stitch-revision__word" aria-hidden="true">REVISION</span><div className="stitch-container stitch-grid stitch-grid--two"><div><span className="stitch-kicker">SPECIALIZED CARE</span><h2>Revision Cosmetic Surgery Vietnam</h2><h3 className="stitch-editorial-lead">When your first surgery did not go as planned.</h3><p>Revision surgery is not simply doing the procedure again. It requires a careful assessment of what was performed, the tissue that remains and what can be safely improved.</p><div className="stitch-callout"><strong>Can my previous cosmetic surgery be corrected?</strong><p>Many issues can be significantly improved, but realistic outcomes depend on each individual case.</p><a className="stitch-link stitch-link--light" href="#consultation">Request a Revision Assessment <ArrowRight size={17} /></a></div></div><div><h3 className="stitch-light-heading">Common Revision Concerns We Address</h3><ul className="stitch-check-list">{revisionConcerns.map(item => <li key={item}><CheckCircle2 size={17} />{item}</li>)}</ul></div></div></div></div></section>
+      <section className="stitch-section stitch-dark stitch-revision" data-motion-section="revision" data-swipe-slide><div className="stitch-swipe-outer" data-swipe-outer><div className="stitch-swipe-inner" data-swipe-inner><div className="stitch-revision__image" data-swipe-visual aria-hidden="true"><StitchImage src={cmsImage(revision.image, images.technology)} alt="" /></div><div className="stitch-revision__wash" aria-hidden="true" /><span className="stitch-revision__word" aria-hidden="true">REVISION</span><div className="stitch-container stitch-grid stitch-grid--two"><div><span className="stitch-kicker">{typeof revision.eyebrow === 'string' ? revision.eyebrow : 'SPECIALIZED CARE'}</span><h2>{typeof revision.title === 'string' ? revision.title : 'Revision Cosmetic Surgery Vietnam'}</h2><h3 className="stitch-editorial-lead">{typeof revision.editorial_lead === 'string' ? revision.editorial_lead : typeof revision.subtitle === 'string' ? revision.subtitle : 'When your first surgery did not go as planned.'}</h3><p>{typeof revision.description === 'string' ? revision.description : 'Revision surgery is not simply doing the procedure again. It requires a careful assessment of what was performed, the tissue that remains and what can be safely improved.'}</p><div className="stitch-callout"><strong>Can my previous cosmetic surgery be corrected?</strong><p>Many issues can be significantly improved, but realistic outcomes depend on each individual case.</p><a className="stitch-link stitch-link--light" href="#consultation">Request a Revision Assessment <ArrowRight size={17} /></a></div></div><div><h3 className="stitch-light-heading">Common Revision Concerns We Address</h3><ul className="stitch-check-list">{Array.isArray(revision.concerns) ? revision.concerns.map((item) => <li key={String(item)}><CheckCircle2 size={17} />{String(item)}</li>) : revisionConcerns.map(item => <li key={item}><CheckCircle2 size={17} />{item}</li>)}</ul></div></div></div></div></section>
 
-      <section className="stitch-section stitch-hospital" data-motion-section="hospital" data-swipe-slide><div className="stitch-swipe-outer" data-swipe-outer><div className="stitch-swipe-inner" data-swipe-inner><div className="stitch-hospital__image" data-swipe-visual aria-hidden="true"><StitchImage src={images.clinic} alt="" /></div><div className="stitch-hospital__wash" aria-hidden="true" /><div className="stitch-container"><div className="stitch-hospital__content"><span className="stitch-kicker">HOSPITAL-BASED SURGERY</span><h2>Surgery performed at City International Hospital.</h2><p className="stitch-editorial-lead">Major cosmetic surgery requires more than a surgical suite.</p><p>Hospital-based surgery provides the medical infrastructure, safety systems and specialist support required for complex aesthetic procedures.</p><ul className="stitch-hospital__proof"><li>24/7 medical infrastructure</li><li>Professional nursing care</li><li>Advanced surgical support</li><li>Post-operative monitoring</li></ul><p className="stitch-disclaimer">Disclaimer: DR. MARIS AESTHETICS and City International Hospital are separate entities. CIH is the hospital where surgical procedures are performed.</p><a className="stitch-link stitch-link--light" href="/about-us">Explore Hospital &amp; Facilities <ArrowRight size={17} /></a></div></div></div></div></section>
+      <section className="stitch-section stitch-hospital" data-motion-section="hospital" data-swipe-slide><div className="stitch-swipe-outer" data-swipe-outer><div className="stitch-swipe-inner" data-swipe-inner><div className="stitch-hospital__image" data-swipe-visual aria-hidden="true"><StitchImage src={cmsImage(hospital.image, images.clinic)} alt="" /></div><div className="stitch-hospital__wash" aria-hidden="true" /><div className="stitch-container"><div className="stitch-hospital__content"><span className="stitch-kicker">{typeof hospital.eyebrow === 'string' ? hospital.eyebrow : 'HOSPITAL-BASED SURGERY'}</span><h2>{typeof hospital.title === 'string' ? hospital.title : 'Surgery performed at City International Hospital.'}</h2><p className="stitch-editorial-lead">{typeof hospital.editorial_lead === 'string' ? hospital.editorial_lead : 'Major cosmetic surgery requires more than a surgical suite.'}</p><p>{typeof hospital.description === 'string' ? hospital.description : 'Hospital-based surgery provides the medical infrastructure, safety systems and specialist support required for complex aesthetic procedures.'}</p><ul className="stitch-hospital__proof">{(Array.isArray(hospital.proof_items) ? hospital.proof_items : ['24/7 medical infrastructure', 'Professional nursing care', 'Advanced surgical support', 'Post-operative monitoring']).map(item => <li key={String(item.text || item)}>{String(item.text || item)}</li>)}</ul><p className="stitch-disclaimer">{typeof hospital.disclaimer === 'string' ? hospital.disclaimer : 'Disclaimer: DR. MARIS AESTHETICS and City International Hospital are separate entities. CIH is the hospital where surgical procedures are performed.'}</p><a className="stitch-link stitch-link--light" href="/about-us">Explore Hospital &amp; Facilities <ArrowRight size={17} /></a></div></div></div></div></section>
     </div>
 
-    <PlanningProcessSection />
-
-    <InternationalPatientJourneySection />
+    <InternationalPatientJourneySection data={journey as { title?: string; description?: string; steps?: unknown }} />
 
     <PatientResultsGallerySection />
 
-    <section className="stitch-section stitch-faq-section" data-motion-section="faq"><div className="stitch-container stitch-faq-layout"><div><span className="stitch-kicker">SURGICAL PLANNING</span><h2>Frequently asked questions about plastic surgery in Vietnam.</h2></div><MotionFaqAccordion className="stitch-faq-list" items={homepageFaq.map(([question, answer]) => ({ question, answer }))} /></div></section>
+    <section className="stitch-section stitch-faq-section" data-motion-section="faq"><div className="stitch-container stitch-faq-layout"><div><span className="stitch-kicker">SURGICAL PLANNING</span><h2>Frequently asked questions about plastic surgery in Vietnam.</h2></div><MotionFaqAccordion className="stitch-faq-list" items={(faq as Array<{ question: string; answer: string }>).map(({ question, answer }) => ({ question, answer }))} /></div></section>
 
-    <section id="consultation" className="stitch-section stitch-consultation" data-motion-section="cta"><div className="stitch-consultation__image" aria-hidden="true"><StitchImage src={images.technology} alt="" /></div><div className="stitch-consultation__wash" aria-hidden="true" /><div className="stitch-container"><div className="stitch-consultation__copy"><span className="stitch-kicker">BEGIN YOUR JOURNEY</span><h2>Your case deserves a surgical plan built around you.</h2><p className="stitch-editorial-lead">Your case begins with understanding your actual condition.</p><p>Send your case for a preliminary clinical review and begin a direct conversation with Dr. Maris.</p><div className="stitch-consultation__actions"><ConsultationButton>Start Your Consultation <ArrowRight size={16} /></ConsultationButton></div></div><aside className="stitch-consultation__panel"><span className="stitch-kicker">PRIVATE CONSULTATION</span><h3>Begin with a clinical review.</h3><p>Share your case before making travel decisions.</p><ol><li><b>01</b><span>Share your case</span></li><li><b>02</b><span>Receive a preliminary review</span></li><li><b>03</b><span>Arrange your consultation</span></li></ol></aside></div></section>
+    <ConsultationCtaSection content={consultation} />
   </div>
 }
 
@@ -121,6 +183,8 @@ function _StitchAboutUsLegacy() {
 }
 
 export function StitchAboutUs() {
+  const aboutRef = useRef<HTMLDivElement>(null)
+  useOurTeamMotion(aboutRef)
   const planningFactors = ['Anatomy', 'Skin and tissue condition', 'Medical history', 'Previous operations', 'Existing implants', 'Scar tissue', 'Body proportions', 'Current symptoms', 'Aesthetic goals', 'Recovery expectations', 'Limitations of surgery']
   const internationalStandards = [
     ['Virtual Consultations', 'Begin your journey from home with an in-depth, secure video consultation with Dr. Maris to discuss your goals and assess initial suitability.'],
@@ -129,39 +193,32 @@ export function StitchAboutUs() {
   ]
   const surgicalScope = ['Major body contouring', 'Breast surgery', 'Anesthesia procedures', 'Combined procedures', 'Revision surgery', 'Complex secondary operations']
 
-  return <div className="stitch-page stitch-about">
-    <section className="stitch-about-intro">
+  return <div ref={aboutRef} className="stitch-page stitch-about">
+    <section className="stitch-about-intro" data-team-hero>
       <div className="stitch-container stitch-grid stitch-grid--two">
         <div>
-          <span className="stitch-kicker">SURGEON-LED COSMETIC SURGERY · HO CHI MINH CITY</span>
-          <h1>About <em>Us</em></h1>
-          <blockquote>“Cosmetic surgery should begin with a medical assessment, a clear surgical plan and confidence in the surgeon responsible for your care.”</blockquote>
-          <p>DR. MARIS AESTHETICS is a surgeon-led cosmetic surgery practice in Ho Chi Minh City, providing personalized care for patients considering primary aesthetic procedures as well as complex revision surgery after previous operations.</p>
-          <p>Dr. Maris is directly involved from consultation and examination through surgery and postoperative follow-up, while surgical procedures are performed at City International Hospital (CIH).</p>
-          <div className="stitch-actions">
+          <span className="stitch-kicker" data-team-hero-eyebrow><i data-team-hero-divider />SURGEON-LED COSMETIC SURGERY · HO CHI MINH CITY</span>
+          <h1><span className="stitch-hero-line"><span data-team-hero-title-line>About&nbsp;Us</span></span></h1>
+          <blockquote data-team-hero-copy>“Cosmetic surgery should begin with a medical assessment, a clear surgical plan and confidence in the surgeon responsible for your care.”</blockquote>
+          <div className="our-team-profile-hero__body" data-team-hero-copy><p>DR. MARIS AESTHETICS is a surgeon-led cosmetic surgery practice in Ho Chi Minh City, providing personalized care for patients considering primary aesthetic procedures as well as complex revision surgery after previous operations.</p><p>Dr. Maris is directly involved from consultation and examination through surgery and postoperative follow-up, while surgical procedures are performed at City International Hospital (CIH).</p></div>
+          <div className="stitch-actions" data-team-hero-actions>
             <a className="stitch-button stitch-button--dark" href="/team">MEET DR. MARIS</a>
             <ConsultationButton className="stitch-button stitch-button--outline">REQUEST AN ONLINE CONSULTATION</ConsultationButton>
           </div>
         </div>
-        <div className="stitch-about-image"><StitchImage src={images.heroDoctor} alt="Dr. Maris, Lead Plastic Surgeon at Maris Aesthetics" /></div>
+        <div className="stitch-about-image" data-team-hero-image><StitchImage src={images.heroDoctor} alt="Dr. Maris, Lead Plastic Surgeon at Maris Aesthetics" /></div>
       </div>
     </section>
 
-    <section className="stitch-section">
-      <div className="stitch-container">
-        <div className="stitch-about-story-heading">
-          <span className="stitch-kicker">DIRECT SURGEON CARE</span>
-          <div className="stitch-grid stitch-grid--two">
-            <div><h2>Cosmetic Surgery Built Around Direct Surgeon Involvement</h2></div>
-            <div><p className="stitch-editorial-lead">“Who will actually be responsible for my operation?”</p><p>At Maris Aesthetics, the answer is simple: Dr. Maris. We believe that the surgeon who consults with you should be the one who operates on you and oversees your recovery.</p></div>
-          </div>
-        </div>
-        <div className="stitch-process-line stitch-process-line--large">
-          {process.map(([number, title, copy]) => <div key={number}><b>{number}</b><span>{title}</span><small>{copy}</small></div>)}
-        </div>
-        <p className="stitch-about-story-note">To maintain this level of direct involvement, we intentionally limit our surgical volume. This ensures that every patient receives the meticulous planning and focused attention required for exceptional aesthetic outcomes.</p>
-      </div>
-    </section>
+    <PlanningProcessSection
+      sectionId="direct-surgeon-process"
+      className="about-surgeon-process"
+      eyebrow="DIRECT SURGEON CARE"
+      title="Cosmetic Surgery Built Around Direct Surgeon Involvement"
+      description="At Maris Aesthetics, the surgeon who consults with you should be the one who operates on you and oversees your recovery. Every stage is planned around the patient, not a procedure menu."
+      steps={aboutPlanningSteps}
+      showActions={false}
+    />
 
     <section className="stitch-section stitch-surface">
       <div className="stitch-container stitch-grid stitch-grid--two">
@@ -177,10 +234,10 @@ export function StitchAboutUs() {
       </div>
     </section>
 
-    <section className="stitch-section stitch-dark">
+    <section className="stitch-section stitch-dark" data-team-revision>
       <div className="stitch-container stitch-grid stitch-grid--two">
-        <div><span className="stitch-kicker">REVISION &amp; COMPLEX SURGERY</span><h2>For Patients Whose Previous Surgery Did Not Go as Planned</h2><p>Revision patients often face a unique set of challenges. Beyond the physical complications—such as compromised anatomy or excessive scar tissue—there is often a significant emotional burden of anxiety and lost confidence. We approach these cases with the specialized care they require.</p><div className="stitch-revision-concerns">{['Capsular Contracture', 'Breast Implant Rupture', 'Implant Displacement', 'Breast Asymmetry', 'Implant Removal', 'Excessive Scar Tissue', 'Free Silicone', 'Silicone Migration or Leakage', 'Cosmetic Correction'].map(item => <span key={item}>{item}</span>)}</div><h3 className="stitch-editorial-lead">Revision Surgery Is Not Simply “Doing the Procedure Again”</h3><p>It requires navigating altered tissue planes, managing compromised skin and muscle pockets, and meticulously addressing internal scar tissue to restore support and symmetry. Every revision plan is unique to the patient&apos;s specific anatomical history.</p><div className="stitch-actions"><ConsultationButton>REQUEST A REVISION SURGERY ASSESSMENT</ConsultationButton></div></div>
-        <div className="stitch-portrait"><StitchImage src={images.technology} alt="Surgeon examining a 3D medical scan for a complex revision case" /></div>
+        <div><span className="stitch-kicker" data-revision-reveal>REVISION &amp; COMPLEX SURGERY</span><h2 data-revision-reveal>For Patients Whose Previous Surgery Did Not Go as Planned</h2><p data-revision-reveal>Revision patients often face a unique set of challenges. Beyond the physical complications—such as compromised anatomy or excessive scar tissue—there is often a significant emotional burden of anxiety and lost confidence. We approach these cases with the specialized care they require.</p><div className="stitch-revision-concerns">{['Capsular Contracture', 'Breast Implant Rupture', 'Implant Displacement', 'Breast Asymmetry', 'Implant Removal', 'Excessive Scar Tissue', 'Free Silicone', 'Silicone Migration or Leakage', 'Cosmetic Correction'].map(item => <span key={item} data-revision-reveal>{item}</span>)}</div><h3 className="stitch-editorial-lead" data-revision-reveal>Revision Surgery Is Not Simply “Doing the Procedure Again”</h3><p data-revision-reveal>It requires navigating altered tissue planes, managing compromised skin and muscle pockets, and meticulously addressing internal scar tissue to restore support and symmetry. Every revision plan is unique to the patient&apos;s specific anatomical history.</p><div data-revision-reveal><div className="stitch-actions"><ConsultationButton>REQUEST A REVISION SURGERY ASSESSMENT</ConsultationButton></div></div></div>
+        <div className="stitch-portrait" data-revision-media><StitchImage src={images.technology} alt="Surgeon examining a 3D medical scan for a complex revision case" /></div>
       </div>
     </section>
 

@@ -1,18 +1,6 @@
 {
   "collectionName": "components_homepage_faq_items",
-  "info": {
-    "displayName": "FAQ Item",
-    "description": "Individual FAQ question and answer"
-  },
+  "info": { "displayName": "Homepage FAQ item" },
   "options": {},
-  "attributes": {
-    "question": {
-      "type": "string",
-      "required": true
-    },
-    "answer": {
-      "type": "text",
-      "required": true
-    }
-  }
+  "attributes": { "question": { "type": "string", "required": true }, "answer": { "type": "text", "required": true } }
 }

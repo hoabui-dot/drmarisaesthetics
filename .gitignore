@@ -99,9 +99,10 @@ strapi-cms/dist/
 strapi-cms/build/
 strapi-cms/exports/
 
-# Uploads (keep .gitkeep)
-public/uploads/*
-strapi-cms/public/uploads/*
+# Runtime media uploads are stored in Docker volumes and must never be committed.
+/public/uploads/
+/strapi-cms/public/uploads/
+/dental-frontend/public/uploads/
 !public/uploads/.gitkeep
 
 # ============================================

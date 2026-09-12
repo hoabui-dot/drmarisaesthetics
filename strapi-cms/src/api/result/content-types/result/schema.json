@@ -7,10 +7,10 @@
   "attributes": {
     "title": { "type": "string", "required": true },
     "introduction": { "type": "text", "required": true },
-    "cases": { "type": "json", "required": true },
-    "disclaimerLabel": { "type": "string", "required": true },
+    "cases": { "type": "component", "repeatable": true, "component": "result.case" },
+    "disclaimer_label": { "type": "string", "required": true },
     "disclaimer": { "type": "text", "required": true },
-    "ctaTitle": { "type": "string", "required": true },
-    "ctaDescription": { "type": "text", "required": true }
+    "cta_title": { "type": "string", "required": true },
+    "cta_description": { "type": "text", "required": true }
   }
 }

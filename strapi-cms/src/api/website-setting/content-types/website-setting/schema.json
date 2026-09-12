@@ -1,0 +1,30 @@
+{
+  "kind": "singleType",
+  "collectionName": "website_settings",
+  "info": {
+    "singularName": "website-setting",
+    "pluralName": "website-settings",
+    "displayName": "Website Settings",
+    "description": "Reusable identity, contact and social settings for the website"
+  },
+  "options": { "draftAndPublish": true },
+  "pluginOptions": {},
+  "attributes": {
+    "site_name": { "type": "string", "required": true },
+    "site_name_localized": { "type": "string" },
+    "logo": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "favicon": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "address": { "type": "text", "required": true },
+    "phone_primary": { "type": "string", "required": true },
+    "phone_secondary": { "type": "string" },
+    "email": { "type": "email", "required": true },
+    "opening_hours": { "type": "string" },
+    "website": { "type": "string" },
+    "map_latitude": { "type": "decimal" },
+    "map_longitude": { "type": "decimal" },
+    "map_zoom": { "type": "integer", "default": 16 },
+    "map_url": { "type": "string" },
+    "contact_methods": { "type": "component", "repeatable": true, "component": "website-setting.contact-method" },
+    "social_links": { "type": "component", "repeatable": true, "component": "website-setting.social-link" }
+  }
+}

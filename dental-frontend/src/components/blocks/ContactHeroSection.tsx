@@ -44,16 +44,16 @@ export function ContactHeroSection({ data }: { data: ContactHeroData }) {
     <section id="contact-hero" className="contact-hero-section" aria-labelledby="contact-hero-heading">
       <div className="contact-hero-container">
         <nav className="contact-hero-breadcrumb" aria-label="Breadcrumb">
-          <Link href="/">Trang chủ</Link>
+          <Link href="/">Home</Link>
           <span aria-hidden="true">›</span>
-          <span aria-current="page">Liên hệ</span>
+          <span aria-current="page">Contact</span>
         </nav>
 
         <div className="contact-hero-top">
           <div className="contact-hero-intro">
-            <h1 id="contact-hero-heading">{data.title || 'Liên hệ DR. MARIS AESTHETICS'}</h1>
-            <p className="contact-hero-subtitle">{data.subtitle || 'Tư vấn – Đặt lịch – Hỗ trợ điều trị Implant'}</p>
-            <p className="contact-hero-description">{data.description || 'Đội ngũ phẫu thuật của DR. MARIS AESTHETICS sẵn sàng lắng nghe và đồng hành cùng bạn trong quá trình đánh giá, lập kế hoạch và chăm sóc hậu phẫu.'}</p>
+            <h1 id="contact-hero-heading">{data.title || 'Contact DR. MARIS AESTHETICS'}</h1>
+            <p className="contact-hero-subtitle">{data.subtitle || 'Consultation · Booking · International Patient Support'}</p>
+            <p className="contact-hero-description">{data.description || 'Our surgical team is ready to listen and guide you through assessment, planning and postoperative care.'}</p>
             <div className="contact-hero-actions">
               <a href="#form-section" className="contact-editorial-button">Request an Online Consultation <ArrowRight size={16} aria-hidden="true" /></a>
               <Link href="/contact?case=revision" className="contact-editorial-link">Submit a Revision Case</Link>
@@ -62,7 +62,7 @@ export function ContactHeroSection({ data }: { data: ContactHeroData }) {
 
           {data.heroImageUrl ? (
             <div className="contact-hero-image">
-              <Image src={data.heroImageUrl} alt="Dr. Maris consulting with a patient" fill priority sizes="(max-width: 1023px) 100vw, 55vw" className="object-cover" />
+              <Image src={data.heroImageUrl} alt="Dr. Maris consulting with a patient" fill priority unoptimized sizes="(max-width: 1023px) 100vw, 55vw" className="object-cover" />
             </div>
           ) : null}
         </div>

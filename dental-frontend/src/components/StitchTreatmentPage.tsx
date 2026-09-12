@@ -2,8 +2,12 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRef } from 'react'
 import { ArrowRight, CalendarDays, Check, CheckCircle2, ChevronDown, FlaskConical } from 'lucide-react'
 import { useBookingModal } from '@/src/components/booking-modal/BookingModalContext'
+import { MotionFaqAccordion } from '@/src/components/ui/motion-faq-accordion'
+import { ConsultationCtaSection } from '@/src/components/blocks/ConsultationCtaSection'
+import { useLazySectionMotion } from '@/src/hooks/useLazySectionMotion'
 
 const images = {
   hero: '/api/strapi-media/uploads/aec6099c_fa9c_4a93_9158_e3d6baed5fa5_1b2cfb60ff.png',
@@ -34,13 +38,17 @@ function BeforeAfter({ src, alt, title, description }: { src: string; alt: strin
 
 type StitchTreatmentPageProps = {
   showQuickFacts?: boolean
+  pageType?: 'treatments' | 'rhinoplasty'
 }
 
-export function StitchTreatmentPage({ showQuickFacts = true }: StitchTreatmentPageProps) {
-  return <main className="stitch-page stitch-treatment-page">
+export function StitchTreatmentPage({ showQuickFacts = true, pageType = 'rhinoplasty' }: StitchTreatmentPageProps) {
+  const pageRef = useRef<HTMLElement>(null)
+  useLazySectionMotion(pageRef)
+
+  return <main ref={pageRef} className="stitch-page stitch-treatment-page">
     <section className="stitch-treatment-hero">
       <div className="stitch-treatment-hero__copy">
-        <nav className="stitch-treatment-breadcrumb" aria-label="Breadcrumb"><Link href="/">Home</Link><ChevronDown size={14} aria-hidden="true" /><Link href="/face/rhinoplasty">Face</Link><ChevronDown size={14} aria-hidden="true" /><span>Rhinoplasty</span></nav>
+        <nav className="stitch-treatment-breadcrumb" aria-label="Breadcrumb"><Link href="/">Home</Link><ChevronDown size={14} aria-hidden="true" />{pageType === 'treatments' ? <span>Treatments</span> : <><Link href="/treatments">Face</Link><ChevronDown size={14} aria-hidden="true" /><span>Rhinoplasty</span></>}</nav>
         <span className="stitch-kicker">DR. MARIS AESTHETICS · FACIAL PROCEDURES</span><h1>Rhinoplasty Surgery in Vietnam</h1>
         <p>At DR. MARIS AESTHETICS, we redefine nasal harmony through a meticulous structural approach that honors your unique facial architecture. Our surgical philosophy combines clinical precision with natural, balanced results that enhance your features without looking operated on.</p>
         <div className="stitch-treatment-review"><CheckCircle2 size={18} aria-hidden="true" />Reviewed by Dr. Maris · Ho Chi Minh City, Vietnam</div><ConsultationButton />
@@ -58,8 +66,8 @@ export function StitchTreatmentPage({ showQuickFacts = true }: StitchTreatmentPa
       <section id="timeline" className="stitch-treatment-block stitch-treatment-timeline"><h2>Recovery Timeline</h2>{[['Days 1–3: Initial Healing', 'Expect swelling, bruising and rest while the first phase of healing begins.'], ['Day 7: Splint Removal', 'The splint is typically removed and early changes become visible.'], ['Weeks 2–4: Subsiding Swelling', 'Most daily activities resume as swelling continues to settle.'], ['1 Year: Final Refinement', 'The final shape continues to refine as tissues fully mature.']].map(([title, text], index) => <div key={title}><b>{index + 1}</b><h3>{title}</h3><p>{text}</p></div>)}</section>
       <section id="results" className="stitch-treatment-block"><div className="stitch-treatment-results-heading"><div><h2>Before &amp; After</h2><p className="stitch-treatment-lead">Every result is individual. These examples illustrate the type of refinement careful planning can achieve.</p></div><Link className="stitch-link" href="/results">View Full Gallery <ArrowRight size={16} /></Link></div><div className="stitch-treatment-results"><BeforeAfter src={images.resultProfile} alt="Profile refinement before and after rhinoplasty" title="Profile Refinement" description="Dorsal hump reduction and tip rotation." /><BeforeAfter src={images.resultFront} alt="Tip contouring before and after rhinoplasty" title="Tip Contouring" description="Refinement of bulbous tip and alar base reduction." /></div></section>
       <section id="considerations" className="stitch-treatment-block"><h2>Risks &amp; Considerations</h2><div className="stitch-treatment-panel stitch-treatment-risks"><div><h3>Is it right for you?</h3><p>Rhinoplasty is a personal medical decision. A private consultation is the only way to determine whether surgery is appropriate for your anatomy and goals.</p></div><div><h4>Potential Risks</h4><ul><li>Infection or bleeding</li><li>Asymmetry</li><li>Temporary changes in skin sensation</li><li>Breathing difficulties (rare)</li></ul></div><div><h4>Prerequisites</h4><ul><li>Facial growth is complete</li><li>Physically healthy</li><li>Non-smoker</li><li>Positive outlook and specific goals</li></ul></div></div></section>
-      <section id="faq" className="stitch-treatment-block stitch-treatment-faq"><h2>Frequently Asked Questions</h2>{[['Will rhinoplasty affect my breathing?', 'A structural approach considers both appearance and airway function. Any functional concerns are assessed during consultation.'], ['How long does recovery take?', 'Most patients return to light daily activities within 7–10 days, while refinement continues over the following months.'], ['Is rhinoplasty permanent?', 'The structural changes are long-lasting, although natural aging and injury can affect results over time.']].map(([question, answer]) => <details key={question}><summary>{question}<ChevronDown size={18} aria-hidden="true" /></summary><p>{answer}</p></details>)}</section>
+      <section id="faq" className="stitch-treatment-block stitch-treatment-faq"><h2>Frequently Asked Questions</h2><MotionFaqAccordion className="stitch-treatment-faq__accordion" items={[['Will rhinoplasty affect my breathing?', 'A structural approach considers both appearance and airway function. Any functional concerns are assessed during consultation.'], ['How long does recovery take?', 'Most patients return to light daily activities within 7–10 days, while refinement continues over the following months.'], ['Is rhinoplasty permanent?', 'The structural changes are long-lasting, although natural aging and injury can affect results over time.']].map(([question, answer]) => ({ question, answer }))} /></section>
     </article></div></section>
-    <section className="stitch-section stitch-consultation"><div className="stitch-container"><div><span className="stitch-kicker">BEGIN YOUR JOURNEY</span><h2>Your case deserves a surgical plan built around you.</h2><p>Send your case for a preliminary clinical review and begin a direct conversation with Dr. Maris.</p></div><ConsultationButton /></div></section>
+    <ConsultationCtaSection id="consultation-cta" />
   </main>
 }

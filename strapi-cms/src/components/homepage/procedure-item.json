@@ -1,0 +1,6 @@
+{
+  "collectionName": "components_homepage_procedure_items",
+  "info": { "displayName": "Signature procedure" },
+  "options": {},
+  "attributes": { "number": { "type": "string" }, "title": { "type": "string", "required": true }, "description": { "type": "text" }, "href": { "type": "string" }, "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] }, "image_alt": { "type": "string" } }
+}

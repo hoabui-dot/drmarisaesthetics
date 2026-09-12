@@ -1,0 +1,6 @@
+{
+  "collectionName": "components_homepage_journey_steps",
+  "info": { "displayName": "International journey step" },
+  "options": {},
+  "attributes": { "number": { "type": "string" }, "title": { "type": "string", "required": true }, "description": { "type": "text" }, "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] }, "image_alt": { "type": "string" } }
+}

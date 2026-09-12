@@ -304,6 +304,45 @@ export interface Footer {
   tagline: string;
 }
 
+export interface WebsiteSettingContactMethod {
+  id?: number;
+  type: string;
+  label: string;
+  href: string;
+  color?: string;
+  order?: number;
+  isActive?: boolean;
+  icon?: Media;
+}
+
+export interface WebsiteSettingSocialLink {
+  id?: number;
+  platform: string;
+  url: string;
+  iconClass?: string;
+  order?: number;
+  isActive?: boolean;
+}
+
+export interface WebsiteSetting {
+  siteName: string;
+  siteNameLocalized?: string;
+  logo?: Media;
+  favicon?: Media;
+  address: string;
+  phonePrimary: string;
+  phoneSecondary?: string;
+  email: string;
+  openingHours?: string;
+  website?: string;
+  mapLatitude?: number;
+  mapLongitude?: number;
+  mapZoom?: number;
+  mapUrl?: string;
+  contactMethods: WebsiteSettingContactMethod[];
+  socialLinks: WebsiteSettingSocialLink[];
+}
+
 // ============================================================================
 // News Page Types
 // ============================================================================

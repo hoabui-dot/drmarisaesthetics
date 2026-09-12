@@ -1,0 +1,6 @@
+{
+  "collectionName": "components_homepage_surgical_care_process_sections",
+  "info": { "displayName": "Surgical care process section" },
+  "options": {},
+  "attributes": { "eyebrow": { "type": "string" }, "title": { "type": "string", "required": true }, "description": { "type": "text" }, "quote": { "type": "text" }, "steps": { "type": "component", "repeatable": true, "component": "homepage.process-step" } }
+}

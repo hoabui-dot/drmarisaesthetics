@@ -1,0 +1,9 @@
+{
+  "collectionName": "components_our_team_items",
+  "info": { "displayName": "Our Team list item" },
+  "options": {},
+  "attributes": {
+    "label": { "type": "string", "required": true },
+    "description": { "type": "text" }
+  }
+}

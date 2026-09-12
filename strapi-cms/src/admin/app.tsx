@@ -106,6 +106,12 @@ const installClipboardFallback = () => {
 }
 
 export default {
+  // Admin interface languages are independent from content locales. English
+  // remains Strapi's fallback; Vietnamese is exposed in Profile → Experience.
+  config: {
+    locales: ['vi'],
+  },
+
   bootstrap() {
     if (typeof window === 'undefined') return
 

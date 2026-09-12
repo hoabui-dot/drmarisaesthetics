@@ -10,13 +10,15 @@
   "options": { "draftAndPublish": true },
   "pluginOptions": {},
   "attributes": {
-    "title": { "type": "string", "required": true, "default": "Our Team" },
-    "hero": { "type": "json" },
-    "surgicalCare": { "type": "json" },
-    "revision": { "type": "json" },
-    "internationalPatients": { "type": "json" },
-    "journey": { "type": "json" },
-    "consultation": { "type": "json" },
-    "faq": { "type": "json" }
+    "seo": { "type": "component", "repeatable": false, "component": "seo.page-seo" },
+    "sections": {
+      "type": "dynamiczone",
+      "components": [
+        "our-team.hero-section",
+        "our-team.editorial-section",
+        "our-team.revision-section",
+        "our-team.faq-section"
+      ]
+    }
   }
 }

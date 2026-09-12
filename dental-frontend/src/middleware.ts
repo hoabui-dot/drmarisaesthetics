@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const STRAPI_URL = (process.env.STRAPI_URL || "http://smilux-strapi:22345").replace(/\/$/, "");
+const STRAPI_URL = (process.env.STRAPI_URL || "http://drmaris-strapi:22345").replace(/\/$/, "");
 const configuredToken = process.env.STRAPI_API_TOKEN;
 // A local placeholder must not be sent as a Bearer token. Strapi treats an
 // invalid token as 401 before evaluating the public read permission.

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { ResultsPage } from '@/src/components/ResultsPage'
 import { buildSeoMetadata } from '@/src/lib/seo/seo-manager'
 import { resultsMockData } from '@/src/data/results'
+import { getResults } from '@/src/lib/api/queries'
 
 export async function generateMetadata(): Promise<Metadata> {
   return buildSeoMetadata({
@@ -12,7 +13,8 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ResultsRoute() {
-  return <ResultsPage data={resultsMockData} />
+  const cmsData = await getResults(false)
+  return <ResultsPage data={cmsData || resultsMockData} />
 }
 
 export const dynamic = 'force-dynamic'

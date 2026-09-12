@@ -1,0 +1,6 @@
+{
+  "collectionName": "components_homepage_revision_surgery_sections",
+  "info": { "displayName": "Revision surgery section" },
+  "options": {},
+  "attributes": { "eyebrow": { "type": "string" }, "title": { "type": "string", "required": true }, "editorial_lead": { "type": "text" }, "description": { "type": "text" }, "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] }, "image_alt": { "type": "string" }, "concerns": { "type": "component", "repeatable": true, "component": "homepage.text-item" } }
+}

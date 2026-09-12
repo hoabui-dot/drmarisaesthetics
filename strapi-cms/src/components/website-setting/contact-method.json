@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_website_setting_contact_methods",
+  "info": { "displayName": "Website contact method" },
+  "options": {},
+  "attributes": {
+    "type": { "type": "string", "required": true },
+    "label": { "type": "string", "required": true },
+    "href": { "type": "text", "required": true },
+    "icon": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "color": { "type": "string" },
+    "order": { "type": "integer", "default": 0 },
+    "is_active": { "type": "boolean", "default": true }
+  }
+}

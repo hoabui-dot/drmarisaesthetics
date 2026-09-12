@@ -1,0 +1,10 @@
+{
+  "collectionName": "components_our_team_faq_sections",
+  "info": { "displayName": "Our Team FAQ section" },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "items": { "type": "component", "repeatable": true, "component": "our-team.faq-item" }
+  }
+}

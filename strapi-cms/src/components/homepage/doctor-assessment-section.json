@@ -1,0 +1,6 @@
+{
+  "collectionName": "components_homepage_doctor_assessment_sections",
+  "info": { "displayName": "Doctor assessment section" },
+  "options": {},
+  "attributes": { "eyebrow": { "type": "string" }, "title": { "type": "string", "required": true }, "role": { "type": "string" }, "description": { "type": "text" }, "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] }, "image_alt": { "type": "string" }, "considerations": { "type": "component", "repeatable": true, "component": "homepage.text-item" } }
+}

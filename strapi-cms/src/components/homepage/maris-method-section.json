@@ -1,0 +1,6 @@
+{
+  "collectionName": "components_homepage_maris_method_sections",
+  "info": { "displayName": "The Maris Method section" },
+  "options": {},
+  "attributes": { "eyebrow": { "type": "string" }, "title": { "type": "string", "required": true }, "description": { "type": "text" }, "quote": { "type": "text" }, "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] }, "image_alt": { "type": "string" }, "stat_title": { "type": "string" }, "stat_description": { "type": "string" }, "steps": { "type": "component", "repeatable": true, "component": "homepage.process-step" } }
+}

@@ -39,8 +39,30 @@ import type {
   HomepageConsultationComponent,
   HomepageCertificationComponent,
 } from "@/src/types/strapi";
-import type { OurTeamData } from "@/src/data/our-team";
-import type { ResultsData } from "@/src/data/results";
+import { normalizeHomepageEditorial, type HomepageEditorialData } from "@/src/types/homepage-editorial";
+import { ourTeamMockData, type OurTeamData } from "@/src/data/our-team";
+import { resultsMockData, type ResultsData } from "@/src/data/results";
+import type { WebsiteSetting } from "@/src/types/strapi";
+
+/**
+ * Fetches the editorial homepage section components. This is deliberately
+ * separate from the legacy dynamic-zone getHomepage() transformer so the
+ * Stitch homepage can evolve without coupling to the old block API.
+ */
+export async function getHomepageEditorial(isDraftMode = false): Promise<HomepageEditorialData | null> {
+  try {
+    const response = await apiClient<{ data?: Record<string, unknown> }>("/api/homepage", {
+      params: { populate: "*" },
+      isDraftMode,
+      tags: ["homepage"],
+    });
+    if (!response.data) return null;
+    return normalizeHomepageEditorial(response.data);
+  } catch (error) {
+    console.warn("[getHomepageEditorial] Falling back to the local homepage content", error);
+    return null;
+  }
+}
 
 // Helper to prevent JSON strings from being rendered as text descriptions
 function cleanDescription(desc: any): string | undefined {
@@ -216,7 +238,51 @@ export async function getOurTeam(isDraftMode: boolean = false): Promise<OurTeamD
       isDraftMode,
       tags: ["our-team"],
     });
-    return response?.data || null;
+    const value = response?.data;
+    if (!value) return null;
+    const sections = Array.isArray(value.sections) ? value.sections : [];
+    const hero = sections.find((section: any) => section.__component === "our-team.hero-section");
+    const revision = sections.find((section: any) => section.__component === "our-team.revision-section");
+    const editorial = sections.filter((section: any) => section.__component === "our-team.editorial-section");
+    const principles = editorial[0];
+    const international = editorial.find((section: any) => /international/i.test(section.eyebrow || section.title || ""));
+    const journey = editorial.find((section: any) => /journey|process/i.test(section.eyebrow || section.title || ""));
+    const consultation = editorial.find((section: any) => /consultation/i.test(section.eyebrow || section.title || ""));
+    const faq = sections.find((section: any) => section.__component === "our-team.faq-section");
+    const image = (media: any) => getMediaUrl(media) || undefined;
+    return {
+      ...ourTeamMockData,
+      hero: hero ? {
+        ...ourTeamMockData.hero,
+        eyebrow: hero.eyebrow || ourTeamMockData.hero.eyebrow,
+        title: hero.title || ourTeamMockData.hero.title,
+        paragraphs: [hero.paragraph_one, hero.paragraph_two].filter(Boolean),
+        image: image(hero.image) || ourTeamMockData.hero.image,
+        imageAlt: hero.image_alt || ourTeamMockData.hero.imageAlt,
+      } : ourTeamMockData.hero,
+      surgicalCare: principles ? {
+        ...ourTeamMockData.surgicalCare,
+        heading: principles.title || ourTeamMockData.surgicalCare.heading,
+        paragraphs: [principles.lead, principles.description].filter(Boolean),
+        steps: (principles.steps || []).map((step: any) => step.title).filter(Boolean),
+        image: image(principles.image) || ourTeamMockData.surgicalCare.image,
+      } : ourTeamMockData.surgicalCare,
+      revision: revision ? {
+        ...ourTeamMockData.revision,
+        eyebrow: revision.eyebrow || ourTeamMockData.revision.eyebrow,
+        title: revision.title || ourTeamMockData.revision.title,
+        description: revision.description || ourTeamMockData.revision.description,
+        calloutTitle: revision.callout_title || ourTeamMockData.revision.calloutTitle,
+        calloutDescription: revision.callout_description || ourTeamMockData.revision.calloutDescription,
+        concerns: (revision.concerns || []).map((item: any) => ({ title: item.label || item.title || "", description: item.description || "" })),
+        image: image(revision.image) || ourTeamMockData.revision.image,
+        imageAlt: revision.image_alt || ourTeamMockData.revision.imageAlt,
+      } : ourTeamMockData.revision,
+      internationalPatients: international ? { ...ourTeamMockData.internationalPatients, eyebrow: international.eyebrow || ourTeamMockData.internationalPatients.eyebrow, title: international.title || ourTeamMockData.internationalPatients.title, description: international.description || ourTeamMockData.internationalPatients.description, steps: international.steps || ourTeamMockData.internationalPatients.steps } : ourTeamMockData.internationalPatients,
+      journey: journey ? { ...ourTeamMockData.journey, eyebrow: journey.eyebrow || ourTeamMockData.journey.eyebrow, title: journey.title || ourTeamMockData.journey.title, description: journey.description || ourTeamMockData.journey.description, steps: journey.steps || ourTeamMockData.journey.steps } : ourTeamMockData.journey,
+      consultation: consultation ? { ...ourTeamMockData.consultation, title: consultation.title || ourTeamMockData.consultation.title, description: consultation.description || ourTeamMockData.consultation.description } : ourTeamMockData.consultation,
+      faq: faq ? { ...ourTeamMockData.faq, eyebrow: faq.eyebrow || ourTeamMockData.faq.eyebrow, title: faq.title || ourTeamMockData.faq.title, items: (faq.items || []).map((item: any) => ({ question: item.question, answer: item.answer })) } : ourTeamMockData.faq,
+    };
   } catch (error) {
     console.warn("[getOurTeam] Unable to fetch Our Team data", error);
     return null;
@@ -231,9 +297,73 @@ export async function getResults(isDraftMode: boolean = false): Promise<ResultsD
       isDraftMode,
       tags: ["results"],
     });
-    return response?.data || null;
+    const value = response?.data;
+    if (!value) return null;
+    return {
+      title: value.title || resultsMockData.title,
+      introduction: value.introduction || resultsMockData.introduction,
+      cases: (value.cases || []).map((item: any) => {
+        const fallbackCase = resultsMockData.cases.find((candidate) => candidate.caseNumber === (item.case_number || item.caseNumber));
+        return {
+        caseNumber: item.case_number || item.caseNumber || "",
+        category: item.category,
+        title: item.title || "",
+        subtitle: item.subtitle || "",
+        beforeImage: getMediaUrl(item.before_image || item.beforeImage) || fallbackCase?.beforeImage || "",
+        afterImage: getMediaUrl(item.after_image || item.afterImage) || fallbackCase?.afterImage || "",
+        beforeAlt: item.before_alt || item.beforeAlt || "",
+        afterAlt: item.after_alt || item.afterAlt || "",
+        profile: item.profile || "",
+        recovery: item.recovery || "",
+        };
+      }).filter((item: any) => item.beforeImage && item.afterImage),
+      disclaimerLabel: value.disclaimer_label || value.disclaimerLabel || resultsMockData.disclaimerLabel,
+      disclaimer: value.disclaimer || resultsMockData.disclaimer,
+      ctaTitle: value.cta_title || value.ctaTitle || resultsMockData.ctaTitle,
+      ctaDescription: value.cta_description || value.ctaDescription || resultsMockData.ctaDescription,
+    };
   } catch (error) {
     console.warn("[getResults] Unable to fetch Results data", error);
+    return null;
+  }
+}
+
+/** Fetch the single source of truth for reusable website identity/contact data. */
+export async function getWebsiteSetting(isDraftMode: boolean = false): Promise<WebsiteSetting | null> {
+  try {
+    const response = await apiClient<any>("/api/website-setting", {
+      params: {
+        "populate[logo]": "true",
+        "populate[favicon]": "true",
+        "populate[contact_methods][populate][icon]": "true",
+        "populate[social_links]": "true",
+        status: isDraftMode ? "draft" : "published",
+      },
+      isDraftMode,
+      tags: ["website-setting"],
+    });
+    const value = response?.data;
+    if (!value) return null;
+    return {
+      siteName: value.site_name || "DR. MARIS AESTHETICS",
+      siteNameLocalized: value.site_name_localized,
+      logo: value.logo ? { url: getMediaUrl(value.logo), alt: value.logo.alternativeText || value.site_name, width: value.logo.width || 0, height: value.logo.height || 0 } : undefined,
+      favicon: value.favicon ? { url: getMediaUrl(value.favicon), alt: value.favicon.alternativeText || value.site_name, width: value.favicon.width || 0, height: value.favicon.height || 0 } : undefined,
+      address: value.address || "",
+      phonePrimary: value.phone_primary || "",
+      phoneSecondary: value.phone_secondary,
+      email: value.email || "",
+      openingHours: value.opening_hours,
+      website: value.website,
+      mapLatitude: value.map_latitude == null ? undefined : Number(value.map_latitude),
+      mapLongitude: value.map_longitude == null ? undefined : Number(value.map_longitude),
+      mapZoom: value.map_zoom == null ? undefined : Number(value.map_zoom),
+      mapUrl: value.map_url,
+      contactMethods: (value.contact_methods || []).filter((item: any) => item.is_active !== false).sort((a: any, b: any) => (a.order || 0) - (b.order || 0)).map((item: any) => ({ ...item, isActive: item.is_active !== false, icon: item.icon ? { url: getMediaUrl(item.icon), alt: item.icon.alternativeText || item.label, width: item.icon.width || 0, height: item.icon.height || 0 } : undefined })),
+      socialLinks: (value.social_links || []).filter((item: any) => item.is_active !== false).sort((a: any, b: any) => (a.order || 0) - (b.order || 0)).map((item: any) => ({ ...item, iconClass: item.icon_class, isActive: item.is_active !== false })),
+    };
+  } catch (error) {
+    console.warn("[getWebsiteSetting] Unable to fetch website settings", error);
     return null;
   }
 }

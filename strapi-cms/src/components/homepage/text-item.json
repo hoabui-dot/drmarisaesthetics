@@ -1,0 +1,6 @@
+{
+  "collectionName": "components_homepage_text_items",
+  "info": { "displayName": "Homepage text item" },
+  "options": {},
+  "attributes": { "text": { "type": "string", "required": true } }
+}

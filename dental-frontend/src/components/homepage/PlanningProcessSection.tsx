@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { animate, createTimeline, onScroll } from 'animejs'
 
-type PlanningStep = {
+export type PlanningStep = {
   number: string
   title: string
   description: string
@@ -12,7 +12,7 @@ type PlanningStep = {
   imageAlt: string
 }
 
-const planningSteps: PlanningStep[] = [
+export const planningSteps: PlanningStep[] = [
   {
     number: '01',
     title: 'Send Your Case',
@@ -57,7 +57,25 @@ const planningSteps: PlanningStep[] = [
   },
 ]
 
-export function PlanningProcessSection() {
+type PlanningProcessSectionProps = {
+  eyebrow?: string
+  title?: string
+  description?: string
+  steps?: PlanningStep[]
+  showActions?: boolean
+  className?: string
+  sectionId?: string
+}
+
+export function PlanningProcessSection({
+  eyebrow = 'International Patients',
+  title = 'Planning Plastic Surgery in Vietnam From Overseas',
+  description = 'Patients from Australia, New Zealand, the United States, Europe and other international markets can begin their consultation process before traveling.',
+  steps = planningSteps,
+  showActions = true,
+  className = '',
+  sectionId = 'planning-process',
+}: PlanningProcessSectionProps) {
   const sectionRef = useRef<HTMLElement>(null)
   const activeIndexRef = useRef(0)
   const timelinesRef = useRef<ReturnType<typeof createTimeline>[]>([])
@@ -144,28 +162,28 @@ export function PlanningProcessSection() {
   }, [])
 
   return (
-    <section ref={sectionRef} id="planning-process" className="stitch-section planning-process" aria-labelledby="planning-process-title">
+    <section ref={sectionRef} id={sectionId} data-planning-process className={`stitch-section planning-process ${className}`.trim()} aria-labelledby={`${sectionId}-title`}>
       <div className="stitch-container">
         <header className="planning-process__header">
-          <span className="stitch-kicker">International Patients</span>
-          <h2 id="planning-process-title">Planning Plastic Surgery in Vietnam From Overseas</h2>
-          <p>Patients from Australia, New Zealand, the United States, Europe and other international markets can begin their consultation process before traveling.</p>
+          <span className="stitch-kicker">{eyebrow}</span>
+          <h2 id={`${sectionId}-title`}>{title}</h2>
+          <p>{description}</p>
         </header>
 
         <div className="planning-process__story">
           <div className="planning-process__visual-wrap">
             <div className="planning-process__visual" aria-hidden="true">
-              <Image src={planningSteps[activeIndex].image} alt={planningSteps[activeIndex].imageAlt} fill sizes="(max-width: 900px) 100vw, 40vw" className="planning-process__visual-media" data-planning-visual-media unoptimized />
+              <Image src={steps[activeIndex].image} alt={steps[activeIndex].imageAlt} fill sizes="(max-width: 900px) 100vw, 40vw" className="planning-process__visual-media" data-planning-visual-media unoptimized />
               <span className="planning-process__visual-wash" />
               <span className="planning-process__visual-kicker">DR. MARIS AESTHETICS</span>
-              <span className="planning-process__visual-label">{planningSteps[activeIndex].title}</span>
+              <span className="planning-process__visual-label">{steps[activeIndex].title}</span>
             </div>
           </div>
 
           <div className="planning-process__steps-wrap">
             <div className="planning-process__connector" aria-hidden="true"><span data-planning-progress /></div>
             <ol className="planning-process__steps">
-              {planningSteps.map((step, index) => (
+              {steps.map((step, index) => (
                 <li key={step.number} data-planning-step className={index === activeIndex ? 'is-active' : index < activeIndex ? 'is-complete' : ''}>
                   <span className="planning-process__number" data-planning-number>{step.number}</span>
                   <div>
@@ -178,10 +196,10 @@ export function PlanningProcessSection() {
           </div>
         </div>
 
-        <div className="planning-process__actions">
+        {showActions && <div className="planning-process__actions">
           <a className="stitch-button stitch-button--dark" href="#consultation">Plan Your Surgery in Vietnam</a>
           <a className="stitch-button stitch-button--outline" href="#consultation">Request an Online Consultation</a>
-        </div>
+        </div>}
       </div>
     </section>
   )

@@ -41,14 +41,22 @@
       "repeatable": false,
       "component": "seo.page-seo"
     },
-    "hero_content": { "type": "json" },
-    "surgical_care_process": { "type": "json" },
-    "revision_surgery": { "type": "json" },
-    "doctor_assessment": { "type": "json" },
-    "hospital_based_surgery": { "type": "json" },
-    "international_patients": { "type": "json" },
-    "international_journey": { "type": "json" },
-    "consultation": { "type": "json" },
-    "frequently_asked_questions": { "type": "json" }
+    "sections": {
+      "type": "dynamiczone",
+      "components": [
+        "homepage.hero-section",
+        "homepage.signature-procedures-section",
+        "homepage.surgical-care-process-section",
+        "homepage.maris-method-section",
+        "homepage.revision-surgery-section",
+        "homepage.doctor-assessment-section",
+        "homepage.hospital-based-surgery-section",
+        "homepage.international-patients-section",
+        "homepage.international-journey-section",
+        "homepage.patient-results-section",
+        "homepage.consultation-section",
+        "homepage.frequently-asked-questions-section"
+      ]
+    }
   }
 }

@@ -1,0 +1,6 @@
+{
+  "collectionName": "components_homepage_consultation_sections",
+  "info": { "displayName": "Consultation section" },
+  "options": {},
+  "attributes": { "eyebrow": { "type": "string" }, "title": { "type": "string", "required": true }, "editorial_lead": { "type": "text" }, "description": { "type": "text" } }
+}

@@ -1,0 +1,10 @@
+{
+  "collectionName": "components_our_team_steps",
+  "info": { "displayName": "Our Team process step" },
+  "options": {},
+  "attributes": {
+    "number": { "type": "string", "required": true },
+    "title": { "type": "string", "required": true },
+    "description": { "type": "text" }
+  }
+}

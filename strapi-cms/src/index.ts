@@ -2,6 +2,49 @@ import * as fs from "fs";
 import * as path from "path";
 import * as os from "os";
 
+function normalizeOurTeamSeed(source: any) {
+  const hero = source.hero || {};
+  const care = source.surgicalCare || {};
+  const revision = source.revision || {};
+  const international = source.internationalPatients || {};
+  const journey = source.journey || {};
+  const faq = source.faq || {};
+  return {
+    seo: { meta_title: "Our Team | Dr. Maris Aesthetics", meta_description: "Meet the surgeon-led team behind Dr. Maris Aesthetics." },
+    sections: [
+      { __component: "our-team.hero-section", eyebrow: hero.eyebrow, title: hero.title, paragraph_one: hero.paragraphs?.[0], paragraph_two: hero.paragraphs?.[1], image_alt: hero.imageAlt },
+      { __component: "our-team.editorial-section", eyebrow: "THE PRINCIPLES BEHIND THE PRACTICE", title: "Clear Advice. Individual Planning. Responsible Surgery.", lead: "Aesthetic goals should never remove the need for medical judgment.", steps: (care.steps || []).map((title: string, index: number) => ({ number: `0${index + 1}`, title, description: care.paragraphs?.[0] || "" })) },
+      { __component: "our-team.editorial-section", eyebrow: "PROFESSIONAL JOURNEY", title: "Experience Across Cosmetic Surgery & Hospital Environments", description: care.paragraphs?.[1], steps: (source.careerTimeline || []).map((title: string, index: number) => ({ number: `0${index + 1}`, title, description: "" })) },
+      { __component: "our-team.revision-section", eyebrow: revision.eyebrow, title: revision.title, description: revision.description, callout_title: revision.calloutTitle, callout_description: revision.calloutDescription, image_alt: revision.imageAlt, concerns: (revision.concerns || []).map((item: any) => ({ label: item.title, description: item.description })) },
+      { __component: "our-team.editorial-section", eyebrow: international.eyebrow, title: international.title, description: international.description, steps: international.steps || [] },
+      { __component: "our-team.editorial-section", eyebrow: journey.eyebrow, title: journey.title, description: journey.description, steps: journey.steps || [] },
+      { __component: "our-team.editorial-section", eyebrow: "CONSULTATION", title: source.consultation?.title || "Begin Your Journey", description: source.consultation?.description },
+      { __component: "our-team.faq-section", eyebrow: faq.eyebrow, title: faq.title, items: faq.items || [] },
+    ],
+  };
+}
+
+function normalizeResultsSeed(source: any) {
+  return {
+    title: source.title,
+    introduction: source.introduction,
+    cases: (source.cases || []).map((item: any) => ({
+      case_number: item.caseNumber,
+      category: item.category,
+      title: item.title,
+      subtitle: item.subtitle,
+      before_alt: item.beforeAlt,
+      after_alt: item.afterAlt,
+      profile: item.profile,
+      recovery: item.recovery,
+    })),
+    disclaimer_label: source.disclaimerLabel,
+    disclaimer: source.disclaimer,
+    cta_title: source.ctaTitle,
+    cta_description: source.ctaDescription,
+  };
+}
+
 export default {
   /**
    * An asynchronous register function that runs before
@@ -69,6 +112,7 @@ export default {
           "api::canonical-rule.canonical-rule.find",
           "api::service-detail.service-detail.find",
           "api::blog.blog.find",
+          "api::website-setting.website-setting.find",
         ];
 
         for (const action of publicReadActions) {
@@ -174,10 +218,11 @@ export default {
       let ourTeamSeed: Record<string, unknown> = {};
       try {
         const seedPath = path.join(process.cwd(), "data", "our-team.json");
-        ourTeamSeed = JSON.parse(fs.readFileSync(seedPath, "utf8"));
+          ourTeamSeed = JSON.parse(fs.readFileSync(seedPath, "utf8"));
       } catch (seedError: any) {
         console.warn(`[BOOTSTRAP] Our Team seed file unavailable: ${seedError.message}`);
       }
+      ourTeamSeed = normalizeOurTeamSeed(ourTeamSeed);
       const ourTeam = await strapi.documents("api::our-team.our-team").findMany({ limit: 1, status: "draft" });
       if (ourTeam.length > 0) {
         await strapi.documents("api::our-team.our-team").update({
@@ -200,6 +245,7 @@ export default {
       } catch (seedError: any) {
         console.warn(`[BOOTSTRAP] Results seed file unavailable: ${seedError.message}`);
       }
+      resultsSeed = normalizeResultsSeed(resultsSeed);
       const resultsPage = await strapi.documents("api::result.result").findMany({ limit: 1, status: "draft" });
       if (resultsPage.length > 0) {
         await strapi.documents("api::result.result").update({ documentId: resultsPage[0].documentId, data: resultsSeed });

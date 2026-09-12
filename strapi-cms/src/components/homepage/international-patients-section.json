@@ -1,0 +1,6 @@
+{
+  "collectionName": "components_homepage_international_patients_sections",
+  "info": { "displayName": "International patients section" },
+  "options": {},
+  "attributes": { "eyebrow": { "type": "string" }, "title": { "type": "string", "required": true }, "description": { "type": "text" }, "note": { "type": "text" }, "review_items": { "type": "component", "repeatable": true, "component": "homepage.text-item" } }
+}

@@ -133,13 +133,13 @@ export function useOurTeamMotion(root: RefObject<HTMLElement | null>) {
     const scope = root.current
     if (!scope) return
 
-    const sections = Array.from(scope.querySelectorAll<HTMLElement>('section:not([data-team-hero]):not([data-team-revision])'))
+    const sections = Array.from(scope.querySelectorAll<HTMLElement>('section:not([data-team-hero]):not([data-team-revision]):not([data-planning-process])'))
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const cleanups: Array<() => void> = []
 
     sections.forEach((section) => {
       const elements = Array.from(section.querySelectorAll<HTMLElement>(
-        '.stitch-kicker, h2, h3, p, li, blockquote, [class*="__media"], .our-team-timeline > div, .our-team-credential-list > div',
+        '.stitch-kicker, h2, h3, p, li, blockquote, [class*="__media"], .stitch-portrait, .stitch-about-international-heading, .stitch-journey-grid > article, .stitch-about-scope, .stitch-about-hospital-overlay > div, .stitch-actions',
       ))
 
       if (!elements.length) return
@@ -158,38 +158,33 @@ export function useOurTeamMotion(root: RefObject<HTMLElement | null>) {
       })
 
       let hasEntered = false
+      let revealAnimation: ReturnType<typeof animate> | undefined
       const reveal = () => {
         if (hasEntered) return
         hasEntered = true
-        animate(elements, {
+        revealAnimation = animate(elements, {
           opacity: [0, 1],
           y: [18, 0],
-          duration: 560,
-          delay: stagger(45),
+          duration: 620,
+          delay: stagger(55),
           ease: 'outCubic',
         })
       }
 
-      const scrollObserver = onScroll({
-        target: section,
-        enter: 'bottom top',
-        leave: 'top bottom',
-        repeat: true,
-        onEnter: reveal,
-        onEnterBackward: reveal,
-      })
-
+      // IntersectionObserver is the reliable activation gate for each section.
+      // Anime.js owns the actual staggered fade; this avoids missed thresholds
+      // when smooth scrolling skips a frame or the route is entered mid-page.
       const visibilityObserver = new IntersectionObserver(
         (entries) => {
           if (entries.some((entry) => entry.isIntersecting)) reveal()
         },
-        { threshold: 0.01 },
+        { threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
       )
       visibilityObserver.observe(section)
 
       cleanups.push(() => {
-        scrollObserver.revert()
         visibilityObserver.disconnect()
+        revealAnimation?.pause()
       })
     })
 

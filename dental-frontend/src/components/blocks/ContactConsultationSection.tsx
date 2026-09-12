@@ -86,18 +86,18 @@ export function ContactConsultationSection({ data }: { data: ContactConsultation
           <p className="contact-consultation-intro">{data.formIntro}</p>
           <form className="contact-consultation-form" onSubmit={submit} noValidate>
             <div className="contact-consultation-fields contact-consultation-fields--paired">
-              <label><span>Họ và tên <b>*</b></span><input value={form.name} onChange={(event) => update('name', event.target.value)} placeholder="Nhập họ và tên" required /></label>
-              <label><span>Số điện thoại <b>*</b></span><input value={form.phone} onChange={(event) => update('phone', event.target.value)} placeholder="Nhập số điện thoại" type="tel" required /></label>
-              <label><span>Email</span><input value={form.email} onChange={(event) => update('email', event.target.value)} placeholder="Nhập email của bạn" type="email" /></label>
+              <label><span>Full Name <b>*</b></span><input value={form.name} onChange={(event) => update('name', event.target.value)} placeholder="Enter your full name" required /></label>
+              <label><span>Phone Number <b>*</b></span><input value={form.phone} onChange={(event) => update('phone', event.target.value)} placeholder="Enter your phone number" type="tel" required /></label>
+              <label><span>Email Address <small>(Optional)</small></span><input value={form.email} onChange={(event) => update('email', event.target.value)} placeholder="Enter your email address" type="email" /></label>
               <label><span>Preferred Contact</span><SelectBase value={form.preferredContact} options={contactMethodOptions} onChange={(value) => update('preferredContact', value)} ariaLabel="Preferred Contact" /></label>
-              <label><span>Dịch vụ quan tâm <b>*</b></span><SelectBase value={form.service} options={services} onChange={(value) => update('service', value)} ariaLabel="Dịch vụ quan tâm" /></label>
+            <label><span>Service of Interest <b>*</b></span><SelectBase value={form.service} options={services} onChange={(value) => update('service', value)} ariaLabel="Service of Interest" /></label>
             </div>
-            <label><span>Chọn cơ sở <b>*</b></span><SelectBase value={form.location} options={locations} onChange={(value) => update('location', value)} ariaLabel="Chọn cơ sở" /></label>
-            <label><span>Nội dung tư vấn</span><textarea value={form.message} onChange={(event) => update('message', event.target.value)} placeholder="Bạn đang quan tâm điều gì? Tình trạng răng hiện tại của bạn?" rows={4} /></label>
-            <CheckBoxBase checked={form.consent} onChange={(checked) => update('consent', checked)} required><span>Tôi đồng ý với {data.privacyPolicyHref ? <Link href={data.privacyPolicyHref}>{data.privacyPolicyLabel}</Link> : data.privacyPolicyLabel} của DR. MARIS AESTHETICS</span></CheckBoxBase>
-            <button type="submit" className="contact-consultation-submit" disabled={!canSubmit || status === 'sending'}><Check size={17} aria-hidden="true" />{status === 'sending' ? 'ĐANG GỬI...' : data.submitLabel}</button>
-            {status === 'success' ? <p className="contact-consultation-status contact-consultation-status--success" role="status">Cảm ơn bạn. Chúng tôi sẽ liên hệ trong 24 giờ.</p> : null}
-            {status === 'error' ? <p className="contact-consultation-status contact-consultation-status--error" role="alert">Không thể gửi yêu cầu. Vui lòng thử lại.</p> : null}
+            <label><span>Preferred Location <b>*</b></span><SelectBase value={form.location} options={locations} onChange={(value) => update('location', value)} ariaLabel="Preferred Location" /></label>
+            <label><span>Consultation Message <small>(Optional)</small></span><textarea value={form.message} onChange={(event) => update('message', event.target.value)} placeholder="Tell us what you would like to discuss." rows={4} /></label>
+            <CheckBoxBase checked={form.consent} onChange={(checked) => update('consent', checked)} required><span>I agree to the {data.privacyPolicyHref ? <Link href={data.privacyPolicyHref}>{data.privacyPolicyLabel}</Link> : data.privacyPolicyLabel} of DR. MARIS AESTHETICS.</span></CheckBoxBase>
+            <button type="submit" className="contact-consultation-submit" disabled={!canSubmit || status === 'sending'}><Check size={17} aria-hidden="true" />{status === 'sending' ? 'SENDING...' : data.submitLabel}</button>
+            {status === 'success' ? <p className="contact-consultation-status contact-consultation-status--success" role="status">Thank you. We will contact you within 24 hours.</p> : null}
+            {status === 'error' ? <p className="contact-consultation-status contact-consultation-status--error" role="alert">We could not send your request. Please try again.</p> : null}
           </form>
         </div>
 

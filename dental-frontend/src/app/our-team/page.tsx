@@ -3,6 +3,7 @@ import { buildSeoMetadata } from '@/src/lib/seo/seo-manager'
 import { resolveStructuredData, StructuredDataScript } from '@/src/lib/seo/structured-data'
 import { OurTeamPage } from '@/src/components/OurTeamPage'
 import { ourTeamMockData } from '@/src/data/our-team'
+import { getOurTeam } from '@/src/lib/api/queries'
 
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'Our Team | Dr. Maris Aesthetics'
@@ -11,6 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function OurTeamRoute() {
+  const cmsData = await getOurTeam(false)
   const structuredData = await resolveStructuredData({
     pageType: 'about',
     path: '/our-team',
@@ -18,7 +20,7 @@ export default async function OurTeamRoute() {
     description: 'Meet the surgeon-led team behind Dr. Maris Aesthetics and our hospital-based cosmetic surgery care in Vietnam.',
     breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Our Team', path: '/our-team' }],
   })
-  return <><StructuredDataScript data={structuredData} /><OurTeamPage data={ourTeamMockData} /></>
+  return <><StructuredDataScript data={structuredData} /><OurTeamPage data={cmsData || ourTeamMockData} /></>
 }
 
 export const dynamic = 'force-dynamic'

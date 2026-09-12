@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_website_setting_social_links",
+  "info": { "displayName": "Website social link" },
+  "options": {},
+  "attributes": {
+    "platform": { "type": "string", "required": true },
+    "url": { "type": "string", "required": true },
+    "icon_class": { "type": "string" },
+    "order": { "type": "integer", "default": 0 },
+    "is_active": { "type": "boolean", "default": true }
+  }
+}

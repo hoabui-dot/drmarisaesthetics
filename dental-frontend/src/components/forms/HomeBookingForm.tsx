@@ -3,10 +3,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowRight, Check, ChevronDown, Mail, Search, UserRound } from "lucide-react";
 import { countries } from "country-flag-icons";
-import getUnicodeFlagIcon from "country-flag-icons/unicode";
 import { getCountryCallingCode, type CountryCode } from "libphonenumber-js";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { SelectBase } from '@/src/components/ui/SelectBase';
+import { CountryFlag } from '@/src/components/forms/CountryPicker';
 
 type ServiceOption = { value: string; label: string };
 
@@ -15,7 +15,7 @@ const countryOptions = countries
   .filter((code): code is CountryCode => /^[A-Z]{2}$/.test(code))
   .map((code) => {
     try {
-      return { code, name: countryNames.of(code) || code, dialCode: `+${getCountryCallingCode(code)}`, flag: getUnicodeFlagIcon(code) };
+      return { code, name: countryNames.of(code) || code, dialCode: `+${getCountryCallingCode(code)}` };
     } catch {
       return null;
     }
@@ -56,7 +56,7 @@ function CountryPicker({ value, onChange, error }: { value: typeof defaultCountr
   return (
     <div ref={pickerRef} className="home-phone-picker">
       <button type="button" className={`home-phone-trigger${error ? " is-invalid" : ""}`} onClick={() => setOpen((current) => !current)} aria-haspopup="listbox" aria-expanded={open}>
-        <span className="home-phone-flag" aria-hidden="true">{value.flag}</span><ChevronDown size={15} aria-hidden="true" />
+        <CountryFlag code={value.code} label={value.name} /><ChevronDown size={15} aria-hidden="true" />
       </button>
       {open ? <div className="home-phone-menu" role="listbox" aria-label="Select country">
         <div className="home-phone-search"><Search size={15} aria-hidden="true" /><input autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search country" aria-label="Search country" /></div>

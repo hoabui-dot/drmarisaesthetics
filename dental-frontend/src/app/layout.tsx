@@ -11,7 +11,7 @@ import { CLINIC_INFO } from '@/src/lib/constants/contact'
 
 import { BRAND_LOGO_PATH } from '@/src/lib/constants/brand'
 import type { ContactMethod, Footer as FooterData, Navigation } from '@/src/types/strapi'
-import { getContactMethods } from '@/src/lib/api/queries'
+import { getContactMethods, getWebsiteSetting } from '@/src/lib/api/queries'
 
 const staticNavigation: Navigation = {
   navigation: [
@@ -21,6 +21,15 @@ const staticNavigation: Navigation = {
       { id: 31, label: 'Rhinoplasty', href: '/face/rhinoplasty' },
     ] },
     { id: 4, label: 'Treatments', href: '/treatments' },
+    { id: 7, label: 'Services', href: '/services', children: [
+      { id: 71, label: 'Blepharoplasty', href: '/services/blepharoplasty' },
+      { id: 72, label: 'Breast Augmentation', href: '/services/breast-augmentation' },
+      { id: 73, label: 'Buttock Augmentation', href: '/services/buttock-augmentation' },
+      { id: 74, label: 'Facelift', href: '/services/facelift' },
+      { id: 75, label: 'Gastric Sleeve', href: '/services/gastric-sleeve' },
+      { id: 76, label: 'Labiaplasty', href: '/services/labiaplasty' },
+      { id: 77, label: 'Liposuction', href: '/services/liposuction' },
+    ] },
     { id: 5, label: 'Results', href: '/results' },
     { id: 6, label: 'Contact', href: '/contact' },
   ],
@@ -79,9 +88,33 @@ interface RootLayoutProps {
 
 export default async function RootLayout({ children }: RootLayoutProps) {
   const navigation = staticNavigation;
-  const footer = staticFooter;
-  const cmsContactMethods = await getContactMethods();
-  const contactMethods = cmsContactMethods.length > 0 ? cmsContactMethods : staticContactMethods;
+  const [websiteSetting, cmsContactMethods] = await Promise.all([getWebsiteSetting(), getContactMethods()]);
+  const settingsContactMethods = websiteSetting?.contactMethods?.map((method) => ({
+    id: method.id || 0,
+    type: method.type,
+    label: method.label,
+    href: method.href,
+    order: method.order || 0,
+    isActive: method.isActive !== false,
+  })) || [];
+  const contactMethods = settingsContactMethods.length > 0
+    ? settingsContactMethods
+    : (cmsContactMethods.length > 0 ? cmsContactMethods : staticContactMethods);
+  const footer: FooterData = websiteSetting ? {
+    ...staticFooter,
+    contactInfo: {
+      ...staticFooter.contactInfo,
+      address: websiteSetting.address || staticFooter.contactInfo.address,
+      phone: websiteSetting.phonePrimary || staticFooter.contactInfo.phone,
+      email: websiteSetting.email || staticFooter.contactInfo.email,
+    },
+    socialLinks: websiteSetting.socialLinks.map((link, index) => ({
+      id: link.id || index + 1,
+      platform: link.platform,
+      url: link.url,
+      iconClass: link.iconClass,
+    })),
+  } : staticFooter;
   const serviceOptions = ['Rhinoplasty', 'Revision Surgery', 'Facial Contouring', 'Breast Surgery'];
 
   return (

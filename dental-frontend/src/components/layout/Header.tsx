@@ -48,6 +48,7 @@ import { CalendarDays } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { NavLink } from './NavLink';
 import { DesktopMegaNavigation } from './DesktopMegaNavigation';
+import { PlayfulClipMobileMenu } from './PlayfulClipMobileMenu';
 import { TopProgressBar } from './TopProgressBar';
 import { useBookingModal } from '@/src/components/booking-modal/BookingModalContext';
 import { useMobileAnimation } from '@/src/hooks/useMobileAnimation';
@@ -142,6 +143,10 @@ export function Header({ navigation }: HeaderProps) {
       sections.forEach((section) => observer.unobserve(section));
     };
   }, []);
+
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
 
   const toggleMobileMenu = () => setMobileMenuOpen((v) => !v);
   const closeMobileMenu  = () => setMobileMenuOpen(false);
@@ -238,7 +243,7 @@ export function Header({ navigation }: HeaderProps) {
             {/* Mobile Menu Button */}
             <button
               onClick={toggleMobileMenu}
-              className={`
+              className={`playful-clip-menu__toggle
                 lg:hidden w-10 flex-shrink-0 flex justify-end p-2 text-foreground-secondary hover:text-primary-500
                 transition-colors relative z-10 rounded-lg
                 hover:bg-primary-50 active:bg-primary-100
@@ -253,17 +258,7 @@ export function Header({ navigation }: HeaderProps) {
                * `transform: rotate(180deg / 0deg)` via CSS transition.
                * No JS animation frame, no framer-motion subscription.
                */}
-              <div className={mobileMenuOpen ? 'rotate-icon-open' : 'rotate-icon-closed'}>
-                {mobileMenuOpen ? (
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                ) : (
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  </svg>
-                )}
-              </div>
+              <span className="playful-clip-menu__icon" aria-hidden="true"><i /><i /><i /></span>
             </button>
           </div>
         </div>
@@ -279,7 +274,7 @@ export function Header({ navigation }: HeaderProps) {
          * exit animations are dropped in favour of instant close on mobile
          * to eliminate the perceived lag of waiting for an exit animation.
          */}
-        {mobileMenuOpen && (
+        {false && mobileMenuOpen && (
           <PerformanceAnimation
             as="nav"
             preset="menu-open"
@@ -330,6 +325,8 @@ export function Header({ navigation }: HeaderProps) {
           </PerformanceAnimation>
         )}
       </header>
+
+      <PlayfulClipMobileMenu open={mobileMenuOpen} navigation={navigation} onClose={closeMobileMenu} onBook={openBookingModal} />
 
       {/*
        * Sticky Mobile CTA Bar

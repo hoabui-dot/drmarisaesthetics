@@ -1,11 +1,14 @@
 'use client'
 
+import { useRef } from 'react'
 import { ContactHeroSection } from '@/src/components/blocks/ContactHeroSection'
 import { ContactConsultationSection } from '@/src/components/blocks/ContactConsultationSection'
 import { ContactClinicLocationSection } from '@/src/components/blocks/ContactClinicLocationSection'
 import { ContactExpectationSection } from '@/src/components/blocks/ContactExpectationSection'
 import { ContactFaqSection } from '@/src/components/blocks/ContactFaqSection'
 import type { ContactMethod } from '@/src/types/strapi'
+import type { ContactPageContent } from '@/src/lib/api/queries'
+import { useLazySectionMotion } from '@/src/hooks/useLazySectionMotion'
 
 const referenceConsultationImage = 'https://lh3.googleusercontent.com/aida-public/AB6AXuBv4QMbPrkqG2aQ0lh3niXL3DrE3lV-66wyWK1lkJzf8jRos1VVmG5v9eCDbgbQns7JGmp4NN1fVExc890phtmTH9BsHXbgroS_68_aX8oRZE4RF-4nLI_vuj2haRZFgvRoizqHbmA8gJPC1umUy9r5_PpJuxr7wHJn_58yOr2MypPuq1muRN4ujFcK-_0M8IDMVPxU6KBoBwt0D3_KeXJcQPKVZKki28T8J8ySldfYExiIcbOw3CvHxQ'
 
@@ -19,7 +22,9 @@ const staticContactContent: any = {
   ],
 }
 
-export default function ContactPageClient({ contactMethods = [] }: { contactMethods?: ContactMethod[] }) {
+export default function ContactPageClient({ contactMethods = [], content }: { contactMethods?: ContactMethod[]; content?: ContactPageContent }) {
+  const pageRef = useRef<HTMLElement>(null)
+  useLazySectionMotion(pageRef)
   const cmsContacts = contactMethods
     .filter((method) => method.isActive && method.href)
     .map((method) => ({
@@ -28,17 +33,17 @@ export default function ContactPageClient({ contactMethods = [] }: { contactMeth
       value: method.type === 'phone' ? method.href.replace(/^tel:/, '') : method.label,
       href: method.href,
     }))
-  const content = cmsContacts.length > 0
+  const resolvedContent = content?.blocks?.length ? content : (cmsContacts.length > 0
     ? {
         ...staticContactContent,
         blocks: staticContactContent.blocks.map((block: any) => block.__component === 'contact.consultation-section'
           ? { ...block, data: { ...block.data, contacts: cmsContacts } }
           : block),
       }
-    : staticContactContent
+    : staticContactContent)
   return (
-    <main className="contact-page min-h-screen selection:bg-slate-200 selection:text-slate-900">
-      {content.blocks.map((block: any) => {
+    <main ref={pageRef} className="contact-page min-h-screen selection:bg-slate-200 selection:text-slate-900">
+      {resolvedContent.blocks?.map((block: any) => {
         if (block.__component === 'contact.hero') {
           return <ContactHeroSection key={block.id} data={block.data} />
         }

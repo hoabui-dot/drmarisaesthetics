@@ -1,0 +1,6 @@
+{
+  "collectionName": "components_homepage_patient_results_sections",
+  "info": { "displayName": "Patient results section" },
+  "options": {},
+  "attributes": { "eyebrow": { "type": "string" }, "editorial_lead": { "type": "text" }, "note": { "type": "text" }, "source": { "type": "string" } }
+}

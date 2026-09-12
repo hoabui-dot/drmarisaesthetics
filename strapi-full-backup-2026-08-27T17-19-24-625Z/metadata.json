@@ -1,7 +1,0 @@
-{
-  "type": "full",
-  "database": "postgresql",
-  "createdAt": "2026-08-27T17:19:24.634Z",
-  "includesDatabase": true,
-  "includesUploads": true
-}

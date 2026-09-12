@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_our_team_hero_sections",
+  "info": { "displayName": "Our Team hero" },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "paragraph_one": { "type": "text" },
+    "paragraph_two": { "type": "text" },
+    "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "image_alt": { "type": "string" }
+  }
+}

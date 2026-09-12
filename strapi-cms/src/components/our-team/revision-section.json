@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_our_team_revision_sections",
+  "info": { "displayName": "Our Team revision section" },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "description": { "type": "text" },
+    "callout_title": { "type": "string" },
+    "callout_description": { "type": "text" },
+    "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "image_alt": { "type": "string" },
+    "concerns": { "type": "component", "repeatable": true, "component": "our-team.item" }
+  }
+}

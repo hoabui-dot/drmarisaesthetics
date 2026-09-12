@@ -1,8 +1,8 @@
 /**
  * Editorial homepage controller.
  *
- * Homepage sections are stored as JSON fields rather than the removed legacy
- * dynamic zone. This keeps the Content Manager aligned with the Stitch UI.
+ * Homepage sections are managed as an ordered dynamic zone, matching the
+ * Content Manager pattern used by About Page.
  */
 import { factories } from "@strapi/strapi";
 
@@ -14,7 +14,26 @@ export default factories.createCoreController(
         const sanitizedQuery = await this.sanitizeQuery(ctx);
         const entities = await strapi.documents("api::homepage.homepage").findMany({
           ...sanitizedQuery,
-          populate: { seo: { populate: ["meta_image"] }, metadata_image: true },
+          populate: {
+            seo: { populate: ["meta_image"] },
+            metadata_image: true,
+            sections: {
+              on: {
+                "homepage.hero-section": { populate: ["image", "trust_labels"] },
+                "homepage.signature-procedures-section": { populate: { items: { populate: ["image"] } } },
+                "homepage.surgical-care-process-section": { populate: ["steps"] },
+                "homepage.maris-method-section": { populate: ["image", "steps"] },
+                "homepage.revision-surgery-section": { populate: ["image"] },
+                "homepage.doctor-assessment-section": { populate: ["image"] },
+                "homepage.hospital-based-surgery-section": { populate: ["image", "proof_items"] },
+                "homepage.international-patients-section": { populate: ["review_items"] },
+                "homepage.international-journey-section": { populate: { steps: { populate: ["image"] } } },
+                "homepage.patient-results-section": { populate: "*" },
+                "homepage.consultation-section": { populate: "*" },
+                "homepage.frequently-asked-questions-section": { populate: ["items"] },
+              },
+            },
+          },
           status: ctx.query.status === "draft" ? "draft" : "published",
         });
         const entity = entities?.[0];

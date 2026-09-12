@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { buildSeoMetadata } from '@/src/lib/seo/seo-manager'
-import { StitchTreatmentPage } from '@/src/components/StitchTreatmentPage'
+import { TreatmentLandingPage } from '@/src/components/TreatmentLandingPage'
 
 export async function generateMetadata(): Promise<Metadata> {
   return buildSeoMetadata({
@@ -12,7 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 /** Independent Treatments landing route. */
 export default function TreatmentsPage() {
-  return <StitchTreatmentPage showQuickFacts={false} />
+  return <TreatmentLandingPage />
 }
 
 export const dynamic = 'force-dynamic'

@@ -1,0 +1,9 @@
+{
+  "collectionName": "components_homepage_signature_procedures_sections",
+  "info": { "displayName": "Signature procedures section" },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string" }, "title_line_1": { "type": "string", "required": true }, "title_line_2": { "type": "string" }, "description": { "type": "text" },
+    "items": { "type": "component", "repeatable": true, "component": "homepage.procedure-item" }
+  }
+}
