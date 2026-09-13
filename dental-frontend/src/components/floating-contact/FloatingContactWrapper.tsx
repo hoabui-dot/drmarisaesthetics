@@ -35,7 +35,7 @@ export function FloatingContactWrapper({ contactMethods }: FloatingContactWrappe
       <div className="flex flex-col items-end gap-3">
         {contactMethods.map((item, index) => (
           <FloatingButtonItem
-            key={item.type}
+            key={`${item.id || item.type}-${index}`}
             item={item}
             index={index}
           />

@@ -11,7 +11,8 @@ import { CLINIC_INFO } from '@/src/lib/constants/contact'
 
 import { BRAND_LOGO_PATH } from '@/src/lib/constants/brand'
 import type { ContactMethod, Footer as FooterData, Navigation } from '@/src/types/strapi'
-import { getContactMethods, getWebsiteSetting } from '@/src/lib/api/queries'
+import { getWebsiteSetting } from '@/src/lib/api/queries'
+import { GlobalCtaProvider } from '@/src/components/providers/GlobalCtaProvider'
 
 const staticNavigation: Navigation = {
   navigation: [
@@ -29,6 +30,7 @@ const staticNavigation: Navigation = {
       { id: 75, label: 'Gastric Sleeve', href: '/services/gastric-sleeve' },
       { id: 76, label: 'Labiaplasty', href: '/services/labiaplasty' },
       { id: 77, label: 'Liposuction', href: '/services/liposuction' },
+      { id: 78, label: 'Rhinoplasty', href: '/services/rhinoplasty' },
     ] },
     { id: 5, label: 'Results', href: '/results' },
     { id: 6, label: 'Contact', href: '/contact' },
@@ -88,18 +90,19 @@ interface RootLayoutProps {
 
 export default async function RootLayout({ children }: RootLayoutProps) {
   const navigation = staticNavigation;
-  const [websiteSetting, cmsContactMethods] = await Promise.all([getWebsiteSetting(), getContactMethods()]);
+  const websiteSetting = await getWebsiteSetting();
   const settingsContactMethods = websiteSetting?.contactMethods?.map((method) => ({
     id: method.id || 0,
     type: method.type,
     label: method.label,
     href: method.href,
+    icon: method.icon,
+    iconUrl: method.icon?.url,
+    color: method.color,
     order: method.order || 0,
     isActive: method.isActive !== false,
   })) || [];
-  const contactMethods = settingsContactMethods.length > 0
-    ? settingsContactMethods
-    : (cmsContactMethods.length > 0 ? cmsContactMethods : staticContactMethods);
+  const contactMethods = settingsContactMethods.length > 0 ? settingsContactMethods : staticContactMethods;
   const footer: FooterData = websiteSetting ? {
     ...staticFooter,
     contactInfo: {
@@ -123,11 +126,13 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         <ReCaptchaProvider>
           <BookingModalWrapper serviceOptions={serviceOptions}>
             <CallModalWrapper>
-            <Header navigation={navigation} />
-            <main className="flex-1 overflow-x-clip">
-              {children}
-            </main>
-            <Footer footer={footer} />
+            <Header navigation={navigation} logoSrc={websiteSetting?.logo?.url} />
+            <GlobalCtaProvider value={websiteSetting?.globalCta}>
+              <main className="flex-1 overflow-x-clip">
+                {children}
+              </main>
+            </GlobalCtaProvider>
+            <Footer footer={footer} logoSrc={websiteSetting?.logo?.url} />
 
             {/* Global Features */}
             <FloatingContactWrapper contactMethods={contactMethods} />

@@ -15,7 +15,7 @@ import { useReducedMotion } from 'framer-motion'
  * initial client render — avoids Next.js hydration mismatch.
  * useEffect then reads the real viewport and updates once after hydration.
  *
- * For above-fold LCP content (e.g. VideoHero h1) do NOT use this hook at all —
+ * For above-fold LCP content (e.g. VideoHero h2) do NOT use this hook at all —
  * render those elements as plain HTML with no initial opacity:0.
  *
  * Usage:

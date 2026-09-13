@@ -21,7 +21,6 @@ export default factories.createCoreController(
               on: {
                 "homepage.hero-section": { populate: ["image", "trust_labels"] },
                 "homepage.signature-procedures-section": { populate: { items: { populate: ["image"] } } },
-                "homepage.surgical-care-process-section": { populate: ["steps"] },
                 "homepage.maris-method-section": { populate: ["image", "steps"] },
                 "homepage.revision-surgery-section": { populate: ["image"] },
                 "homepage.doctor-assessment-section": { populate: ["image"] },

@@ -45,9 +45,9 @@ export function MarkdownContent({ content, className = '' }: MarkdownContentProp
         components={{
           // Customize heading styles
           h1: ({ children }) => (
-            <h1 id={headingId(children)} className="text-4xl font-bold text-foreground mb-6 mt-8">
+            <h2 id={headingId(children)} className="text-4xl font-bold text-foreground mb-6 mt-8">
               {children}
-            </h1>
+            </h2>
           ),
           h2: ({ children }) => (
             <h2 id={headingId(children)} className="text-3xl font-bold text-foreground mb-4 mt-6">

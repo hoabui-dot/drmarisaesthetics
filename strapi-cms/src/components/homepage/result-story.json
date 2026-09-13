@@ -2,15 +2,15 @@
   "collectionName": "components_homepage_result_stories",
   "info": {
     "displayName": "Result Story",
-    "description": "Atomic smile transformation story with synchronized copy and media"
+    "description": "A single composite before-and-after result story"
   },
   "options": {},
   "attributes": {
     "title": { "type": "string", "required": true },
     "description": { "type": "text", "required": true },
     "treatments": { "type": "json", "required": true },
-    "before_image": { "type": "media", "multiple": false, "required": true, "allowedTypes": ["images"] },
-    "after_image": { "type": "media", "multiple": false, "required": true, "allowedTypes": ["images"] },
+    "image": { "type": "media", "multiple": false, "required": true, "allowedTypes": ["images"] },
+    "image_alt": { "type": "string" },
     "patient_portrait": { "type": "media", "multiple": false, "required": true, "allowedTypes": ["images"] },
     "portrait_alt": { "type": "string" },
     "quote": { "type": "text", "required": true }

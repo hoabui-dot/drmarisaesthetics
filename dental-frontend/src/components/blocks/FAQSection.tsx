@@ -1,7 +1,7 @@
 'use client'
 
 import type { HomepageFAQBlock } from '@/src/types/strapi'
-import { MotionFaqAccordion } from '@/src/components/ui/motion-faq-accordion'
+import { CommonFaqAccordion } from '@/src/components/blocks/CommonFaqAccordion'
 import { AnimatedSectionHeader } from '@/src/components/ui/AnimatedSectionHeader'
 import { cn } from '@/src/lib/utils'
 import { PerformanceAnimation } from '@/src/components/ui/PerformanceAnimation'
@@ -11,7 +11,7 @@ import { PerformanceAnimation } from '@/src/components/ui/PerformanceAnimation'
  *
  * Layout  : Single column FAQ accordion
  * Accordion: glassmorphism, spring expand, icon rotate 180°
- * Icons   : semantic per question keyword (insurance→shield, emergency→alert, visit→calendar)
+ * Icons   : no leading question icons; matches the minimal homepage accordion
  * Preview : first line of answer shown before opening
  * BG      : white background
  */
@@ -19,6 +19,8 @@ import { PerformanceAnimation } from '@/src/components/ui/PerformanceAnimation'
 interface FAQSectionProps {
   data: HomepageFAQBlock
   maxWidthClassName?: string
+  layout?: 'default' | 'left'
+  backgroundImage?: string
 }
 
 // ─── Semantic icon picker ─────────────────────────────────────────────────────
@@ -82,44 +84,35 @@ function QuestionIcon({ question }: { question: string }) {
 
 // ─── Section ──────────────────────────────────────────────────────────────────
 
-export function FAQSection({ data, maxWidthClassName = 'max-w-4xl' }: FAQSectionProps) {
+export function FAQSection({ data, maxWidthClassName = 'max-w-4xl', layout = data.layout || 'default', backgroundImage = data.backgroundImage }: FAQSectionProps) {
   if (!data.questions || data.questions.length === 0) return null
 
   return (
     <section
       id="faq"
-      className="relative py-16 sm:py-20 md:py-28 overflow-hidden"
-      style={{ background: '#FFFFFF' }}
+      className={cn('relative py-16 sm:py-20 md:py-28 overflow-hidden faq-section', layout === 'left' && 'faq-section--left', backgroundImage && 'faq-section--has-background')}
+      style={backgroundImage ? { backgroundImage: `url("${backgroundImage}")`, backgroundSize: 'cover', backgroundPosition: 'center' } : { background: '#FFFFFF' }}
     >
+      {backgroundImage && <div className="faq-section__background-wash" aria-hidden="true" />}
       {/* Radial glow */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none faq-section__glow"
         style={{
           background: 'radial-gradient(circle at 30% 50%, rgba(0,120,255,0.06), transparent 65%)',
         }}
       />
 
-      {/* Full-width header — matches max-w-7xl of all other sections */}
-      <PerformanceAnimation
-        preset="slide-up-subtle"
-        whileInView={true}
-        className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
-      >
-        <AnimatedSectionHeader
-          title={data.title}
-          subtitle={data.subtitle}
-          className="mb-8 sm:mb-10 md:mb-12"
-        />
-      </PerformanceAnimation>
-
-      {/* Accordion — constrained to maxWidthClassName (default max-w-4xl) */}
-      <div className={cn("relative z-10 mx-auto px-4 sm:px-6 lg:px-8", maxWidthClassName)}>
-        <MotionFaqAccordion
-          items={data.questions.map((item) => ({ id: item.id, question: item.question, answer: item.answer }))}
-          className="faq-section__accordion flex flex-col gap-3"
-          defaultOpenIndex={0}
-          renderIcon={(item) => <QuestionIcon question={item.question} />}
-        />
+      <div className={cn('relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 faq-section__layout', layout === 'left' && 'faq-section__layout--left')}>
+        <PerformanceAnimation preset="slide-up-subtle" whileInView={true} className="faq-section__header">
+          <AnimatedSectionHeader title={data.title} subtitle={data.subtitle} align={layout === 'left' ? 'left' : 'center'} className="mb-8 sm:mb-10 md:mb-12" />
+        </PerformanceAnimation>
+        <div className={cn('faq-section__accordion-wrap', layout !== 'left' && 'mx-auto', maxWidthClassName)}>
+          <CommonFaqAccordion
+            items={data.questions.map((item) => ({ id: item.id, question: item.question, answer: item.answer }))}
+            className="faq-section__accordion flex flex-col gap-3"
+            defaultOpenIndex={0}
+          />
+        </div>
       </div>
     </section>
   )

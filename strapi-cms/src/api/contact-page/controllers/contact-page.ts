@@ -25,7 +25,6 @@ export default factories.createCoreController(
               populate: {
                 location_options: { populate: "*" },
                 advisor_image: { populate: "*" },
-                contacts: { populate: "*" },
               },
             },
             "contact.map-section": {

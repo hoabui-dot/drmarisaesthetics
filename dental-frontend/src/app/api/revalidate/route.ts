@@ -37,13 +37,9 @@ const MODEL_TAG_MAP: Record<string, string[]> = {
   "about-page": ["about-page"],
   customer: ["customer"],
   "contact-page": ["contact-page"],
-  "services-overview": ["services-overview", "services"],
   news: ["blogs", "news"],
-  "contact-method": ["contact-methods"],
-  "dental-service": ["services-overview", "pages"],
   "seo-manager-settings": ["seo-manager-settings", "structured-data-settings"],
   "robots-settings": ["robots-settings"],
-  "service-detail": ["service-details"],
   redirect: ["redirects"],
   "canonical-rule": ["canonical-rules"],
 };
@@ -58,13 +54,10 @@ const MODEL_PATH_MAP: Record<string, string[]> = {
   customer: ["/customers"],
   "contact-page": ["/contact"],
   homepage: ["/"],
-  "contact-method": ["/"], // Revalidate all pages since floating contact appears on all pages
-  "dental-service": ["/", "/services"],
   "seo-manager-settings": ["/robots.txt", "/sitemap.xml", "/"],
   "robots-settings": ["/robots.txt"],
   "sitemap-manager-settings": ["/sitemap.xml"],
   "canonical-rule": ["/sitemap.xml"],
-  "service-detail": ["/services"],
 };
 
 /** Only these Strapi models can change the set or metadata of public sitemap URLs. */
@@ -73,8 +66,6 @@ const SITEMAP_RELEVANT_MODELS = new Set([
   "about-page",
   "contact-page",
   "page",
-  "services-overview",
-  "service-detail",
   "blog",
   "news",
   "customer",
@@ -145,7 +136,6 @@ function isSitemapRelevant(modelName: string): boolean {
 function sitemapEntryPath(modelName: string, slug?: string): string | null {
   if (!slug) return null;
   const model = normalizeModelName(modelName);
-  if (model === "service-detail") return `/services/${slug}`;
   if (model === "blog" || model === "news") return `/news/${slug}`;
   return `/${slug}`;
 }

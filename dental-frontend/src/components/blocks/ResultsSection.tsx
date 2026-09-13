@@ -1,71 +1,19 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import type { HomepageResultsSectionBlock, Media } from '@/src/types/strapi'
 
-function mediaSource(media: Media) {
+function mediaSource(media?: Media | { url: string }) {
   return media?.url || ''
 }
 
-function BeforeAfterComparison({ story }: { story: HomepageResultsSectionBlock['stories'][number] }) {
-  const [position, setPosition] = useState(50)
-  const trackRef = useRef<HTMLDivElement>(null)
-  const dragging = useRef(false)
-
-  const updatePosition = useCallback((clientX: number) => {
-    const bounds = trackRef.current?.getBoundingClientRect()
-    if (!bounds) return
-    setPosition(Math.min(100, Math.max(0, ((clientX - bounds.left) / bounds.width) * 100)))
-  }, [])
-
-  useEffect(() => {
-    setPosition(50)
-  }, [story.id])
-
-  useEffect(() => {
-    const stopDragging = () => { dragging.current = false }
-    const move = (event: PointerEvent) => {
-      if (dragging.current) updatePosition(event.clientX)
-    }
-    window.addEventListener('pointermove', move)
-    window.addEventListener('pointerup', stopDragging)
-    return () => {
-      window.removeEventListener('pointermove', move)
-      window.removeEventListener('pointerup', stopDragging)
-    }
-  }, [updatePosition])
-
+/* Composite images already contain the before-and-after presentation. */
+function CompositeResultImage({ story }: { story: HomepageResultsSectionBlock['stories'][number] }) {
   return (
-    <div
-      ref={trackRef}
-      className="results-comparison"
-      onPointerDown={(event) => {
-        dragging.current = true
-        updatePosition(event.clientX)
-      }}
-      role="group"
-      aria-label="Interactive before and after comparison"
-    >
-      <Image src={mediaSource(story.afterImage)} alt={story.afterImage.alt || 'After treatment'} fill className="results-comparison-image" sizes="(max-width: 1023px) 100vw, 36vw" priority />
-      <div className="results-comparison-before" style={{ width: `${position}%` }}>
-        <Image src={mediaSource(story.beforeImage)} alt={story.beforeImage.alt || 'Before treatment'} fill className="results-comparison-image" sizes="(max-width: 1023px) 100vw, 36vw" />
-      </div>
-      <span className="results-comparison-label results-comparison-label-before">Before</span>
-      <span className="results-comparison-label results-comparison-label-after">After</span>
-      <div className="results-comparison-divider" style={{ left: `${position}%` }} aria-hidden="true">
-        <span className="results-comparison-handle">↔</span>
-      </div>
-      <input
-        type="range"
-        min="0"
-        max="100"
-        value={position}
-        onChange={(event) => setPosition(Number(event.target.value))}
-        aria-label="Before and after comparison position"
-        className="results-comparison-range"
-      />
+    <div className="results-composite-image">
+      <Image src={mediaSource(story.image || { url: '' })} alt={story.imageAlt || story.image?.alt || 'Composite before and after treatment result'} fill className="object-cover" sizes="(max-width: 1023px) 100vw, 36vw" priority />
     </div>
   )
 }
@@ -108,7 +56,7 @@ export function ResultsSection({ data }: { data: HomepageResultsSectionBlock }) 
               {activeStory.treatments.map((treatment) => <li key={treatment}>{treatment}</li>)}
             </ul>
           </article>
-          <BeforeAfterComparison story={activeStory} />
+          <CompositeResultImage story={activeStory} />
           <figure className="results-patient-media">
             <div className="results-patient-image">
               <Image src={mediaSource(activeStory.patientPortrait)} alt={activeStory.portraitAlt || activeStory.patientPortrait.alt || 'Smiling patient'} fill className="object-cover" sizes="(max-width: 1023px) 100vw, 30vw" />

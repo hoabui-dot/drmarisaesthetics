@@ -5,6 +5,7 @@
   "attributes": {
     "eyebrow": { "type": "string" },
     "title": { "type": "string", "required": true },
+    "background_image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
     "items": { "type": "component", "repeatable": true, "component": "our-team.faq-item" }
   }
 }

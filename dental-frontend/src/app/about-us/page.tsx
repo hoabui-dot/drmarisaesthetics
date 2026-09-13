@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { buildSeoMetadata } from '@/src/lib/seo/seo-manager'
 import { resolveStructuredData, StructuredDataScript } from '@/src/lib/seo/structured-data'
 import { StitchAboutUs } from '@/src/components/StitchAestheticPage'
+import { getAboutPage } from '@/src/lib/api/queries'
 
 /**
  * About Us Page
@@ -20,6 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function AboutUsPage() {
     try {
+        const aboutPage = await getAboutPage()
         const structuredData = await resolveStructuredData({
             pageType: 'about', path: '/about-us',
             title: 'About Us - DR. MARIS AESTHETICS',
@@ -31,7 +33,7 @@ export default async function AboutUsPage() {
             <>
                 <StructuredDataScript data={structuredData} />
                 <main className="min-h-screen bg-background">
-                    <StitchAboutUs />
+                    <StitchAboutUs heroImage={aboutPage?.hero?.backgroundImage} content={aboutPage} />
                 </main>
             </>
         )
@@ -40,7 +42,7 @@ export default async function AboutUsPage() {
             <main className="min-h-screen flex items-center justify-center bg-background">
                 <div className="max-w-md w-full text-center space-y-4 px-4">
                     <div className="text-size-error-icon">⚠️</div>
-                    <h1 className="text-size-error-title font-bold text-foreground">Error Loading Page</h1>
+                    <h2 className="text-size-error-title font-bold text-foreground">Error Loading Page</h2>
                     <p className="text-foreground-secondary">
                         We encountered an error loading the About Us page. Please try again later.
                     </p>

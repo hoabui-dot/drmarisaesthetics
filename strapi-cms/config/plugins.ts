@@ -5,6 +5,13 @@
  */
 
 export default ({ env }) => ({
+  "better-blocks": {
+    enabled: true,
+  },
+  "docx-importer": {
+    enabled: true,
+    resolve: "./src/plugins/docx-importer",
+  },
   // Webtools provides the admin-managed URL registry used by the sitemap add-on.
   // Content types opt in separately through pluginOptions.webtools.
   webtools: {

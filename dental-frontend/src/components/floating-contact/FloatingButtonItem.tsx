@@ -32,6 +32,18 @@ const dropShadowFilters: Record<string, string> = {
   gradient: "drop-shadow(0 0 30px rgba(236,72,153,0.6))", // Pink/gradient glow (instagram)
 };
 
+type ContactAnimationColor = "blue" | "green" | "gradient" | "yellow";
+
+function resolveAnimationColor(item: ContactMethod): ContactAnimationColor {
+  const configured = item.color?.toLowerCase();
+  if (configured === "blue" || configured === "green" || configured === "gradient" || configured === "yellow") {
+    return configured;
+  }
+  if (item.type === "whatsapp") return "green";
+  if (item.type === "instagram") return "gradient";
+  return "blue";
+}
+
 export function FloatingButtonItem({
   item,
   index
@@ -39,6 +51,7 @@ export function FloatingButtonItem({
   const [isHovered, setIsHovered] = useState(false);
   const [showStars, setShowStars] = useState(false);
   const { handlers } = useInteractionStates();
+  const animationColor = resolveAnimationColor(item);
 
   // Priority detection
   const isPhonePrimary = item.type === "phone";
@@ -170,7 +183,7 @@ export function FloatingButtonItem({
         <div className="relative w-14 h-14 flex items-center justify-center">
           {/* 🔴 EXPANDING RINGS - Only for Phone (Primary) — Disable on mobile to save CPU */}
           {isPhonePrimary && !shouldSimplify && (
-            <ExpandingRings color={(item.color || 'blue') as "blue" | "green" | "gradient" | "yellow"} count={3} />
+            <ExpandingRings color={animationColor} count={3} />
           )}
 
           {/* 🔵 SUBTLE PULSE RING - Only for Secondary */}

@@ -25,7 +25,6 @@ type StaticRoute = { path: string; endpoint?: string };
 const staticRoutes: StaticRoute[] = [
   { path: "/", endpoint: "/api/homepage" },
   { path: "/about-us", endpoint: "/api/about-page" },
-  { path: "/services", endpoint: "/api/services-overview" },
   { path: "/contact", endpoint: "/api/contact-page" },
   { path: "/news" },
   { path: "/customers", endpoint: "/api/customer" },
@@ -87,8 +86,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const reservedSlugs = new Set(staticRoutes.map((route) => route.path.replace(/^\//, "")).filter(Boolean));
   const pages = await fetchAll<Entry>("/api/pages", { populate: { seo: true } }, ["pages"]);
   for (const page of pages) { if (!page.slug || reservedSlugs.has(page.slug)) continue; const item = resolveEntry(`/${page.slug}`, page, settings, canonicalRules); if (item) entries.push(item); }
-  const services = await fetchAll<Entry>("/api/service-details", { populate: { seo: true } }, ["service-details"]);
-  for (const service of services) { if (!service.slug) continue; const item = resolveEntry(`/services/${service.slug}`, service, settings, canonicalRules); if (item) entries.push(item); }
   const blogs = await fetchAll<Entry>("/api/blogs", { populate: { seo: true } }, ["blogs"]);
   for (const blog of blogs) { if (!blog.slug) continue; const item = resolveEntry(`/news/${blog.slug}`, blog, settings, canonicalRules); if (item) entries.push(item); }
   return entries;

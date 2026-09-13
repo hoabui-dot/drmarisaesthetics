@@ -48,7 +48,7 @@ export function AboutHero({ data }: { data: AboutHeroData }) {
         <div className="about-editorial-hero__grid">
           <div className="about-editorial-hero__copy">
             <p className="about-editorial-hero__eyebrow">{data.eyebrow || 'SURGEON-LED COSMETIC SURGERY · HO CHI MINH CITY'}</p>
-            <h1 id="about-hero-heading">About&nbsp;Us</h1>
+            <h2 id="about-hero-heading">About&nbsp;Us</h2>
             <div className="about-editorial-hero__body">
               <p className="about-editorial-hero__lead">{editorialLead}</p>
               <p>{data.supportingParagraph}</p>

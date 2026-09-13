@@ -18,9 +18,9 @@ export function useLazySectionMotion(root: RefObject<HTMLElement | null>) {
 
     const targetsFor = (section: HTMLElement) => {
       const selectors = section.matches('.contact-hero-section')
-        ? '.contact-hero-breadcrumb, .contact-hero-intro h1, .contact-hero-intro p, .contact-hero-actions > *, .contact-hero-image, .contact-hero-card'
+        ? '.contact-hero-breadcrumb, .contact-hero-intro h2, .contact-hero-intro p, .contact-hero-actions > *, .contact-hero-image, .contact-hero-card'
         : section.matches('.stitch-treatment-hero')
-          ? '.stitch-treatment-breadcrumb, .stitch-treatment-hero__copy > .stitch-kicker, .stitch-treatment-hero__copy h1, .stitch-treatment-hero__copy > p, .stitch-treatment-review, .stitch-treatment-hero__copy button, .stitch-treatment-hero__media'
+          ? '.stitch-treatment-breadcrumb, .stitch-treatment-hero__copy > .stitch-kicker, .stitch-treatment-hero__copy h2, .stitch-treatment-hero__copy > p, .stitch-treatment-review, .stitch-treatment-hero__copy button, .stitch-treatment-hero__media'
           : '.stitch-kicker, h2, h3, h4, p, blockquote, li, button, a, [class*="__image"], [class*="__media"], img'
       return Array.from(section.querySelectorAll<HTMLElement>(selectors)).filter((element) => !element.closest('.stitch-surgical-atlas'))
     }
@@ -42,7 +42,7 @@ export function useLazySectionMotion(root: RefObject<HTMLElement | null>) {
       const timeline = createTimeline({ autoplay: false })
       if (isHero) {
         const eyebrow = targets.filter((target) => target.matches('.contact-hero-breadcrumb, .stitch-treatment-breadcrumb, .stitch-kicker'))
-        const titles = targets.filter((target) => target.matches('h1'))
+        const titles = targets.filter((target) => target.matches('h2'))
         const copy = targets.filter((target) => target.matches('p, .contact-hero-description, .stitch-treatment-review'))
         const actions = targets.filter((target) => target.matches('.contact-hero-actions > *, button'))
         const media = targets.filter((target) => target.matches('.contact-hero-image, .stitch-treatment-hero__media'))

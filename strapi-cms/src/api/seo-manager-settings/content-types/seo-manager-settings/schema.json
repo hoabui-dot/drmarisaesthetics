@@ -13,7 +13,6 @@
     "default_meta_title": {"type": "string", "required": true, "maxLength": 60},
     "meta_title_template": {"type": "string", "maxLength": 100, "default": "%page_title% | Smilux Dental"},
     "default_meta_description": {"type": "text", "required": true, "maxLength": 160},
-    "default_open_graph_image": {"type": "media", "multiple": false, "allowedTypes": ["images"]},
     "site_name": {"type": "string", "required": true, "default": "Smilux Dental", "maxLength": 80},
     "default_open_graph_title": {"type": "string", "maxLength": 60},
     "default_open_graph_description": {"type": "text", "maxLength": 200},

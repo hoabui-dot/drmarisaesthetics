@@ -46,7 +46,6 @@
       "components": [
         "homepage.hero-section",
         "homepage.signature-procedures-section",
-        "homepage.surgical-care-process-section",
         "homepage.maris-method-section",
         "homepage.revision-surgery-section",
         "homepage.doctor-assessment-section",

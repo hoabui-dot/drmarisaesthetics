@@ -9,8 +9,10 @@ export default factories.createCoreController('api::website-setting.website-sett
       populate: {
         logo: true,
         favicon: true,
+        default_open_graph_image: true,
         contact_methods: { populate: { icon: true } },
         social_links: true,
+        global_cta: { populate: { background_image: true, steps: true } },
       },
     })
     return this.transformResponse(entity)

@@ -33,7 +33,7 @@ export function HeroBlock({ data }: { data: HomepageHeroBlock }) {
     <HeroShell id="home-hero" headingId="home-hero-heading" backgroundImage={data.backgroundImage || data.image}>
         <div className="max-w-md">
           <p className="home-hero-eyebrow mb-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-smilux-hero-primary"><span aria-hidden="true" />{data.eyebrow}</p>
-          <h1 id="home-hero-heading" className="home-hero-title max-w-xl font-bold leading-[1.04] tracking-tight text-smilux-navy"><span className="block">{headingLine1}</span><span className="block text-smilux-hero-accent">{headingLine2}</span></h1>
+          <h2 id="home-hero-heading" className="home-hero-title max-w-xl font-bold leading-[1.04] tracking-tight text-smilux-navy"><span className="block">{headingLine1}</span><span className="block text-smilux-hero-accent">{headingLine2}</span></h2>
           <p className="home-content mt-6 max-w-lg text-smilux-navy">{data.subheading}</p>
           <div className="mt-8 flex flex-wrap items-center gap-3 sm:gap-4">
             <AppointmentButton label={data.ctaLabel || 'BOOK APPOINTMENT'} />

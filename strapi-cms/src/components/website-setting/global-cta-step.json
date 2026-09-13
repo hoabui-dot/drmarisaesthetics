@@ -1,0 +1,9 @@
+{
+  "collectionName": "components_website_setting_global_cta_steps",
+  "info": { "displayName": "Global CTA step" },
+  "options": {},
+  "attributes": {
+    "number": { "type": "string", "required": true },
+    "label": { "type": "string", "required": true }
+  }
+}

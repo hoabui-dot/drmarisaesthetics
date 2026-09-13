@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_our_team_hospital_sections",
+  "info": { "displayName": "Our Team hospital-based surgery" },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "description": { "type": "text" },
+    "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "image_alt": { "type": "string" },
+    "proof_items": { "type": "component", "repeatable": true, "component": "our-team.item" }
+  }
+}

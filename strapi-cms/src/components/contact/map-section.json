@@ -14,10 +14,6 @@
       "component": "contact.location-benefit"
     },
     "clinic_name": { "type": "string", "required": true, "default": "Smilux Dental Clinic" },
-    "map_address": { "type": "text", "required": true },
-    "map_latitude": { "type": "decimal", "required": true },
-    "map_longitude": { "type": "decimal", "required": true },
-    "map_zoom": { "type": "integer", "default": 16 },
     "directions_label": { "type": "string", "required": true, "default": "CHỈ ĐƯỜNG TRÊN GOOGLE MAPS" },
     "directions_url": { "type": "string" }
   }

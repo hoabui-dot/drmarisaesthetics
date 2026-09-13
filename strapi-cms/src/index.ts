@@ -5,6 +5,34 @@ import * as os from "os";
 function normalizeOurTeamSeed(source: any) {
   const hero = source.hero || {};
   const care = source.surgicalCare || {};
+  const authority = source.authority || {
+    eyebrow: "MEDICAL AUTHORITY",
+    title: "Medical Authority & Expertise",
+    description: "Combining rigorous medical training with over 6 years of specialized surgical experience.",
+    cards: [
+      { title: "Education & Degrees", items: ["[INFORMATION TO VERIFY] Medical Degree", "[INFORMATION TO VERIFY] Residency Training"] },
+      { title: "Certifications", items: ["Board Certified Plastic Surgeon", "[INFORMATION TO VERIFY] Advanced Surgical License"] },
+      { title: "Memberships", items: ["[INFORMATION TO VERIFY] Plastic Surgery Society", "[INFORMATION TO VERIFY] International Medical Association"] },
+    ],
+  };
+  const credentials = source.credentials || {
+    eyebrow: "QUALIFICATIONS",
+    title: "Medical Training & Professional Credentials",
+    description: "Dr. Tran Minh Huy maintains a rigorous commitment to verified medical standards and continuous professional development. His credentials represent a foundation of academic excellence and clinical certification recognized by the Vietnam Ministry of Health.",
+    rows: [
+      { label: "SPECIALTY", value: "Specialist Level I in Aesthetic Surgery (Vietnam)" },
+      { label: "TRAINING", value: "University of Medicine and Pharmacy at Ho Chi Minh City" },
+      { label: "PRACTICE CERTIFICATE", value: "0011736/BYT-CCHN" },
+      { label: "ISSUED", value: "26.12.2013" },
+      { label: "ISSUING AUTHORITY", value: "Vietnam Ministry of Health" },
+    ],
+  };
+  const hospital = source.hospital || {
+    eyebrow: "HOSPITAL-BASED SURGERY",
+    title: "Surgery at City International Hospital (CIH)",
+    description: "Patient safety is paramount. All major surgical procedures are performed within the state-of-the-art operating theaters at City International Hospital. This ensures access to comprehensive medical infrastructure, specialized anesthesiology teams, and rigorous sterilization protocols that only a full-scale hospital can provide.",
+    proofItems: ["JCI Accredited Standards", "24/7 Intensive Care Support"],
+  };
   const revision = source.revision || {};
   const international = source.internationalPatients || {};
   const journey = source.journey || {};
@@ -13,12 +41,14 @@ function normalizeOurTeamSeed(source: any) {
     seo: { meta_title: "Our Team | Dr. Maris Aesthetics", meta_description: "Meet the surgeon-led team behind Dr. Maris Aesthetics." },
     sections: [
       { __component: "our-team.hero-section", eyebrow: hero.eyebrow, title: hero.title, paragraph_one: hero.paragraphs?.[0], paragraph_two: hero.paragraphs?.[1], image_alt: hero.imageAlt },
-      { __component: "our-team.editorial-section", eyebrow: "THE PRINCIPLES BEHIND THE PRACTICE", title: "Clear Advice. Individual Planning. Responsible Surgery.", lead: "Aesthetic goals should never remove the need for medical judgment.", steps: (care.steps || []).map((title: string, index: number) => ({ number: `0${index + 1}`, title, description: care.paragraphs?.[0] || "" })) },
+      { __component: "our-team.editorial-section", eyebrow: "THE PRINCIPLES BEHIND THE PRACTICE", title: care.heading || "Clear Advice. Individual Planning. Responsible Surgery.", lead: care.paragraphs?.[0] || "Aesthetic goals should never remove the need for medical judgment.", description: care.paragraphs?.[1] || "", image_alt: care.imageAlt, steps: (care.steps || []).map((step: any, index: number) => ({ number: step.number || `0${index + 1}`, title: step.title || step, description: step.description || care.paragraphs?.[0] || "", ...(step.image ? { image: step.image } : {}), image_alt: step.imageAlt || care.imageAlt || "" })) },
+      { __component: "our-team.authority-section", eyebrow: authority.eyebrow, title: authority.title, description: authority.description, cards: (authority.cards || []).map((card: any) => ({ title: card.title, items: (card.items || []).map((label: string) => ({ label })) })) },
       { __component: "our-team.editorial-section", eyebrow: "PROFESSIONAL JOURNEY", title: "Experience Across Cosmetic Surgery & Hospital Environments", description: care.paragraphs?.[1], steps: (source.careerTimeline || []).map((title: string, index: number) => ({ number: `0${index + 1}`, title, description: "" })) },
+      { __component: "our-team.credentials-section", eyebrow: credentials.eyebrow, title: credentials.title, description: credentials.description, rows: credentials.rows || [] },
       { __component: "our-team.revision-section", eyebrow: revision.eyebrow, title: revision.title, description: revision.description, callout_title: revision.calloutTitle, callout_description: revision.calloutDescription, image_alt: revision.imageAlt, concerns: (revision.concerns || []).map((item: any) => ({ label: item.title, description: item.description })) },
+      { __component: "our-team.hospital-section", eyebrow: hospital.eyebrow, title: hospital.title, description: hospital.description, image_alt: hospital.imageAlt, proof_items: (hospital.proofItems || []).map((label: string) => ({ label })) },
       { __component: "our-team.editorial-section", eyebrow: international.eyebrow, title: international.title, description: international.description, steps: international.steps || [] },
       { __component: "our-team.editorial-section", eyebrow: journey.eyebrow, title: journey.title, description: journey.description, steps: journey.steps || [] },
-      { __component: "our-team.editorial-section", eyebrow: "CONSULTATION", title: source.consultation?.title || "Begin Your Journey", description: source.consultation?.description },
       { __component: "our-team.faq-section", eyebrow: faq.eyebrow, title: faq.title, items: faq.items || [] },
     ],
   };
@@ -33,8 +63,8 @@ function normalizeResultsSeed(source: any) {
       category: item.category,
       title: item.title,
       subtitle: item.subtitle,
-      before_alt: item.beforeAlt,
-      after_alt: item.afterAlt,
+      image: item.image,
+      image_alt: item.imageAlt,
       profile: item.profile,
       recovery: item.recovery,
     })),
@@ -110,9 +140,10 @@ export default {
           "api::footer.footer.find",
           "api::seo-manager-settings.seo-manager-settings.find",
           "api::canonical-rule.canonical-rule.find",
-          "api::service-detail.service-detail.find",
           "api::blog.blog.find",
+          "api::service.service.find",
           "api::website-setting.website-setting.find",
+          "api::treatments-page.treatments-page.find",
         ];
 
         for (const action of publicReadActions) {
@@ -148,29 +179,6 @@ export default {
           console.log("[BOOTSTRAP] Public permission already exists. OK.");
         }
 
-        // Contact Methods API
-        const contactMethodsActions = [
-          "api::contact-method.contact-method.find",
-          "api::contact-method.contact-method.findOne",
-        ];
-
-        for (const action of contactMethodsActions) {
-          const permission = await strapi
-            .query("plugin::users-permissions.permission")
-            .findOne({ where: { role: publicRole.id, action } });
-
-          if (!permission) {
-            console.log(`[BOOTSTRAP] Setting Public permission for: ${action}`);
-            await strapi.query("plugin::users-permissions.permission").create({
-              data: { role: publicRole.id, action },
-            });
-            console.log("[BOOTSTRAP] Permission created.");
-          } else {
-            console.log(
-              `[BOOTSTRAP] Public permission for ${action} already exists. OK.`,
-            );
-          }
-        }
       }
 
       // ── 1b. Stitch editorial metadata seed ─────────────────────────────
@@ -225,12 +233,9 @@ export default {
       ourTeamSeed = normalizeOurTeamSeed(ourTeamSeed);
       const ourTeam = await strapi.documents("api::our-team.our-team").findMany({ limit: 1, status: "draft" });
       if (ourTeam.length > 0) {
-        await strapi.documents("api::our-team.our-team").update({
-          documentId: ourTeam[0].documentId,
-          data: ourTeamSeed,
-        });
-        await strapi.documents("api::our-team.our-team").publish({ documentId: ourTeam[0].documentId });
-        console.log("[BOOTSTRAP] Our Team page seeded and published.");
+        // Do not overwrite Content Manager edits or migrated dynamic-zone
+        // sections on every container restart. Seed only an empty installation.
+        console.log("[BOOTSTRAP] Our Team page already exists; preserving CMS content.");
       } else {
         const createdOurTeam = await strapi.documents("api::our-team.our-team").create({ data: ourTeamSeed });
         await strapi.documents("api::our-team.our-team").publish({ documentId: createdOurTeam.documentId });
@@ -355,11 +360,8 @@ export default {
       }
 
       // ── 3. Services Overview ────────────────────────────────────────────
-      // Service cards are now resolved from the service-details collection.
+      // Service cards are now resolved from the blog collection.
       // Keep this single type CMS-managed; never recreate it during bootstrap.
-      const SERVICES_UID = "api::services-overview.services-overview";
-      const srvResults = await strapi.documents(SERVICES_UID).findMany({ status: "published" });
-      console.log(`[BOOTSTRAP] Preserving ${srvResults.length} Services Overview document(s).`);
       // ── 4. Force Update Customer Page Dynamic Zone ────────────────────────
       const CUSTOMER_UID = "api::customer.customer";
       const customerDocs = await strapi.documents(CUSTOMER_UID).findMany({

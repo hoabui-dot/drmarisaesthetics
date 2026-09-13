@@ -15,9 +15,9 @@ function SocialIcon({ platform }: { platform: string }) {
   return <FontAwesomeIcon icon={socialIcons[platform.toLowerCase() as keyof typeof socialIcons] || faLink} aria-hidden="true" />;
 }
 
-interface FooterProps { footer?: FooterData }
+interface FooterProps { footer?: FooterData; logoSrc?: string }
 
-export function Footer({ footer }: FooterProps) {
+export function Footer({ footer, logoSrc }: FooterProps) {
   const socialLinks: SocialLink[] = footer?.socialLinks?.length ? footer.socialLinks : SOCIAL_LINKS.map((social) => ({ id: social.id, platform: social.platform.toLowerCase(), url: social.url, iconClass: social.iconClass }));
   const groups = footer?.linkGroups?.length ? footer.linkGroups : [{ id: 1, heading: "QUICK LINKS", links: footer?.links || [] }];
   const contact = footer?.contactInfo;
@@ -26,7 +26,7 @@ export function Footer({ footer }: FooterProps) {
     <div className="site-footer-inner">
       <div className="site-footer-main">
         <div className="site-footer-brand">
-          <div className="site-footer-wordmark"><BrandLogo size="lg" imageClassName="site-footer-logo" /></div>
+          <div className="site-footer-wordmark"><BrandLogo size="lg" src={logoSrc} imageClassName="site-footer-logo" /></div>
           <p>{footer?.description || "Surgeon-led, hospital-based cosmetic surgery planned around each patient."}</p>
           <div className="site-footer-socials" aria-label="Social media links">{socialLinks.filter((social) => ["facebook", "instagram", "youtube", "tiktok"].includes(social.platform.toLowerCase())).map((social) => <a href={social.url} key={social.id} aria-label={social.platform} target="_blank" rel="noopener noreferrer"><SocialIcon platform={social.platform} /></a>)}</div>
         </div>

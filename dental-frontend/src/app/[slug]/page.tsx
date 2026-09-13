@@ -154,7 +154,7 @@ export default async function LandingPage({ params }: PageProps) {
               )}
 
               {/* Title */}
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#165197] leading-[1.1] tracking-tight mb-4">{page.title}</h1>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#165197] leading-[1.1] tracking-tight mb-4">{page.title}</h2>
 
               {/* Publish Date */}
               {page.publishDate && (
@@ -205,9 +205,9 @@ export default async function LandingPage({ params }: PageProps) {
       <main className="min-h-screen flex items-center justify-center bg-background">
         <div className="max-w-md w-full text-center space-y-4 px-4">
           <div className="text-6xl">⚠️</div>
-          <h1 className="text-2xl font-bold text-foreground">
+          <h2 className="text-2xl font-bold text-foreground">
             Error Loading Page
-          </h1>
+          </h2>
           <p className="text-foreground-secondary">
             We encountered an error while loading this page. Please try again later.
           </p>

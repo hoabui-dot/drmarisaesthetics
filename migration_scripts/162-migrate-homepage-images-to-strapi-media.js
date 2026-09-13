@@ -46,7 +46,12 @@ async function ensureFolder() {
   if (process.env.STRAPI_UPLOAD_FOLDER_ID) {
     return { id: Number(process.env.STRAPI_UPLOAD_FOLDER_ID), name: FOLDER_NAME }
   }
-  const existing = await api(`/api/upload/folders?filters[name][$eq]=${encodeURIComponent(FOLDER_NAME)}&pagination[pageSize]=1`)
+  let existing = null
+  try {
+    existing = await api(`/api/upload/folders?filters[name][$eq]=${encodeURIComponent(FOLDER_NAME)}&pagination[pageSize]=1`)
+  } catch (error) {
+    console.warn(`[homepage-images] Folder API unavailable; trying database fallback: ${error.message}`)
+  }
   if (existing?.data?.[0] || existing?.[0]) return existing.data?.[0] || existing[0]
   try {
     const created = await api('/api/upload/folders', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: FOLDER_NAME }) })
@@ -126,7 +131,7 @@ function replaceImages(section, mediaByUrl) {
 
 async function main() {
   if (!TOKEN && WRITE) throw new Error('STRAPI_API_TOKEN is required with --write')
-  const sections = sectionOrder.map(([uid, sourceKey]) => toStructuredSection(uid, sourceKey))
+  const sections = sectionOrder.map(([uid, sourceKey]) => toStructuredSection(uid, sourceKey, { includeImageSources: true }))
   const images = collectImageSources(sections)
   console.log(JSON.stringify({ mode: WRITE ? 'write' : 'dry-run', folder: FOLDER_NAME, imageCount: images.length, sectionCount: sections.length }, null, 2))
   if (!WRITE) return

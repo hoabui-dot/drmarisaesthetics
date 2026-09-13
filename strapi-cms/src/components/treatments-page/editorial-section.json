@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_treatments_page_editorial_sections",
+  "info": { "displayName": "Treatments editorial section" },
+  "options": {},
+  "attributes": {
+    "section_key": { "type": "string", "required": true },
+    "eyebrow": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "lead": { "type": "text" },
+    "paragraph_one": { "type": "text" },
+    "paragraph_two": { "type": "text" },
+    "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "image_alt": { "type": "string" },
+    "items": { "type": "component", "repeatable": true, "component": "treatments-page.item" }
+  }
+}

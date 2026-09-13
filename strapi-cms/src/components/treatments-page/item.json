@@ -1,0 +1,10 @@
+{
+  "collectionName": "components_treatments_page_items",
+  "info": { "displayName": "Treatments page item" },
+  "options": {},
+  "attributes": {
+    "number": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "description": { "type": "text" }
+  }
+}

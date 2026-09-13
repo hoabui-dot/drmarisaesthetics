@@ -1,0 +1,11 @@
+{
+  "collectionName": "components_our_team_authority_sections",
+  "info": { "displayName": "Our Team medical authority" },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "description": { "type": "text" },
+    "cards": { "type": "component", "repeatable": true, "component": "our-team.authority-card" }
+  }
+}

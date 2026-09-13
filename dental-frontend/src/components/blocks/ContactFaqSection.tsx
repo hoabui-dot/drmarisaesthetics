@@ -1,4 +1,4 @@
-import { MotionFaqAccordion } from '@/src/components/ui/motion-faq-accordion'
+import { CommonFaqAccordion } from '@/src/components/blocks/CommonFaqAccordion'
 
 type Faq = { question: string; answer: string }
 const defaults: Faq[] = [
@@ -11,6 +11,6 @@ const defaults: Faq[] = [
 export function ContactFaqSection({ data }: { data: { title?: string; questions?: Faq[] } }) {
   const items = data.questions?.length ? data.questions : defaults
   return <section className="contact-faq" aria-labelledby="contact-faq-title"><h2 id="contact-faq-title">{data.title || 'Frequently Asked Questions'}</h2>
-    <MotionFaqAccordion items={items} className="contact-faq__accordion" />
+    <CommonFaqAccordion items={items} className="contact-faq__accordion" />
   </section>
 }

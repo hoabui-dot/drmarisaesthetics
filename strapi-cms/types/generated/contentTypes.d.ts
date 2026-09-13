@@ -491,6 +491,7 @@ export interface ApiBlogBlog extends Struct.CollectionTypeSchema {
         'Preventive Care',
         'Dental Technology',
         'General Knowledge',
+        'Plastic Surgery',
       ]
     >;
     content: Schema.Attribute.RichText;
@@ -672,7 +673,13 @@ export interface ApiContactPageContactPage extends Struct.SingleTypeSchema {
       Schema.Attribute.Private;
     description: Schema.Attribute.Text;
     layout: Schema.Attribute.DynamicZone<
-      ['contact.hero', 'contact.consultation-section', 'contact.map-section']
+      [
+        'contact.hero',
+        'contact.consultation-section',
+        'contact.map-section',
+        'contact.expectation',
+        'contact.faq',
+      ]
     >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -763,7 +770,6 @@ export interface ApiFooterFooter extends Struct.SingleTypeSchema {
       'api::footer.footer'
     > &
       Schema.Attribute.Private;
-    logo: Schema.Attribute.Media<'images'>;
     publishedAt: Schema.Attribute.DateTime;
     social_links: Schema.Attribute.Component<'footer.social-link', true>;
     tagline: Schema.Attribute.String &
@@ -777,7 +783,7 @@ export interface ApiFooterFooter extends Struct.SingleTypeSchema {
 export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
   collectionName: 'homepages';
   info: {
-    description: 'Dynamic homepage with flexible layout blocks - 2026 Enhanced';
+    description: 'Dr. Maris Aesthetics editorial homepage';
     displayName: 'Homepage';
     pluralName: 'homepages';
     singularName: 'homepage';
@@ -789,22 +795,6 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    layout: Schema.Attribute.DynamicZone<
-      [
-        'homepage.hero',
-        'homepage.blog-collection-section',
-        'homepage.services',
-        'homepage.doctor',
-        'homepage.results-section',
-        'homepage.testimonials-section',
-        'homepage.press-section',
-        'homepage.certification',
-        'homepage.proof-showcase',
-        'homepage.technology-feature',
-        'homepage.equipment-showcase',
-        'homepage.consultation',
-      ]
-    >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -815,6 +805,21 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
     metadata_image: Schema.Attribute.Media<'images'>;
     metadata_title: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    sections: Schema.Attribute.DynamicZone<
+      [
+        'homepage.hero-section',
+        'homepage.signature-procedures-section',
+        'homepage.maris-method-section',
+        'homepage.revision-surgery-section',
+        'homepage.doctor-assessment-section',
+        'homepage.hospital-based-surgery-section',
+        'homepage.international-patients-section',
+        'homepage.international-journey-section',
+        'homepage.patient-results-section',
+        'homepage.consultation-section',
+        'homepage.frequently-asked-questions-section',
+      ]
+    >;
     seo: Schema.Attribute.Component<'seo.page-seo', false>;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
@@ -822,6 +827,8 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    visual_theme: Schema.Attribute.Enumeration<['clinical-blue']> &
+      Schema.Attribute.DefaultTo<'clinical-blue'>;
   };
 }
 
@@ -848,9 +855,48 @@ export interface ApiNavigationNavigation extends Struct.SingleTypeSchema {
       'api::navigation.navigation'
     > &
       Schema.Attribute.Private;
-    logo: Schema.Attribute.Media<'images'>;
     navigation: Schema.Attribute.Component<'menu.nav-item', true>;
     publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiOurTeamOurTeam extends Struct.SingleTypeSchema {
+  collectionName: 'our_teams';
+  info: {
+    description: 'Stitch Our Team editorial page';
+    displayName: 'Our Team';
+    pluralName: 'our-teams';
+    singularName: 'our-team';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::our-team.our-team'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    sections: Schema.Attribute.DynamicZone<
+      [
+        'our-team.hero-section',
+        'our-team.editorial-section',
+        'our-team.revision-section',
+        'our-team.authority-section',
+        'our-team.credentials-section',
+        'our-team.hospital-section',
+        'our-team.faq-section',
+      ]
+    >;
+    seo: Schema.Attribute.Component<'seo.page-seo', false>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -979,6 +1025,41 @@ export interface ApiRedirectRedirect extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiResultResult extends Struct.SingleTypeSchema {
+  collectionName: 'results';
+  info: {
+    description: 'Published patient results gallery';
+    displayName: 'Patient Results';
+    pluralName: 'results';
+    singularName: 'result';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    cases: Schema.Attribute.Component<'result.case', true>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    cta_description: Schema.Attribute.Text & Schema.Attribute.Required;
+    cta_title: Schema.Attribute.String & Schema.Attribute.Required;
+    disclaimer: Schema.Attribute.Text & Schema.Attribute.Required;
+    disclaimer_label: Schema.Attribute.String & Schema.Attribute.Required;
+    introduction: Schema.Attribute.Text & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::result.result'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiRobotsSettingsRobotsSettings
   extends Struct.SingleTypeSchema {
   collectionName: 'robots_settings';
@@ -1049,7 +1130,6 @@ export interface ApiSeoManagerSettingsSeoManagerSettings
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 200;
       }>;
-    default_open_graph_image: Schema.Attribute.Media<'images'>;
     default_open_graph_title: Schema.Attribute.String &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 60;
@@ -1072,6 +1152,21 @@ export interface ApiSeoManagerSettingsSeoManagerSettings
         maxLength: 80;
       }> &
       Schema.Attribute.DefaultTo<'Smilux Dental'>;
+    sitemap_default_change_frequency: Schema.Attribute.Enumeration<
+      ['always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never']
+    > &
+      Schema.Attribute.DefaultTo<'weekly'>;
+    sitemap_default_priority: Schema.Attribute.Decimal &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 1;
+          min: 0;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<0.5>;
+    sitemap_enabled: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<true>;
     structured_data_business_type: Schema.Attribute.Enumeration<
       [
         'Organization',
@@ -1161,6 +1256,42 @@ export interface ApiServiceDetailServiceDetail
   };
 }
 
+export interface ApiServiceService extends Struct.CollectionTypeSchema {
+  collectionName: 'services';
+  info: {
+    description: 'Plastic surgery service guides';
+    displayName: 'Service';
+    pluralName: 'services';
+    singularName: 'service';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    category: Schema.Attribute.Enumeration<['Plastic Surgery']>;
+    contentBetterBlocks: Schema.Attribute.JSON &
+      Schema.Attribute.CustomField<'plugin::better-blocks.better-blocks'>;
+    coverImage: Schema.Attribute.Media<'images'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::service.service'
+    > &
+      Schema.Attribute.Private;
+    metaDescription: Schema.Attribute.Text;
+    publishedAt: Schema.Attribute.DateTime;
+    seo: Schema.Attribute.Component<'seo.page-seo', false>;
+    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiServicesCtaServicesCta extends Struct.SingleTypeSchema {
   collectionName: 'services_ctas';
   info: {
@@ -1231,6 +1362,238 @@ export interface ApiServicesOverviewServicesOverview
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiSitemapGroupSitemapGroup
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'sitemap_groups';
+  info: {
+    description: 'Logical content groups used as the middle level of sitemap inheritance.';
+    displayName: 'SEO Manager - Sitemap Groups';
+    pluralName: 'sitemap-groups';
+    singularName: 'sitemap-group';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    change_frequency: Schema.Attribute.Enumeration<
+      ['always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never']
+    >;
+    content_type: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 120;
+      }>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    group_key: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 80;
+      }>;
+    label: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 120;
+      }>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::sitemap-group.sitemap-group'
+    > &
+      Schema.Attribute.Private;
+    priority: Schema.Attribute.Decimal &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 1;
+          min: 0;
+        },
+        number
+      >;
+    publishedAt: Schema.Attribute.DateTime;
+    route_prefix: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 2048;
+      }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiSitemapSettingsSitemapSettings
+  extends Struct.SingleTypeSchema {
+  collectionName: 'sitemap_settings';
+  info: {
+    description: 'Defaults used when generating the public XML sitemap.';
+    displayName: 'SEO Manager - Sitemap Settings';
+    pluralName: 'sitemap-settings-list';
+    singularName: 'sitemap-settings';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    default_change_frequency: Schema.Attribute.Enumeration<
+      ['always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never']
+    > &
+      Schema.Attribute.DefaultTo<'weekly'>;
+    default_priority: Schema.Attribute.Decimal &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 1;
+          min: 0;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<0.5>;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    include_blog_posts: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<true>;
+    include_service_pages: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::sitemap-settings.sitemap-settings'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiStructuredDataSettingsStructuredDataSettings
+  extends Struct.SingleTypeSchema {
+  collectionName: 'structured_data_settings';
+  info: {
+    description: 'Controls automatic JSON-LD generation without duplicating business content.';
+    displayName: 'Structured Data Settings';
+    pluralName: 'structured-data-settings-list';
+    singularName: 'structured-data-settings';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    business_type: Schema.Attribute.Enumeration<
+      [
+        'Organization',
+        'Dentist',
+        'MedicalBusiness',
+        'MedicalClinic',
+        'ProfessionalService',
+      ]
+    > &
+      Schema.Attribute.DefaultTo<'Dentist'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::structured-data-settings.structured-data-settings'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiTreatmentsPageTreatmentsPage
+  extends Struct.SingleTypeSchema {
+  collectionName: 'treatments_pages';
+  info: {
+    displayName: 'Treatments Page';
+    pluralName: 'treatments-pages';
+    singularName: 'treatments-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::treatments-page.treatments-page'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    sections: Schema.Attribute.DynamicZone<
+      ['treatments-page.hero-section', 'treatments-page.editorial-section']
+    >;
+    seo: Schema.Attribute.Component<'seo.page-seo', false>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiWebsiteSettingWebsiteSetting
+  extends Struct.SingleTypeSchema {
+  collectionName: 'website_settings';
+  info: {
+    description: 'Reusable identity, contact and social settings for the website';
+    displayName: 'Website Settings';
+    pluralName: 'website-settings';
+    singularName: 'website-setting';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    address: Schema.Attribute.Text & Schema.Attribute.Required;
+    contact_methods: Schema.Attribute.Component<
+      'website-setting.contact-method',
+      true
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    default_open_graph_image: Schema.Attribute.Media<'images'>;
+    email: Schema.Attribute.Email & Schema.Attribute.Required;
+    favicon: Schema.Attribute.Media<'images'>;
+    global_cta: Schema.Attribute.Component<'website-setting.global-cta', false>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::website-setting.website-setting'
+    > &
+      Schema.Attribute.Private;
+    logo: Schema.Attribute.Media<'images'>;
+    map_latitude: Schema.Attribute.Decimal;
+    map_longitude: Schema.Attribute.Decimal;
+    map_url: Schema.Attribute.String;
+    map_zoom: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<16>;
+    opening_hours: Schema.Attribute.String;
+    phone_primary: Schema.Attribute.String & Schema.Attribute.Required;
+    phone_secondary: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    site_name: Schema.Attribute.String & Schema.Attribute.Required;
+    site_name_localized: Schema.Attribute.String;
+    social_links: Schema.Attribute.Component<
+      'website-setting.social-link',
+      true
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    website: Schema.Attribute.String;
   };
 }
 
@@ -1734,6 +2097,143 @@ export interface PluginUsersPermissionsUser
   };
 }
 
+export interface PluginWebtoolsAddonSitemapSitemap
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'wt_sitemap';
+  info: {
+    displayName: 'sitemap';
+    pluralName: 'sitemaps';
+    singularName: 'sitemap';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    'content-manager': {
+      visible: false;
+    };
+    'content-type-builder': {
+      visible: false;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    delta: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<1>;
+    link_count: Schema.Attribute.Integer;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'plugin::webtools-addon-sitemap.sitemap'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'default'>;
+    publishedAt: Schema.Attribute.DateTime;
+    sitemap_string: Schema.Attribute.Text & Schema.Attribute.Required;
+    type: Schema.Attribute.Enumeration<['default_hreflang', 'index']> &
+      Schema.Attribute.DefaultTo<'default_hreflang'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface PluginWebtoolsUrlAlias extends Struct.CollectionTypeSchema {
+  collectionName: 'wt_url_alias';
+  info: {
+    displayName: 'url-alias';
+    pluralName: 'url-alias';
+    singularName: 'url-alias';
+  };
+  options: {
+    comment: '';
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    'content-manager': {
+      visible: false;
+    };
+    'content-type-builder': {
+      visible: false;
+    };
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    contenttype: Schema.Attribute.String & Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    generated: Schema.Attribute.Boolean &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'plugin::webtools.url-alias'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    url_path: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+  };
+}
+
+export interface PluginWebtoolsUrlPattern extends Struct.CollectionTypeSchema {
+  collectionName: 'wt_url_patterns';
+  info: {
+    displayName: 'url-pattern';
+    pluralName: 'url-patterns';
+    singularName: 'url-pattern';
+  };
+  options: {
+    comment: '';
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    'content-manager': {
+      visible: false;
+    };
+    'content-type-builder': {
+      visible: false;
+    };
+  };
+  attributes: {
+    contenttype: Schema.Attribute.String & Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    languages: Schema.Attribute.JSON & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'plugin::webtools.url-pattern'
+    > &
+      Schema.Attribute.Private;
+    pattern: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 declare module '@strapi/strapi' {
   export module Public {
     export interface ContentTypeSchemas {
@@ -1755,14 +2255,22 @@ declare module '@strapi/strapi' {
       'api::footer.footer': ApiFooterFooter;
       'api::homepage.homepage': ApiHomepageHomepage;
       'api::navigation.navigation': ApiNavigationNavigation;
+      'api::our-team.our-team': ApiOurTeamOurTeam;
       'api::page.page': ApiPagePage;
       'api::promotion-submission.promotion-submission': ApiPromotionSubmissionPromotionSubmission;
       'api::redirect.redirect': ApiRedirectRedirect;
+      'api::result.result': ApiResultResult;
       'api::robots-settings.robots-settings': ApiRobotsSettingsRobotsSettings;
       'api::seo-manager-settings.seo-manager-settings': ApiSeoManagerSettingsSeoManagerSettings;
       'api::service-detail.service-detail': ApiServiceDetailServiceDetail;
+      'api::service.service': ApiServiceService;
       'api::services-cta.services-cta': ApiServicesCtaServicesCta;
       'api::services-overview.services-overview': ApiServicesOverviewServicesOverview;
+      'api::sitemap-group.sitemap-group': ApiSitemapGroupSitemapGroup;
+      'api::sitemap-settings.sitemap-settings': ApiSitemapSettingsSitemapSettings;
+      'api::structured-data-settings.structured-data-settings': ApiStructuredDataSettingsStructuredDataSettings;
+      'api::treatments-page.treatments-page': ApiTreatmentsPageTreatmentsPage;
+      'api::website-setting.website-setting': ApiWebsiteSettingWebsiteSetting;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
@@ -1773,6 +2281,9 @@ declare module '@strapi/strapi' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
+      'plugin::webtools-addon-sitemap.sitemap': PluginWebtoolsAddonSitemapSitemap;
+      'plugin::webtools.url-alias': PluginWebtoolsUrlAlias;
+      'plugin::webtools.url-pattern': PluginWebtoolsUrlPattern;
     }
   }
 }

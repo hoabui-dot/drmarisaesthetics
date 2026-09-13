@@ -1,0 +1,9 @@
+{
+  "collectionName": "components_our_team_authority_cards",
+  "info": { "displayName": "Our Team authority card" },
+  "options": {},
+  "attributes": {
+    "title": { "type": "string", "required": true },
+    "items": { "type": "component", "repeatable": true, "component": "our-team.item" }
+  }
+}

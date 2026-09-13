@@ -19,9 +19,9 @@ export default function NotFound() {
 
         {/* Error Message */}
         <div className="space-y-4">
-          <h1 className="text-3xl font-bold text-foreground">
+          <h2 className="text-3xl font-bold text-foreground">
             Page Not Found
-          </h1>
+          </h2>
           <p className="text-lg text-foreground-secondary">
             Sorry, we couldn&apos;t find the page you&apos;re looking for.
           </p>

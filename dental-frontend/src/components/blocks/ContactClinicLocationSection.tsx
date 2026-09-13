@@ -11,28 +11,40 @@ interface ClinicLocationData {
   address: string
   benefits: Benefit[]
   clinicName: string
-  mapAddress: string
-  map?: { lat?: number; lng?: number; zoom?: number }
   directionsLabel: string
   directionsUrl?: string
 }
 
+export interface ContactMapSettings {
+  address?: string
+  phonePrimary?: string
+  phoneSecondary?: string
+  email?: string
+  mapLatitude?: number
+  mapLongitude?: number
+  mapZoom?: number
+  mapUrl?: string
+}
+
 const benefitIcons = { location: MapPin, landmark: Building2, parking: CarFront }
 
-export function ContactClinicLocationSection({ data }: { data: ClinicLocationData }) {
-  const clinicAddress = CLINIC_INFO.vietNamAddress || CLINIC_INFO.address
-  const clinicQuery = `${CLINIC_INFO.vietNamName || CLINIC_INFO.name} ${clinicAddress}`
+export function ContactClinicLocationSection({ data, websiteSettings }: { data: ClinicLocationData; websiteSettings?: ContactMapSettings }) {
+  const clinicAddress = websiteSettings?.address || data.address || CLINIC_INFO.vietNamAddress || CLINIC_INFO.address
+  const latitude = websiteSettings?.mapLatitude ?? CLINIC_INFO.coordinates.lat
+  const longitude = websiteSettings?.mapLongitude ?? CLINIC_INFO.coordinates.lng
+  const zoom = websiteSettings?.mapZoom ?? 16
+  const clinicQuery = `${data.clinicName || CLINIC_INFO.vietNamName || CLINIC_INFO.name} ${clinicAddress}`
 
   return (
     <section className="contact-clinic-location" aria-labelledby="contact-clinic-location-title">
       <div className="contact-clinic-location__grid">
         <div className="contact-clinic-location__map-card">
           <GoogleMapEmbed
-            lat={CLINIC_INFO.coordinates.lat}
-            lng={CLINIC_INFO.coordinates.lng}
+            lat={latitude}
+            lng={longitude}
             query={clinicQuery}
-            zoom={16}
-            title={`${CLINIC_INFO.name} location map`}
+            zoom={zoom}
+            title={`${data.clinicName || CLINIC_INFO.name} location map`}
             className="absolute inset-0 w-full h-full grayscale-[15%] contrast-[1.05]"
           />
         </div>

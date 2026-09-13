@@ -43,6 +43,7 @@ import { normalizeHomepageEditorial, type HomepageEditorialData } from "@/src/ty
 import { ourTeamMockData, type OurTeamData } from "@/src/data/our-team";
 import { resultsMockData, type ResultsData } from "@/src/data/results";
 import type { WebsiteSetting } from "@/src/types/strapi";
+import type { TreatmentPageData, TreatmentPageItem, TreatmentPageSection } from "@/src/types/treatments-page";
 
 /**
  * Fetches the editorial homepage section components. This is deliberately
@@ -60,6 +61,50 @@ export async function getHomepageEditorial(isDraftMode = false): Promise<Homepag
     return normalizeHomepageEditorial(response.data);
   } catch (error) {
     console.warn("[getHomepageEditorial] Falling back to the local homepage content", error);
+    return null;
+  }
+}
+
+export async function getTreatmentsPage(isDraftMode = false): Promise<TreatmentPageData | null> {
+  try {
+    const response = await apiClient<{ data?: any }>("/api/treatments-page", {
+      params: { populate: "*" },
+      isDraftMode,
+      tags: ["treatments-page"],
+    });
+    const components = Array.isArray(response.data?.sections) ? response.data.sections : [];
+    const heroComponent = components.find((item: any) => item.__component === "treatments-page.hero-section") ?? {};
+    const sections: TreatmentPageSection[] = components
+      .filter((item: any) => item.__component === "treatments-page.editorial-section")
+      .map((item: any) => ({
+        sectionKey: item.section_key,
+        eyebrow: item.eyebrow || undefined,
+        title: item.title,
+        lead: item.lead || undefined,
+        paragraphOne: item.paragraph_one || undefined,
+        paragraphTwo: item.paragraph_two || undefined,
+        image: item.image ? getMediaUrl(item.image) : undefined,
+        imageAlt: item.image_alt || undefined,
+        items: Array.isArray(item.items) ? item.items.map((entry: any): TreatmentPageItem => ({
+          number: entry.number || undefined,
+          title: entry.title,
+          description: entry.description || undefined,
+        })) : [],
+      }));
+    if (!heroComponent.title && !sections.length) return null;
+    return {
+      hero: {
+        eyebrow: heroComponent.eyebrow || undefined,
+        title: heroComponent.title || "Rhinoplasty Surgery in Vietnam",
+        description: heroComponent.description || undefined,
+        reviewLabel: heroComponent.review_label || undefined,
+        image: heroComponent.image ? getMediaUrl(heroComponent.image) : undefined,
+        imageAlt: heroComponent.image_alt || undefined,
+      },
+      sections,
+    };
+  } catch (error) {
+    console.warn("[getTreatmentsPage] Falling back to local treatments content", error);
     return null;
   }
 }
@@ -214,13 +259,14 @@ export async function getAllPages(limit: number = 10): Promise<Page[]> {
 /** Return the canonical service list used by all appointment forms. */
 export async function getServiceOptions(): Promise<Array<{ value: string; label: string }>> {
   try {
-    const response = await apiClient<any>("/api/service-details", {
+    const response = await apiClient<any>("/api/services", {
       params: {
+        "filters[category][$eq]": "Plastic Surgery",
         pagination: { pageSize: 100 },
         sort: ["title:asc"],
       },
       isDraftMode: false,
-      tags: ["service-details"],
+      tags: ["services"],
     });
     return (response?.data || [])
       .filter((service: any) => service.slug && service.title)
@@ -234,7 +280,10 @@ export async function getServiceOptions(): Promise<Array<{ value: string; label:
 export async function getOurTeam(isDraftMode: boolean = false): Promise<OurTeamData | null> {
   try {
     const response = await apiClient<any>("/api/our-team", {
-      params: { status: isDraftMode ? "draft" : "published" },
+      // Dynamic-zone component fields and nested repeatable components are
+      // intentionally populated here. Without this, the Content Manager can
+      // contain the data while the frontend receives only component shells.
+      params: { populate: "*" },
       isDraftMode,
       tags: ["our-team"],
     });
@@ -245,13 +294,53 @@ export async function getOurTeam(isDraftMode: boolean = false): Promise<OurTeamD
     const revision = sections.find((section: any) => section.__component === "our-team.revision-section");
     const editorial = sections.filter((section: any) => section.__component === "our-team.editorial-section");
     const principles = editorial[0];
+    const professional = editorial[1];
     const international = editorial.find((section: any) => /international/i.test(section.eyebrow || section.title || ""));
-    const journey = editorial.find((section: any) => /journey|process/i.test(section.eyebrow || section.title || ""));
+    const journey = editorial.find((section: any) => /^(the process)$/i.test(section.eyebrow || "") || /international patient journey/i.test(section.title || ""));
     const consultation = editorial.find((section: any) => /consultation/i.test(section.eyebrow || section.title || ""));
     const faq = sections.find((section: any) => section.__component === "our-team.faq-section");
+    const authority = sections.find((section: any) => section.__component === "our-team.authority-section");
+    const credentials = sections.find((section: any) => section.__component === "our-team.credentials-section");
+    const hospital = sections.find((section: any) => section.__component === "our-team.hospital-section");
     const image = (media: any) => getMediaUrl(media) || undefined;
+    const steps = (items: any[] = []) => items.map((step: any, index: number) => ({
+      number: step.number || String(index + 1).padStart(2, "0"),
+      title: step.title || "",
+      description: step.description || "",
+      image: image(step.image),
+      imageAlt: step.image_alt || "",
+    })).filter((step: any) => step.title);
     return {
       ...ourTeamMockData,
+      authority: authority ? {
+        eyebrow: authority.eyebrow || ourTeamMockData.authority.eyebrow,
+        title: authority.title || ourTeamMockData.authority.title,
+        description: authority.description || ourTeamMockData.authority.description,
+        cards: (authority.cards || []).map((card: any) => ({ title: card.title || "", items: (card.items || []).map((item: any) => item.label || item.title || "").filter(Boolean) })),
+      } : ourTeamMockData.authority,
+      credentials: credentials ? {
+        eyebrow: credentials.eyebrow || ourTeamMockData.credentials.eyebrow,
+        title: credentials.title || ourTeamMockData.credentials.title,
+        description: credentials.description || ourTeamMockData.credentials.description,
+        rows: (credentials.rows || []).map((row: any) => ({ label: row.label || "", value: row.value || "" })).filter((row: any) => row.label && row.value),
+      } : ourTeamMockData.credentials,
+      hospital: hospital ? {
+        eyebrow: hospital.eyebrow || ourTeamMockData.hospital.eyebrow,
+        title: hospital.title || ourTeamMockData.hospital.title,
+        description: hospital.description || ourTeamMockData.hospital.description,
+        image: image(hospital.image) || ourTeamMockData.hospital.image,
+        imageAlt: hospital.image_alt || ourTeamMockData.hospital.imageAlt,
+        proofItems: (hospital.proof_items || []).map((item: any) => item.label || item.title || "").filter(Boolean),
+      } : ourTeamMockData.hospital,
+      professional: professional ? {
+        eyebrow: professional.eyebrow || "PROFESSIONAL JOURNEY",
+        title: professional.title || "Experience Across Cosmetic Surgery & Hospital Environments",
+        description: professional.description || "",
+        steps: steps(professional.steps),
+        image: image(professional.image),
+        imageAlt: professional.image_alt || "Modern premium clinic hallway in Ho Chi Minh City",
+      } : ourTeamMockData.professional,
+      professionalImage: image(professional?.image) || ourTeamMockData.professionalImage,
       hero: hero ? {
         ...ourTeamMockData.hero,
         eyebrow: hero.eyebrow || ourTeamMockData.hero.eyebrow,
@@ -264,7 +353,7 @@ export async function getOurTeam(isDraftMode: boolean = false): Promise<OurTeamD
         ...ourTeamMockData.surgicalCare,
         heading: principles.title || ourTeamMockData.surgicalCare.heading,
         paragraphs: [principles.lead, principles.description].filter(Boolean),
-        steps: (principles.steps || []).map((step: any) => step.title).filter(Boolean),
+        steps: steps(principles.steps),
         image: image(principles.image) || ourTeamMockData.surgicalCare.image,
       } : ourTeamMockData.surgicalCare,
       revision: revision ? {
@@ -278,10 +367,11 @@ export async function getOurTeam(isDraftMode: boolean = false): Promise<OurTeamD
         image: image(revision.image) || ourTeamMockData.revision.image,
         imageAlt: revision.image_alt || ourTeamMockData.revision.imageAlt,
       } : ourTeamMockData.revision,
+      internationalImage: image(international?.image) || ourTeamMockData.internationalImage,
       internationalPatients: international ? { ...ourTeamMockData.internationalPatients, eyebrow: international.eyebrow || ourTeamMockData.internationalPatients.eyebrow, title: international.title || ourTeamMockData.internationalPatients.title, description: international.description || ourTeamMockData.internationalPatients.description, steps: international.steps || ourTeamMockData.internationalPatients.steps } : ourTeamMockData.internationalPatients,
       journey: journey ? { ...ourTeamMockData.journey, eyebrow: journey.eyebrow || ourTeamMockData.journey.eyebrow, title: journey.title || ourTeamMockData.journey.title, description: journey.description || ourTeamMockData.journey.description, steps: journey.steps || ourTeamMockData.journey.steps } : ourTeamMockData.journey,
       consultation: consultation ? { ...ourTeamMockData.consultation, title: consultation.title || ourTeamMockData.consultation.title, description: consultation.description || ourTeamMockData.consultation.description } : ourTeamMockData.consultation,
-      faq: faq ? { ...ourTeamMockData.faq, eyebrow: faq.eyebrow || ourTeamMockData.faq.eyebrow, title: faq.title || ourTeamMockData.faq.title, items: (faq.items || []).map((item: any) => ({ question: item.question, answer: item.answer })) } : ourTeamMockData.faq,
+      faq: faq ? { ...ourTeamMockData.faq, eyebrow: faq.eyebrow || ourTeamMockData.faq.eyebrow, title: faq.title || ourTeamMockData.faq.title, backgroundImage: image(faq.background_image), items: (faq.items || []).map((item: any) => ({ question: item.question, answer: item.answer })) } : ourTeamMockData.faq,
     };
   } catch (error) {
     console.warn("[getOurTeam] Unable to fetch Our Team data", error);
@@ -295,6 +385,7 @@ export async function getResults(isDraftMode: boolean = false): Promise<ResultsD
     const response = await apiClient<any>("/api/result", {
       params: { status: isDraftMode ? "draft" : "published" },
       isDraftMode,
+      cache: "no-store",
       tags: ["results"],
     });
     const value = response?.data;
@@ -309,14 +400,12 @@ export async function getResults(isDraftMode: boolean = false): Promise<ResultsD
         category: item.category,
         title: item.title || "",
         subtitle: item.subtitle || "",
-        beforeImage: getMediaUrl(item.before_image || item.beforeImage) || fallbackCase?.beforeImage || "",
-        afterImage: getMediaUrl(item.after_image || item.afterImage) || fallbackCase?.afterImage || "",
-        beforeAlt: item.before_alt || item.beforeAlt || "",
-        afterAlt: item.after_alt || item.afterAlt || "",
+        image: getMediaUrl(item.image || item.composite_image) || fallbackCase?.image || "",
+        imageAlt: item.image_alt || item.imageAlt || `Composite before and after result for ${item.title || "this patient"}`,
         profile: item.profile || "",
         recovery: item.recovery || "",
         };
-      }).filter((item: any) => item.beforeImage && item.afterImage),
+      }).filter((item: any) => item.image),
       disclaimerLabel: value.disclaimer_label || value.disclaimerLabel || resultsMockData.disclaimerLabel,
       disclaimer: value.disclaimer || resultsMockData.disclaimer,
       ctaTitle: value.cta_title || value.ctaTitle || resultsMockData.ctaTitle,
@@ -335,11 +424,13 @@ export async function getWebsiteSetting(isDraftMode: boolean = false): Promise<W
       params: {
         "populate[logo]": "true",
         "populate[favicon]": "true",
+        "populate[default_open_graph_image]": "true",
         "populate[contact_methods][populate][icon]": "true",
         "populate[social_links]": "true",
         status: isDraftMode ? "draft" : "published",
       },
       isDraftMode,
+      cache: "no-store",
       tags: ["website-setting"],
     });
     const value = response?.data;
@@ -349,6 +440,7 @@ export async function getWebsiteSetting(isDraftMode: boolean = false): Promise<W
       siteNameLocalized: value.site_name_localized,
       logo: value.logo ? { url: getMediaUrl(value.logo), alt: value.logo.alternativeText || value.site_name, width: value.logo.width || 0, height: value.logo.height || 0 } : undefined,
       favicon: value.favicon ? { url: getMediaUrl(value.favicon), alt: value.favicon.alternativeText || value.site_name, width: value.favicon.width || 0, height: value.favicon.height || 0 } : undefined,
+      defaultOpenGraphImage: value.default_open_graph_image ? { url: getMediaUrl(value.default_open_graph_image), alt: value.default_open_graph_image.alternativeText || value.site_name, width: value.default_open_graph_image.width || 0, height: value.default_open_graph_image.height || 0 } : undefined,
       address: value.address || "",
       phonePrimary: value.phone_primary || "",
       phoneSecondary: value.phone_secondary,
@@ -361,6 +453,18 @@ export async function getWebsiteSetting(isDraftMode: boolean = false): Promise<W
       mapUrl: value.map_url,
       contactMethods: (value.contact_methods || []).filter((item: any) => item.is_active !== false).sort((a: any, b: any) => (a.order || 0) - (b.order || 0)).map((item: any) => ({ ...item, isActive: item.is_active !== false, icon: item.icon ? { url: getMediaUrl(item.icon), alt: item.icon.alternativeText || item.label, width: item.icon.width || 0, height: item.icon.height || 0 } : undefined })),
       socialLinks: (value.social_links || []).filter((item: any) => item.is_active !== false).sort((a: any, b: any) => (a.order || 0) - (b.order || 0)).map((item: any) => ({ ...item, iconClass: item.icon_class, isActive: item.is_active !== false })),
+      globalCta: value.global_cta ? {
+        eyebrow: value.global_cta.eyebrow || "BEGIN YOUR JOURNEY",
+        title: value.global_cta.title || "Your case deserves a surgical plan built around you.",
+        editorialLead: value.global_cta.editorial_lead || undefined,
+        description: value.global_cta.description || undefined,
+        buttonLabel: value.global_cta.button_label || "Start Your Consultation",
+        panelEyebrow: value.global_cta.panel_eyebrow || "PRIVATE CONSULTATION",
+        panelTitle: value.global_cta.panel_title || "Begin with a clinical review.",
+        panelDescription: value.global_cta.panel_description || undefined,
+        steps: Array.isArray(value.global_cta.steps) ? value.global_cta.steps.map((step: any) => ({ number: step.number, label: step.label })) : [],
+        backgroundImage: value.global_cta.background_image ? getMediaUrl(value.global_cta.background_image) : undefined,
+      } : undefined,
     };
   } catch (error) {
     console.warn("[getWebsiteSetting] Unable to fetch website settings", error);
@@ -707,13 +811,14 @@ export async function getHomepage(isDraftMode: boolean = false): Promise<Homepag
     let homepageServiceOptions: Array<{ value: string; label: string }> = [];
     if ((data.layout || []).some((block: HomepageBlockComponent) => block.__component === "homepage.consultation")) {
       try {
-        const servicesResponse = await apiClient<any>("/api/service-details", {
+        const servicesResponse = await apiClient<any>("/api/services", {
           params: {
+            "filters[category][$eq]": "Plastic Surgery",
             pagination: { pageSize: 100 },
             sort: ["title:asc"],
           },
           isDraftMode,
-          tags: ["service-details"],
+          tags: ["services"],
         });
         homepageServiceOptions = (servicesResponse.data || [])
           .filter((service: any) => service.slug && service.title)
@@ -1155,8 +1260,8 @@ export async function getHomepage(isDraftMode: boolean = false): Promise<Homepag
                 title: story.title,
                 description: cleanDescription(story.description) || "",
                 treatments: Array.isArray(story.treatments) ? story.treatments : [],
-                beforeImage: media(story.before_image, `${story.title} - Before`),
-                afterImage: media(story.after_image, `${story.title} - After`),
+                image: media(story.image, story.image_alt || `${story.title} - Composite result`),
+                imageAlt: story.image_alt,
                 patientPortrait: media(story.patient_portrait, story.portrait_alt || `${story.title} - Patient`),
                 portraitAlt: story.portrait_alt,
                 quote: cleanDescription(story.quote) || "",
@@ -1677,12 +1782,6 @@ export async function getContactPage(isDraftMode: boolean = false): Promise<Cont
             text: benefit.text || '',
           })),
           clinicName: block.clinic_name || "DR. MARIS AESTHETICS",
-          mapAddress: block.map_address || block.address || "",
-          map: {
-            lat: Number(block.map_latitude),
-            lng: Number(block.map_longitude),
-            zoom: Number(block.map_zoom) || 16,
-          },
           directionsLabel: block.directions_label || "CHỈ ĐƯỜNG TRÊN GOOGLE MAPS",
           directionsUrl: block.directions_url || '',
         };
@@ -1733,11 +1832,9 @@ export async function getAboutPage(isDraftMode: boolean = false): Promise<any> {
       },
       isDraftMode,
       tags: ["about-page"],
-      // Use proper caching: cache published content, don't cache drafts
-      cache: isDraftMode ? "no-store" : "force-cache",
-      next: isDraftMode
-        ? undefined
-        : { revalidate: false, tags: ["about-page"] },
+      // The About page is edited from Content Manager; keep hero media changes
+      // visible immediately without requiring a frontend image/cache rebuild.
+      cache: "no-store",
     });
 
     // Strapi v5 returns data: { id, documentId, ...attributes }
@@ -1787,14 +1884,15 @@ export async function getAboutPage(isDraftMode: boolean = false): Promise<any> {
           })),
         };
       }
-      const servicesResponse = await apiClient<any>("/api/service-details", {
+      const servicesResponse = await apiClient<any>("/api/services", {
         params: {
+          "filters[category][$eq]": "Plastic Surgery",
           pagination: { pageSize: 100 },
           sort: ["title:asc"],
-          populate: { hero_image: true },
+          populate: { coverImage: true },
         },
         isDraftMode,
-        tags: ["service-details"],
+        tags: ["services"],
       });
       const serviceItems = servicesResponse?.data || [];
       if (serviceItems.length) {
@@ -1804,11 +1902,11 @@ export async function getAboutPage(isDraftMode: boolean = false): Promise<any> {
             id: service.id,
             slug: service.slug || "",
             title: service.title || "",
-            description: cleanDescription(service.description) || "",
+            description: cleanDescription(service.metaDescription) || "",
             link: service.slug ? `/services/${service.slug}` : "/services",
-            image: service.hero_image ? {
-              url: getMediaUrl(service.hero_image),
-              alt: getMediaAlt(service.hero_image, service.title || "Service illustration"),
+            image: service.coverImage ? {
+              url: getMediaUrl(service.coverImage),
+              alt: getMediaAlt(service.coverImage, service.title || "Service illustration"),
             } : undefined,
           })),
         };
@@ -1928,68 +2026,5 @@ export async function getAboutPage(isDraftMode: boolean = false): Promise<any> {
     };
   } catch (error) {
     return null;
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Contact Methods
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Get all contact methods
- *
- * Fetches contact methods from CMS for floating contact widget and contact page.
- * Returns active methods sorted by order.
- *
- * @param isDraftMode - Whether to fetch draft content (for preview)
- * @returns Array of contact methods
- */
-export async function getContactMethods(
-  isDraftMode: boolean = false,
-): Promise<import("@/src/types/strapi").ContactMethod[]> {
-  try {
-    const response = await apiClient<
-      import("@/src/types/strapi").StrapiContactMethods
-    >("/api/contact-methods", {
-      params: {
-        "populate[icon]": "true",
-        "filters[is_active][$eq]": true,
-        "sort[0]": "order:asc",
-      },
-      isDraftMode,
-      tags: ["contact-methods"],
-      cache: isDraftMode ? "no-store" : "force-cache",
-      next: isDraftMode
-        ? undefined
-        : { revalidate: false, tags: ["contact-methods"] },
-    });
-
-    if (!response.data || response.data.length === 0) {
-      return [];
-    }
-
-    // Transform to frontend format
-    const transformed = response.data.map((method) => ({
-      id: method.id,
-      type: method.type,
-      label: method.label,
-      href: method.href,
-      icon: method.icon
-        ? {
-          url: getMediaUrl(method.icon),
-          alt: getMediaAlt(method.icon, method.label),
-          width: 0,
-          height: 0,
-        }
-        : undefined,
-      iconUrl: method.icon ? getMediaUrl(method.icon) : undefined,
-      color: method.color,
-      order: method.order,
-      isActive: method.is_active,
-    }));
-
-    return transformed;
-  } catch (error) {
-    return [];
   }
 }

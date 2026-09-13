@@ -49,7 +49,7 @@ export function StitchTreatmentPage({ showQuickFacts = true, pageType = 'rhinopl
     <section className="stitch-treatment-hero">
       <div className="stitch-treatment-hero__copy">
         <nav className="stitch-treatment-breadcrumb" aria-label="Breadcrumb"><Link href="/">Home</Link><ChevronDown size={14} aria-hidden="true" />{pageType === 'treatments' ? <span>Treatments</span> : <><Link href="/treatments">Face</Link><ChevronDown size={14} aria-hidden="true" /><span>Rhinoplasty</span></>}</nav>
-        <span className="stitch-kicker">DR. MARIS AESTHETICS · FACIAL PROCEDURES</span><h1>Rhinoplasty Surgery in Vietnam</h1>
+        <span className="stitch-kicker">DR. MARIS AESTHETICS · FACIAL PROCEDURES</span><h2>Rhinoplasty Surgery in Vietnam</h2>
         <p>At DR. MARIS AESTHETICS, we redefine nasal harmony through a meticulous structural approach that honors your unique facial architecture. Our surgical philosophy combines clinical precision with natural, balanced results that enhance your features without looking operated on.</p>
         <div className="stitch-treatment-review"><CheckCircle2 size={18} aria-hidden="true" />Reviewed by Dr. Maris · Ho Chi Minh City, Vietnam</div><ConsultationButton />
       </div>

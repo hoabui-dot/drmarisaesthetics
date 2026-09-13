@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_website_setting_global_ctas",
+  "info": { "displayName": "Global CTA Section" },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string", "required": true },
+    "title": { "type": "string", "required": true },
+    "editorial_lead": { "type": "text" },
+    "description": { "type": "text" },
+    "button_label": { "type": "string", "required": true },
+    "panel_eyebrow": { "type": "string", "required": true },
+    "panel_title": { "type": "string", "required": true },
+    "panel_description": { "type": "text" },
+    "steps": { "type": "component", "repeatable": true, "component": "website-setting.global-cta-step" },
+    "background_image": { "type": "media", "multiple": false, "allowedTypes": ["images"] }
+  }
+}

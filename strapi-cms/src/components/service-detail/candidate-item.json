@@ -1,6 +1,0 @@
-{
-  "collectionName": "components_service_detail_candidate_items",
-  "info": { "displayName": "Candidate Item" },
-  "options": {},
-  "attributes": { "text": { "type": "string", "required": true } }
-}

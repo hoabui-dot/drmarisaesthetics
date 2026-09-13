@@ -2,13 +2,41 @@ export type OurTeamData = {
   professionalImage?: string
   hospitalImage?: string
   internationalImage?: string
+  authority: {
+    eyebrow: string
+    title: string
+    description: string
+    cards: Array<{ title: string; items: string[] }>
+  }
+  credentials: {
+    eyebrow: string
+    title: string
+    description: string
+    rows: Array<{ label: string; value: string }>
+  }
+  hospital: {
+    eyebrow: string
+    title: string
+    description: string
+    image?: string
+    imageAlt?: string
+    proofItems: string[]
+  }
+  professional?: {
+    eyebrow: string
+    title: string
+    description: string
+    steps: Array<{ number: string; title: string; description: string }>
+    image?: string
+    imageAlt?: string
+  }
   hero: { eyebrow: string; title: string; paragraphs: string[]; image: string; imageAlt: string }
-  surgicalCare: { title: string; heading: string; paragraphs: string[]; steps: string[]; image: string; imageAlt: string; experience: string; experienceLabel: string }
+  surgicalCare: { title: string; heading: string; paragraphs: string[]; steps: Array<string | { number: string; title: string; description: string; image?: string; imageAlt?: string }>; image: string; imageAlt: string; experience: string; experienceLabel: string }
   revision: { eyebrow: string; title: string; heading: string; description: string; calloutTitle: string; calloutDescription: string; concerns: Array<{ title: string; description: string }>; image?: string; imageAlt?: string }
   internationalPatients: { eyebrow: string; title: string; description: string; steps: Array<{ number: string; title: string; description: string }> }
   journey: { eyebrow: string; title: string; description: string; steps: Array<{ number: string; title: string; description: string }> }
   consultation: { title: string; description: string; fields: { name: string; email: string; phone: string; interest: string; description: string }; interests: string[]; whatsappLabel: string }
-  faq: { eyebrow: string; title: string; items: Array<{ question: string; answer: string }> }
+  faq: { eyebrow: string; title: string; backgroundImage?: string; items: Array<{ question: string; answer: string }> }
 }
 
 // Stable, openly hosted editorial imagery replaces expired Stitch preview URLs.
@@ -24,6 +52,35 @@ export const ourTeamMockData: OurTeamData = {
   professionalImage: 'https://lh3.googleusercontent.com/aida/AEtjO1XXbq0nEsgYvRypCDIPl7aYFjLX9jK_4XdlD_cfBculkZTdj5M2lnd9-W1CXBjRYBrDa1nXZqbd-iZUYb1Q7Vi1trslqcuOB4el34aOEFT6XGhIihyHsb_t3BGfWObKnT3UXlvYfzYkzOyHmJWHuhvCsUo0zZ-lbVEw_J-hkqA-JofgimRbz3kNUwXTYtwpLw-ZQi1AXtd-zJ2XICOQ2o-MAFpQA6KGdJnfwk7YcJcVasZJbRsdCYOAt_5n',
   hospitalImage: 'https://lh3.googleusercontent.com/aida/AEtjO1WfULKLvdA7A_Rj8nBOX_Kn4LmHjU2-su8dEHYnuCNvWH8zGH2VDEOxtFMgWgeR6If4x7n5vdvVky1h0MeTtSV8PStHQs2fsgjwbQZmU1Q1PgUg6dJdriyJXI1p5Bn9OTSDBvBwctYIf2mrg6TFJIMeg3auoz96farOQg5_OfYLFN0fu-A5WYBZolrU8LjIPAQ5J6My4bPbRib4k0H1rV7OGK8kdzTOHwxqk7KYMM_icNzO6KJ7Pjb1nJ4r',
   internationalImage: 'https://lh3.googleusercontent.com/aida/AEtjO1UyuNh8ose2rDhcXXEcTYoAdy4x4Ry3MwC3pg_wXtQn4c63X1-UQdzF14j9kip2XLiqMvjaesf48BCWcM1Dqw1Clq1SzLJU6HUXKTRwKYAjnv1O8y-ZZ8EgA2jGpludA-yFWXoN6vSOb7-Bpa1pIcKLnhasL4U6-8QBhJmhnlM0_pftftjplRV_VA8mM9Nx_z24iA7y5fVSFl6vtZ6rOO5GTlKvBKPeMWYartYc6acnLzIToaIIAzE2Qcg',
+  authority: {
+    eyebrow: 'MEDICAL AUTHORITY',
+    title: 'Medical Authority & Expertise',
+    description: 'Combining rigorous medical training with over 6 years of specialized surgical experience.',
+    cards: [
+      { title: 'Education & Degrees', items: ['[INFORMATION TO VERIFY] Medical Degree', '[INFORMATION TO VERIFY] Residency Training'] },
+      { title: 'Certifications', items: ['Board Certified Plastic Surgeon', '[INFORMATION TO VERIFY] Advanced Surgical License'] },
+      { title: 'Memberships', items: ['[INFORMATION TO VERIFY] Plastic Surgery Society', '[INFORMATION TO VERIFY] International Medical Association'] },
+    ],
+  },
+  credentials: {
+    eyebrow: 'QUALIFICATIONS',
+    title: 'Medical Training & Professional Credentials',
+    description: 'Dr. Tran Minh Huy maintains a rigorous commitment to verified medical standards and continuous professional development. His credentials represent a foundation of academic excellence and clinical certification recognized by the Vietnam Ministry of Health.',
+    rows: [
+      { label: 'SPECIALTY', value: 'Specialist Level I in Aesthetic Surgery (Vietnam)' },
+      { label: 'TRAINING', value: 'University of Medicine and Pharmacy at Ho Chi Minh City' },
+      { label: 'PRACTICE CERTIFICATE', value: '0011736/BYT-CCHN' },
+      { label: 'ISSUED', value: '26.12.2013' },
+      { label: 'ISSUING AUTHORITY', value: 'Vietnam Ministry of Health' },
+    ],
+  },
+  hospital: {
+    eyebrow: 'HOSPITAL-BASED SURGERY',
+    title: 'Surgery at City International Hospital (CIH)',
+    description: 'Patient safety is paramount. All major surgical procedures are performed within the state-of-the-art operating theaters at City International Hospital. This ensures access to comprehensive medical infrastructure, specialized anesthesiology teams, and rigorous sterilization protocols that only a full-scale hospital can provide.',
+    imageAlt: 'Modern surgical theater at City International Hospital',
+    proofItems: ['JCI Accredited Standards', '24/7 Intensive Care Support'],
+  },
   hero: {
     eyebrow: 'HOSPITAL-BASED COSMETIC SURGERY · HO CHI MINH CITY',
     title: 'Plastic Surgery in Vietnam for International Patients',
@@ -41,7 +98,13 @@ export const ourTeamMockData: OurTeamData = {
       'Dr. Maris (Dr. Tran Minh Huy) brings 6+ years of specialized cosmetic surgery experience to every case. Unlike high-volume clinics, we strictly limit our surgical schedule to ensure that Dr. Maris is personally involved in every critical step of your journey.',
       'This commitment to individualized planning means your anatomy, medical history, and aesthetic goals receive the undivided attention they deserve, from the first incision to the final stitch.',
     ],
-    steps: ['Consultation', 'Examination', 'Planning', 'Surgery', 'Follow-Up'],
+    steps: [
+      { number: '01', title: 'Medical Assessment First', description: "Surgery begins with understanding the patient's actual condition, medical history and previous procedures.", image: reliableTeamImages.consultation, imageAlt: 'Patient discussing medical goals with a surgeon during a private consultation' },
+      { number: '02', title: 'Realistic Expectations', description: 'Possible outcomes, limitations and recovery requirements are discussed honestly before a procedure is recommended.', image: reliableTeamImages.consultation, imageAlt: 'Surgeon reviewing an individual treatment plan with a patient' },
+      { number: '03', title: 'Direct Responsibility', description: 'Dr. Maris remains personally involved in the consultation, planning and surgical pathway.', image: reliableTeamImages.clinic, imageAlt: 'Plastic surgeon preparing a personalized clinical plan' },
+      { number: '04', title: 'Hospital-Based Surgery', description: 'Major procedures are performed in an accredited hospital environment with specialist support and medical infrastructure.', image: reliableTeamImages.hospital, imageAlt: 'Modern hospital operating theatre prepared for surgery' },
+      { number: '05', title: 'Responsible Follow-Up', description: 'Postoperative progress remains part of the surgical process, with clear guidance as recovery develops.', image: reliableTeamImages.revision, imageAlt: 'Doctor providing careful postoperative follow-up care' },
+    ],
     image: 'https://lh3.googleusercontent.com/aida/AEtjO1WfULKLvdA7A_Rj8nBOX_Kn4LmHjU2-su8dEHYnuCNvWH8zGH2VDEOxtFMgWgeR6If4x7n5vdvVky1h0MeTtSV8PStHQs2fsgjwbQZmU1Q1PgUg6dJdriyJXI1p5Bn9OTSDBvBwctYIf2mrg6TFJIMeg3auoz96farOQg5_OfYLFN0fu-A5WYBZolrU8LjIPAQ5J6My4bPbRib4k0H1rV7OGK8kdzTOHwxqk7KYMM_icNzO6KJ7Pjb1nJ4r',
     imageAlt: 'Dr. Tran Minh Huy - Lead Surgeon',
     experience: '6+ Years',

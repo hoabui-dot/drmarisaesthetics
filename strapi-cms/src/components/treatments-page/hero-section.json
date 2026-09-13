@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_treatments_page_hero_sections",
+  "info": { "displayName": "Treatments hero" },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "description": { "type": "text" },
+    "review_label": { "type": "string" },
+    "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "image_alt": { "type": "string" }
+  }
+}

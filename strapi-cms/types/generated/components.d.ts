@@ -93,7 +93,7 @@ export interface AboutFeaturedServiceReference extends Struct.ComponentSchema {
 export interface AboutFeaturedServices extends Struct.ComponentSchema {
   collectionName: 'components_about_featured_services';
   info: {
-    description: 'About Us service section presentation configuration. Cards are loaded from the service-details collection.';
+    description: 'About Us service section presentation configuration. Cards are loaded from the blog collection.';
     displayName: 'Featured Services Section';
   };
   attributes: {
@@ -236,7 +236,6 @@ export interface ContactConsultationSection extends Struct.ComponentSchema {
     advisor_description: Schema.Attribute.Text & Schema.Attribute.Required;
     advisor_image: Schema.Attribute.Media<'images'>;
     advisor_title: Schema.Attribute.String & Schema.Attribute.Required;
-    contacts: Schema.Attribute.Component<'contact.consultation-contact', true>;
     form_intro: Schema.Attribute.Text & Schema.Attribute.Required;
     form_title: Schema.Attribute.String & Schema.Attribute.Required;
     info_description: Schema.Attribute.Text & Schema.Attribute.Required;
@@ -311,6 +310,32 @@ export interface ContactEliteStackCard extends Struct.ComponentSchema {
     description: Schema.Attribute.Text & Schema.Attribute.Required;
     icon_image: Schema.Attribute.Media<'images'>;
     show_cta: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+  };
+}
+
+export interface ContactExpectation extends Struct.ComponentSchema {
+  collectionName: 'components_contact_expectations';
+  info: {
+    description: 'Three-step consultation journey';
+    displayName: 'Consultation Process';
+  };
+  attributes: {
+    items: Schema.Attribute.Component<'contact.expectation-item', true>;
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'What to Expect'>;
+  };
+}
+
+export interface ContactExpectationItem extends Struct.ComponentSchema {
+  collectionName: 'components_contact_expectation_items';
+  info: {
+    displayName: 'Consultation Process Step';
+  };
+  attributes: {
+    description: Schema.Attribute.Text & Schema.Attribute.Required;
+    step: Schema.Attribute.String & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
@@ -420,10 +445,6 @@ export interface ContactMapSection extends Struct.ComponentSchema {
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'CH\u1EC8 \u0110\u01AF\u1EDCNG TR\u00CAN GOOGLE MAPS'>;
     directions_url: Schema.Attribute.String;
-    map_address: Schema.Attribute.Text & Schema.Attribute.Required;
-    map_latitude: Schema.Attribute.Decimal & Schema.Attribute.Required;
-    map_longitude: Schema.Attribute.Decimal & Schema.Attribute.Required;
-    map_zoom: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<16>;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'V\u1ECB tr\u00ED ph\u00F2ng kh\u00E1m'>;
@@ -986,6 +1007,19 @@ export interface HomepageConsultation extends Struct.ComponentSchema {
   };
 }
 
+export interface HomepageConsultationSection extends Struct.ComponentSchema {
+  collectionName: 'components_homepage_consultation_sections';
+  info: {
+    displayName: 'Consultation section';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    editorial_lead: Schema.Attribute.Text;
+    eyebrow: Schema.Attribute.String;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface HomepageCta extends Struct.ComponentSchema {
   collectionName: 'components_homepage_ctas';
   info: {
@@ -1015,6 +1049,23 @@ export interface HomepageDoctor extends Struct.ComponentSchema {
     title: Schema.Attribute.String & Schema.Attribute.Required;
     view_all_label: Schema.Attribute.String;
     view_all_link: Schema.Attribute.String;
+  };
+}
+
+export interface HomepageDoctorAssessmentSection
+  extends Struct.ComponentSchema {
+  collectionName: 'components_homepage_doctor_assessment_sections';
+  info: {
+    displayName: 'Doctor assessment section';
+  };
+  attributes: {
+    considerations: Schema.Attribute.Component<'homepage.text-item', true>;
+    description: Schema.Attribute.Text;
+    eyebrow: Schema.Attribute.String;
+    image: Schema.Attribute.Media<'images'>;
+    image_alt: Schema.Attribute.String;
+    role: Schema.Attribute.String;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
@@ -1103,8 +1154,7 @@ export interface HomepageFaqContactItem extends Struct.ComponentSchema {
 export interface HomepageFaqItem extends Struct.ComponentSchema {
   collectionName: 'components_homepage_faq_items';
   info: {
-    description: 'Individual FAQ question and answer';
-    displayName: 'FAQ Item';
+    displayName: 'Homepage FAQ item';
   };
   attributes: {
     answer: Schema.Attribute.Text & Schema.Attribute.Required;
@@ -1124,10 +1174,23 @@ export interface HomepageFeatureItem extends Struct.ComponentSchema {
   };
 }
 
+export interface HomepageFrequentlyAskedQuestionsSection
+  extends Struct.ComponentSchema {
+  collectionName: 'components_homepage_frequently_asked_questions_sections';
+  info: {
+    displayName: 'Frequently asked questions section';
+  };
+  attributes: {
+    eyebrow: Schema.Attribute.String;
+    items: Schema.Attribute.Component<'homepage.faq-item', true>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface HomepageHero extends Struct.ComponentSchema {
   collectionName: 'components_homepage_heroes';
   info: {
-    description: 'Hero section with heading, subheading, CTA, and image';
+    description: 'Clinical-blue hero section with heading, subheading, CTA, trust proof, and image';
     displayName: 'Hero';
   };
   attributes: {
@@ -1160,6 +1223,103 @@ export interface HomepageHero extends Struct.ComponentSchema {
   };
 }
 
+export interface HomepageHeroSection extends Struct.ComponentSchema {
+  collectionName: 'components_homepage_hero_sections';
+  info: {
+    displayName: 'Hero section';
+  };
+  attributes: {
+    editorial_lead: Schema.Attribute.Text;
+    eyebrow: Schema.Attribute.String;
+    image: Schema.Attribute.Media<'images'>;
+    image_alt: Schema.Attribute.String;
+    paragraph_one: Schema.Attribute.Text;
+    paragraph_two: Schema.Attribute.Text;
+    title_line_1: Schema.Attribute.String & Schema.Attribute.Required;
+    title_line_2: Schema.Attribute.String & Schema.Attribute.Required;
+    trust_labels: Schema.Attribute.Component<'homepage.text-item', true>;
+  };
+}
+
+export interface HomepageHospitalBasedSurgerySection
+  extends Struct.ComponentSchema {
+  collectionName: 'components_homepage_hospital_based_surgery_sections';
+  info: {
+    displayName: 'Hospital based surgery section';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    disclaimer: Schema.Attribute.Text;
+    editorial_lead: Schema.Attribute.Text;
+    eyebrow: Schema.Attribute.String;
+    image: Schema.Attribute.Media<'images'>;
+    image_alt: Schema.Attribute.String;
+    proof_items: Schema.Attribute.Component<'homepage.text-item', true>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface HomepageInternationalJourneySection
+  extends Struct.ComponentSchema {
+  collectionName: 'components_homepage_international_journey_sections';
+  info: {
+    displayName: 'International patient journey section';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    eyebrow: Schema.Attribute.String;
+    steps: Schema.Attribute.Component<'homepage.journey-step', true>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface HomepageInternationalPatientsSection
+  extends Struct.ComponentSchema {
+  collectionName: 'components_homepage_international_patients_sections';
+  info: {
+    displayName: 'International patients section';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    eyebrow: Schema.Attribute.String;
+    note: Schema.Attribute.Text;
+    review_items: Schema.Attribute.Component<'homepage.text-item', true>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface HomepageJourneyStep extends Struct.ComponentSchema {
+  collectionName: 'components_homepage_journey_steps';
+  info: {
+    displayName: 'International journey step';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    image: Schema.Attribute.Media<'images'>;
+    image_alt: Schema.Attribute.String;
+    number: Schema.Attribute.String;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface HomepageMarisMethodSection extends Struct.ComponentSchema {
+  collectionName: 'components_homepage_maris_method_sections';
+  info: {
+    displayName: 'The Maris Method section';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    eyebrow: Schema.Attribute.String;
+    image: Schema.Attribute.Media<'images'>;
+    image_alt: Schema.Attribute.String;
+    quote: Schema.Attribute.Text;
+    stat_description: Schema.Attribute.String;
+    stat_title: Schema.Attribute.String;
+    steps: Schema.Attribute.Component<'homepage.process-step', true>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface HomepagePaperItem extends Struct.ComponentSchema {
   collectionName: 'components_homepage_paper_items';
   info: {
@@ -1169,6 +1329,19 @@ export interface HomepagePaperItem extends Struct.ComponentSchema {
   attributes: {
     image: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
     link: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface HomepagePatientResultsSection extends Struct.ComponentSchema {
+  collectionName: 'components_homepage_patient_results_sections';
+  info: {
+    displayName: 'Patient results section';
+  };
+  attributes: {
+    editorial_lead: Schema.Attribute.Text;
+    eyebrow: Schema.Attribute.String;
+    note: Schema.Attribute.Text;
+    source: Schema.Attribute.String;
   };
 }
 
@@ -1222,15 +1395,29 @@ export interface HomepagePressSection extends Struct.ComponentSchema {
   };
 }
 
+export interface HomepageProcedureItem extends Struct.ComponentSchema {
+  collectionName: 'components_homepage_procedure_items';
+  info: {
+    displayName: 'Signature procedure';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    href: Schema.Attribute.String;
+    image: Schema.Attribute.Media<'images'>;
+    image_alt: Schema.Attribute.String;
+    number: Schema.Attribute.String;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface HomepageProcessStep extends Struct.ComponentSchema {
   collectionName: 'components_homepage_process_steps';
   info: {
-    description: 'Individual step in process';
-    displayName: 'Process Step';
+    displayName: 'Process step';
   };
   attributes: {
-    description: Schema.Attribute.Text & Schema.Attribute.Required;
-    icon: Schema.Attribute.String;
+    description: Schema.Attribute.Text;
+    number: Schema.Attribute.String;
     title: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
@@ -1279,13 +1466,13 @@ export interface HomepageProofShowcase extends Struct.ComponentSchema {
 export interface HomepageResultStory extends Struct.ComponentSchema {
   collectionName: 'components_homepage_result_stories';
   info: {
-    description: 'Atomic smile transformation story with synchronized copy and media';
+    description: 'A single composite before-and-after result story';
     displayName: 'Result Story';
   };
   attributes: {
-    after_image: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
-    before_image: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
     description: Schema.Attribute.Text & Schema.Attribute.Required;
+    image: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+    image_alt: Schema.Attribute.String;
     patient_portrait: Schema.Attribute.Media<'images'> &
       Schema.Attribute.Required;
     portrait_alt: Schema.Attribute.String;
@@ -1298,7 +1485,7 @@ export interface HomepageResultStory extends Struct.ComponentSchema {
 export interface HomepageResultsSection extends Struct.ComponentSchema {
   collectionName: 'components_homepage_results_sections';
   info: {
-    description: 'Homepage result-story carousel with synchronized before/after stories';
+    description: 'Homepage result-story carousel using one composite image per case';
     displayName: 'Smile Transformations / Results';
   };
   attributes: {
@@ -1338,6 +1525,22 @@ export interface HomepageReviewItem extends Struct.ComponentSchema {
   };
 }
 
+export interface HomepageRevisionSurgerySection extends Struct.ComponentSchema {
+  collectionName: 'components_homepage_revision_surgery_sections';
+  info: {
+    displayName: 'Revision surgery section';
+  };
+  attributes: {
+    concerns: Schema.Attribute.Component<'homepage.text-item', true>;
+    description: Schema.Attribute.Text;
+    editorial_lead: Schema.Attribute.Text;
+    eyebrow: Schema.Attribute.String;
+    image: Schema.Attribute.Media<'images'>;
+    image_alt: Schema.Attribute.String;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface HomepageServiceItem extends Struct.ComponentSchema {
   collectionName: 'components_homepage_service_items';
   info: {
@@ -1369,6 +1572,21 @@ export interface HomepageServices extends Struct.ComponentSchema {
   };
 }
 
+export interface HomepageSignatureProceduresSection
+  extends Struct.ComponentSchema {
+  collectionName: 'components_homepage_signature_procedures_sections';
+  info: {
+    displayName: 'Signature procedures section';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    eyebrow: Schema.Attribute.String;
+    items: Schema.Attribute.Component<'homepage.procedure-item', true>;
+    title_line_1: Schema.Attribute.String & Schema.Attribute.Required;
+    title_line_2: Schema.Attribute.String;
+  };
+}
+
 export interface HomepageStatItem extends Struct.ComponentSchema {
   collectionName: 'components_homepage_stat_items';
   info: {
@@ -1380,6 +1598,21 @@ export interface HomepageStatItem extends Struct.ComponentSchema {
     label: Schema.Attribute.String & Schema.Attribute.Required;
     number: Schema.Attribute.String & Schema.Attribute.Required;
     suffix: Schema.Attribute.String;
+  };
+}
+
+export interface HomepageSurgicalCareProcessSection
+  extends Struct.ComponentSchema {
+  collectionName: 'components_homepage_surgical_care_process_sections';
+  info: {
+    displayName: 'Surgical care process section';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    eyebrow: Schema.Attribute.String;
+    quote: Schema.Attribute.Text;
+    steps: Schema.Attribute.Component<'homepage.process-step', true>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
@@ -1443,6 +1676,16 @@ export interface HomepageTestimonialsSection extends Struct.ComponentSchema {
   };
 }
 
+export interface HomepageTextItem extends Struct.ComponentSchema {
+  collectionName: 'components_homepage_text_items';
+  info: {
+    displayName: 'Homepage text item';
+  };
+  attributes: {
+    text: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface HomepageTitleLine extends Struct.ComponentSchema {
   collectionName: 'components_homepage_title_lines';
   info: {
@@ -1494,6 +1737,184 @@ export interface MenuNavItem extends Struct.ComponentSchema {
   };
 }
 
+export interface OurTeamAuthorityCard extends Struct.ComponentSchema {
+  collectionName: 'components_our_team_authority_cards';
+  info: {
+    displayName: 'Our Team authority card';
+  };
+  attributes: {
+    items: Schema.Attribute.Component<'our-team.item', true>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface OurTeamAuthoritySection extends Struct.ComponentSchema {
+  collectionName: 'components_our_team_authority_sections';
+  info: {
+    displayName: 'Our Team medical authority';
+  };
+  attributes: {
+    cards: Schema.Attribute.Component<'our-team.authority-card', true>;
+    description: Schema.Attribute.Text;
+    eyebrow: Schema.Attribute.String;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface OurTeamCredentialRow extends Struct.ComponentSchema {
+  collectionName: 'components_our_team_credential_rows';
+  info: {
+    displayName: 'Our Team credential row';
+  };
+  attributes: {
+    label: Schema.Attribute.String & Schema.Attribute.Required;
+    value: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface OurTeamCredentialsSection extends Struct.ComponentSchema {
+  collectionName: 'components_our_team_credentials_sections';
+  info: {
+    displayName: 'Our Team credentials';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    eyebrow: Schema.Attribute.String;
+    rows: Schema.Attribute.Component<'our-team.credential-row', true>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface OurTeamEditorialSection extends Struct.ComponentSchema {
+  collectionName: 'components_our_team_editorial_sections';
+  info: {
+    displayName: 'Our Team editorial section';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    eyebrow: Schema.Attribute.String;
+    image: Schema.Attribute.Media<'images'>;
+    image_alt: Schema.Attribute.String;
+    items: Schema.Attribute.Component<'our-team.item', true>;
+    lead: Schema.Attribute.Text;
+    steps: Schema.Attribute.Component<'our-team.step', true>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface OurTeamFaqItem extends Struct.ComponentSchema {
+  collectionName: 'components_our_team_faq_items';
+  info: {
+    displayName: 'Our Team FAQ item';
+  };
+  attributes: {
+    answer: Schema.Attribute.Text & Schema.Attribute.Required;
+    question: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface OurTeamFaqSection extends Struct.ComponentSchema {
+  collectionName: 'components_our_team_faq_sections';
+  info: {
+    displayName: 'Our Team FAQ section';
+  };
+  attributes: {
+    background_image: Schema.Attribute.Media<'images'>;
+    eyebrow: Schema.Attribute.String;
+    items: Schema.Attribute.Component<'our-team.faq-item', true>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface OurTeamHeroSection extends Struct.ComponentSchema {
+  collectionName: 'components_our_team_hero_sections';
+  info: {
+    displayName: 'Our Team hero';
+  };
+  attributes: {
+    eyebrow: Schema.Attribute.String;
+    image: Schema.Attribute.Media<'images'>;
+    image_alt: Schema.Attribute.String;
+    paragraph_one: Schema.Attribute.Text;
+    paragraph_two: Schema.Attribute.Text;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface OurTeamHospitalSection extends Struct.ComponentSchema {
+  collectionName: 'components_our_team_hospital_sections';
+  info: {
+    displayName: 'Our Team hospital-based surgery';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    eyebrow: Schema.Attribute.String;
+    image: Schema.Attribute.Media<'images'>;
+    image_alt: Schema.Attribute.String;
+    proof_items: Schema.Attribute.Component<'our-team.item', true>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface OurTeamItem extends Struct.ComponentSchema {
+  collectionName: 'components_our_team_items';
+  info: {
+    displayName: 'Our Team list item';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    label: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface OurTeamRevisionSection extends Struct.ComponentSchema {
+  collectionName: 'components_our_team_revision_sections';
+  info: {
+    displayName: 'Our Team revision section';
+  };
+  attributes: {
+    callout_description: Schema.Attribute.Text;
+    callout_title: Schema.Attribute.String;
+    concerns: Schema.Attribute.Component<'our-team.item', true>;
+    description: Schema.Attribute.Text;
+    eyebrow: Schema.Attribute.String;
+    image: Schema.Attribute.Media<'images'>;
+    image_alt: Schema.Attribute.String;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface OurTeamStep extends Struct.ComponentSchema {
+  collectionName: 'components_our_team_steps';
+  info: {
+    displayName: 'Our Team process step';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    image: Schema.Attribute.Media<'images'>;
+    image_alt: Schema.Attribute.String;
+    number: Schema.Attribute.String & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface ResultCase extends Struct.ComponentSchema {
+  collectionName: 'components_result_cases';
+  info: {
+    displayName: 'Patient result case';
+  };
+  attributes: {
+    case_number: Schema.Attribute.String & Schema.Attribute.Required;
+    category: Schema.Attribute.String;
+    image: Schema.Attribute.Media<'images'>;
+    image_alt: Schema.Attribute.Text;
+    profile: Schema.Attribute.String;
+    recovery: Schema.Attribute.String;
+    subtitle: Schema.Attribute.String;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface SeoPageSeo extends Struct.ComponentSchema {
   collectionName: 'components_seo_page_seos';
   info: {
@@ -1542,6 +1963,31 @@ export interface SeoRobotsRule extends Struct.ComponentSchema {
     user_agent: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'*'>;
+  };
+}
+
+export interface SeoSitemapOverride extends Struct.ComponentSchema {
+  collectionName: 'components_seo_sitemap_overrides';
+  info: {
+    description: 'Optional per-page sitemap values. Empty fields inherit from the content group, then global defaults.';
+    displayName: 'SEO Sitemap Override';
+  };
+  attributes: {
+    change_frequency: Schema.Attribute.Enumeration<
+      ['always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never']
+    >;
+    exclude_from_sitemap: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    inherit_from_group: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<true>;
+    priority: Schema.Attribute.Decimal &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 1;
+          min: 0;
+        },
+        number
+      >;
   };
 }
 
@@ -1940,6 +2386,7 @@ export interface ServicesOverviewHero extends Struct.ComponentSchema {
     badge: Schema.Attribute.String;
     description: Schema.Attribute.Text;
     hero_image: Schema.Attribute.Media<'images'>;
+    secondary_cta_video_url: Schema.Attribute.String;
     title: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
@@ -1954,6 +2401,111 @@ export interface ServicesOverviewServiceCards extends Struct.ComponentSchema {
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'Explore Our Services'>;
+  };
+}
+
+export interface TreatmentsPageEditorialSection extends Struct.ComponentSchema {
+  collectionName: 'components_treatments_page_editorial_sections';
+  info: {
+    displayName: 'Treatments editorial section';
+  };
+  attributes: {
+    eyebrow: Schema.Attribute.String;
+    image: Schema.Attribute.Media<'images'>;
+    image_alt: Schema.Attribute.String;
+    items: Schema.Attribute.Component<'treatments-page.item', true>;
+    lead: Schema.Attribute.Text;
+    paragraph_one: Schema.Attribute.Text;
+    paragraph_two: Schema.Attribute.Text;
+    section_key: Schema.Attribute.String & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface TreatmentsPageHeroSection extends Struct.ComponentSchema {
+  collectionName: 'components_treatments_page_hero_sections';
+  info: {
+    displayName: 'Treatments hero';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    eyebrow: Schema.Attribute.String;
+    image: Schema.Attribute.Media<'images'>;
+    image_alt: Schema.Attribute.String;
+    review_label: Schema.Attribute.String;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface TreatmentsPageItem extends Struct.ComponentSchema {
+  collectionName: 'components_treatments_page_items';
+  info: {
+    displayName: 'Treatments page item';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    number: Schema.Attribute.String;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface WebsiteSettingContactMethod extends Struct.ComponentSchema {
+  collectionName: 'components_website_setting_contact_methods';
+  info: {
+    displayName: 'Website contact method';
+  };
+  attributes: {
+    color: Schema.Attribute.String;
+    href: Schema.Attribute.Text & Schema.Attribute.Required;
+    icon: Schema.Attribute.Media<'images'>;
+    is_active: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    label: Schema.Attribute.String & Schema.Attribute.Required;
+    order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    type: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface WebsiteSettingGlobalCta extends Struct.ComponentSchema {
+  collectionName: 'components_website_setting_global_ctas';
+  info: {
+    displayName: 'Global CTA Section';
+  };
+  attributes: {
+    background_image: Schema.Attribute.Media<'images'>;
+    button_label: Schema.Attribute.String & Schema.Attribute.Required;
+    description: Schema.Attribute.Text;
+    editorial_lead: Schema.Attribute.Text;
+    eyebrow: Schema.Attribute.String & Schema.Attribute.Required;
+    panel_description: Schema.Attribute.Text;
+    panel_eyebrow: Schema.Attribute.String & Schema.Attribute.Required;
+    panel_title: Schema.Attribute.String & Schema.Attribute.Required;
+    steps: Schema.Attribute.Component<'website-setting.global-cta-step', true>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface WebsiteSettingGlobalCtaStep extends Struct.ComponentSchema {
+  collectionName: 'components_website_setting_global_cta_steps';
+  info: {
+    displayName: 'Global CTA step';
+  };
+  attributes: {
+    label: Schema.Attribute.String & Schema.Attribute.Required;
+    number: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface WebsiteSettingSocialLink extends Struct.ComponentSchema {
+  collectionName: 'components_website_setting_social_links';
+  info: {
+    displayName: 'Website social link';
+  };
+  attributes: {
+    icon_class: Schema.Attribute.String;
+    is_active: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    platform: Schema.Attribute.String & Schema.Attribute.Required;
+    url: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
@@ -1980,6 +2532,8 @@ declare module '@strapi/strapi' {
       'contact.cta-stat': ContactCtaStat;
       'contact.elite-stack': ContactEliteStack;
       'contact.elite-stack-card': ContactEliteStackCard;
+      'contact.expectation': ContactExpectation;
+      'contact.expectation-item': ContactExpectationItem;
       'contact.faq': ContactFaq;
       'contact.faq-item': ContactFaqItem;
       'contact.hero': ContactHero;
@@ -2023,8 +2577,10 @@ declare module '@strapi/strapi' {
       'homepage.certification-item': HomepageCertificationItem;
       'homepage.combined-testimonial-result-item': HomepageCombinedTestimonialResultItem;
       'homepage.consultation': HomepageConsultation;
+      'homepage.consultation-section': HomepageConsultationSection;
       'homepage.cta': HomepageCta;
       'homepage.doctor': HomepageDoctor;
+      'homepage.doctor-assessment-section': HomepageDoctorAssessmentSection;
       'homepage.doctor-badge': HomepageDoctorBadge;
       'homepage.doctor-profile': HomepageDoctorProfile;
       'homepage.doctor-stat': HomepageDoctorStat;
@@ -2033,29 +2589,56 @@ declare module '@strapi/strapi' {
       'homepage.faq-contact-item': HomepageFaqContactItem;
       'homepage.faq-item': HomepageFaqItem;
       'homepage.feature-item': HomepageFeatureItem;
+      'homepage.frequently-asked-questions-section': HomepageFrequentlyAskedQuestionsSection;
       'homepage.hero': HomepageHero;
+      'homepage.hero-section': HomepageHeroSection;
+      'homepage.hospital-based-surgery-section': HomepageHospitalBasedSurgerySection;
+      'homepage.international-journey-section': HomepageInternationalJourneySection;
+      'homepage.international-patients-section': HomepageInternationalPatientsSection;
+      'homepage.journey-step': HomepageJourneyStep;
+      'homepage.maris-method-section': HomepageMarisMethodSection;
       'homepage.paper-item': HomepagePaperItem;
+      'homepage.patient-results-section': HomepagePatientResultsSection;
       'homepage.patient-testimonial': HomepagePatientTestimonial;
       'homepage.press-logo': HomepagePressLogo;
       'homepage.press-section': HomepagePressSection;
+      'homepage.procedure-item': HomepageProcedureItem;
       'homepage.process-step': HomepageProcessStep;
       'homepage.proof-metric': HomepageProofMetric;
       'homepage.proof-showcase': HomepageProofShowcase;
       'homepage.result-story': HomepageResultStory;
       'homepage.results-section': HomepageResultsSection;
       'homepage.review-item': HomepageReviewItem;
+      'homepage.revision-surgery-section': HomepageRevisionSurgerySection;
       'homepage.service-item': HomepageServiceItem;
       'homepage.services': HomepageServices;
+      'homepage.signature-procedures-section': HomepageSignatureProceduresSection;
       'homepage.stat-item': HomepageStatItem;
+      'homepage.surgical-care-process-section': HomepageSurgicalCareProcessSection;
       'homepage.technology-card': HomepageTechnologyCard;
       'homepage.technology-feature': HomepageTechnologyFeature;
       'homepage.testimonials-section': HomepageTestimonialsSection;
+      'homepage.text-item': HomepageTextItem;
       'homepage.title-line': HomepageTitleLine;
       'menu.link': MenuLink;
       'menu.nav-child': MenuNavChild;
       'menu.nav-item': MenuNavItem;
+      'our-team.authority-card': OurTeamAuthorityCard;
+      'our-team.authority-section': OurTeamAuthoritySection;
+      'our-team.credential-row': OurTeamCredentialRow;
+      'our-team.credentials-section': OurTeamCredentialsSection;
+      'our-team.editorial-section': OurTeamEditorialSection;
+      'our-team.faq-item': OurTeamFaqItem;
+      'our-team.faq-section': OurTeamFaqSection;
+      'our-team.hero-section': OurTeamHeroSection;
+      'our-team.hospital-section': OurTeamHospitalSection;
+      'our-team.item': OurTeamItem;
+      'our-team.revision-section': OurTeamRevisionSection;
+      'our-team.step': OurTeamStep;
+      'result.case': ResultCase;
       'seo.page-seo': SeoPageSeo;
       'seo.robots-rule': SeoRobotsRule;
+      'seo.sitemap-override': SeoSitemapOverride;
       'service-detail.benefit-item': ServiceDetailBenefitItem;
       'service-detail.benefits': ServiceDetailBenefits;
       'service-detail.callout': ServiceDetailCallout;
@@ -2084,6 +2667,13 @@ declare module '@strapi/strapi' {
       'services-overview.features': ServicesOverviewFeatures;
       'services-overview.hero': ServicesOverviewHero;
       'services-overview.service-cards': ServicesOverviewServiceCards;
+      'treatments-page.editorial-section': TreatmentsPageEditorialSection;
+      'treatments-page.hero-section': TreatmentsPageHeroSection;
+      'treatments-page.item': TreatmentsPageItem;
+      'website-setting.contact-method': WebsiteSettingContactMethod;
+      'website-setting.global-cta': WebsiteSettingGlobalCta;
+      'website-setting.global-cta-step': WebsiteSettingGlobalCtaStep;
+      'website-setting.social-link': WebsiteSettingSocialLink;
     }
   }
 }

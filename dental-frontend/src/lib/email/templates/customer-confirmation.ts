@@ -49,9 +49,9 @@ export function generateCustomerConfirmationEmail(
   const content = `
     <!-- Header -->
     <div style="${emailStyles.header}">
-      <h1 style="${emailStyles.headerTitle}">
+      <h2 style="${emailStyles.headerTitle}">
         ✅ Booking Received
-      </h1>
+      </h2>
       <p style="${emailStyles.headerSubtitle}">
         DR. MARIS AESTHETICS
       </p>

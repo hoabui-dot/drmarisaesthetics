@@ -33,7 +33,7 @@ WORKDIR /opt/
 
 # Copy package files
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm ci --legacy-peer-deps
 
 WORKDIR /opt/app
 # Copy source code

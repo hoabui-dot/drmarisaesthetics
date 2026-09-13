@@ -1,0 +1,20 @@
+{
+  "name": "docx-importer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Admin-only DOCX to Better Blocks importer",
+  "exports": {
+    "./strapi-admin": {
+      "source": "./admin/src/index.tsx",
+      "import": "./admin/src/index.tsx",
+      "default": "./admin/src/index.tsx"
+    },
+    "./strapi-server": "./strapi-server.js",
+    "./package.json": "./package.json"
+  },
+  "strapi": {
+    "name": "docx-importer",
+    "displayName": "DOCX Importer",
+    "kind": "plugin"
+  }
+}

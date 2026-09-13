@@ -7,10 +7,8 @@
     "category": { "type": "string" },
     "title": { "type": "string", "required": true },
     "subtitle": { "type": "string" },
-    "before_image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
-    "after_image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
-    "before_alt": { "type": "text" },
-    "after_alt": { "type": "text" },
+    "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "image_alt": { "type": "text" },
     "profile": { "type": "string" },
     "recovery": { "type": "string" }
   }

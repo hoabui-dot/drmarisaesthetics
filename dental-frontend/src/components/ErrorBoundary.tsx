@@ -35,9 +35,9 @@ export class ErrorBoundary extends Component<Props, State> {
           <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-black px-4">
             <div className="max-w-md w-full text-center space-y-4">
               <div className="text-6xl">⚠️</div>
-              <h1 className="text-2xl font-bold text-foreground dark:text-white">
+              <h2 className="text-2xl font-bold text-foreground dark:text-white">
                 Something went wrong
-              </h1>
+              </h2>
               <p className="text-foreground-secondary dark:text-foreground-muted">
                 We encountered an error while loading this page.
               </p>

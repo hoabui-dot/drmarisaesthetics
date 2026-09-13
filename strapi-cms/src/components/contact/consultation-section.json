@@ -26,11 +26,6 @@
       "required": false,
       "allowedTypes": ["images"]
     },
-    "contacts": {
-      "type": "component",
-      "repeatable": true,
-      "component": "contact.consultation-contact"
-    },
     "trust_title": { "type": "string", "required": true },
     "trust_description": { "type": "string", "required": true }
   }

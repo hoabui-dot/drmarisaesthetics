@@ -3,10 +3,14 @@ export type ResultCase = {
   category?: string
   title: string
   subtitle: string
-  beforeImage: string
-  afterImage: string
-  beforeAlt: string
-  afterAlt: string
+  /** Composite before-and-after image used by all result presentations. */
+  image?: string
+  imageAlt?: string
+  /** Legacy fields retained only for fallback data compatibility. */
+  beforeImage?: string
+  afterImage?: string
+  beforeAlt?: string
+  afterAlt?: string
   profile: string
   recovery: string
 }
@@ -27,24 +31,28 @@ export const resultsMockData: ResultsData = {
   cases: [
     {
       caseNumber: '042', category: 'Face & Neck', title: 'Deep Plane Facelift', subtitle: 'Combined with Neck Lift & Fat Grafting',
+      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBPxtXQB0z-MzW_OuPK5s77Nn57e3Mqft92rgoFT9jYYJh3R4eIlKLsPGagRVodROfhyWZj6xSD78lnCnhGoyzGOfQKPRCUpcumA_gS020JLBCTE0Tn2C5LMyFsiQ9C0vj_L49fSKX9ama9w-MuCvU9J7CNyR34u_CczzO0gQwzk8t2ilSOxi3OuB4igQ9cGsbkoPvnGQj1i8bAzgrmqqdZ45oMz8T54HsQdQP8wY9-AjSZVJw8x-s2', imageAlt: "Composite before and after result for a deep plane facelift",
       beforeImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCMcflJwOeFU4y8jTcIqQZUGhz2yexItUr42sLTK1GenzDc1AwxrOvvglvHrcVEEAq9FrLflCFUgZYUnh30V7GnFRP51VxJJbKmJmuSam7lF2aM2MoYtPh1kY4OlrcKYs8ofLg5Q23DHNwOBtjaHOEnt0QsCjs_aScz7IhZo55DhJlLnST_URbIlxLqn2LhXTFxhtxQGMpcaC7DM-HtH_PEIxoaz9ux9rPFNOeIDvQFn0tgSM03HZJ9',
       afterImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBPxtXQB0z-MzW_OuPK5s77Nn57e3Mqft92rgoFT9jYYJh3R4eIlKLsPGagRVodROfhyWZj6xSD78lnCnhGoyzGOfQKPRCUpcumA_gS020JLBCTE0Tn2C5LMyFsiQ9C0vj_L49fSKX9ama9w-MuCvU9J7CNyR34u_CczzO0gQwzk8t2ilSOxi3OuB4igQ9cGsbkoPvnGQj1i8bAzgrmqqdZ45oMz8T54HsQdQP8wY9-AjSZVJw8x-s2',
       beforeAlt: "Clinical before photo of a female patient's face, profile view, showing signs of aging along the jawline and neck.", afterAlt: "Clinical after photo of the same female patient's face, profile view, showing a refined jawline and smooth neck following a facelift.", profile: 'Female, 54 Years', recovery: '14 Days',
     },
     {
       caseNumber: '089', category: 'Rhinoplasty', title: 'Primary Rhinoplasty', subtitle: 'Dorsal Hump Reduction & Tip Refinement',
+      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCJh-HUnxEqBKSLNkD9vL_V_y3CjFnIW4aQ7o14LoFo5nfOweJFvmdbypgL5Y6Xde9gKnD2kyX4WhtXoho3ee0PpVMhGTDG362t-m54-1xHmcYSsGVuGRm0SDMMYErTaQuQScbc8Rine34VsPKic-dQ0z7D1EdMlL4Cnw-7sYaZxVv4MTUPoHaP7SXhNnWqpd9WN1ibr82mhyZnsV3MM8Z8kZB-SlBykm_ywgJ7jqcDFgdcW3auYldv', imageAlt: "Composite before and after result for primary rhinoplasty",
       beforeImage: 'https://images.unsplash.com/photo-1512316609839-ce289d3eba0a?auto=format&fit=crop&w=1200&q=85',
       afterImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCJh-HUnxEqBKSLNkD9vL_V_y3CjFnIW4aQ7o14LoFo5nfOweJFvmdbypgL5Y6Xde9gKnD2kyX4WhtXoho3ee0PpVMhGTDG362t-m54-1xHmcYSsGVuGRm0SDMMYErTaQuQScbc8Rine34VsPKic-dQ0z7D1EdMlL4Cnw-7sYaZxVv4MTUPoHaP7SXhNnWqpd9WN1ibr82mhyZnsV3MM8Z8kZB-SlBykm_ywgJ7jqcDFgdcW3auYldv',
       beforeAlt: "Clinical before photo of a female patient's nose, profile view, showing a dorsal hump.", afterAlt: "Clinical after photo of the same female patient's nose, profile view, showing a straight, refined bridge post-rhinoplasty.", profile: 'Female, 28 Years', recovery: '10 Days',
     },
     {
       caseNumber: '112', category: 'Face & Neck', title: 'Upper & Lower Blepharoplasty', subtitle: 'Skin Excision & Fat Repositioning',
+      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAK7KJQwAN2TBs_FpqBVBg5g44cqmDBCLP7q5ITDqnuZQHa3XICH_QAvHDcDFFq1jO1qMYi96D7YebRtirRo0NG53cf1NoECHFyHt4_0TKlw0cb9MpMl-0dw_Z7Nb-P-XDHG9hNanse0kyl6xXZmsVWUMDtjKf30Wkyq8-7Rvdfvwgz6BOsZckf1ki-REo8-i200RA30S0LJtau7NSvta1qvQ2gAdN0s5BWB-fwUZUr42V0h8BtODFv', imageAlt: 'Composite before and after result for blepharoplasty',
       beforeImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD1uSzpVCfXj9noXL5oeFLmjuFJ95glXdyqN4r1Ct9kJRL2pGOTBxCM6stWCINmVbfM4UzB7zfAg3uOOi7osltUyYJeEWF5MNnzxweJvqaM1MZ5JAGakoS2uTDG9QDzQv9oKg1CoJQ9OSC_rZANaesC0i8JDVUrNsf6l5ItzUka03-B1_5y1BiHU47h11dI1yI5Y6u-sFyNOFjfDLURjFElp9fwcXn-1PVVunkB29T7IIhGtrI9M0OR',
       afterImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAK7KJQwAN2TBs_FpqBVBg5g44cqmDBCLP7q5ITDqnuZQHa3XICH_QAvHDcDFFq1jO1qMYi96D7YebRtirRo0NG53cf1NoECHFyHt4_0TKlw0cb9MpMl-0dw_Z7Nb-P-XDHG9hNanse0kyl6xXZmsVWUMDtjKf30Wkyq8-7Rvdfvwgz6BOsZckf1ki-REo8-i200RA30S0LJtau7NSvta1qvQ2gAdN0s5BWB-fwUZUr42V0h8BtODFv',
       beforeAlt: "Clinical before photo of a patient's eyes, frontal view, showing upper eyelid hooding and under-eye bags.", afterAlt: "Clinical after photo of the same patient's eyes, frontal view, showing refreshed, open eyes following blepharoplasty.", profile: 'Male, 61 Years', recovery: '7 Days',
     },
     {
       caseNumber: '056', category: 'Face & Neck', title: 'Isolated Neck Lift', subtitle: 'Platysmaplasty & Submental Liposuction',
+      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCm8pF_9uBIv0PG1t8YZGSzKuHMGLQdgGiz2D_rn7PmDRc9PlZ6Sbv6ORHLPLmtqCEcdnFGg3iSH1PeSqmJbkCJEKGugNFcl31tIySan6Rui4X9SCp0rMhOrfC8D3ulSiughyqk8XAFGyE9t6FaoYMHBFXeEQLnh5BTAld_dtJ4AB7qhB6_fz_sOUFe13ez_5mWhXN4Huux7dELkW8LaEegPzFCH9WBem3fSsEDRI8yXKI5aXbYOhDp', imageAlt: 'Composite before and after result for isolated neck lift',
       beforeImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAuoARv0xcOoDfyIFKGhSP2r4PHpZj6vc_4QUhrp0h0CJEDodbj3m220W7YHD595Hgiwr0ImrNR3CWi0q7cBsCVvenhyLx-Qz3xe1MVo3yUbnxrTtHGeNMxy5plfWbbrCAPhPs0-_b1amlymx-buk1KblEHPDfL-ST74CeXymklQ6RQgEH8rxPouwgDBfa004yVZW3AopeY9ZLXSrB7jhjxd_4ANzcKOAXGXs4jVGRT3gWssbIw4VAh',
       afterImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCm8pF_9uBIv0PG1t8YZGSzKuHMGLQdgGiz2D_rn7PmDRc9PlZ6Sbv6ORHLPLmtqCEcdnFGg3iSH1PeSqmJbkCJEKGugNFcl31tIySan6Rui4X9SCp0rMhOrfC8D3ulSiughyqk8XAFGyE9t6FaoYMHBFXeEQLnh5BTAld_dtJ4AB7qhB6_fz_sOUFe13ez_5mWhXN4Huux7dELkW8LaEegPzFCH9WBem3fSsEDRI8yXKI5aXbYOhDp',
       beforeAlt: "Clinical before photo of a female patient's neck, oblique view, showing platysmal bands and skin laxity.", afterAlt: "Clinical after photo of the same female patient's neck, oblique view, showing a smooth, contoured neck post-surgery.", profile: 'Female, 49 Years', recovery: '10 Days',

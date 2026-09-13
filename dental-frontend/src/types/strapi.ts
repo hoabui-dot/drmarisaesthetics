@@ -324,11 +324,25 @@ export interface WebsiteSettingSocialLink {
   isActive?: boolean;
 }
 
+export interface WebsiteSettingGlobalCta {
+  eyebrow: string;
+  title: string;
+  editorialLead?: string;
+  description?: string;
+  buttonLabel: string;
+  panelEyebrow: string;
+  panelTitle: string;
+  panelDescription?: string;
+  steps: Array<{ number: string; label: string }>;
+  backgroundImage?: string;
+}
+
 export interface WebsiteSetting {
   siteName: string;
   siteNameLocalized?: string;
   logo?: Media;
   favicon?: Media;
+  defaultOpenGraphImage?: Media;
   address: string;
   phonePrimary: string;
   phoneSecondary?: string;
@@ -341,6 +355,7 @@ export interface WebsiteSetting {
   mapUrl?: string;
   contactMethods: WebsiteSettingContactMethod[];
   socialLinks: WebsiteSettingSocialLink[];
+  globalCta?: WebsiteSettingGlobalCta;
 }
 
 // ============================================================================
@@ -488,8 +503,8 @@ export interface HomepageResultsSectionComponent {
     title: string;
     description: string;
     treatments: string[];
-    before_image: any;
-    after_image: any;
+    image?: any;
+    image_alt?: string;
     patient_portrait: any;
     portrait_alt?: string;
     quote: string;
@@ -768,8 +783,8 @@ export interface HomepageResultsSectionBlock {
     title: string;
     description: string;
     treatments: string[];
-    beforeImage: Media;
-    afterImage: Media;
+    image?: Media;
+    imageAlt?: string;
     patientPortrait: Media;
     portraitAlt?: string;
     quote: string;
@@ -900,6 +915,8 @@ export interface HomepageFAQBlock {
   id: number;
   title: string;
   subtitle?: string;
+  backgroundImage?: string;
+  layout?: 'default' | 'left';
   questions: Array<{
     id: number;
     question: string;
@@ -929,33 +946,6 @@ export interface HomepageBlogCollectionBlock {
 // ============================================================================
 // Contact Method Types
 // ============================================================================
-
-export interface StrapiContactMethod {
-  id: number;
-  documentId: string;
-  type: string;
-  label: string;
-  href: string;
-  icon?: StrapiMedia;
-  color?: string;
-  order: number;
-  is_active: boolean;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt?: string;
-}
-
-export interface StrapiContactMethods {
-  data: StrapiContactMethod[];
-  meta: {
-    pagination?: {
-      page: number;
-      pageSize: number;
-      pageCount: number;
-      total: number;
-    };
-  };
-}
 
 export interface ContactMethod {
   id: number;

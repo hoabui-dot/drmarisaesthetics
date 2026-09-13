@@ -85,11 +85,21 @@ function applyTitleTemplate(title: string, template?: string): string {
 
 async function getDefaults(): Promise<SeoDefaults> {
   try {
-    const response = await apiClient<{ data?: SeoDefaults }>("/api/seo-manager-settings", {
+    const [response, websiteResponse] = await Promise.all([
+      apiClient<{ data?: SeoDefaults }>("/api/seo-manager-settings", {
       params: { populate: "*" },
       tags: ["seo-manager-settings"],
-    });
-    return response.data || {};
+      }),
+      apiClient<{ data?: { site_name?: string; default_open_graph_image?: unknown } }>("/api/website-setting", {
+        params: { "populate[default_open_graph_image]": "true" },
+        tags: ["website-setting"],
+      }),
+    ]);
+    return {
+      ...(response.data || {}),
+      site_name: websiteResponse.data?.site_name || response.data?.site_name,
+      default_open_graph_image: websiteResponse.data?.default_open_graph_image || undefined,
+    };
   } catch {
     return {};
   }

@@ -17,6 +17,9 @@
         "our-team.hero-section",
         "our-team.editorial-section",
         "our-team.revision-section",
+        "our-team.authority-section",
+        "our-team.credentials-section",
+        "our-team.hospital-section",
         "our-team.faq-section"
       ]
     }

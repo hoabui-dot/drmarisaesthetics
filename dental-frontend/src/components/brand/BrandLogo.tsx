@@ -8,6 +8,7 @@ interface BrandLogoProps {
   className?: string
   imageClassName?: string
   priority?: boolean
+  src?: string
 }
 
 const dimensions: Record<BrandLogoSize, { width: number; height: number }> = {
@@ -16,13 +17,13 @@ const dimensions: Record<BrandLogoSize, { width: number; height: number }> = {
   lg: { width: 152, height: 114 },
 }
 
-export function BrandLogo({ size = 'md', className = '', imageClassName = '', priority = false }: BrandLogoProps) {
+export function BrandLogo({ size = 'md', className = '', imageClassName = '', priority = false, src = BRAND_LOGO_PATH }: BrandLogoProps) {
   const { width, height } = dimensions[size]
 
   return (
     <span className={`brand-logo brand-logo--${size} ${className}`.trim()}>
       <Image
-        src={BRAND_LOGO_PATH}
+        src={src}
         alt="Dr.Maris"
         width={width}
         height={height}

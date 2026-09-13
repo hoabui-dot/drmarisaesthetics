@@ -9,7 +9,7 @@ export default function ResultsSectionPreview() {
       id, title: id === 1 ? 'Christina’s Smile. Transformed' : `Patient ${id}’s Smile. Transformed`,
       description: 'A treatment plan tailored to each patient’s goals, creating a balanced, natural smile and renewed confidence.',
       treatments: ['Smile design planning with digital preview', 'Professional teeth whitening', 'Placement of composite veneers'],
-      beforeImage: { url: '', alt: 'Before treatment', width: 1200, height: 900 }, afterImage: { url: '', alt: 'After treatment', width: 1200, height: 900 }, patientPortrait: { url: '', alt: 'Smiling patient', width: 700, height: 731 },
+      image: { url: '', alt: 'Composite before and after treatment', width: 1200, height: 900 }, imageAlt: 'Composite before and after treatment', patientPortrait: { url: '', alt: 'Smiling patient', width: 700, height: 731 },
       quote: 'A confident, complete, and truly personal smile.',
     })),
   }} />

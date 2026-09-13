@@ -32,29 +32,36 @@ const sectionOrder = [
 ]
 
 const textItems = (items = []) => items.map((text) => ({ text: String(text) }))
-const imageFields = (image = {}) => ({ image_url: image.src || '', image_alt: image.alt || '' })
+// The structured Strapi components use media fields, not image_url fields.
+// Keep remote image URLs available to the follow-up media migration (162), but
+// never send those temporary keys to the Strapi API from this text migration.
+const imageFields = (image = {}, includeImageSource = false) => ({
+  ...(includeImageSource && image.src ? { image_url: image.src } : {}),
+  ...(image.alt ? { image_alt: image.alt } : {}),
+})
 const processSteps = (items = []) => items.map((step, index) => ({ number: step.number || `0${index + 1}`, title: step.title || '', description: step.description || '' }))
 
-function toStructuredSection(uid, sourceKey) {
+function toStructuredSection(uid, sourceKey, options = {}) {
+  const includeImageSources = options.includeImageSources === true
   const source = homepageContent[sourceKey] || {}
   if (sourceKey === 'hero_content') {
     return {
       __component: uid, eyebrow: source.eyebrow, title_line_1: source.title_lines?.[0] || source.title || '', title_line_2: source.title_lines?.[1] || '',
       editorial_lead: source.editorial_lead, paragraph_one: source.paragraphs?.[0] || source.description || '', paragraph_two: source.paragraphs?.[1] || source.secondary_description || '',
-      ...imageFields(source.image || { src: source.doctor_image, alt: 'Dr. Maris in a clinical setting' }), trust_labels: textItems(source.trust_labels),
+      ...imageFields(source.image || { src: source.doctor_image, alt: 'Dr. Maris in a clinical setting' }, includeImageSources), trust_labels: textItems(source.trust_labels),
     }
   }
   if (sourceKey === 'signature_procedures') {
-    return { __component: uid, eyebrow: source.eyebrow, title_line_1: source.title_lines?.[0] || source.title || '', title_line_2: source.title_lines?.[1] || source.title_accent || '', description: source.description, items: (source.items || []).map((item, index) => ({ number: item.number || `0${index + 1}`, title: item.title || '', description: item.description || '', href: item.href || '', image_url: item.image || '', image_alt: item.image_alt || '' })) }
+    return { __component: uid, eyebrow: source.eyebrow, title_line_1: source.title_lines?.[0] || source.title || '', title_line_2: source.title_lines?.[1] || source.title_accent || '', description: source.description, items: (source.items || []).map((item, index) => ({ number: item.number || `0${index + 1}`, title: item.title || '', description: item.description || '', href: item.href || '', ...(includeImageSources && item.image ? { image_url: item.image } : {}), image_alt: item.image_alt || '' })) }
   }
   if (sourceKey === 'maris_method' || sourceKey === 'surgical_care_process') {
-    return { __component: uid, eyebrow: source.eyebrow, title: source.title || '', description: source.description, quote: source.quote, ...((source.image && imageFields(source.image)) || {}), stat_title: source.stat?.title, stat_description: source.stat?.description, steps: processSteps(source.process_steps || source.steps) }
+    return { __component: uid, eyebrow: source.eyebrow, title: source.title || '', description: source.description, quote: source.quote, ...((source.image && imageFields(source.image, includeImageSources)) || {}), stat_title: source.stat?.title, stat_description: source.stat?.description, steps: processSteps(source.process_steps || source.steps) }
   }
-  if (sourceKey === 'revision_surgery') return { __component: uid, eyebrow: source.eyebrow, title: source.title || '', editorial_lead: source.editorial_lead || source.subtitle, description: source.description, ...imageFields(source.image), concerns: textItems(source.concerns) }
-  if (sourceKey === 'doctor_assessment') return { __component: uid, eyebrow: source.eyebrow, title: source.title || '', role: source.role, description: source.description, ...imageFields(source.image), considerations: textItems(source.considerations) }
-  if (sourceKey === 'hospital_based_surgery') return { __component: uid, eyebrow: source.eyebrow, title: source.title || '', editorial_lead: source.editorial_lead, description: source.description, disclaimer: source.disclaimer, ...imageFields(source.image), proof_items: textItems(source.proof_items) }
+  if (sourceKey === 'revision_surgery') return { __component: uid, eyebrow: source.eyebrow, title: source.title || '', editorial_lead: source.editorial_lead || source.subtitle, description: source.description, ...imageFields(source.image, includeImageSources), concerns: textItems(source.concerns) }
+  if (sourceKey === 'doctor_assessment') return { __component: uid, eyebrow: source.eyebrow, title: source.title || '', role: source.role, description: source.description, ...imageFields(source.image, includeImageSources), considerations: textItems(source.considerations) }
+  if (sourceKey === 'hospital_based_surgery') return { __component: uid, eyebrow: source.eyebrow, title: source.title || '', editorial_lead: source.editorial_lead, description: source.description, disclaimer: source.disclaimer, ...imageFields(source.image, includeImageSources), proof_items: textItems(source.proof_items) }
   if (sourceKey === 'international_patients') return { __component: uid, eyebrow: source.eyebrow, title: source.title || '', description: source.description, note: source.note, review_items: textItems(source.review_items) }
-  if (sourceKey === 'international_journey') return { __component: uid, eyebrow: source.eyebrow, title: source.title || '', description: source.description, steps: (source.steps || []).map((step, index) => ({ number: step.number || `0${index + 1}`, title: step.title || '', description: step.description || '', image_url: step.image || '', image_alt: step.image_alt || '' })) }
+  if (sourceKey === 'international_journey') return { __component: uid, eyebrow: source.eyebrow, title: source.title || '', description: source.description, steps: (source.steps || []).map((step, index) => ({ number: step.number || `0${index + 1}`, title: step.title || '', description: step.description || '', ...(includeImageSources && step.image ? { image_url: step.image } : {}), image_alt: step.image_alt || '' })) }
   if (sourceKey === 'patient_results') return { __component: uid, eyebrow: source.eyebrow, editorial_lead: source.editorial_lead, note: source.note, source: source.source }
   if (sourceKey === 'consultation') return { __component: uid, eyebrow: source.eyebrow, title: source.title || '', editorial_lead: source.editorial_lead, description: source.description }
   if (sourceKey === 'frequently_asked_questions') return { __component: uid, eyebrow: source.eyebrow, title: source.title || '', items: source.items || [] }

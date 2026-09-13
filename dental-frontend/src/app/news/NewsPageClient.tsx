@@ -24,7 +24,10 @@ const formatDate = (value: string) => new Date(value).toLocaleDateString('en-US'
 
 export function NewsPageClient({ initialBlogs, strapiUrl }: NewsPageClientProps) {
   const searchParams = useSearchParams();
-  const [activeCategory, setActiveCategory] = useState('all');
+  const [activeCategory, setActiveCategory] = useState(() => {
+    const category = searchParams.get('category')?.trim().toLowerCase();
+    return category === 'plastic surgery' ? 'plastic-surgery' : 'all';
+  });
   const [searchQuery, setSearchQuery] = useState(() => searchParams.get('search') || '');
   const [sortOrder, setSortOrder] = useState('newest');
   const [currentPage, setCurrentPage] = useState(1);
@@ -51,7 +54,7 @@ export function NewsPageClient({ initialBlogs, strapiUrl }: NewsPageClientProps)
       <div className="knowledge-center-container">
         <nav className="knowledge-center-breadcrumb" aria-label="Breadcrumb"><NavigationLink href="/" className="knowledge-center-breadcrumb-link">Home</NavigationLink><ChevronRight aria-hidden="true" /><span aria-current="page">Knowledge Center</span></nav>
         <div className="knowledge-center-hero-grid">
-          <div><h1 id="knowledge-center-title">Surgical Knowledge Center</h1><p>Clear, clinically grounded guidance to help you understand cosmetic surgery, recovery and revision care.</p></div>
+          <div><h2 id="knowledge-center-title">Surgical Knowledge Center</h2><p>Clear, clinically grounded guidance to help you understand cosmetic surgery, recovery and revision care.</p></div>
           <form className="knowledge-center-search" onSubmit={(event) => event.preventDefault()} role="search"><Search aria-hidden="true" /><input type="search" value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder="Search articles..." aria-label="Search articles" /><button type="submit" aria-label="Search articles"><Search aria-hidden="true" /></button></form>
         </div>
         <div className="knowledge-center-category-nav" role="tablist" aria-label="Article categories">

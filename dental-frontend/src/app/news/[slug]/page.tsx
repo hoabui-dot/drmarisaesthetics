@@ -51,17 +51,11 @@ async function getAllBlogSlugs() {
 
 async function getImplantServices(): Promise<SidebarService[]> {
   try {
-    const response = await apiClient<any>('/api/service-details', { params: { 'filters[slug][$eq]': 'dental-implants', 'populate[hero_image]': 'true', status: 'published' }, isDraftMode: false, tags: ['service-details'] });
-    const data = response.data?.[0]?.attributes || response.data?.[0];
-    const image = mediaUrl(data?.hero_image) || fallbackImage;
-    const items = [
-      ['Single Tooth Implant', 'Replace one missing tooth'],
-      ['Multiple Tooth Implants', 'Restore several missing teeth'],
-      ['Full-Arch Implants', 'Fixed full-arch restoration'],
-      ['Implant Restoration', 'Crowns, bridges & implant-supported restorations'],
-      ['Bone Grafting', 'Rebuild bone for stronger implant foundation'],
-    ];
-    return items.map(([title, subtitle]) => ({ title, subtitle, imageUrl: image, href: '/services/dental-implants' }));
+    const response = await apiClient<any>('/api/services', { params: { 'pagination[pageSize]': 5, 'populate[coverImage]': 'true', sort: 'title:asc' }, isDraftMode: false, tags: ['services'] });
+    return (response.data || []).map((entry: any) => {
+      const data = entry.attributes || entry;
+      return { title: data.title, subtitle: data.metaDescription || 'Read the clinical guide', imageUrl: mediaUrl(data.coverImage) || fallbackImage, href: `/services/${data.slug}` };
+    });
   } catch { return []; }
 }
 
@@ -87,13 +81,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   return <><StructuredDataScript data={structuredData} /><main className="blog-detail-page"><div className="blog-detail-container"><div className="blog-detail-grid"><article className="blog-detail-main">
     <nav className="blog-detail-breadcrumb" aria-label="Breadcrumb"><NavigationLink href="/" className="blog-detail-breadcrumb-link">Home</NavigationLink><ChevronRight aria-hidden="true" /><NavigationLink href="/news">Knowledge</NavigationLink>{blog.category ? <><ChevronRight aria-hidden="true" /><NavigationLink href={`/news?category=${encodeURIComponent(categoryLabel)}`}>{categoryLabel}</NavigationLink></> : null}<ChevronRight aria-hidden="true" /><span aria-current="page">{blog.title}</span></nav>
-    <header className="blog-detail-header"><h1>{blog.title}</h1><div className="blog-detail-meta"><span className="is-category"><FileText aria-hidden="true" />{categoryLabel}</span><span><Clock3 aria-hidden="true" />{getReadingTime(blog)}</span><span><CalendarDays aria-hidden="true" />Created {formatDate(blog.createdAt || blog.publishedAt)}</span><span><Image src={authorImage} alt="" width={24} height={24} /><UserRound aria-hidden="true" />By {blog.authorName || 'Smilux Dental Team'}</span></div></header>
+    <header className="blog-detail-header"><h2>{blog.title}</h2><div className="blog-detail-meta"><span className="is-category"><FileText aria-hidden="true" />{categoryLabel}</span><span><Clock3 aria-hidden="true" />{getReadingTime(blog)}</span><span><CalendarDays aria-hidden="true" />Created {formatDate(blog.createdAt || blog.publishedAt)}</span><span><Image src={authorImage} alt="" width={24} height={24} /><UserRound aria-hidden="true" />By {blog.authorName || 'Dr. Maris Aesthetics'}</span></div></header>
     <section className="blog-detail-intro" aria-label="Article introduction"><span aria-hidden="true">“</span><p>{blog.metaDescription || blog.excerpt || 'Explore trusted dental knowledge from the Smilux Dental clinical team.'}</p></section>
     <div className="blog-detail-hero-image"><Image src={heroImage} alt={blog.imageAlt || `${blog.title} educational image`} fill priority sizes="(max-width: 900px) 100vw, 780px" /></div>
     {headings.length ? <nav className="blog-detail-toc" aria-labelledby="blog-detail-toc-title"><h2 id="blog-detail-toc-title"><FileText aria-hidden="true" />Table of Contents</h2><ol>{headings.map((heading, index) => <li key={`${heading.id}-${index}`}><a href={`#${heading.id}`}><span>{index + 1}.</span>{heading.label}</a></li>)}</ol></nav> : null}
     <div className="blog-detail-markdown"><MarkdownContent content={content} /></div>
     <NavigationLink href="/news" className="blog-detail-back"><ArrowRight aria-hidden="true" />Back to Knowledge Center</NavigationLink>
-  </article><aside className="blog-detail-sidebar"><form className="blog-detail-search" action="/news" method="get"><label className="sr-only" htmlFor="blog-detail-search-input">Search articles</label><input id="blog-detail-search-input" name="search" placeholder="Search articles..." /><button type="submit" aria-label="Search articles"><Search aria-hidden="true" /></button></form><section className="blog-detail-services" aria-labelledby="implant-services-title"><h2 id="implant-services-title">Implant Services</h2><div>{sidebarServices.map((service) => <NavigationLink href={service.href} key={service.title} className="blog-detail-service-item"><Image src={service.imageUrl} alt="" width={82} height={76} /><span><strong>{service.title}</strong><small>{service.subtitle}</small></span><ChevronRight aria-hidden="true" /></NavigationLink>)}</div><NavigationLink href="/services/dental-implants" className="blog-detail-view-all">View all implant services <ArrowRight aria-hidden="true" /></NavigationLink></section></aside></div></div></main></>;
+  </article><aside className="blog-detail-sidebar"><form className="blog-detail-search" action="/news" method="get"><label className="sr-only" htmlFor="blog-detail-search-input">Search articles</label><input id="blog-detail-search-input" name="search" placeholder="Search articles..." /><button type="submit" aria-label="Search articles"><Search aria-hidden="true" /></button></form><section className="blog-detail-services" aria-labelledby="related-guides-title"><h2 id="related-guides-title">Related Surgical Guides</h2><div>{sidebarServices.map((service) => <NavigationLink href={service.href} key={service.title} className="blog-detail-service-item"><Image src={service.imageUrl} alt="" width={82} height={76} /><span><strong>{service.title}</strong><small>{service.subtitle}</small></span><ChevronRight aria-hidden="true" /></NavigationLink>)}</div><NavigationLink href="/news?category=Plastic%20Surgery" className="blog-detail-view-all">View all surgical guides <ArrowRight aria-hidden="true" /></NavigationLink></section></aside></div></div></main></>;
 }
 
 export const dynamic = 'force-dynamic';

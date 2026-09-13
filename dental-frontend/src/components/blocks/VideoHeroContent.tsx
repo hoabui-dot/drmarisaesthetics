@@ -58,14 +58,14 @@ export function VideoHeroContent({
       </div>
 
       <div className="!mb-10 sm:!mb-14">
-        <h1 className="text-[#165197] md:text-white leading-[1.1] drop-shadow-sm md:drop-shadow-2xl mb-6 sm:mb-8 text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight">
+        <h2 className="text-[#165197] md:text-white leading-[1.1] drop-shadow-sm md:drop-shadow-2xl mb-6 sm:mb-8 text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight">
           {titleLines && titleLines.length > 0
             ? titleLines.map((line) => (
                 <span key={line.id} className="block">{line.text}</span>
               ))
             : <span className="block">Video Hero Title</span>
           }
-        </h1>
+        </h2>
         {subtitle && (
           <p className="text-[#165197]/80 md:text-white/90 drop-shadow-sm md:drop-shadow-lg max-w-2xl text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed">
             {subtitle}

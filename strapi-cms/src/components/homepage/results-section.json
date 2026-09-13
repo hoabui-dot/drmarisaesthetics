@@ -2,7 +2,7 @@
   "collectionName": "components_homepage_results_sections",
   "info": {
     "displayName": "Smile Transformations / Results",
-    "description": "Homepage result-story carousel with synchronized before/after stories"
+    "description": "Homepage result-story carousel using one composite image per case"
   },
   "options": {},
   "attributes": {

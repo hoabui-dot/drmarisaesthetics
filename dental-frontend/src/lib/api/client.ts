@@ -97,7 +97,7 @@ export async function apiClient<T = unknown>(
     ...fetchOptions,
     headers,
     // Draft mode: never cache. Production: static + webhook + 60s fallback revalidation.
-    cache: isDraftMode ? "no-store" : "force-cache",
+    cache: isDraftMode ? "no-store" : fetchOptions.cache || "force-cache",
     next: isDraftMode
       ? undefined
       : {

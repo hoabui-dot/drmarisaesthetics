@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "services",
+  "info": {
+    "singularName": "service",
+    "pluralName": "services",
+    "displayName": "Service",
+    "description": "Plastic surgery service guides"
+  },
+  "options": { "draftAndPublish": true },
+  "pluginOptions": {},
+  "attributes": {
+    "seo": { "type": "component", "repeatable": false, "component": "seo.page-seo" },
+    "title": { "type": "string", "required": true },
+    "slug": { "type": "uid", "targetField": "title", "required": true },
+    "category": {
+      "type": "enumeration",
+      "enum": ["Plastic Surgery"],
+      "required": false
+    },
+    "coverImage": { "type": "media", "multiple": false, "required": false, "allowedTypes": ["images"] },
+    "metaDescription": { "type": "text", "required": false },
+    "contentBetterBlocks": {
+      "type": "customField",
+      "customField": "plugin::better-blocks.better-blocks",
+      "required": false
+    }
+  }
+}

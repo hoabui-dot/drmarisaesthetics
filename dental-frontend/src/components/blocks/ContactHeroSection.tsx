@@ -51,12 +51,12 @@ export function ContactHeroSection({ data }: { data: ContactHeroData }) {
 
         <div className="contact-hero-top">
           <div className="contact-hero-intro">
-            <h1 id="contact-hero-heading">{data.title || 'Contact DR. MARIS AESTHETICS'}</h1>
+            <h2 id="contact-hero-heading">{data.title || 'Contact DR. MARIS AESTHETICS'}</h2>
             <p className="contact-hero-subtitle">{data.subtitle || 'Consultation · Booking · International Patient Support'}</p>
             <p className="contact-hero-description">{data.description || 'Our surgical team is ready to listen and guide you through assessment, planning and postoperative care.'}</p>
-            <div className="contact-hero-actions">
-              <a href="#form-section" className="contact-editorial-button">Request an Online Consultation <ArrowRight size={16} aria-hidden="true" /></a>
-              <Link href="/contact?case=revision" className="contact-editorial-link">Submit a Revision Case</Link>
+            <div className="editorial-hero-actions contact-hero-actions">
+              <a href="#form-section" className="editorial-hero-primary contact-editorial-button">Request an Online Consultation <ArrowRight size={16} aria-hidden="true" /></a>
+              <Link href="/contact?case=revision" className="editorial-hero-secondary contact-editorial-link">Submit a Revision Case</Link>
             </div>
           </div>
 

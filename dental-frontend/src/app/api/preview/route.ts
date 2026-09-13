@@ -24,11 +24,9 @@ export async function GET(request: NextRequest) {
     homepage: '/',
     'about-page': '/about-us',
     'contact-page': '/contact',
-    'services-overview': '/services',
     customer: '/customers',
   }
   const target = routes[type] || (type === 'blog' && slug ? `/news/${encodeURIComponent(slug)}` : null)
-    || (type === 'service-detail' && slug ? `/services/${encodeURIComponent(slug)}` : null)
     || (type === 'page' && slug ? `/${encodeURIComponent(slug)}` : null)
 
   if (!target) {

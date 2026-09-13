@@ -18,6 +18,7 @@ export const STATIC_CATEGORIES = [
   { id: 'rhinoplasty', label: 'Rhinoplasty', icon: 'book' },
   { id: 'postoperative-care', label: 'Postoperative Care', icon: 'shield' },
   { id: 'cosmetic-surgery', label: 'Cosmetic Surgery', icon: 'technology' },
+  { id: 'plastic-surgery', label: 'Plastic Surgery', icon: 'sparkle' },
   { id: 'general-knowledge', label: 'General Knowledge', icon: 'book' },
 ];
 
@@ -30,6 +31,7 @@ export const BLOG_CATEGORY_TAGS: Record<string, string[]> = {
   rhinoplasty: ['rhinoplasty', 'nâng mũi'],
   'postoperative-care': ['postoperative', 'aftercare', 'chăm sóc hậu phẫu'],
   'cosmetic-surgery': ['cosmetic', 'cosmetic surgery', 'phẫu thuật thẩm mỹ'],
+  'plastic-surgery': ['plastic surgery', 'plastic'],
   'general-knowledge': ['general', 'knowledge', 'general knowledge'],
 };
 

@@ -1,6 +1,0 @@
-{
-  "collectionName": "components_service_detail_structure_check_items",
-  "info": { "displayName": "Structure Checklist Item" },
-  "options": {},
-  "attributes": { "text": { "type": "string", "required": true } }
-}
