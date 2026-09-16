@@ -11,7 +11,9 @@ export default factories.createCoreController('api::our-team.our-team' as any, (
         sections: {
           on: {
             'our-team.hero-section': { populate: ['image'] },
-            'our-team.editorial-section': { populate: { image: true, items: true, steps: true } },
+            'our-team.professional-section': { populate: { image: true, items: true, steps: true } },
+            'our-team.international-section': { populate: { image: true, items: true, steps: true } },
+            'our-team.journey-section': { populate: { image: true, items: true, steps: true } },
             'our-team.revision-section': { populate: { image: true, concerns: true } },
             'our-team.authority-section': { populate: { cards: { populate: { items: true } } } },
             'our-team.credentials-section': { populate: { rows: true } },

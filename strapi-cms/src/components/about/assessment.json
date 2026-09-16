@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_about_assessments",
+  "info": { "displayName": "Assessment Before Procedure" },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "quote": { "type": "text" },
+    "objective": { "type": "text" },
+    "factors": { "type": "component", "repeatable": true, "component": "about.item" }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "collectionName": "components_about_internationals",
+  "info": { "displayName": "International Patient Standards" },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "description": { "type": "text" },
+    "items": { "type": "component", "repeatable": true, "component": "about.item" }
+  }
+}

@@ -17,7 +17,7 @@ export const emailStyles = {
 
   // Header styles
   header: `
-    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    background: linear-gradient(135deg, #002d72 0%, #173868 100%);
     padding: 40px 30px;
     text-align: center;
     border-radius: 8px 8px 0 0;
@@ -32,7 +32,7 @@ export const emailStyles = {
   `,
 
   headerSubtitle: `
-    color: #dbeafe;
+    color: #d9e6f7;
     font-size: 16px;
     margin: 0;
     font-weight: 400;
@@ -106,7 +106,7 @@ export const emailStyles = {
   button: `
     display: inline-block;
     padding: 14px 32px;
-    background-color: #2563eb;
+    background-color: #002d72;
     color: #ffffff !important;
     text-decoration: none;
     border-radius: 8px;
@@ -120,13 +120,13 @@ export const emailStyles = {
     display: inline-block;
     padding: 14px 32px;
     background-color: #ffffff;
-    color: #2563eb !important;
+    color: #002d72 !important;
     text-decoration: none;
     border-radius: 8px;
     font-weight: 600;
     font-size: 15px;
     margin: 0 8px;
-    border: 2px solid #2563eb;
+    border: 2px solid #002d72;
   `,
 
   // Footer styles
@@ -146,7 +146,7 @@ export const emailStyles = {
   `,
 
   footerLink: `
-    color: #2563eb;
+    color: #002d72;
     text-decoration: none;
     font-weight: 500;
   `,
@@ -188,8 +188,8 @@ export const emailStyles = {
   badge: `
     display: inline-block;
     padding: 4px 12px;
-    background-color: #dbeafe;
-    color: #1e40af;
+    background-color: #e8f0fa;
+    color: #173868;
     border-radius: 12px;
     font-size: 12px;
     font-weight: 600;

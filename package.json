@@ -5,9 +5,6 @@
   "private": true,
   "scripts": {
     "local": "cd dental-frontend && npm run dev",
-    "seed": "node migration_scripts/seed-dental-data.js",
-    "seed:homepage": "node migration_scripts/seed-homepage-dental.js",
-    "seed:stitch-pages": "node scripts/seed-stitch-contact-treatment.js",
     "dev:frontend": "cd dental-frontend && npm run dev",
     "dev:strapi": "cd strapi-cms && npm run develop",
     "build:frontend": "cd dental-frontend && npm run build",

@@ -22,12 +22,9 @@ export default async function ContactPage() {
   return <><StructuredDataScript data={structuredData} /><ContactPageClient content={content} websiteSettings={{
     address: websiteSetting?.address,
     phonePrimary: websiteSetting?.phonePrimary,
-    phoneSecondary: websiteSetting?.phoneSecondary,
-    email: websiteSetting?.email,
     mapLatitude: websiteSetting?.mapLatitude,
     mapLongitude: websiteSetting?.mapLongitude,
     mapZoom: websiteSetting?.mapZoom,
-    mapUrl: websiteSetting?.mapUrl,
   }} /></>;
 }
 

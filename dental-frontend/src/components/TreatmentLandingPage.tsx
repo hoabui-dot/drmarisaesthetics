@@ -34,7 +34,7 @@ function ReferenceImage({ src, alt }: { src: string; alt: string }) {
 
 function ConsultationButton() {
   const { open } = useBookingModal()
-  return <button type="button" className="stitch-button stitch-button--dark" onClick={open}><CalendarDays size={16} aria-hidden="true" />Request a Consultation</button>
+  return <button type="button" className="booking-inline-cta stitch-button stitch-button--dark" onClick={open}><CalendarDays size={16} aria-hidden="true" />Request a Consultation</button>
 }
 
 function useSurgicalAtlasMotion(root: RefObject<HTMLElement | null>) {

@@ -13,6 +13,7 @@ export default factories.createCoreController('api::website-setting.website-sett
         contact_methods: { populate: { icon: true } },
         social_links: true,
         global_cta: { populate: { background_image: true, steps: true } },
+        booking_form: { populate: { visual_image: true, visual_points: true } },
       },
     })
     return this.transformResponse(entity)

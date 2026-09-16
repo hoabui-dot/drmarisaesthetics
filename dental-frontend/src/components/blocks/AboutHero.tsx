@@ -56,7 +56,7 @@ export function AboutHero({ data }: { data: AboutHeroData }) {
             </div>
             <div className="about-editorial-hero__actions">
               <Link href="/our-team" className="about-editorial-hero__button about-editorial-hero__button--primary">Meet Dr. Maris</Link>
-              <Link href="/contact" className="about-editorial-hero__button about-editorial-hero__button--secondary">Request an Online Consultation</Link>
+              <Link href="/contact" className="booking-inline-cta about-editorial-hero__button about-editorial-hero__button--secondary">Request an Online Consultation</Link>
             </div>
           </div>
           <div className="about-editorial-hero__media">

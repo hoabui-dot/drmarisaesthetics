@@ -19,7 +19,7 @@ const SMTP_CONFIG = {
   },
 };
 
-const EMAIL_FROM = process.env.EMAIL_FROM || "noreply@nhakhoaquoctesaigon.com";
+const EMAIL_FROM = process.env.EMAIL_FROM || "vanhoa.bui2628@gmail.com";
 const EMAIL_FROM_NAME =
   process.env.EMAIL_FROM_NAME || "DR. MARIS AESTHETICS";
 const EMAIL_ENABLED = process.env.EMAIL_ENABLED !== "false"; // Default to true

@@ -29,7 +29,7 @@ export function FloatingContactWrapper({ contactMethods }: FloatingContactWrappe
         duration: 0.5,
         ease: [0.16, 1, 0.3, 1]
       }}
-      className="fixed right-6 bottom-6 z-50 flex flex-col items-end gap-3"
+      className="floating-contact-wrapper fixed right-6 bottom-6 z-50 flex flex-col items-end gap-3"
     >
       {/* Contact Buttons - Always Visible */}
       <div className="flex flex-col items-end gap-3">

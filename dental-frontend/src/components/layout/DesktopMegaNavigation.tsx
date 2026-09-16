@@ -20,7 +20,8 @@ export function DesktopMegaNavigation({ items, activeSection, onNavigate }: Desk
   const router = useRouter()
   const reduceMotion = useReducedMotion()
   const regionRef = useRef<HTMLElement>(null)
-  const triggerRefs = useRef<Record<string, HTMLButtonElement | null>>({})
+  const triggerRefs = useRef<Record<string, HTMLElement | null>>({})
+  const toggleRefs = useRef<Record<string, HTMLButtonElement | null>>({})
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [activeMenu, setActiveMenu] = useState<string | null>(null)
   const [hoveredNavItem, setHoveredNavItem] = useState<string | null>(null)
@@ -75,7 +76,7 @@ export function DesktopMegaNavigation({ items, activeSection, onNavigate }: Desk
     const current = activeMenu
     setActiveMenu(null)
     setHoveredNavItem(null)
-    if (restoreFocus && current) triggerRefs.current[current]?.focus()
+    if (restoreFocus && current) toggleRefs.current[current]?.focus()
   }
 
   useEffect(() => {
@@ -113,11 +114,15 @@ export function DesktopMegaNavigation({ items, activeSection, onNavigate }: Desk
 
           const dropdownTriggerClass = `desktop-mega-navigation__trigger group relative flex items-center gap-1 rounded-lg px-3 py-2 transition-colors ${active ? '' : 'after:absolute after:bottom-1 after:left-3 after:right-3 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:transition-transform after:duration-200 hover:after:scale-x-100'}`
 
-          return <button key={item.id} ref={(node) => { triggerRefs.current[key] = node }} type="button" aria-expanded={activeMenu === key} aria-controls={`mega-menu-${key}`} data-active={active || undefined} onMouseEnter={() => openMenu(item)} onFocus={() => openMenu(item)} onClick={() => { if (activeMenu === key) onNavigate?.(item.href); else openMenu(item) }} className={dropdownTriggerClass}>
-            <span className="relative z-10">{item.label}</span>
-            <motion.span className="relative z-10" animate={{ rotate: activeMenu === key ? 180 : 0 }} transition={motionTransition}><ChevronDown size={15} aria-hidden="true" /></motion.span>
-            {active && <motion.span layoutId="desktop-navigation-indicator" className="desktop-mega-navigation__indicator absolute bottom-1 left-3 right-3 h-0.5" transition={motionTransition} />}
-          </button>
+          return <div key={item.id} ref={(node) => { triggerRefs.current[key] = node }} className="relative flex items-center" onMouseEnter={() => openMenu(item)} onFocusCapture={() => openMenu(item)}>
+            <Link href={item.href} data-active={active || undefined} onClick={() => { onNavigate?.(item.href); closeMenu() }} className={dropdownTriggerClass}>
+              <span className="relative z-10">{item.label}</span>
+            </Link>
+            <button ref={(node) => { toggleRefs.current[key] = node }} type="button" aria-label={`Open ${item.label} menu`} aria-expanded={activeMenu === key} aria-controls={`mega-menu-${key}`} data-active={active || undefined} onClick={() => { if (activeMenu === key) closeMenu(true); else openMenu(item) }} className="desktop-mega-navigation__trigger relative -ml-1 flex items-center rounded-lg px-2 py-2" onFocus={() => openMenu(item)}>
+              <motion.span className="relative z-10" animate={{ rotate: activeMenu === key ? 180 : 0 }} transition={motionTransition}><ChevronDown size={15} aria-hidden="true" /></motion.span>
+            </button>
+            {active && <motion.span layoutId="desktop-navigation-indicator" className="desktop-mega-navigation__indicator pointer-events-none absolute bottom-1 left-3 right-3 h-0.5" transition={motionTransition} />}
+          </div>
         })}
 
         <AnimatePresence>

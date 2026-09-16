@@ -7,7 +7,6 @@ import { ourTeamMockData, type OurTeamData } from '@/src/data/our-team'
 import { useOurTeamMotion } from '@/src/hooks/useOurTeamMotion'
 import { useRef } from 'react'
 import { FAQSection } from '@/src/components/blocks/FAQSection'
-import { PlanningProcessSection, type PlanningStep } from '@/src/components/homepage/PlanningProcessSection'
 
 function TeamImage({ src, alt, className = '' }: { src: string; alt: string; className?: string }) {
   return <Image src={src} alt={alt} fill sizes="(max-width: 900px) 100vw, 50vw" className={`object-cover ${className}`.trim()} unoptimized />
@@ -15,15 +14,8 @@ function TeamImage({ src, alt, className = '' }: { src: string; alt: string; cla
 
 function ConsultationButton({ children = 'REQUEST A CONSULTATION', className = '' }: { children?: React.ReactNode; className?: string }) {
   const { open } = useBookingModal()
-  return <button type="button" onClick={open} className={`editorial-hero-primary ${className}`.trim()}><CalendarDays size={16} aria-hidden="true" />{children}</button>
+  return <button type="button" onClick={open} className={`booking-inline-cta editorial-hero-primary ${className}`.trim()}><CalendarDays size={16} aria-hidden="true" />{children}</button>
 }
-
-const principles = [
-  ['01', 'Medical Assessment First', "Surgery begins with understanding the patient's actual condition."],
-  ['02', 'Realistic Expectations', 'Possible outcomes and limitations should be discussed honestly.'],
-  ['03', 'Direct Responsibility', 'Dr. Maris remains personally involved in the surgical pathway.'],
-  ['04', 'No Surgical Guarantees', 'Every operation carries potential risks and results vary according to individual factors.'],
-]
 
 const careerTimeline = ['Koren Star Cosmetic Hospital', 'Asia International Cosmetic Hospital', 'Medika Cosmetic Hospital', 'City International Hospital (CIH)']
 const revisionConcerns = ['capsular contracture', 'implant rupture', 'implant displacement', 'breast asymmetry', 'symmastia', 'implant removal', 'excessive scar tissue', 'free silicone', 'silicone migration or leakage', 'failed breast augmentation']
@@ -31,26 +23,6 @@ const reviewItems = ['current concerns', 'recent photographs', 'medical history'
 
 export function OurTeamPage({ data = ourTeamMockData }: { data?: OurTeamData }) {
   const { hero, revision } = data
-  const principleSteps: PlanningStep[] = data.surgicalCare.steps.length
-    ? data.surgicalCare.steps.map((step, index) => {
-      const value: { number?: string; title: string; description?: string; image?: string; imageAlt?: string } = typeof step === 'string'
-        ? { title: step, description: '' }
-        : step
-      return {
-        number: value.number || String(index + 1).padStart(2, '0'),
-        title: value.title,
-        description: value.description || data.surgicalCare.paragraphs[index % Math.max(data.surgicalCare.paragraphs.length, 1)] || '',
-        image: value.image || data.surgicalCare.image,
-        imageAlt: value.imageAlt || data.surgicalCare.imageAlt,
-      }
-    })
-    : principles.map(([number, title, description], index) => ({
-      number,
-      title,
-      description,
-      image: data.surgicalCare.image,
-      imageAlt: data.surgicalCare.imageAlt || `Direct surgeon care process: ${title}`,
-    }))
   const professional = data.professional
   const international = data.internationalPatients
   const journey = data.journey
@@ -58,16 +30,6 @@ export function OurTeamPage({ data = ourTeamMockData }: { data?: OurTeamData }) 
   useOurTeamMotion(pageRef)
   return <main ref={pageRef} className="stitch-page stitch-our-team">
     <section className="our-team-profile-hero" data-team-hero><div className="our-team-profile-hero__grid stitch-container"><div className="our-team-profile-hero__heading"><span className="stitch-kicker" data-team-hero-eyebrow><i data-team-hero-divider />{hero.eyebrow}</span><h2><span className="stitch-hero-line"><span data-team-hero-title-line>{hero.title}</span></span></h2></div><div className="our-team-profile-hero__copy"><div className="our-team-profile-hero__identity" data-team-hero-copy><p>Dr. Tran Minh Huy</p><span>Specialist Level I in Aesthetic Surgery, Vietnam</span></div><div className="our-team-profile-hero__body">{hero.paragraphs.map((paragraph) => <p key={paragraph} data-team-hero-copy>{paragraph}</p>)}</div><div className="stitch-actions" data-team-hero-actions><ConsultationButton className="stitch-button stitch-button--dark">Request a Consultation</ConsultationButton><a className="stitch-button stitch-button--outline" href="#revision">Explore Surgical Expertise <ArrowRight size={17} /></a></div></div><div className="our-team-profile-hero__media" data-team-hero-image><TeamImage src={hero.image} alt={hero.imageAlt} className="our-team-profile-hero__image" /></div></div></section>
-
-    <PlanningProcessSection
-      sectionId="our-team-principles"
-      className="our-team-principles"
-      eyebrow="THE PRINCIPLES BEHIND THE PRACTICE"
-      title={data.surgicalCare.heading}
-      description={data.surgicalCare.paragraphs.join(' ')}
-      steps={principleSteps}
-      showActions={false}
-    />
 
     <section className="our-team-authority"><div className="stitch-container"><div className="our-team-section-heading"><span className="stitch-kicker">{data.authority.eyebrow}</span><h2>{data.authority.title}</h2><p>{data.authority.description}</p></div><div className="our-team-authority__grid">{data.authority.cards.map(({ title, items }, index) => { const Icon = [GraduationCap, BadgeCheck, Award][index % 3]; return <article key={title}><span className="our-team-authority__icon"><Icon size={24} aria-hidden="true" /></span><h3>{title}</h3><ul>{items.map(item => <li key={item}><CheckCircle2 size={15} aria-hidden="true" />{item}</li>)}</ul></article> })}</div></div></section>
 

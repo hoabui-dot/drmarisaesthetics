@@ -7,20 +7,19 @@
   "options": {},
   "attributes": {
     "eyebrow": { "type": "string" },
-    "headingPrimary": { "type": "string" },
-    "headingSecondaryLine1": { "type": "string" },
-    "headingSecondaryLine2": { "type": "string" },
-    "supportingParagraph": { "type": "text" },
-    "backgroundImage": {
+    "title": { "type": "string", "required": true },
+    "editorial_lead": { "type": "text" },
+    "description": { "type": "text" },
+    "secondary_description": { "type": "text" },
+    "primary_button_label": { "type": "string" },
+    "secondary_button_label": { "type": "string" },
+    "secondary_button_link": { "type": "string" },
+    "image": {
       "type": "media",
       "multiple": false,
       "required": false,
       "allowedTypes": ["images"]
     },
-    "statistics": {
-      "type": "component",
-      "repeatable": true,
-      "component": "about.hero-stat"
-    }
+    "image_alt": { "type": "string" }
   }
 }

@@ -30,7 +30,7 @@ function ReferenceImage({ src, alt, className = '' }: { src: string; alt: string
 }
 function ConsultationButton() {
   const { open } = useBookingModal()
-  return <button type="button" className="stitch-button stitch-button--dark" onClick={open}><CalendarDays size={16} aria-hidden="true" />Request a Consultation</button>
+  return <button type="button" className="booking-inline-cta stitch-button stitch-button--dark" onClick={open}><CalendarDays size={16} aria-hidden="true" />Request a Consultation</button>
 }
 function BeforeAfter({ src, alt, title, description }: { src: string; alt: string; title: string; description: string }) {
   return <article className="stitch-treatment-result"><div className="stitch-treatment-result__image"><ReferenceImage src={src} alt={alt} /><span>Before</span><span>After</span></div><h4>{title}</h4><p>{description}</p></article>

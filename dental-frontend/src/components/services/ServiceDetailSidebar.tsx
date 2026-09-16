@@ -45,7 +45,7 @@ export function ServiceDetailSidebar({ items }: { items: ServiceIndexItem[] }) {
       <div className="service-detail-index__cta">
         <h3>Ready to discuss your goals?</h3>
         <p>Schedule a private consultation with Dr. Maris.</p>
-        <button type="button" onClick={open}>
+        <button type="button" className="booking-inline-cta" onClick={open}>
           <CalendarDays size={15} aria-hidden="true" />
           Request a Consultation
         </button>

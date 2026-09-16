@@ -28,14 +28,14 @@ export function Footer({ footer, logoSrc }: FooterProps) {
         <div className="site-footer-brand">
           <div className="site-footer-wordmark"><BrandLogo size="lg" src={logoSrc} imageClassName="site-footer-logo" /></div>
           <p>{footer?.description || "Surgeon-led, hospital-based cosmetic surgery planned around each patient."}</p>
-          <div className="site-footer-socials" aria-label="Social media links">{socialLinks.filter((social) => ["facebook", "instagram", "youtube", "tiktok"].includes(social.platform.toLowerCase())).map((social) => <a href={social.url} key={social.id} aria-label={social.platform} target="_blank" rel="noopener noreferrer"><SocialIcon platform={social.platform} /></a>)}</div>
+          <div className="site-footer-socials" aria-label="Social media links">{socialLinks.filter((social) => ["facebook", "instagram", "youtube", "tiktok"].includes(social.platform.toLowerCase())).map((social) => <span className="site-footer-social" key={social.id} aria-label={social.platform} title={social.platform}><SocialIcon platform={social.platform} /></span>)}</div>
         </div>
         {groups.slice(0, 3).map((group) => <nav className="site-footer-group" key={group.id} aria-label={group.heading}><h2>{group.heading}</h2><ul>{group.links.map((link) => <li key={link.id}><Link href={link.href}>{link.label}</Link></li>)}</ul></nav>)}
         <div className="site-footer-contact"><h2>CONTACT US</h2><div className="site-footer-contact-list">
           {contact?.address ? <a href={`https://maps.google.com/?q=${encodeURIComponent(contact.address)}`} target="_blank" rel="noopener noreferrer"><MapPin size={17} aria-hidden="true" /><span>{contact.address}</span></a> : null}
           {contact?.phone ? <a href={`tel:${contact.phone.replace(/[^+\d]/g, "")}`}><Phone size={17} aria-hidden="true" /><span>{contact.phone}</span></a> : null}
           {contact?.email ? <a href={`mailto:${contact.email}`}><Mail size={17} aria-hidden="true" /><span>{contact.email}</span></a> : null}
-        </div><Link className="site-footer-cta" href={footer?.appointmentHref || "/#home-booking"}>{footer?.appointmentLabel || "BOOK APPOINTMENT"}<ArrowRight size={17} aria-hidden="true" /></Link></div>
+        </div><Link className="booking-inline-cta site-footer-cta" href={footer?.appointmentHref || "/#home-booking"}>{footer?.appointmentLabel || "BOOK APPOINTMENT"}<ArrowRight size={17} aria-hidden="true" /></Link></div>
       </div>
       <div className="site-footer-bottom"><p>{footer?.copyrightText || `© ${new Date().getFullYear()} DR. MARIS AESTHETICS. ALL RIGHTS RESERVED.`}</p><p>{footer?.tagline || "Surgeon-led. Hospital-based. Individually planned."}</p></div>
     </div>

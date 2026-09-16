@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { Button } from '@/src/components/ui/button'
 
 /**
  * Not Found Page
@@ -10,32 +9,14 @@ import { Button } from '@/src/components/ui/button'
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
-      <div className="max-w-md w-full text-center space-y-8">
-        {/* 404 Icon */}
-        <div className="text-8xl font-bold text-primary-600">
-          404
-        </div>
-
-        {/* Error Message */}
-        <div className="space-y-4">
-          <h2 className="text-3xl font-bold text-foreground">
-            Page Not Found
-          </h2>
-          <p className="text-lg text-foreground-secondary">
-            Sorry, we couldn&apos;t find the page you&apos;re looking for.
-          </p>
-        </div>
-
-        {/* Action Button */}
-        <div className="flex justify-center">
-          <Button asChild size="lg">
-            <Link href="/">
-              Go Home
-            </Link>
-          </Button>
-        </div>
+    <main className="stitch-error-page" aria-labelledby="not-found-title">
+      <div className="stitch-error-page__inner">
+        <span className="stitch-kicker">DR. MARIS AESTHETICS</span>
+        <strong className="stitch-error-page__code">404</strong>
+        <h1 id="not-found-title">Page not found</h1>
+        <p>The page may have moved, or the address may no longer be available.</p>
+        <div className="stitch-error-page__actions"><Link className="stitch-button stitch-button--dark" href="/">Return home</Link><Link className="stitch-button stitch-button--outline" href="/contact">Contact our team</Link></div>
       </div>
-    </div>
+    </main>
   )
 }

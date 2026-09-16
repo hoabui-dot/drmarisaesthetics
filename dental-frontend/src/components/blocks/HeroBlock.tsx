@@ -11,7 +11,7 @@ import { VideoDialog } from '@/src/components/ui/VideoDialog'
 function AppointmentButton({ label, compact = false }: { label: string; compact?: boolean }) {
   const { open } = useBookingModal()
   return (
-    <button type="button" onClick={open} className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-hero-button px-6 font-semibold text-white transition-opacity hover:opacity-90 focus-ring ${compact ? 'min-h-10 px-5 text-xs tracking-wide' : ''}`}>
+    <button type="button" onClick={open} className={`booking-inline-cta inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-hero-button px-6 font-semibold text-white transition-opacity hover:opacity-90 focus-ring ${compact ? 'min-h-10 px-5 text-xs tracking-wide' : ''}`}>
       <CalendarDays className="h-4 w-4" aria-hidden="true" />
       {label}
     </button>

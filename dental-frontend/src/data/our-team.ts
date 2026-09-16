@@ -25,6 +25,7 @@ export type OurTeamData = {
   professional?: {
     eyebrow: string
     title: string
+    lead?: string
     description: string
     steps: Array<{ number: string; title: string; description: string }>
     image?: string

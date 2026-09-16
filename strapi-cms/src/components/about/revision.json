@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_about_revisions",
+  "info": { "displayName": "Revision and Complex Surgery" },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "description": { "type": "text" },
+    "lead": { "type": "text" },
+    "lead_description": { "type": "text" },
+    "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "image_alt": { "type": "string" },
+    "concerns": { "type": "component", "repeatable": true, "component": "about.item" }
+  }
+}

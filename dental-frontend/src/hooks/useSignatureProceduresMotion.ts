@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { animate, createTimeline, onScroll, stagger } from 'animejs'
+import { animate, createTimeline, onScroll } from 'animejs'
 import type { RefObject } from 'react'
 
 export function useSignatureProceduresMotion(root: RefObject<HTMLElement | null>) {
@@ -12,7 +12,7 @@ export function useSignatureProceduresMotion(root: RefObject<HTMLElement | null>
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const eyebrow = section.querySelector<HTMLElement>('[data-signature-eyebrow]')
-    const titleLines = Array.from(section.querySelectorAll<HTMLElement>('[data-signature-title-line]'))
+    const title = section.querySelector<HTMLElement>('[data-signature-title]')
     const supportingCopy = section.querySelector<HTMLElement>('[data-signature-copy]')
     const panels = Array.from(section.querySelectorAll<HTMLElement>('[data-signature-panel]'))
 
@@ -37,7 +37,7 @@ export function useSignatureProceduresMotion(root: RefObject<HTMLElement | null>
       return
     }
 
-    const content = [eyebrow, ...titleLines, supportingCopy].filter(Boolean) as HTMLElement[]
+    const content = [eyebrow, title, supportingCopy].filter(Boolean) as HTMLElement[]
     const panelContent = panelParts.flatMap(({ number, title, description, cta }) => [number, title, description, cta]).filter(Boolean) as HTMLElement[]
 
     animate(content, { opacity: 0, y: 10, duration: 0 })
@@ -49,7 +49,7 @@ export function useSignatureProceduresMotion(root: RefObject<HTMLElement | null>
 
     const timeline = createTimeline({ autoplay: false })
     if (eyebrow) timeline.add(eyebrow, { opacity: [0, 1], y: [10, 0], duration: 340, ease: 'outCubic' }, 0)
-    if (titleLines.length) timeline.add(titleLines, { opacity: [0, 1], y: [18, 0], duration: 520, delay: stagger(75), ease: 'outCubic' }, 180)
+    if (title) timeline.add(title, { opacity: [0, 1], y: [18, 0], duration: 520, ease: 'outCubic' }, 180)
     if (supportingCopy) timeline.add(supportingCopy, { opacity: [0, 1], y: [14, 0], duration: 420, ease: 'outCubic' }, 420)
 
     panelParts.forEach(({ image, curtain, number, title, description, cta }, index) => {

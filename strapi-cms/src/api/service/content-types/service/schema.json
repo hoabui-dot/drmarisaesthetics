@@ -24,6 +24,11 @@
       "type": "customField",
       "customField": "plugin::better-blocks.better-blocks",
       "required": false
+    },
+    "faq": {
+      "type": "component",
+      "repeatable": false,
+      "component": "service.faq-section"
     }
   }
 }

@@ -1,5 +1,6 @@
 export type ResultCase = {
   caseNumber: string
+  createdAt?: string
   category?: string
   title: string
   subtitle: string

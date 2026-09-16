@@ -1,0 +1,11 @@
+{
+  "collectionName": "components_about_surgeon_processes",
+  "info": { "displayName": "Direct Surgeon Care Process" },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "description": { "type": "text" },
+    "steps": { "type": "component", "repeatable": true, "component": "homepage.process-step" }
+  }
+}

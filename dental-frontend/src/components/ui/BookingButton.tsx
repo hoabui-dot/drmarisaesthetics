@@ -40,7 +40,7 @@ export const BookingButton = ({
       whileTap={{ scale: 0.97 }}
       onClick={openBookingModal}
       className={cn(
-        "px-8 py-4 bg-[#165197] text-white rounded-2xl font-bold text-sm sm:text-base md:text-xl flex flex-col items-center justify-center shadow-xl shadow-[#165197]/25 transition-all whitespace-nowrap",
+        "booking-inline-cta px-8 py-4 bg-[#165197] text-white rounded-2xl font-bold text-sm sm:text-base md:text-xl flex flex-col items-center justify-center shadow-xl shadow-[#165197]/25 transition-all whitespace-nowrap",
         fullWidth ? "w-full" : "w-auto",
         className
       )}

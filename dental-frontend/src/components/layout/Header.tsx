@@ -315,7 +315,7 @@ export function Header({ navigation, logoSrc }: HeaderProps) {
                 <button
                   onClick={() => { openBookingModal(); closeMobileMenu(); }}
                   id="header-book-consultation-mobile-nav"
-                  className="flex items-center justify-center gap-2 w-full px-5 sm:px-6 py-3 sm:py-3.5 bg-gradient-to-r from-primary-400 to-primary-600 text-white font-semibold rounded-xl shadow-md active:scale-95 transition-transform text-sm sm:text-base"
+                  className="booking-inline-cta flex items-center justify-center gap-2 w-full px-5 sm:px-6 py-3 sm:py-3.5 bg-gradient-to-r from-primary-400 to-primary-600 text-white font-semibold rounded-xl shadow-md active:scale-95 transition-transform text-sm sm:text-base"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -340,12 +340,12 @@ export function Header({ navigation, logoSrc }: HeaderProps) {
        * On mobile (shouldSimplify) we still play the slide-up but without the
        * overshoot curve so low-end devices don't drop frames on mount.
        */}
-      {navigation.ctaText && navigation.ctaLink && (
+      {false && navigation.ctaText && navigation.ctaLink && (
         <PerformanceAnimation
           preset="slide-up"
           duration={0.45}
           easing="cubic-bezier(0.34, 1.56, 0.64, 1)"
-          className="lg:hidden fixed bottom-6 left-6 right-[5.5rem] z-40"
+          className="hidden"
         >
           <button
             onClick={openBookingModal}

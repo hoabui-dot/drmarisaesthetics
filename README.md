@@ -276,10 +276,13 @@ curl http://localhost:3000
 ### Services won't start
 
 ```bash
-docker-compose down -v
-docker system prune -a
-./deploy.sh rebuild
+docker compose ps
+docker compose logs --tail=200 drmaris-strapi postgres
+docker compose restart drmaris-strapi
 ```
+
+Rebuild without removing persistent CMS data with `docker compose build drmaris-strapi && docker compose up -d drmaris-strapi`.
+Never use `docker compose down -v`, volume removal, database reset, or broad Docker prune as routine troubleshooting: PostgreSQL content and Strapi uploads are persistent production data.
 
 ### Strapi connection issues
 

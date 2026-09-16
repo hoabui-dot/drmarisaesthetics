@@ -76,6 +76,11 @@ export async function POST(request: NextRequest) {
     }
 
     const data = validationResult.data;
+    console.info("[Contact API] validation-passed", {
+      service: data.service,
+      hasEmail: Boolean(data.email),
+      messageLength: data.message?.length || 0,
+    });
 
     // Verify reCAPTCHA token
     let isValidRecaptcha = true;
@@ -86,6 +91,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (!isValidRecaptcha) {
+      console.warn("[Contact API] recaptcha-rejected");
       return NextResponse.json(
         {
           success: false,
@@ -136,6 +142,10 @@ export async function POST(request: NextRequest) {
 
     if (!strapiResponse.ok) {
       const errorData = await strapiResponse.json().catch(() => ({}));
+      console.error("[Contact API] strapi-save-failed", {
+        status: strapiResponse.status,
+        error: errorData?.error?.message || "unknown",
+      });
 
       return NextResponse.json(
         {
@@ -152,14 +162,22 @@ export async function POST(request: NextRequest) {
 
     // Send email notifications (non-blocking)
     // Don't wait for emails to complete - send them in background
+    console.info("[Contact API] strapi-save-succeeded", {
+      submissionId: strapiData?.data?.id || strapiData?.data?.documentId || "unknown",
+    });
+
     sendBookingNotifications({
       fullName: data.fullName,
       phoneNumber: data.phoneNumber,
       service: data.service,
       otherService: data.otherService,
       message: data.message,
+    }).then((sent) => {
+      console.info("[Contact API] email-notification-completed", { sent });
     }).catch((emailError) => {
-      // Log email errors but don't fail the request
+      console.error("[Contact API] email-notification-failed", {
+        error: emailError instanceof Error ? emailError.message : "unknown",
+      });
     });
 
     // Return success response immediately (don't wait for emails)
@@ -171,6 +189,9 @@ export async function POST(request: NextRequest) {
       { status: 200 },
     );
   } catch (error) {
+    console.error("[Contact API] request-failed", {
+      error: error instanceof Error ? error.message : "unknown",
+    });
     return NextResponse.json(
       {
         success: false,

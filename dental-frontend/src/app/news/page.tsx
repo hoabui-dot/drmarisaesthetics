@@ -1,77 +1,41 @@
-import { NewsPageClient } from "./NewsPageClient";
-import { apiClient } from "@/src/lib/api/client";
-import { NEXT_PUBLIC_STRAPI_URL } from "@/src/lib/env";
+import type { Metadata } from 'next'
+import { BlogResultsPage, type BlogListItem } from '@/src/components/BlogResultsPage'
+import { apiClient } from '@/src/lib/api/client'
+import { buildSeoMetadata } from '@/src/lib/seo/seo-manager'
 
-interface BlogPost {
-  id: number;
-  documentId: string;
-  title: string;
-  slug: string;
-  excerpt?: string;
-  category?: string;
-  coverImage?: {
-    url: string;
-    alternativeText?: string;
-  } | null;
-  publishedAt: string;
+export async function generateMetadata(): Promise<Metadata> {
+  return buildSeoMetadata({
+    path: '/news',
+    title: 'Patient Planning Journal | Dr. Maris Aesthetics',
+    description: 'Clinically grounded guidance for planning plastic surgery, recovery and revision care.',
+  })
 }
 
-interface StrapiBlogsResponse {
-  data: BlogPost[];
-  meta?: any;
+const mediaUrl = (media: any) => {
+  const value = media?.data?.attributes || media?.attributes || media
+  if (typeof value?.url !== 'string') return null
+  return value.url.startsWith('/uploads/') ? `/api/strapi-media${value.url}` : value.url
 }
 
-async function fetchBlogs(): Promise<BlogPost[]> {
+async function getBlogs(): Promise<BlogListItem[]> {
   try {
-    const response = await apiClient<StrapiBlogsResponse>("/api/blogs", {
-      params: {
-        populate: "*",
-        sort: "publishedAt:desc",
-        "pagination[limit]": 50,
-      },
-      isDraftMode: false,
-      tags: ["blogs"], // Cache tags for webhook revalidation
-    });
-
-    // Handle Strapi v5 flattening and pre-calculate imageUrl
-    return (response.data || []).map((blog: any) => {
-      const data = blog.attributes || blog;
-      const rawMedia = data.coverImage || data.imageCover;
-      const mediaData = rawMedia?.data?.attributes || rawMedia;
-
-      return {
-        id: blog.id,
-        documentId: blog.documentId,
-        ...data,
-        // Keep uploads on the frontend origin so Next Image can fetch them
-        // through the internal Strapi media proxy in Docker.
-        imageUrl: mediaData?.url?.startsWith('/uploads/') ? `/api/strapi-media${mediaData.url}` : mediaData?.url || null,
-        imageAlt: mediaData?.alternativeText || data.title,
-      };
-    }) as BlogPost[];
-  } catch (error) {
-    return [];
+    const response = await apiClient<{ data?: any[] }>('/api/blogs', {
+      params: { 'populate[coverImage]': 'true', sort: 'publishedAt:desc', 'pagination[pageSize]': 100 },
+      tags: ['blogs'],
+    })
+    return (response.data || []).map((entry) => {
+      const blog = entry.attributes || entry
+      const media = blog.coverImage?.data?.attributes || blog.coverImage?.attributes || blog.coverImage
+      return { id: entry.id, title: blog.title, slug: blog.slug, category: blog.category, metaDescription: blog.metaDescription, publishedAt: blog.publishedAt, imageUrl: mediaUrl(blog.coverImage), imageAlt: media?.alternativeText || blog.title }
+    })
+  } catch {
+    return []
   }
 }
 
 export default async function NewsPage() {
-  const blogs = await fetchBlogs();
-
-  const featuredBlog = blogs[0];
-  const popularBlogs = blogs.slice(0, 3);
-
-  return (
-    <NewsPageClient
-      initialBlogs={blogs}
-      featuredBlog={featuredBlog}
-      popularBlogs={popularBlogs}
-      strapiUrl={NEXT_PUBLIC_STRAPI_URL}
-    />
-  );
+  return <BlogResultsPage posts={await getBlogs()} />
 }
 
-// Static until Strapi webhook triggers revalidateTag('blogs')
-// force-dynamic: prevents stale SSG content baked when Strapi was unreachable at build time.
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-export const dynamicParams = true;
+export const dynamic = 'force-dynamic'
+export const revalidate = 0

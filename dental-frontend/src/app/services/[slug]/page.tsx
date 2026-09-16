@@ -5,11 +5,12 @@ import { notFound } from 'next/navigation'
 import { apiClient } from '@/src/lib/api/client'
 import { ServiceContentRenderer } from '@/src/components/services/ServiceContentRenderer'
 import { ServiceDetailSidebar } from '@/src/components/services/ServiceDetailSidebar'
+import { ServiceFaqSection, type ServiceFaqData } from '@/src/components/services/ServiceFaqSection'
 
 type MediaValue = { url?: string; attributes?: { url?: string }; data?: { attributes?: { url?: string }; url?: string } }
 type BetterBlockChild = { text?: string; children?: BetterBlockChild[] }
 type BetterBlock = { type?: string; level?: number; children?: BetterBlockChild[] }
-type Service = { id: number; title: string; slug: string; contentBetterBlocks?: BetterBlock[]; metaDescription?: string; coverImage?: MediaValue; publishedAt?: string; createdAt?: string }
+type Service = { id: number; title: string; slug: string; contentBetterBlocks?: BetterBlock[]; metaDescription?: string; coverImage?: MediaValue; faq?: ServiceFaqData | null; publishedAt?: string; createdAt?: string }
 
 const imageUrl = (value?: MediaValue) => {
   const media = value?.data?.attributes || value?.data || value?.attributes || value
@@ -21,7 +22,14 @@ const textFromNodes = (nodes?: BetterBlockChild[]): string => (nodes || []).map(
 const getServiceImage = (service: Service) => imageUrl(service.coverImage)
 
 const getService = async (slug: string) => {
-  const response = await apiClient<{ data?: Service[] }>('/api/services', { params: { 'filters[slug][$eq]': slug, populate: '*' }, tags: ['services', `service-${slug}`] })
+  const response = await apiClient<{ data?: Service[] }>('/api/services', {
+    params: {
+      'filters[slug][$eq]': slug,
+      'populate[coverImage]': 'true',
+      'populate[faq][populate][items]': 'true',
+    },
+    tags: ['services', `service-${slug}`],
+  })
   return response.data?.[0] || null
 }
 
@@ -95,6 +103,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
           <article id={contentId(service.slug)} className="service-detail-article">
             <header className="service-detail-article__header"><span className="service-detail-eyebrow">{service.title}</span><p>{service.metaDescription || 'A surgeon-led approach planned around your anatomy, safety and long-term recovery.'}</p></header>
             {blocks.length ? <ServiceContentRenderer content={blocks} sectionIds={indexItems.map((item) => item.id)} /> : <p className="service-detail-empty">This service content is being prepared.</p>}
+            <ServiceFaqSection data={service.faq} />
             <Link href="/services" className="blog-detail-back">Back to services</Link>
           </article>
 

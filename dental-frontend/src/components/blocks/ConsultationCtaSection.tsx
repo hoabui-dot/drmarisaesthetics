@@ -34,7 +34,7 @@ export function ConsultationCtaSection({ id = 'consultation', content = {} }: { 
         <h2>{text('title', 'Your case deserves a surgical plan built around you.')}</h2>
         <p className="stitch-editorial-lead">{text('editorial_lead', 'Your case begins with understanding your actual condition.')}</p>
         <p>{text('description', 'Send your case for a preliminary clinical review and begin a direct conversation with Dr. Maris.')}</p>
-        <div className="stitch-consultation__actions"><button type="button" className="stitch-button stitch-button--dark" onClick={open}>{globalCta?.buttonLabel || 'Start Your Consultation'} <ArrowRight size={16} /></button></div>
+        <div className="stitch-consultation__actions"><button type="button" className="booking-inline-cta stitch-button stitch-button--dark" onClick={open}>{globalCta?.buttonLabel || 'Start Your Consultation'} <ArrowRight size={16} /></button></div>
       </div>
       <aside className="stitch-consultation__panel"><span className="stitch-kicker">{globalCta?.panelEyebrow || 'PRIVATE CONSULTATION'}</span><h3>{globalCta?.panelTitle || 'Begin with a clinical review.'}</h3><p>{globalCta?.panelDescription || 'Share your case before making travel decisions.'}</p><ol>{steps.map((step) => <li key={`${step.number}-${step.label}`}><b>{step.number}</b><span>{step.label}</span></li>)}</ol></aside>
     </div>

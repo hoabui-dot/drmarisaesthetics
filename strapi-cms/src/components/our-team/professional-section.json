@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_our_team_professional_sections",
+  "info": { "displayName": "Our Team professional journey" },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "lead": { "type": "text" },
+    "description": { "type": "text" },
+    "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "image_alt": { "type": "string" },
+    "items": { "type": "component", "repeatable": true, "component": "our-team.item" },
+    "steps": { "type": "component", "repeatable": true, "component": "our-team.step" }
+  }
+}

@@ -45,34 +45,19 @@
       "required": false,
       "allowedTypes": ["images"]
     },
-    "excerpt": {
-      "type": "text",
-      "required": false
-    },
     "metaDescription": {
       "type": "text",
       "required": false
     },
-    "authorName": {
-      "type": "string",
+    "contentBetterBlocks": {
+      "type": "customField",
+      "customField": "plugin::better-blocks.better-blocks",
       "required": false
     },
-    "readingTime": {
-      "type": "string",
-      "required": false
-    },
-    "metaImage": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": ["images"]
-    },
-    "content": {
-      "type": "richtext",
-      "required": false
-    },
-    "publishedAt": {
-      "type": "datetime"
+    "faq": {
+      "type": "component",
+      "repeatable": false,
+      "component": "service.faq-section"
     }
   }
 }

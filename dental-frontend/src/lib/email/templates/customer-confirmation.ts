@@ -304,7 +304,7 @@ export function generateCustomerConfirmationEmail(
 
       <!-- Action Buttons -->
       <div style="${emailStyles.buttonContainer}">
-        <a href="https://nhakhoaquoctesaigon.com" style="${emailStyles.button}">
+        <a href="${CLINIC_INFO.website}" style="${emailStyles.button}">
           🌐 Visit Website
         </a>
         <a href="${generateTelLink(clinicPhone1)}" style="${emailStyles.button}">

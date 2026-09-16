@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { buildSeoMetadata } from '@/src/lib/seo/seo-manager'
 import { resolveStructuredData, StructuredDataScript } from '@/src/lib/seo/structured-data'
 import { StitchHomepage } from '@/src/components/StitchAestheticPage'
-import { getHomepageEditorial } from '@/src/lib/api/queries'
+import { getHomepageEditorial, getResults } from '@/src/lib/api/queries'
 
 /**
  * Homepage
@@ -12,14 +12,14 @@ import { getHomepageEditorial } from '@/src/lib/api/queries'
  */
 
 export default async function Home() {
-  const homepage = await getHomepageEditorial()
+  const [homepage, results] = await Promise.all([getHomepageEditorial(), getResults()])
   const structuredData = await resolveStructuredData({
     pageType: 'home', path: '/',
     title: 'Plastic Surgery in Vietnam for International Patients',
     description: 'Hospital-based cosmetic surgery in Ho Chi Minh City with direct surgeon assessment by Dr. Maris.',
   })
 
-  return <><StructuredDataScript data={structuredData} /><StitchHomepage data={homepage ?? undefined} /></>
+  return <><StructuredDataScript data={structuredData} /><StitchHomepage data={homepage ?? undefined} results={results} /></>
 }
 
 export async function generateMetadata(): Promise<Metadata> {

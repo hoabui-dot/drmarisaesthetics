@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { buildSeoMetadata } from '@/src/lib/seo/seo-manager'
 import { resolveStructuredData, StructuredDataScript } from '@/src/lib/seo/structured-data'
 import { StitchAboutUs } from '@/src/components/StitchAestheticPage'
-import { getAboutPage } from '@/src/lib/api/queries'
+import { getAboutPage, getMediaUrl } from '@/src/lib/api/queries'
 
 /**
  * About Us Page
@@ -33,7 +33,7 @@ export default async function AboutUsPage() {
             <>
                 <StructuredDataScript data={structuredData} />
                 <main className="min-h-screen bg-background">
-                    <StitchAboutUs heroImage={aboutPage?.hero?.backgroundImage} content={aboutPage} />
+                    <StitchAboutUs heroImage={aboutPage?.hero?.image} content={aboutPage} />
                 </main>
             </>
         )

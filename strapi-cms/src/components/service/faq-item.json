@@ -1,0 +1,11 @@
+{
+  "collectionName": "components_service_faq_items",
+  "info": {
+    "displayName": "Service FAQ item"
+  },
+  "options": {},
+  "attributes": {
+    "question": { "type": "string", "required": true },
+    "answer": { "type": "text", "required": true }
+  }
+}

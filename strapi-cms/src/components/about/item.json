@@ -1,0 +1,11 @@
+{
+  "collectionName": "components_about_items",
+  "info": { "displayName": "About Content Item" },
+  "options": {},
+  "attributes": {
+    "number": { "type": "string" },
+    "title": { "type": "string" },
+    "label": { "type": "string" },
+    "description": { "type": "text" }
+  }
+}

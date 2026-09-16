@@ -55,7 +55,7 @@ export function ContactHeroSection({ data }: { data: ContactHeroData }) {
             <p className="contact-hero-subtitle">{data.subtitle || 'Consultation · Booking · International Patient Support'}</p>
             <p className="contact-hero-description">{data.description || 'Our surgical team is ready to listen and guide you through assessment, planning and postoperative care.'}</p>
             <div className="editorial-hero-actions contact-hero-actions">
-              <a href="#form-section" className="editorial-hero-primary contact-editorial-button">Request an Online Consultation <ArrowRight size={16} aria-hidden="true" /></a>
+              <a href="#form-section" className="booking-inline-cta editorial-hero-primary contact-editorial-button">Request an Online Consultation <ArrowRight size={16} aria-hidden="true" /></a>
               <Link href="/contact?case=revision" className="editorial-hero-secondary contact-editorial-link">Submit a Revision Case</Link>
             </div>
           </div>

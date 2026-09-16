@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { ArrowUpRight, ChevronDown } from 'lucide-react'
 import gsap from 'gsap'
@@ -23,12 +23,23 @@ function MenuLink({ href, label, open, onClose, child = false }: { href: string;
 
 function MenuGroup({ item, open, onClose }: { item: NavItem; open: boolean; onClose: () => void }) {
   const hasChildren = Boolean(item.children?.length)
+  const [expanded, setExpanded] = useState(false)
+
+  useEffect(() => {
+    if (!open) setExpanded(false)
+  }, [open])
+
   if (!hasChildren) return <MenuLink href={item.href} label={item.label} open={open} onClose={onClose} />
 
   return <div className="playful-clip-menu__group">
-    <div className="playful-clip-menu__group-heading"><MenuLink href={item.href} label={item.label} open={open} onClose={onClose} /><ChevronDown aria-hidden="true" /></div>
-    <div className="playful-clip-menu__children">
-      {item.children?.map((child) => <MenuLink key={child.id} href={child.href} label={child.label} open={open} onClose={onClose} child />)}
+    <div className="playful-clip-menu__group-heading">
+      <MenuLink href={item.href} label={item.label} open={open} onClose={onClose} />
+      <button type="button" className="playful-clip-menu__group-toggle" aria-label={`${expanded ? 'Collapse' : 'Expand'} ${item.label} menu`} aria-expanded={expanded} onClick={() => setExpanded((value) => !value)}>
+        <ChevronDown aria-hidden="true" />
+      </button>
+    </div>
+    <div className={`playful-clip-menu__children${expanded ? ' is-expanded' : ''}`} aria-hidden={!expanded}>
+      {item.children?.map((child) => <MenuLink key={child.id} href={child.href} label={child.label} open={open && expanded} onClose={onClose} child />)}
     </div>
   </div>
 }
@@ -88,7 +99,7 @@ export function PlayfulClipMobileMenu({ open, navigation, onClose, onBook }: Pla
           {navigation.navigation.map((item) => <div key={item.id} data-clip-menu-item><MenuGroup item={item} open={open} onClose={onClose} /></div>)}
         </div>
         <div ref={footer => { if (footer) footer.dataset.clipMenuFooter = 'true' }} data-clip-menu-footer className="playful-clip-menu__footer">
-          {navigation.ctaText && navigation.ctaLink ? <button type="button" tabIndex={open ? 0 : -1} onClick={() => { onBook(); onClose() }} className="playful-clip-menu__cta">{navigation.ctaText}<ArrowUpRight aria-hidden="true" /></button> : null}
+          {navigation.ctaText && navigation.ctaLink ? <button type="button" tabIndex={open ? 0 : -1} onClick={() => { onBook(); onClose() }} className="booking-inline-cta playful-clip-menu__cta">{navigation.ctaText}<ArrowUpRight aria-hidden="true" /></button> : null}
           <span>Ho Chi Minh City · Vietnam</span>
         </div>
       </div>

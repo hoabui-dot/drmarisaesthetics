@@ -1,10 +1,12 @@
 'use client';
 
 import { createContext, useContext, useState, useCallback, type MouseEvent, type ReactNode } from 'react';
+import type { WebsiteSettingBookingForm } from '@/src/types/strapi';
 
 interface BookingModalContextType {
     isOpen: boolean;
     serviceOptions: string[];
+    bookingForm?: WebsiteSettingBookingForm;
     context: ConsultationContext;
     open: (context?: Partial<ConsultationContext> | MouseEvent<HTMLButtonElement>) => void;
     close: () => void;
@@ -26,7 +28,7 @@ const BookingModalContext = createContext<BookingModalContextType>({
     close: () => { },
 });
 
-export function BookingModalProvider({ children, serviceOptions = [] }: { children: ReactNode, serviceOptions?: string[] }) {
+export function BookingModalProvider({ children, serviceOptions = [], bookingForm }: { children: ReactNode, serviceOptions?: string[], bookingForm?: WebsiteSettingBookingForm }) {
     const [isOpen, setIsOpen] = useState(false);
     const [context, setContext] = useState<ConsultationContext>(defaultContext);
 
@@ -38,7 +40,7 @@ export function BookingModalProvider({ children, serviceOptions = [] }: { childr
     const close = useCallback(() => setIsOpen(false), []);
 
     return (
-        <BookingModalContext.Provider value={{ isOpen, serviceOptions, context, open, close }}>
+        <BookingModalContext.Provider value={{ isOpen, serviceOptions, bookingForm, context, open, close }}>
             {children}
         </BookingModalContext.Provider>
     );

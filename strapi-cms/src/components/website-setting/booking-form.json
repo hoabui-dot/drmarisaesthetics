@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_website_setting_booking_forms",
+  "info": { "displayName": "Booking Form" },
+  "options": {},
+  "attributes": {
+    "visual_image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "visual_eyebrow": { "type": "string" },
+    "visual_title": { "type": "string" },
+    "visual_description": { "type": "text" },
+    "visual_points": { "type": "component", "repeatable": true, "component": "website-setting.booking-form-point" },
+    "form_eyebrow": { "type": "string" },
+    "form_title": { "type": "string" },
+    "form_description": { "type": "text" },
+    "privacy_text": { "type": "text" },
+    "success_eyebrow": { "type": "string" },
+    "success_title": { "type": "string" },
+    "success_description": { "type": "text" },
+    "success_action_label": { "type": "string" },
+    "success_action_href": { "type": "string" },
+    "submit_label": { "type": "string" },
+    "submitting_label": { "type": "string" },
+    "procedure_placeholder": { "type": "string" },
+    "message_placeholder": { "type": "string" }
+  }
+}

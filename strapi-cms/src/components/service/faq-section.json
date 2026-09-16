@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_service_faq_sections",
+  "info": {
+    "displayName": "Service FAQ section",
+    "description": "Centered FAQ accordion displayed after the service Better Blocks content"
+  },
+  "options": {},
+  "attributes": {
+    "title": { "type": "string", "required": true },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "service.faq-item"
+    }
+  }
+}

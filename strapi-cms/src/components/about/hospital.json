@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_about_hospitals",
+  "info": { "displayName": "Hospital-Based Surgery" },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "statement": { "type": "text" },
+    "description": { "type": "text" },
+    "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "image_alt": { "type": "string" },
+    "scope": { "type": "component", "repeatable": true, "component": "about.item" },
+    "disclaimer": { "type": "text" }
+  }
+}

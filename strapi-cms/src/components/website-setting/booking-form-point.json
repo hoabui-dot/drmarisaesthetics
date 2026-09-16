@@ -1,0 +1,6 @@
+{
+  "collectionName": "components_website_setting_booking_form_points",
+  "info": { "displayName": "Booking Form Point" },
+  "options": {},
+  "attributes": { "label": { "type": "string", "required": true } }
+}

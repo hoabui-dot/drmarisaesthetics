@@ -68,7 +68,7 @@ export function generateBookingNotificationEmail(
 
   const content = `
     <!-- Header -->
-    <div style="background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%); padding: 40px 30px; text-align: center;">
+      <div style="background: linear-gradient(135deg, #002D72 0%, #173868 100%); padding: 40px 30px; text-align: center;">
       <div style="display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; background-color: rgba(255,255,255,0.15); border-radius: 12px; margin-bottom: 16px;">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
       </div>
@@ -80,7 +80,7 @@ export function generateBookingNotificationEmail(
     <div style="padding: 32px 30px 40px 30px;">
       
       <!-- Action Banner -->
-      <div style="background-color: #EFF6FF; border: 1px solid #DBEAFE; padding: 14px 18px; border-radius: 10px; margin-bottom: 32px; display: flex; align-items: center; gap: 12px;">
+      <div style="background-color: #F1F6FC; border: 1px solid #D9E6F7; padding: 14px 18px; border-radius: 10px; margin-bottom: 32px; display: flex; align-items: center; gap: 12px;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         <p style="margin: 0; color: #1E40AF; font-weight: 500; font-size: 14px;">Action Required: Please respond to this customer within 24 hours.</p>
       </div>

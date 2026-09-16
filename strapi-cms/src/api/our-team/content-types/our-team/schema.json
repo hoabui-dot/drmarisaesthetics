@@ -15,7 +15,9 @@
       "type": "dynamiczone",
       "components": [
         "our-team.hero-section",
-        "our-team.editorial-section",
+        "our-team.professional-section",
+        "our-team.international-section",
+        "our-team.journey-section",
         "our-team.revision-section",
         "our-team.authority-section",
         "our-team.credentials-section",

@@ -217,9 +217,11 @@ export function PlanningProcessSection({
             <ol className="planning-process__steps">
               {steps.map((step, index) => (
                 <li key={step.number} data-planning-step className={index === activeIndex ? 'is-active' : index < activeIndex ? 'is-complete' : ''}>
-                  <span className="planning-process__number" data-planning-number>{step.number}</span>
-                  <div>
-                    <h3 data-planning-title>{step.title}</h3>
+                  <div className="planning-process__step-copy">
+                    <div className="planning-process__step-heading">
+                      <span className="planning-process__number" data-planning-number>{step.number}</span>
+                      <h3 data-planning-title>{step.title}</h3>
+                    </div>
                     <p data-planning-description>{step.description}</p>
                   </div>
                 </li>
@@ -230,7 +232,7 @@ export function PlanningProcessSection({
 
         {showActions && <div className="planning-process__actions">
           <a className="stitch-button stitch-button--dark" href="#consultation">Plan Your Surgery in Vietnam</a>
-          <a className="stitch-button stitch-button--outline" href="#consultation">Request an Online Consultation</a>
+          <a className="booking-inline-cta stitch-button stitch-button--outline" href="#consultation">Request an Online Consultation</a>
         </div>}
       </div>
     </section>

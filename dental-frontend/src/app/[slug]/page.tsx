@@ -200,20 +200,8 @@ export default async function LandingPage({ params }: PageProps) {
       throw error
     }
 
-    // Keep a recoverable error state for genuine CMS/runtime failures.
-    return (
-      <main className="min-h-screen flex items-center justify-center bg-background">
-        <div className="max-w-md w-full text-center space-y-4 px-4">
-          <div className="text-6xl">⚠️</div>
-          <h2 className="text-2xl font-bold text-foreground">
-            Error Loading Page
-          </h2>
-          <p className="text-foreground-secondary">
-            We encountered an error while loading this page. Please try again later.
-          </p>
-        </div>
-      </main>
-    )
+    // Genuine CMS/runtime failures must reach the route-level 500 boundary.
+    throw error
   }
 }
 

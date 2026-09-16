@@ -12,7 +12,7 @@ export default factories.createCoreController(
         seo: { populate: ["meta_image"] },
         sections: {
           on: {
-            "about.hero": { populate: ["backgroundImage", "statistics", "statistics.icon_image"] },
+            "about.hero": { populate: ["image"] },
             "about.mission-vision": { populate: ["backgroundImage", "missionIcon", "visionIcon"] },
             "about.core-values": { populate: { center_icon: { populate: "*" }, values: { populate: { icon_image: { populate: "*" } } } } },
             "about.doctors": { populate: { doctors: { populate: "*" } } },
@@ -21,6 +21,13 @@ export default factories.createCoreController(
             "about.featured-services": { populate: "*" },
             "about.why-choose-us": { populate: { toothImage: { populate: "*" }, statistics: { populate: "*" }, features: { populate: { icon_image: { populate: "*" } } }, accreditations: { populate: { logo: { populate: "*" } } } } },
             "about.booking": { populate: { clinic_image: { populate: "*" } } },
+            "about.surgeon-process": { populate: { steps: { populate: "*" } } },
+            "about.assessment": { populate: { factors: { populate: "*" } } },
+            "about.surgeon-profile": { populate: { image: { populate: "*" } } },
+            "about.revision": { populate: { image: { populate: "*" }, concerns: { populate: "*" } } },
+            "about.international": { populate: { items: { populate: "*" } } },
+            "about.consultation": { populate: "*" },
+            "about.hospital": { populate: { image: { populate: "*" }, scope: { populate: "*" } } },
           },
         },
       };

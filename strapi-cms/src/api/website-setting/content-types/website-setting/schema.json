@@ -17,16 +17,14 @@
     "default_open_graph_image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
     "address": { "type": "text", "required": true },
     "phone_primary": { "type": "string", "required": true },
-    "phone_secondary": { "type": "string" },
-    "email": { "type": "email", "required": true },
     "opening_hours": { "type": "string" },
     "website": { "type": "string" },
     "map_latitude": { "type": "decimal" },
     "map_longitude": { "type": "decimal" },
     "map_zoom": { "type": "integer", "default": 16 },
-    "map_url": { "type": "string" },
     "contact_methods": { "type": "component", "repeatable": true, "component": "website-setting.contact-method" },
     "social_links": { "type": "component", "repeatable": true, "component": "website-setting.social-link" },
-    "global_cta": { "type": "component", "repeatable": false, "component": "website-setting.global-cta" }
+    "global_cta": { "type": "component", "repeatable": false, "component": "website-setting.global-cta" },
+    "booking_form": { "type": "component", "repeatable": false, "component": "website-setting.booking-form" }
   }
 }

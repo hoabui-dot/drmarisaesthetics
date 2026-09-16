@@ -337,6 +337,27 @@ export interface WebsiteSettingGlobalCta {
   backgroundImage?: string;
 }
 
+export interface WebsiteSettingBookingForm {
+  visualImage?: Media;
+  visualEyebrow: string;
+  visualTitle: string;
+  visualDescription?: string;
+  visualPoints: Array<{ id?: number; label: string }>;
+  formEyebrow: string;
+  formTitle: string;
+  formDescription?: string;
+  privacyText?: string;
+  successEyebrow: string;
+  successTitle: string;
+  successDescription?: string;
+  successActionLabel?: string;
+  successActionHref?: string;
+  submitLabel: string;
+  submittingLabel: string;
+  procedurePlaceholder: string;
+  messagePlaceholder: string;
+}
+
 export interface WebsiteSetting {
   siteName: string;
   siteNameLocalized?: string;
@@ -345,17 +366,15 @@ export interface WebsiteSetting {
   defaultOpenGraphImage?: Media;
   address: string;
   phonePrimary: string;
-  phoneSecondary?: string;
-  email: string;
   openingHours?: string;
   website?: string;
   mapLatitude?: number;
   mapLongitude?: number;
   mapZoom?: number;
-  mapUrl?: string;
   contactMethods: WebsiteSettingContactMethod[];
   socialLinks: WebsiteSettingSocialLink[];
   globalCta?: WebsiteSettingGlobalCta;
+  bookingForm?: WebsiteSettingBookingForm;
 }
 
 // ============================================================================

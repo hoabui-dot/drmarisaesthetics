@@ -18,12 +18,9 @@ interface ClinicLocationData {
 export interface ContactMapSettings {
   address?: string
   phonePrimary?: string
-  phoneSecondary?: string
-  email?: string
   mapLatitude?: number
   mapLongitude?: number
   mapZoom?: number
-  mapUrl?: string
 }
 
 const benefitIcons = { location: MapPin, landmark: Building2, parking: CarFront }

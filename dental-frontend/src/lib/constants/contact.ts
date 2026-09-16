@@ -17,7 +17,7 @@ export const CLINIC_INFO = {
   phone1: "+84396877518",
   phone2: "+84902759406",
 
-  email: "concierge@drmarisaesthetics.com",
+  email: "vanhoa.bui2628@gmail.com",
 
   // Addresses
   address: "City International Hospital, Ho Chi Minh City, Vietnam",

@@ -292,12 +292,10 @@ export async function getOurTeam(isDraftMode: boolean = false): Promise<OurTeamD
     const sections = Array.isArray(value.sections) ? value.sections : [];
     const hero = sections.find((section: any) => section.__component === "our-team.hero-section");
     const revision = sections.find((section: any) => section.__component === "our-team.revision-section");
-    const editorial = sections.filter((section: any) => section.__component === "our-team.editorial-section");
-    const principles = editorial[0];
-    const professional = editorial[1];
-    const international = editorial.find((section: any) => /international/i.test(section.eyebrow || section.title || ""));
-    const journey = editorial.find((section: any) => /^(the process)$/i.test(section.eyebrow || "") || /international patient journey/i.test(section.title || ""));
-    const consultation = editorial.find((section: any) => /consultation/i.test(section.eyebrow || section.title || ""));
+    const professional = sections.find((section: any) => section.__component === "our-team.professional-section");
+    const international = sections.find((section: any) => section.__component === "our-team.international-section");
+    const journey = sections.find((section: any) => section.__component === "our-team.journey-section");
+    const consultation = sections.find((section: any) => /consultation/i.test(section.eyebrow || section.title || ""));
     const faq = sections.find((section: any) => section.__component === "our-team.faq-section");
     const authority = sections.find((section: any) => section.__component === "our-team.authority-section");
     const credentials = sections.find((section: any) => section.__component === "our-team.credentials-section");
@@ -335,6 +333,7 @@ export async function getOurTeam(isDraftMode: boolean = false): Promise<OurTeamD
       professional: professional ? {
         eyebrow: professional.eyebrow || "PROFESSIONAL JOURNEY",
         title: professional.title || "Experience Across Cosmetic Surgery & Hospital Environments",
+        lead: professional.lead || "A surgeon's professional journey is built through disciplined training, hospital experience and responsibility for every patient.",
         description: professional.description || "",
         steps: steps(professional.steps),
         image: image(professional.image),
@@ -349,13 +348,6 @@ export async function getOurTeam(isDraftMode: boolean = false): Promise<OurTeamD
         image: image(hero.image) || ourTeamMockData.hero.image,
         imageAlt: hero.image_alt || ourTeamMockData.hero.imageAlt,
       } : ourTeamMockData.hero,
-      surgicalCare: principles ? {
-        ...ourTeamMockData.surgicalCare,
-        heading: principles.title || ourTeamMockData.surgicalCare.heading,
-        paragraphs: [principles.lead, principles.description].filter(Boolean),
-        steps: steps(principles.steps),
-        image: image(principles.image) || ourTeamMockData.surgicalCare.image,
-      } : ourTeamMockData.surgicalCare,
       revision: revision ? {
         ...ourTeamMockData.revision,
         eyebrow: revision.eyebrow || ourTeamMockData.revision.eyebrow,
@@ -397,6 +389,10 @@ export async function getResults(isDraftMode: boolean = false): Promise<ResultsD
         const fallbackCase = resultsMockData.cases.find((candidate) => candidate.caseNumber === (item.case_number || item.caseNumber));
         return {
         caseNumber: item.case_number || item.caseNumber || "",
+        // Repeatable Strapi components do not always expose their own
+        // timestamps. In that case the uploaded composite image timestamp is
+        // the closest stable creation signal for the Results API ordering.
+        createdAt: item.createdAt || item.created_at || item.image?.createdAt || item.image?.created_at || undefined,
         category: item.category,
         title: item.title || "",
         subtitle: item.subtitle || "",
@@ -427,6 +423,8 @@ export async function getWebsiteSetting(isDraftMode: boolean = false): Promise<W
         "populate[default_open_graph_image]": "true",
         "populate[contact_methods][populate][icon]": "true",
         "populate[social_links]": "true",
+        "populate[booking_form][populate][visual_image]": "true",
+        "populate[booking_form][populate][visual_points]": "true",
         status: isDraftMode ? "draft" : "published",
       },
       isDraftMode,
@@ -443,14 +441,11 @@ export async function getWebsiteSetting(isDraftMode: boolean = false): Promise<W
       defaultOpenGraphImage: value.default_open_graph_image ? { url: getMediaUrl(value.default_open_graph_image), alt: value.default_open_graph_image.alternativeText || value.site_name, width: value.default_open_graph_image.width || 0, height: value.default_open_graph_image.height || 0 } : undefined,
       address: value.address || "",
       phonePrimary: value.phone_primary || "",
-      phoneSecondary: value.phone_secondary,
-      email: value.email || "",
       openingHours: value.opening_hours,
       website: value.website,
       mapLatitude: value.map_latitude == null ? undefined : Number(value.map_latitude),
       mapLongitude: value.map_longitude == null ? undefined : Number(value.map_longitude),
       mapZoom: value.map_zoom == null ? undefined : Number(value.map_zoom),
-      mapUrl: value.map_url,
       contactMethods: (value.contact_methods || []).filter((item: any) => item.is_active !== false).sort((a: any, b: any) => (a.order || 0) - (b.order || 0)).map((item: any) => ({ ...item, isActive: item.is_active !== false, icon: item.icon ? { url: getMediaUrl(item.icon), alt: item.icon.alternativeText || item.label, width: item.icon.width || 0, height: item.icon.height || 0 } : undefined })),
       socialLinks: (value.social_links || []).filter((item: any) => item.is_active !== false).sort((a: any, b: any) => (a.order || 0) - (b.order || 0)).map((item: any) => ({ ...item, iconClass: item.icon_class, isActive: item.is_active !== false })),
       globalCta: value.global_cta ? {
@@ -464,6 +459,26 @@ export async function getWebsiteSetting(isDraftMode: boolean = false): Promise<W
         panelDescription: value.global_cta.panel_description || undefined,
         steps: Array.isArray(value.global_cta.steps) ? value.global_cta.steps.map((step: any) => ({ number: step.number, label: step.label })) : [],
         backgroundImage: value.global_cta.background_image ? getMediaUrl(value.global_cta.background_image) : undefined,
+      } : undefined,
+      bookingForm: value.booking_form ? {
+        visualImage: (value.booking_form.visual_image || value.global_cta?.background_image) ? { url: getMediaUrl(value.booking_form.visual_image || value.global_cta.background_image), alt: (value.booking_form.visual_image || value.global_cta.background_image).alternativeText || value.site_name, width: (value.booking_form.visual_image || value.global_cta.background_image).width || 0, height: (value.booking_form.visual_image || value.global_cta.background_image).height || 0 } : undefined,
+        visualEyebrow: value.booking_form.visual_eyebrow || "DIRECT SURGEON CARE",
+        visualTitle: value.booking_form.visual_title || "Your case is reviewed before you travel.",
+        visualDescription: value.booking_form.visual_description || undefined,
+        visualPoints: Array.isArray(value.booking_form.visual_points) ? value.booking_form.visual_points.map((point: any) => ({ id: point.id, label: point.label })).filter((point: any) => point.label) : [],
+        formEyebrow: value.booking_form.form_eyebrow || "PRIVATE CONSULTATION",
+        formTitle: value.booking_form.form_title || "Tell us about your case.",
+        formDescription: value.booking_form.form_description || undefined,
+        privacyText: value.booking_form.privacy_text || undefined,
+        successEyebrow: value.booking_form.success_eyebrow || "CASE RECEIVED",
+        successTitle: value.booking_form.success_title || "Your case has been received.",
+        successDescription: value.booking_form.success_description || undefined,
+        successActionLabel: value.booking_form.success_action_label || undefined,
+        successActionHref: value.booking_form.success_action_href || undefined,
+        submitLabel: value.booking_form.submit_label || "Submit Case for Review",
+        submittingLabel: value.booking_form.submitting_label || "Sending…",
+        procedurePlaceholder: value.booking_form.procedure_placeholder || "Select an area or procedure",
+        messagePlaceholder: value.booking_form.message_placeholder || "Tell us what you would like help understanding.",
       } : undefined,
     };
   } catch (error) {
@@ -485,20 +500,38 @@ export async function getWebsiteSetting(isDraftMode: boolean = false): Promise<W
 export function getMediaUrl(media: any, size?: string): string {
   if (!media) return "";
 
+  if (typeof media === "string") {
+    // The About page adapter already normalizes CMS media to the frontend
+    // proxy path. Keep the resolver idempotent so callers can safely pass
+    // either raw Strapi paths or an already-normalized URL.
+    if (media.startsWith("/api/strapi-media/")) return media;
+    return media.startsWith("/") ? `/api/strapi-media${media}` : media;
+  }
+
   // Handle different media object structures
   let url = "";
 
   // Case 1: Direct media object with url
-  if (media.url) {
-    url = media.url;
+  const source = Array.isArray(media) ? media[0] : media;
+  if (!source) return "";
+
+  // Strapi v5 may return a media entity directly, nested in `data`, or in
+  // the v4-compatible `data.attributes` shape. Resolve all supported shapes
+  // here so page adapters do not need to know which API response was used.
+  const entity = source.data && !Array.isArray(source.data) ? source.data : source;
+  const attributes = entity.attributes && typeof entity.attributes === "object" ? entity.attributes : entity;
+  const formats = attributes.formats || entity.formats || source.formats;
+
+  if (size && formats?.[size]?.url) {
+    url = formats[size].url;
+  } else if (attributes.url) {
+    url = attributes.url;
+  } else if (entity.url) {
+    url = entity.url;
   }
-  // Case 2: Nested in data.attributes
-  else if (media.data?.attributes?.url) {
-    url = media.data.attributes.url;
-  }
-  // Case 3: Array of media (take first)
-  else if (Array.isArray(media) && media[0]?.url) {
-    url = media[0].url;
+
+  if (!url && source.url) {
+    url = source.url;
   }
 
   if (!url) return "";
@@ -787,7 +820,7 @@ export async function getHomepage(isDraftMode: boolean = false): Promise<Homepag
     if ((data.layout || []).some((block: HomepageBlockComponent) => block.__component === "homepage.blog-collection-section")) {
       try {
         const blogResponse = await apiClient<any>("/api/blogs", {
-          params: { populate: "*", sort: "publishedAt:desc", "pagination[limit]": 12 },
+          params: { "populate[coverImage]": "true", sort: "publishedAt:desc", "pagination[limit]": 12 },
           isDraftMode,
           tags: ["blogs"],
         });
@@ -1829,6 +1862,13 @@ export async function getAboutPage(isDraftMode: boolean = false): Promise<any> {
         "populate[sections][on][about.featured-services][populate]": "*",
         "populate[sections][on][about.why-choose-us][populate]": "*",
         "populate[sections][on][about.booking][populate]": "*",
+        "populate[sections][on][about.surgeon-process][populate]": "*",
+        "populate[sections][on][about.assessment][populate]": "*",
+        "populate[sections][on][about.surgeon-profile][populate]": "*",
+        "populate[sections][on][about.revision][populate]": "*",
+        "populate[sections][on][about.international][populate]": "*",
+        "populate[sections][on][about.consultation][populate]": "*",
+        "populate[sections][on][about.hospital][populate]": "*",
       },
       isDraftMode,
       tags: ["about-page"],
@@ -1850,6 +1890,7 @@ export async function getAboutPage(isDraftMode: boolean = false): Promise<any> {
     const sectionOf = (component: string) => sectionBlocks.find((block: any) => block.__component === component) || null;
     const data = {
       ...rawData,
+      aboutSections: sectionBlocks,
       hero: sectionOf("about.hero"),
       mission_vision: sectionOf("about.mission-vision"),
       core_values: sectionOf("about.core-values"),
@@ -1921,20 +1962,16 @@ export async function getAboutPage(isDraftMode: boolean = false): Promise<any> {
     // Transform Strapi response → flat structure for frontend
     const hero = data.hero
       ? {
-        title: data.hero.title || "",
+        title: data.hero.title || data.hero.headingPrimary || "",
         eyebrow: data.hero.eyebrow || "",
-        headingPrimary: data.hero.headingPrimary || "",
-        headingSecondaryLine1: data.hero.headingSecondaryLine1 || "",
-        headingSecondaryLine2: data.hero.headingSecondaryLine2 || "",
-        supportingParagraph: cleanDescription(data.hero.supportingParagraph) || "",
-        subtitle: cleanDescription(data.hero.subtitle) || "",
-        backgroundImage: data.hero.backgroundImage ? getMediaUrl(data.hero.backgroundImage) : null,
-        statistics: (data.hero.statistics || []).map((s: any) => ({
-          value: s.value || "",
-          label: s.label || "",
-          icon: s.icon || "",
-          iconImage: s.icon_image ? getMediaUrl(s.icon_image) : null,
-        })),
+        editorialLead: cleanDescription(data.hero.editorial_lead || data.hero.supportingParagraph) || "",
+        description: cleanDescription(data.hero.description) || "",
+        secondaryDescription: cleanDescription(data.hero.secondary_description) || "",
+        primaryButtonLabel: data.hero.primary_button_label || "MEET DR. MARIS",
+        secondaryButtonLabel: data.hero.secondary_button_label || "REQUEST AN ONLINE CONSULTATION",
+        secondaryButtonLink: data.hero.secondary_button_link || "/contact",
+        image: data.hero.image ? getMediaUrl(data.hero.image) : data.hero.backgroundImage ? getMediaUrl(data.hero.backgroundImage) : null,
+        imageAlt: data.hero.image_alt || getMediaAlt(data.hero.image || data.hero.backgroundImage, "Dr. Maris, Lead Plastic Surgeon at Maris Aesthetics"),
       }
       : null;
 
@@ -2005,9 +2042,16 @@ export async function getAboutPage(isDraftMode: boolean = false): Promise<any> {
         "about.mission-vision": "mission-vision",
         "about.core-values": "core-values",
         "about.doctors": "doctors",
-        "about.featured-services": "featured-services",
-        "about.why-choose-us": "why-choose",
-        "about.booking": "booking",
+      "about.featured-services": "featured-services",
+      "about.why-choose-us": "why-choose",
+      "about.booking": "booking",
+      "about.surgeon-process": "surgeon-process",
+      "about.assessment": "assessment",
+      "about.surgeon-profile": "surgeon-profile",
+      "about.revision": "revision",
+      "about.international": "international",
+      "about.consultation": "consultation",
+      "about.hospital": "hospital",
     };
     const sections = sectionBlocks
       .map((section: any) => sectionKeys[section.__component] || "")
@@ -2015,6 +2059,11 @@ export async function getAboutPage(isDraftMode: boolean = false): Promise<any> {
 
     return {
       hero,
+      // Keep the complete dynamic-zone payload available to the Stitch About
+      // page. The later About sections (including surgeon-profile) are read
+      // by component UID, so omitting this array silently forces the UI to
+      // use fallback content and images.
+      aboutSections: sectionBlocks,
       missionVision,
       doctorsSlider,
       featuredServices,

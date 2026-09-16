@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_about_surgeon_profiles",
+  "info": { "displayName": "Surgeon Profile" },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "role": { "type": "string" },
+    "description": { "type": "text" },
+    "philosophy_title": { "type": "string" },
+    "philosophy_description": { "type": "text" },
+    "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "image_alt": { "type": "string" }
+  }
+}

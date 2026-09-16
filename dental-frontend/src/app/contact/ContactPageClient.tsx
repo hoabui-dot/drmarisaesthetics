@@ -33,12 +33,6 @@ function resolveGlobalContacts(settings?: ContactMapSettings) {
   if (settings.phonePrimary?.trim()) {
     contacts.push({ type: 'hotline' as const, label: 'Phone', value: settings.phonePrimary.trim(), href: normalizePhoneHref(settings.phonePrimary) })
   }
-  if (settings.phoneSecondary?.trim()) {
-    contacts.push({ type: 'hotline' as const, label: 'Phone', value: settings.phoneSecondary.trim(), href: normalizePhoneHref(settings.phoneSecondary) })
-  }
-  if (settings.email?.trim()) {
-    contacts.push({ type: 'email' as const, label: 'Email', value: settings.email.trim(), href: `mailto:${settings.email.trim()}` })
-  }
   return contacts
 }
 

@@ -18,11 +18,7 @@ const staticNavigation: Navigation = {
   navigation: [
     { id: 1, label: 'About', href: '/about-us' },
     { id: 2, label: 'Our Team', href: '/our-team' },
-    { id: 3, label: 'Face', href: '/face/rhinoplasty', children: [
-      { id: 31, label: 'Rhinoplasty', href: '/face/rhinoplasty' },
-    ] },
-    { id: 4, label: 'Treatments', href: '/treatments' },
-    { id: 7, label: 'Services', href: '/services', children: [
+    { id: 3, label: 'Services', href: '/services', children: [
       { id: 71, label: 'Blepharoplasty', href: '/services/blepharoplasty' },
       { id: 72, label: 'Breast Augmentation', href: '/services/breast-augmentation' },
       { id: 73, label: 'Buttock Augmentation', href: '/services/buttock-augmentation' },
@@ -32,7 +28,9 @@ const staticNavigation: Navigation = {
       { id: 77, label: 'Liposuction', href: '/services/liposuction' },
       { id: 78, label: 'Rhinoplasty', href: '/services/rhinoplasty' },
     ] },
+    { id: 4, label: 'Treatments', href: '/treatments' },
     { id: 5, label: 'Results', href: '/results' },
+    { id: 7, label: 'Journal', href: '/news' },
     { id: 6, label: 'Contact', href: '/contact' },
   ],
   ctaText: 'BOOK A CONSULTATION',
@@ -41,11 +39,11 @@ const staticNavigation: Navigation = {
 
 const staticFooter: FooterData = {
   description: 'A surgeon-led aesthetic practice providing personalized, hospital-based cosmetic surgery care in Ho Chi Minh City.',
-  contactInfo: { id: 1, address: 'City International Hospital, Ho Chi Minh City, Vietnam', phone: '+84 28 1234 5678', email: 'concierge@drmarisaesthetics.com' },
+  contactInfo: { id: 1, address: 'City International Hospital, Ho Chi Minh City, Vietnam', phone: '+84 28 1234 5678', email: '' },
   links: [],
   linkGroups: [
-    { id: 1, heading: 'EXPLORE', links: [{ id: 1, label: 'About Us', href: '/about-us' }, { id: 2, label: 'Our Team', href: '/our-team' }, { id: 3, label: 'Patient Results', href: '/results' }] },
-    { id: 2, heading: 'PATIENTS', links: [{ id: 4, label: 'Rhinoplasty', href: '/face/rhinoplasty' }, { id: 5, label: 'Contact & Consultation', href: '/contact' }, { id: 6, label: 'Medical Disclaimer', href: '/medical-disclaimer' }] },
+    { id: 1, heading: 'EXPLORE', links: [{ id: 1, label: 'About Us', href: '/about-us' }, { id: 2, label: 'Our Team', href: '/our-team' }, { id: 3, label: 'Services', href: '/services' }, { id: 4, label: 'Treatments', href: '/treatments' }] },
+    { id: 2, heading: 'PATIENT JOURNEY', links: [{ id: 5, label: 'Patient Results', href: '/results' }, { id: 6, label: 'Patient Journal', href: '/news' }, { id: 7, label: 'Contact & Consultation', href: '/contact' }, { id: 8, label: 'Medical Disclaimer', href: '/medical-disclaimer' }] },
   ],
   socialLinks: [],
   appointmentLabel: 'BOOK A CONSULTATION',
@@ -109,7 +107,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
       ...staticFooter.contactInfo,
       address: websiteSetting.address || staticFooter.contactInfo.address,
       phone: websiteSetting.phonePrimary || staticFooter.contactInfo.phone,
-      email: websiteSetting.email || staticFooter.contactInfo.email,
+      email: '',
     },
     socialLinks: websiteSetting.socialLinks.map((link, index) => ({
       id: link.id || index + 1,
@@ -124,7 +122,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     <html lang="vi">
       <body className="antialiased flex flex-col min-h-screen">
         <ReCaptchaProvider>
-          <BookingModalWrapper serviceOptions={serviceOptions}>
+          <BookingModalWrapper serviceOptions={serviceOptions} bookingForm={websiteSetting?.bookingForm}>
             <CallModalWrapper>
             <Header navigation={navigation} logoSrc={websiteSetting?.logo?.url} />
             <GlobalCtaProvider value={websiteSetting?.globalCta}>

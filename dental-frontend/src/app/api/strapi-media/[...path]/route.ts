@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const STRAPI_URL = (process.env.STRAPI_URL || "http://smilux-strapi:22345").replace(/\/$/, "");
+const STRAPI_URL = (process.env.STRAPI_URL || "http://drmaris-strapi:22345").replace(/\/$/, "");
 
 type RouteContext = {
   params: Promise<{ path: string[] }>;

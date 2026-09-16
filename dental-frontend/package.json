@@ -14,7 +14,6 @@
     "docker:down": "docker-compose down",
     "docker:logs": "docker-compose logs -f",
     "docker:restart": "docker-compose restart",
-    "docker:clean": "docker-compose down -v",
     "docker:prod:build": "docker-compose build --no-cache",
     "docker:prod:up": "docker-compose up -d",
     "docker:prod:down": "docker-compose down",
