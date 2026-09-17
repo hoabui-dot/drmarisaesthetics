@@ -1,4 +1,5 @@
 import './seo-help.css'
+import vietnameseTranslations from './i18n/vi.json'
 
 type AdminResponsePayload = {
   error?: unknown
@@ -110,6 +111,9 @@ export default {
   // remains Strapi's fallback; Vietnamese is exposed in Profile → Experience.
   config: {
     locales: ['vi'],
+    translations: {
+      vi: vietnameseTranslations,
+    },
   },
 
   bootstrap() {

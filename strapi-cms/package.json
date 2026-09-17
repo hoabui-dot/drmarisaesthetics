@@ -10,6 +10,7 @@
     "strapi": "strapi",
     "deploy": "strapi deploy",
     "type-check": "tsc --noEmit",
+    "check:admin-translations": "node scripts/check-admin-translations.cjs",
     "lint": "eslint .",
     "test:docx": "node --test test/docx-better-blocks.test.cjs",
     "lint:fix": "eslint . --fix"

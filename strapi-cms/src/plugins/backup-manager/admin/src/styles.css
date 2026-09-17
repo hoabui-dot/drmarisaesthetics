@@ -1,0 +1,61 @@
+.backup-manager-page {
+  min-height: 100%;
+  background: var(--backup-manager-page-background);
+}
+
+.backup-manager-hero {
+  border-bottom: 1px solid var(--backup-manager-border);
+  background: var(--backup-manager-surface);
+}
+
+.backup-manager-progress {
+  width: 100%;
+  border: 1px solid var(--backup-manager-border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgb(16 24 40 / 6%);
+}
+
+.backup-manager-progress__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.backup-manager-progress__bar [role='progressbar'] {
+  height: 16px;
+  overflow: hidden;
+  border-radius: 999px;
+}
+
+.backup-manager-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+.backup-manager-card {
+  display: flex;
+  min-height: 270px;
+  flex-direction: column;
+  border: 1px solid var(--backup-manager-border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgb(16 24 40 / 4%);
+}
+
+.backup-manager-card__action {
+  margin-top: auto;
+}
+
+@media (max-width: 900px) {
+  .backup-manager-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .backup-manager-progress__header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+}
