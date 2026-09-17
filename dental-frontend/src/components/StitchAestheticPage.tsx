@@ -196,6 +196,19 @@ export function StitchAboutUs({ heroImage, content }: { heroImage?: string | nul
   const cmsConsultation = sectionOf('about.consultation')
   const cmsHospital = sectionOf('about.hospital')
   const cmsImage = (value: unknown, fallback: string) => getMediaUrl(value) || fallback
+  const cmsProcessSteps = Array.isArray(cmsProcess.steps) && cmsProcess.steps.length
+    ? cmsProcess.steps.map((step: any, index: number) => {
+      const fallback = aboutPlanningSteps[index] || planningSteps[index]
+      return {
+        ...fallback,
+        number: step.number || fallback?.number || String(index + 1).padStart(2, '0'),
+        title: step.title || fallback?.title || '',
+        description: step.description || fallback?.description || '',
+        image: getMediaUrl(step.image) || fallback?.image || '',
+        imageAlt: step.image_alt || fallback?.imageAlt || '',
+      }
+    })
+    : aboutPlanningSteps
   const heroEyebrow = cmsHero.eyebrow || 'SURGEON-LED COSMETIC SURGERY · HO CHI MINH CITY'
   const heroTitle = cmsHero.title || cmsHero.headingPrimary || 'About Us'
   const heroLead = cmsHero.editorialLead || cmsHero.supportingParagraph || 'Cosmetic surgery should begin with a medical assessment, a clear surgical plan and confidence in the surgeon responsible for your care.'
@@ -235,7 +248,7 @@ export function StitchAboutUs({ heroImage, content }: { heroImage?: string | nul
       eyebrow="DIRECT SURGEON CARE"
       title={cmsProcess.title || 'Cosmetic Surgery Built Around Direct Surgeon Involvement'}
       description={cmsProcess.description || 'At Maris Aesthetics, the surgeon who consults with you should be the one who operates on you and oversees your recovery. Every stage is planned around the patient, not a procedure menu.'}
-      steps={Array.isArray(cmsProcess.steps) && cmsProcess.steps.length ? cmsProcess.steps : aboutPlanningSteps}
+      steps={cmsProcessSteps}
       showActions={false}
     />
 

@@ -34,8 +34,7 @@ export type OurTeamData = {
   hero: { eyebrow: string; title: string; paragraphs: string[]; image: string; imageAlt: string }
   surgicalCare: { title: string; heading: string; paragraphs: string[]; steps: Array<string | { number: string; title: string; description: string; image?: string; imageAlt?: string }>; image: string; imageAlt: string; experience: string; experienceLabel: string }
   revision: { eyebrow: string; title: string; heading: string; description: string; calloutTitle: string; calloutDescription: string; concerns: Array<{ title: string; description: string }>; image?: string; imageAlt?: string }
-  internationalPatients: { eyebrow: string; title: string; description: string; steps: Array<{ number: string; title: string; description: string }> }
-  journey: { eyebrow: string; title: string; description: string; steps: Array<{ number: string; title: string; description: string }> }
+  internationalPatients: { eyebrow: string; title: string; description: string; steps: Array<{ title: string }> }
   consultation: { title: string; description: string; fields: { name: string; email: string; phone: string; interest: string; description: string }; interests: string[]; whatsappLabel: string }
   faq: { eyebrow: string; title: string; backgroundImage?: string; items: Array<{ question: string; answer: string }> }
 }
@@ -135,25 +134,12 @@ export const ourTeamMockData: OurTeamData = {
     title: 'Planning Plastic Surgery in Vietnam From Overseas',
     description: 'Patients from Australia, New Zealand, the United States, Europe and other international markets can begin their consultation process before traveling.',
     steps: [
-      { number: '01', title: 'Send Your Case', description: 'Provide relevant concerns, photographs, medical history, previous surgical information, and implant details where applicable.' },
-      { number: '02', title: 'Online Consultation', description: 'Preliminary consultation before travel. Remote consultation does not replace physical examination.' },
-      { number: '03', title: 'Travel to Ho Chi Minh City', description: 'Patient arrives for in-person assessment and clinical evaluation at our facility.' },
-      { number: '04', title: 'Final Examination & Surgical Planning', description: 'Dr. Maris confirms suitability and finalizes the surgical plan based on physical findings.' },
-      { number: '05', title: 'Surgery at CIH', description: 'Hospital-based cosmetic surgery performed in a fully accredited international hospital setting.' },
-      { number: '06', title: 'Recovery & Follow-Up', description: 'Recovery and return travel timing depend on the procedure and individual condition.' },
-    ],
-  },
-  journey: {
-    eyebrow: 'The Process',
-    title: 'Your International Patient Journey',
-    description: 'A seamless, medically-supervised experience from your first inquiry to your final recovery.',
-    steps: [
-      { number: '01', title: 'Send Your Case', description: 'Submit your medical history, goals, and high-resolution photos for a preliminary clinical review.' },
-      { number: '02', title: 'Video Consultation', description: 'A direct 1-on-1 video call with Dr. Maris to discuss your surgical plan, expectations, and safety.' },
-      { number: '03', title: 'Travel Planning', description: 'Receive a detailed itinerary, including hospital booking and recommended recovery accommodation.' },
-      { number: '04', title: 'In-Person Exam', description: 'Final clinical examination and pre-operative testing at City International Hospital (CIH).' },
-      { number: '05', title: 'Your Procedure', description: 'Surgery performed by Dr. Maris in a fully accredited international hospital setting.' },
-      { number: '06', title: 'Recovery & Follow-Up', description: 'Post-operative care and long-term follow-up schedule to ensure optimal healing results.' },
+      { title: 'Send Your Case' },
+      { title: 'Online Consultation' },
+      { title: 'Travel to Ho Chi Minh City' },
+      { title: 'Final Examination & Surgical Planning' },
+      { title: 'Surgery at CIH' },
+      { title: 'Recovery & Follow-Up' },
     ],
   },
   consultation: {

@@ -76,8 +76,8 @@ export async function getTreatmentsPage(isDraftMode = false): Promise<TreatmentP
     const heroComponent = components.find((item: any) => item.__component === "treatments-page.hero-section") ?? {};
     const sections: TreatmentPageSection[] = components
       .filter((item: any) => item.__component === "treatments-page.editorial-section")
-      .map((item: any) => ({
-        sectionKey: item.section_key,
+      .map((item: any, index: number) => ({
+        sectionKey: typeof item.section_key === "string" && item.section_key.trim() ? item.section_key : `section-${index + 1}`,
         eyebrow: item.eyebrow || undefined,
         title: item.title,
         lead: item.lead || undefined,
@@ -294,7 +294,6 @@ export async function getOurTeam(isDraftMode: boolean = false): Promise<OurTeamD
     const revision = sections.find((section: any) => section.__component === "our-team.revision-section");
     const professional = sections.find((section: any) => section.__component === "our-team.professional-section");
     const international = sections.find((section: any) => section.__component === "our-team.international-section");
-    const journey = sections.find((section: any) => section.__component === "our-team.journey-section");
     const consultation = sections.find((section: any) => /consultation/i.test(section.eyebrow || section.title || ""));
     const faq = sections.find((section: any) => section.__component === "our-team.faq-section");
     const authority = sections.find((section: any) => section.__component === "our-team.authority-section");
@@ -360,8 +359,7 @@ export async function getOurTeam(isDraftMode: boolean = false): Promise<OurTeamD
         imageAlt: revision.image_alt || ourTeamMockData.revision.imageAlt,
       } : ourTeamMockData.revision,
       internationalImage: image(international?.image) || ourTeamMockData.internationalImage,
-      internationalPatients: international ? { ...ourTeamMockData.internationalPatients, eyebrow: international.eyebrow || ourTeamMockData.internationalPatients.eyebrow, title: international.title || ourTeamMockData.internationalPatients.title, description: international.description || ourTeamMockData.internationalPatients.description, steps: international.steps || ourTeamMockData.internationalPatients.steps } : ourTeamMockData.internationalPatients,
-      journey: journey ? { ...ourTeamMockData.journey, eyebrow: journey.eyebrow || ourTeamMockData.journey.eyebrow, title: journey.title || ourTeamMockData.journey.title, description: journey.description || ourTeamMockData.journey.description, steps: journey.steps || ourTeamMockData.journey.steps } : ourTeamMockData.journey,
+      internationalPatients: international ? { ...ourTeamMockData.internationalPatients, eyebrow: international.eyebrow || ourTeamMockData.internationalPatients.eyebrow, title: international.title || ourTeamMockData.internationalPatients.title, description: international.description || ourTeamMockData.internationalPatients.description, steps: Array.isArray(international.steps) ? international.steps.map((step: any) => ({ title: step.title || '' })).filter((step: any) => step.title) : ourTeamMockData.internationalPatients.steps } : ourTeamMockData.internationalPatients,
       consultation: consultation ? { ...ourTeamMockData.consultation, title: consultation.title || ourTeamMockData.consultation.title, description: consultation.description || ourTeamMockData.consultation.description } : ourTeamMockData.consultation,
       faq: faq ? { ...ourTeamMockData.faq, eyebrow: faq.eyebrow || ourTeamMockData.faq.eyebrow, title: faq.title || ourTeamMockData.faq.title, backgroundImage: image(faq.background_image), items: (faq.items || []).map((item: any) => ({ question: item.question, answer: item.answer })) } : ourTeamMockData.faq,
     };

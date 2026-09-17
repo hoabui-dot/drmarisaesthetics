@@ -2,5 +2,11 @@
   "collectionName": "components_homepage_process_steps",
   "info": { "displayName": "Process step" },
   "options": {},
-  "attributes": { "number": { "type": "string" }, "title": { "type": "string", "required": true }, "description": { "type": "text" } }
+  "attributes": {
+    "number": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "description": { "type": "text" },
+    "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "image_alt": { "type": "string" }
+  }
 }

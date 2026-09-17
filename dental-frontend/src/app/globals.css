@@ -603,6 +603,9 @@
 .contact-page .contact-hero-subtitle { margin:0 0 1.5rem; color:var(--editorial-blue); font-size:.75rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; }
 .contact-page .contact-hero-description { max-width:38rem; margin:0; color:var(--editorial-muted); font-size:var(--stitch-font-size-body); line-height:1.75; }
 .contact-page .contact-hero-image { position:relative; min-height:32rem; overflow:hidden; border-radius:.45rem; box-shadow:0 1.5rem 3rem rgba(29,27,24,.12); }
+.contact-page .contact-hero-image::before,
+.contact-page .contact-hero-image::after { display:none; content:none; }
+.contact-page .contact-hero-image img { filter:none; opacity:1; mix-blend-mode:normal; }
 .contact-page .contact-hero-actions { display:flex; flex-wrap:wrap; align-items:center; gap:1.5rem; margin-top:2rem; }
 .contact-editorial-button { display:inline-flex; align-items:center; gap:.55rem; padding:1rem 1.5rem; color:#fff; background:var(--editorial-ink); font-size:.72rem; font-weight:700; letter-spacing:.09em; text-transform:uppercase; }
 .contact-editorial-button:hover { background:var(--editorial-blue); }
@@ -940,8 +943,8 @@
 .stitch-surgical-atlas__visual-wrap { position:sticky; top:6rem; }
 .stitch-surgical-atlas__visual { position:relative; min-height:clamp(28rem,43vw,40rem); overflow:hidden; isolation:isolate; background:var(--stitch-color-clinical-surface); }
 .stitch-surgical-atlas__image { position:absolute; z-index:0; inset:0; transform-origin:center; }
-.stitch-surgical-atlas__image img { filter:saturate(.78) contrast(.98); }
-.stitch-surgical-atlas__wash { position:absolute; z-index:1; inset:0; background:linear-gradient(135deg,rgba(248,250,252,.28),transparent 48%,rgba(0,45,114,.12)); pointer-events:none; }
+.stitch-surgical-atlas__image img { filter:none; opacity:1; mix-blend-mode:normal; }
+.stitch-surgical-atlas__wash { display:none; }
 .stitch-surgical-atlas__curtain { position:absolute; z-index:3; inset:0; transform-origin:bottom; background:var(--stitch-color-clinical-surface); pointer-events:none; }
 .stitch-surgical-atlas__overlay { position:absolute; z-index:2; inset:0; width:100%; height:100%; padding:10%; color:var(--stitch-color-glass-blue); pointer-events:none; }
 .stitch-surgical-atlas__overlay--closed { color:var(--stitch-color-deep-navy); }
@@ -989,6 +992,7 @@
   content: "";
   pointer-events: none;
 }
+.stitch-treatment-landing__hero::before { display: none; }
 .stitch-treatment-hero__media {
   position: absolute;
   z-index: 0;
@@ -997,6 +1001,9 @@
   height: 100%;
   background: var(--stitch-color-clinical-surface);
 }
+.stitch-treatment-landing__hero .stitch-treatment-hero__media { opacity: 1; }
+.stitch-treatment-landing__hero .stitch-treatment-hero__media::after { display: none; }
+.stitch-treatment-landing__hero .stitch-treatment-hero__media img { filter: none; opacity: 1; mix-blend-mode: normal; }
 .stitch-treatment-hero__media::after {
   position: absolute;
   z-index: 1;
@@ -1035,7 +1042,7 @@
   .stitch-treatment-hero__media {
     position: absolute;
     height: 34rem;
-    opacity: .42;
+    opacity: 1;
   }
   .stitch-treatment-hero__media::after {
     background: transparent;
@@ -1065,7 +1072,32 @@
   }
 }
 .stitch-home-hero__image, .stitch-about-image, .stitch-portrait, .stitch-clinic-image { position: relative; min-height: 30rem; overflow: hidden; }
-.stitch-homepage .stitch-home-hero__image { min-height: var(--stitch-hero-content-min-height); height: 100%; margin: 0 clamp(1.25rem, 8vw, 8rem) 0 0; border-radius: 0; box-shadow: 0 1.5rem 3rem var(--stitch-color-hero-shadow); }
+.stitch-homepage .stitch-home-hero__image {
+  min-height: var(--stitch-hero-content-min-height);
+  height: 100%;
+  margin: 0 clamp(1.25rem, 8vw, 8rem) 0 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.stitch-homepage .stitch-home-hero__image img { object-position: center top; }
+.stitch-homepage .stitch-home-hero__image::before,
+.stitch-homepage .stitch-home-hero__image::after,
+.stitch-homepage .stitch-home-hero__image .stitch-image-wash {
+  display: none;
+  background: none;
+  content: none;
+}
+.stitch-treatment-landing__block--cms > header { margin-bottom: 2rem; }
+.stitch-treatment-landing__cms-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(18rem, .9fr); align-items: start; gap: 2.5rem; }
+.stitch-treatment-landing__block--cms .stitch-treatment-landing__copy { min-width: 0; }
+.stitch-treatment-landing__cms-items { display: grid; gap: 1rem; margin-top: 1.75rem; }
+.stitch-treatment-landing__cms-items article { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); gap: .9rem; padding-top: 1rem; border-top: 1px solid var(--stitch-color-proof-divider); }
+.stitch-treatment-landing__cms-items article > span { color: var(--stitch-color-glass-blue); font-family: var(--stitch-font-family-display); font-size: 1.45rem; font-weight: 700; line-height: 1; }
+.stitch-treatment-landing__cms-items h3 { margin: 0 0 .4rem; color: var(--stitch-color-deep-navy); font-size: var(--stitch-font-size-heading-3); }
+.stitch-treatment-landing__cms-items p { margin: 0; }
+.stitch-treatment-landing__block--cms .stitch-treatment-landing__image { min-height: 20rem; margin-top: 0; }
+.stitch-treatment-landing__empty-note { color: var(--stitch-color-muted); font-style: italic; }
+@media (max-width: 900px) { .stitch-treatment-landing__cms-layout { grid-template-columns: 1fr; gap: 1.5rem; } .stitch-treatment-landing__block--cms .stitch-treatment-landing__image { min-height: 16rem; } }
 .stitch-our-team .stitch-home-hero__image { min-height: 43rem; height: 100%; margin: 0; border-radius: 0; }
 .stitch-image-wash { position: absolute; z-index: 1; inset: 0; background: linear-gradient(90deg, var(--stitch-color-hero-wash), transparent 55%); mix-blend-mode: multiply; }
 .stitch-dark { color: #fff; background: var(--stitch-navy); }
@@ -1112,6 +1144,8 @@
 .planning-process__visual-wash { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, color-mix(in srgb, var(--stitch-color-deep-navy) 8%, transparent), color-mix(in srgb, var(--stitch-color-deep-navy) 82%, transparent)); }
 .planning-process__visual-kicker { position: absolute; top: 1.5rem; left: 1.5rem; z-index: 2; color: var(--stitch-color-clinical-surface); font-size: var(--stitch-font-size-kicker); font-weight: 700; letter-spacing: .15em; }
 .planning-process__visual-label { position: absolute; right: 1.5rem; bottom: 1.5rem; z-index: 2; max-width: 14rem; color: var(--stitch-color-clinical-surface); font-family: var(--stitch-font-family-display); font-size: 1.45rem; font-weight: var(--stitch-font-weight-display-medium); line-height: 1.05; text-align: right; text-shadow: 0 1px 1rem color-mix(in srgb, var(--stitch-color-deep-navy) 75%, transparent); }
+.about-surgeon-process .planning-process__visual-wash { display: none; }
+.about-surgeon-process .planning-process__visual-label { text-shadow: none; }
 .planning-process__steps-wrap { position: relative; min-width: 0; }
 .planning-process__connector { position: absolute; top: 0; bottom: 0; left: 1.05rem; width: 1px; background: var(--stitch-color-proof-divider); }
 .planning-process__connector span { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--stitch-color-glass-blue); transform: scaleY(0); transform-origin: top center; }
@@ -1434,6 +1468,7 @@
 }
 .stitch-about-intro { padding: 10rem 0 6rem; }
 .stitch-about-intro h2 { color: var(--stitch-color-deep-navy); white-space: nowrap; word-break: keep-all; overflow-wrap: normal; }
+.stitch-about-intro .stitch-about-image > img { object-position: center top; }
 .stitch-about-story-heading .stitch-grid { gap: clamp(2rem, 5vw, 5rem); margin-top: 1.5rem; align-items: start; }
 .stitch-about-story-heading h2 { margin-top: 0; }
 .stitch-about-story-note { max-width: 42rem !important; margin-top: 3rem !important; }
@@ -1627,21 +1662,11 @@
 .our-team-international ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .our-team-international blockquote { margin: 2rem 0; padding: 1.5rem; border-left: 4px solid var(--stitch-color-glass-blue); color: var(--stitch-color-deep-navy); background: var(--stitch-color-white); font-family: var(--stitch-font-family-display); font-size: 1.75rem; font-style: italic; line-height: 1.25; }
 .our-team-international__media { min-height: 40rem; }
-.our-team-journey { padding: 6rem 0; background: var(--stitch-color-white); }
-.our-team-journey h2, .our-team-faq h2 { max-width: 48rem; margin: 1rem 0 1.25rem; }
-.our-team-journey > .stitch-container > p { max-width: 42rem; }
-.our-team-journey ol { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 2rem 0 0; padding: 0; list-style: none; }
-.our-team-journey li { display: flex; gap: 1rem; padding: 1.25rem; border: 1px solid var(--stitch-color-border); background: var(--stitch-color-clinical-surface); }
-.our-team-journey li b { color: var(--stitch-color-glass-blue); font-family: var(--stitch-font-family-display); font-size: 1.8rem; }
-.our-team-journey li h3 { margin: 0 0 .4rem; }
-.our-team-journey li p { margin: 0; color: var(--stitch-color-muted); }
 .our-team-faq { padding: 6rem 0; background: var(--stitch-color-clinical-surface); }
 .our-team-faq > .stitch-container > div { display: grid; gap: .75rem; max-width: 54rem; }
 .our-team-faq details { border-bottom: 1px solid var(--stitch-color-border); padding: 1rem 0; }
 .our-team-faq summary { cursor: pointer; font-weight: 700; color: var(--stitch-color-deep-navy); }
 .our-team-faq details p { margin: .75rem 0 0; color: var(--stitch-color-muted); }
-@media (max-width: 900px) { .our-team-journey ol { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 560px) { .our-team-journey ol { grid-template-columns: 1fr; } }
 @media (max-width: 900px) { .our-team-profile-hero, .our-team-authority, .our-team-professional, .our-team-credentials, .our-team-revision, .our-team-hospital, .our-team-international { padding: 4.5rem 0; } .our-team-profile-hero__grid, .our-team-professional__grid, .our-team-credentials__grid, .our-team-revision__grid, .our-team-hospital__grid, .our-team-international__grid { grid-template-columns: 1fr; gap: 3rem; } .our-team-profile-hero__media { max-height: 32rem; } .our-team-profile-hero__media > .our-team-profile-hero__image { max-height: 32rem; } .our-team-revision__media, .our-team-international__media { min-height: 32rem; } .our-team-profile-hero__media > span { display: none; } .our-team-authority__grid { grid-template-columns: 1fr; } .our-team-timeline { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .our-team-profile-hero__heading h2 { font-size: var(--stitch-font-size-hero-title-mobile); } .our-team-profile-hero__media { max-height: 27rem; } .our-team-profile-hero__media > .our-team-profile-hero__image { max-height: 27rem; } .our-team-professional__media, .our-team-revision__media, .our-team-hospital__media, .our-team-international__media { min-height: 24rem; } .our-team-revision__concerns, .our-team-international ul { grid-template-columns: 1fr; } .our-team-credential-list > div { display: grid; gap: .35rem; } .our-team-credential-list p { text-align: left; } }
 

@@ -1,0 +1,8 @@
+{
+  "collectionName": "components_our_team_international_steps",
+  "info": { "displayName": "Our Team international patient step" },
+  "options": {},
+  "attributes": {
+    "title": { "type": "string", "required": true }
+  }
+}

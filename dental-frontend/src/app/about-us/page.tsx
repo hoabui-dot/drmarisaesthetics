@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { buildSeoMetadata } from '@/src/lib/seo/seo-manager'
 import { resolveStructuredData, StructuredDataScript } from '@/src/lib/seo/structured-data'
 import { StitchAboutUs } from '@/src/components/StitchAestheticPage'
-import { getAboutPage, getMediaUrl } from '@/src/lib/api/queries'
+import { getAboutPage } from '@/src/lib/api/queries'
 
 /**
  * About Us Page

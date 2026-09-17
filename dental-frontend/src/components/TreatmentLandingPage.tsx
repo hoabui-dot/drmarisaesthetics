@@ -9,6 +9,7 @@ import { useBookingModal } from '@/src/components/booking-modal/BookingModalCont
 import { ConsultationCtaSection } from '@/src/components/blocks/ConsultationCtaSection'
 import { useLazySectionMotion } from '@/src/hooks/useLazySectionMotion'
 import type { TreatmentPageData } from '@/src/types/treatments-page'
+import { TreatmentEditorialSection } from '@/src/components/TreatmentEditorialSection'
 
 const images = {
   hero: '/api/strapi-media/uploads/aec6099c_fa9c_4a93_9158_e3d6baed5fa5_1b2cfb60ff.png',
@@ -129,9 +130,20 @@ export function TreatmentLandingPage({ data }: { data?: TreatmentPageData }) {
   useLazySectionMotion(pageRef)
   useSurgicalAtlasMotion(atlasRef)
 
-  const overview = data?.sections.find((section) => section.sectionKey === 'overview')
-  const concernsSection = data?.sections.find((section) => section.sectionKey === 'concerns')
-  const methodology = data?.sections.find((section) => section.sectionKey === 'methodology')
+  const editorialSections = data?.sections || []
+  const overview = editorialSections.find((section) => section.sectionKey.trim().toLowerCase() === 'overview')
+  const concernsSection = editorialSections.find((section) => section.sectionKey.trim().toLowerCase() === 'concerns')
+  const methodology = editorialSections.find((section) => section.sectionKey.trim().toLowerCase() === 'methodology')
+  const consumedKeys = new Set<string>()
+  const additionalSections = editorialSections.flatMap((section, index) => {
+    const key = section.sectionKey.trim().toLowerCase()
+    if (['overview', 'concerns', 'methodology'].includes(key) && !consumedKeys.has(key)) {
+      consumedKeys.add(key)
+      return []
+    }
+    const slug = key.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'section'
+    return [{ section, index, anchorId: `${slug}-${index + 1}` }]
+  })
   const heroImage = data?.hero.image || images.hero
   const overviewImage = overview?.image || images.consultation
   const methodologyImage = methodology?.image || images.consultation
@@ -140,6 +152,7 @@ export function TreatmentLandingPage({ data }: { data?: TreatmentPageData }) {
     ['overview', overview?.title || guide[0][1]],
     ['concerns', concernsSection?.title || guide[1][1]],
     ['methodology', methodology?.title || guide[2][1]],
+    ...additionalSections.map(({ anchorId, section }) => [anchorId, section.title] as [string, string]),
   ]
 
   return <main ref={pageRef} className="stitch-page stitch-treatment-landing">
@@ -160,7 +173,8 @@ export function TreatmentLandingPage({ data }: { data?: TreatmentPageData }) {
         <div className="stitch-treatment-landing__article">
           <article id="overview" className="stitch-treatment-landing__block"><span className="stitch-kicker">{overview?.eyebrow || 'OVERVIEW'}</span><h2>{overview?.title || 'What is Rhinoplasty?'}</h2><div className="stitch-treatment-landing__copy"><p>{overview?.paragraphOne || 'Rhinoplasty, commonly referred to as a nose job, is a highly refined surgical procedure designed to alter the shape, size, or proportions of the nose. At DR. MARIS AESTHETICS, we approach rhinoplasty not just as an aesthetic enhancement, but as a meticulous restructuring that honors your foundational facial architecture.'}</p><p>{overview?.paragraphTwo || 'Our philosophy is rooted in sterile warmth—combining surgical precision with a deep understanding of natural aesthetic harmony. Whether addressing cosmetic concerns or functional breathing issues, our goal is to create a result that looks entirely native to your face, enhancing your features without looking operated on.'}</p></div><div className="stitch-treatment-landing__image"><ReferenceImage src={overviewImage} alt={overview?.imageAlt || 'Patient consulting with a plastic surgeon in a premium medical consultation room'} /></div></article>
           <article id="concerns" className="stitch-treatment-landing__block"><span className="stitch-kicker">{concernsSection?.eyebrow || 'PATIENT-CENTRED PLANNING'}</span><h2>{concernsSection?.title || 'Designed Around Your Concerns'}</h2><div className="stitch-treatment-landing__concerns">{concernItems.map((item) => <div key={item.title}><h3><CheckCircle2 size={17} aria-hidden="true" />{item.title}</h3><p>{item.description}</p></div>)}</div></article>
-          <article ref={atlasRef} id="methodology" className="stitch-treatment-landing__block stitch-surgical-atlas"><header className="stitch-surgical-atlas__heading" data-atlas-entrance><span className="stitch-kicker">{methodology?.eyebrow || 'SURGICAL METHODOLOGY'}</span><h2>{methodology?.title || 'The Science of Rhinoplasty'}</h2><p className="stitch-treatment-landing__lead">{methodology?.lead || 'Understanding the structural approach is key to achieving optimal results. Depending on your specific anatomical needs, we employ either an open or closed technique.'}</p></header><div className="stitch-surgical-atlas__layout"><div className="stitch-surgical-atlas__visual-wrap" data-atlas-entrance><div className="stitch-surgical-atlas__visual"><div className="stitch-surgical-atlas__image" data-atlas-image><ReferenceImage src={methodologyImage} alt={methodology?.imageAlt || 'Clinical consultation supporting rhinoplasty structural planning'} /></div><span className="stitch-surgical-atlas__curtain" data-atlas-curtain aria-hidden="true" /><div className="stitch-surgical-atlas__wash" aria-hidden="true" /><svg className="stitch-surgical-atlas__overlay stitch-surgical-atlas__overlay--open" data-atlas-overlay="open" viewBox="0 0 400 500" aria-hidden="true"><path d="M116 160 C155 140 207 142 247 165 C270 179 278 199 274 220" fill="none" stroke="currentColor" strokeWidth="2" strokeDasharray="1000" strokeDashoffset="1000" data-atlas-trace="open" /><circle cx="274" cy="220" r="4" fill="currentColor" /></svg><svg className="stitch-surgical-atlas__overlay stitch-surgical-atlas__overlay--closed" data-atlas-overlay="closed" viewBox="0 0 400 500" aria-hidden="true"><path d="M142 176 C178 164 223 168 258 190 C271 199 279 211 280 224" fill="none" stroke="currentColor" strokeWidth="2" strokeDasharray="1000" strokeDashoffset="1000" data-atlas-trace="closed" /><circle cx="280" cy="224" r="4" fill="currentColor" /></svg><div className="stitch-surgical-atlas__meta" data-atlas-entrance><span>FIG. 01</span><strong>RHINOPLASTY / STRUCTURAL ACCESS</strong></div></div></div><div className="stitch-surgical-atlas__chapters">{(methodology?.items.length ? methodology.items : [{ number: '01', title: 'Open Rhinoplasty', description: 'Involves a small incision across the columella, providing full visibility of the nasal framework for intricate restructuring and precise modifications.' }, { number: '02', title: 'Closed Rhinoplasty', description: 'All incisions are hidden inside the nostrils, resulting in no visible scarring and generally a faster initial recovery time, ideal for minor refinements.' }]).map((item, index) => <article key={item.title} tabIndex={0} data-atlas-technique={index === 1 ? 'closed' : 'open'} data-atlas-entrance><span className="stitch-surgical-atlas__chapter-number">{item.number || String(index + 1).padStart(2, '0')}</span><h3>{item.title}</h3><p>{item.description}</p><span className="stitch-surgical-atlas__rule" aria-hidden="true" /></article>)}</div></div></article>
+          <article ref={atlasRef} id="methodology" className="stitch-treatment-landing__block stitch-surgical-atlas"><header className="stitch-surgical-atlas__heading" data-atlas-entrance><span className="stitch-kicker">{methodology?.eyebrow || 'SURGICAL METHODOLOGY'}</span><h2>{methodology?.title || 'The Science of Rhinoplasty'}</h2><p className="stitch-treatment-landing__lead">{methodology?.lead || 'Understanding the structural approach is key to achieving optimal results. Depending on your specific anatomical needs, we employ either an open or closed technique.'}</p></header><div className="stitch-surgical-atlas__layout"><div className="stitch-surgical-atlas__visual-wrap" data-atlas-entrance><div className="stitch-surgical-atlas__visual"><div className="stitch-surgical-atlas__image"><ReferenceImage src={methodologyImage} alt={methodology?.imageAlt || 'Clinical consultation supporting rhinoplasty structural planning'} /></div></div></div><div className="stitch-surgical-atlas__chapters">{(methodology?.items.length ? methodology.items : [{ number: '01', title: 'Open Rhinoplasty', description: 'Involves a small incision across the columella, providing full visibility of the nasal framework for intricate restructuring and precise modifications.' }, { number: '02', title: 'Closed Rhinoplasty', description: 'All incisions are hidden inside the nostrils, resulting in no visible scarring and generally a faster initial recovery time, ideal for minor refinements.' }]).map((item, index) => <article key={item.title} tabIndex={0} data-atlas-technique={index === 1 ? 'closed' : 'open'} data-atlas-entrance><span className="stitch-surgical-atlas__chapter-number">{item.number || String(index + 1).padStart(2, '0')}</span><h3>{item.title}</h3><p>{item.description}</p><span className="stitch-surgical-atlas__rule" aria-hidden="true" /></article>)}</div></div></article>
+          {additionalSections.map(({ section, index, anchorId }) => <TreatmentEditorialSection key={anchorId} section={section} anchorId={anchorId} index={index} />)}
         </div>
       </div>
     </section>

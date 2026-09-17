@@ -9,7 +9,6 @@
     "description": { "type": "text" },
     "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
     "image_alt": { "type": "string" },
-    "items": { "type": "component", "repeatable": true, "component": "our-team.item" },
-    "steps": { "type": "component", "repeatable": true, "component": "our-team.step" }
+    "steps": { "type": "component", "repeatable": true, "component": "our-team.international-step" }
   }
 }
