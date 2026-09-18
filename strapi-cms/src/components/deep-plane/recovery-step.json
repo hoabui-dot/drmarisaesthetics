@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_deep_plane_recovery_steps",
+  "info": { "displayName": "Deep Plane recovery step" },
+  "attributes": {
+    "number": { "type": "string", "required": true },
+    "title": { "type": "string", "required": true },
+    "description": { "type": "text" },
+    "items": { "type": "component", "repeatable": true, "component": "deep-plane.checklist-item" },
+    "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "image_alt": { "type": "string" }
+  }
+}

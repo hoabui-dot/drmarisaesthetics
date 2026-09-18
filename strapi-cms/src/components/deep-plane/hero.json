@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_deep_plane_heroes",
+  "info": { "displayName": "Deep Plane hero" },
+  "attributes": {
+    "eyebrow": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "description": { "type": "text" },
+    "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "image_alt": { "type": "string" },
+    "verified_label": { "type": "string" },
+    "verified_title": { "type": "string" },
+    "verified_meta": { "type": "string" },
+    "checklist": { "type": "component", "repeatable": true, "component": "deep-plane.checklist-item" },
+    "metrics": { "type": "component", "repeatable": true, "component": "deep-plane.metric" }
+  }
+}

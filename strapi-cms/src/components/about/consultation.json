@@ -4,9 +4,6 @@
   "options": {},
   "attributes": {
     "eyebrow": { "type": "string" },
-    "title": { "type": "string", "required": true },
-    "button_label": { "type": "string" },
-    "secondary_label": { "type": "string" },
-    "secondary_link": { "type": "string" }
+    "title": { "type": "string", "required": true }
   }
 }

@@ -14,12 +14,6 @@
       "type": "string",
       "required": true
     },
-    "isExternal": {
-      "type": "boolean",
-      "default": false
-    },
-    "icon": {
-      "type": "string"
-    }
+    "isExternal": { "type": "boolean", "default": false }
   }
 }

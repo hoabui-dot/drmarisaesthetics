@@ -7,20 +7,24 @@ import { useMemo, useState, type FormEvent } from 'react'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { SelectBase } from '@/src/components/ui/SelectBase'
 import { CheckBoxBase } from '@/src/components/ui/CheckBoxBase'
+import { CountryPicker, defaultCountry, type CountryOption } from '@/src/components/forms/CountryPicker'
+import { formatNationalPhone, normalizeNationalPhone } from '@/src/components/forms/phoneFormatting'
+import { parsePhoneNumberFromString } from 'libphonenumber-js'
 
-type Option = { label: string; value: string }
+export type ServiceOption = { label: string; value: string }
+type Option = ServiceOption
 type Contact = { type: 'hotline' | 'zalo' | 'whatsapp' | 'email'; label: string; value: string; href?: string }
 const contactMethodOptions: Option[] = [
   { label: 'Email', value: 'email' },
   { label: 'Phone Call', value: 'phone' },
   { label: 'WhatsApp', value: 'whatsapp' },
 ]
+const otherServiceOption: ServiceOption = { label: 'Others', value: 'Other' }
 
 export type ContactConsultationData = {
   formTitle: string
   formIntro: string
   serviceOptions: Option[]
-  locationOptions: Option[]
   privacyPolicyLabel: string
   privacyPolicyHref?: string
   submitLabel: string
@@ -50,14 +54,14 @@ function ContactRow({ contact }: { contact: Contact }) {
   )
 }
 
-export function ContactConsultationSection({ data }: { data: ContactConsultationData }) {
+export function ContactConsultationSection({ data, formOnly = false }: { data: ContactConsultationData; formOnly?: boolean }) {
   const { executeRecaptcha } = useGoogleReCaptcha()
-  const services = data.serviceOptions || []
-  const locations = data.locationOptions || []
-  const [form, setForm] = useState({ name: '', phone: '', email: '', preferredContact: contactMethodOptions[0].value, service: services[0]?.value || '', location: locations[0]?.value || '', message: '', consent: false })
+  const services = [...(data.serviceOptions || []).filter((option) => option.value !== 'Other'), otherServiceOption]
+  const [phoneCountry, setPhoneCountry] = useState<CountryOption>(defaultCountry)
+  const [form, setForm] = useState({ name: '', phone: '', email: '', preferredContact: contactMethodOptions[0].value, service: services[0]?.value || '', otherService: '', message: '', consent: false })
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
   const update = (field: keyof typeof form, value: string | boolean) => setForm((current) => ({ ...current, [field]: value }))
-  const canSubmit = useMemo(() => form.name.trim().length >= 2 && form.phone.trim().length > 0 && form.service && form.location && form.consent, [form])
+  const canSubmit = useMemo(() => form.name.trim().length >= 2 && form.phone.trim().length > 0 && form.service && (form.service !== 'Other' || form.otherService.trim().length > 0) && form.consent, [form])
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -68,18 +72,18 @@ export function ContactConsultationSection({ data }: { data: ContactConsultation
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ fullName: form.name.trim(), phoneNumber: form.phone.trim(), email: form.email.trim(), service: form.service, message: `${form.location} | Preferred contact: ${form.preferredContact} | ${form.message.trim()}`, recaptchaToken }),
+        body: JSON.stringify({ fullName: form.name.trim(), phoneNumber: parsePhoneNumberFromString(form.phone, phoneCountry.code)?.number || form.phone.trim(), email: form.email.trim(), service: form.service, otherService: form.service === 'Other' ? form.otherService.trim() : '', message: `Preferred contact: ${form.preferredContact} | ${form.message.trim()}`, recaptchaToken }),
       })
       if (!response.ok) throw new Error('Contact request failed')
       setStatus('success')
-      setForm({ name: '', phone: '', email: '', preferredContact: contactMethodOptions[0].value, service: services[0]?.value || '', location: locations[0]?.value || '', message: '', consent: false })
+      setForm({ name: '', phone: '', email: '', preferredContact: contactMethodOptions[0].value, service: services[0]?.value || '', otherService: '', message: '', consent: false })
     } catch {
       setStatus('error')
     }
   }
 
   return (
-    <section id="form-section" className="contact-consultation-section" aria-labelledby="contact-consultation-title">
+    <section id="form-section" className={`contact-consultation-section${formOnly ? ' contact-consultation-section--form-only' : ''}`} aria-labelledby="contact-consultation-title">
       <div className="contact-consultation-container">
         <div className="contact-consultation-form-card">
           <h2 id="contact-consultation-title">{data.formTitle}</h2>
@@ -87,12 +91,12 @@ export function ContactConsultationSection({ data }: { data: ContactConsultation
           <form className="contact-consultation-form" onSubmit={submit} noValidate>
             <div className="contact-consultation-fields contact-consultation-fields--paired">
               <label><span>Full Name <b>*</b></span><input value={form.name} onChange={(event) => update('name', event.target.value)} placeholder="Enter your full name" required /></label>
-              <label><span>Phone Number <b>*</b></span><input value={form.phone} onChange={(event) => update('phone', event.target.value)} placeholder="Enter your phone number" type="tel" required /></label>
+              <label><span>Phone Number <b>*</b></span><div className="contact-consultation-phone-field"><CountryPicker label="Phone country code" value={phoneCountry} onChange={setPhoneCountry} /><span className="contact-consultation-phone-prefix" aria-hidden="true">({phoneCountry.dialCode})</span><input value={formatNationalPhone(form.phone, phoneCountry)} onChange={(event) => update('phone', normalizeNationalPhone(event.target.value, phoneCountry))} placeholder="Enter your phone number" type="tel" autoComplete="tel" inputMode="tel" required /></div></label>
               <label><span>Email Address <small>(Optional)</small></span><input value={form.email} onChange={(event) => update('email', event.target.value)} placeholder="Enter your email address" type="email" /></label>
               <label><span>Preferred Contact</span><SelectBase value={form.preferredContact} options={contactMethodOptions} onChange={(value) => update('preferredContact', value)} ariaLabel="Preferred Contact" /></label>
             <label><span>Service of Interest <b>*</b></span><SelectBase value={form.service} options={services} onChange={(value) => update('service', value)} ariaLabel="Service of Interest" /></label>
+            {form.service === 'Other' ? <label><span>Please specify the service <b>*</b></span><input value={form.otherService} onChange={(event) => update('otherService', event.target.value)} placeholder="Tell us which service you are interested in" required /></label> : null}
             </div>
-            <label><span>Preferred Location <b>*</b></span><SelectBase value={form.location} options={locations} onChange={(value) => update('location', value)} ariaLabel="Preferred Location" /></label>
             <label><span>Consultation Message <small>(Optional)</small></span><textarea value={form.message} onChange={(event) => update('message', event.target.value)} placeholder="Tell us what you would like to discuss." rows={4} /></label>
             <CheckBoxBase checked={form.consent} onChange={(checked) => update('consent', checked)} required><span>I agree to the {data.privacyPolicyHref ? <Link href={data.privacyPolicyHref}>{data.privacyPolicyLabel}</Link> : data.privacyPolicyLabel} of DR. MARIS AESTHETICS.</span></CheckBoxBase>
             <button type="submit" className="contact-consultation-submit" disabled={!canSubmit || status === 'sending'}><Check size={17} aria-hidden="true" />{status === 'sending' ? 'SENDING...' : data.submitLabel}</button>
@@ -101,7 +105,7 @@ export function ContactConsultationSection({ data }: { data: ContactConsultation
           </form>
         </div>
 
-        <aside className="contact-consultation-info" aria-labelledby="contact-consultation-info-title">
+        {!formOnly && <aside className="contact-consultation-info" aria-labelledby="contact-consultation-info-title">
           <h2 id="contact-consultation-info-title">{data.infoTitle}</h2>
           <p className="contact-consultation-info-description">{data.infoDescription}</p>
           <div className="contact-consultation-advisor">
@@ -110,7 +114,7 @@ export function ContactConsultationSection({ data }: { data: ContactConsultation
           </div>
           <div className="contact-consultation-contacts">{(data.contacts || []).slice(0, 4).map((contact, index) => <ContactRow contact={contact} key={`${contact.label}-${index}`} />)}</div>
           <div className="contact-consultation-trust"><span className="contact-consultation-trust-icon" aria-hidden="true"><ShieldCheck size={22} /></span><div><h3>{data.trustTitle}</h3><p>{data.trustDescription}</p></div></div>
-        </aside>
+        </aside>}
       </div>
     </section>
   )

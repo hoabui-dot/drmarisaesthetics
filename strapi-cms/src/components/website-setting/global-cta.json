@@ -7,7 +7,6 @@
     "title": { "type": "string", "required": true },
     "editorial_lead": { "type": "text" },
     "description": { "type": "text" },
-    "button_label": { "type": "string", "required": true },
     "panel_eyebrow": { "type": "string", "required": true },
     "panel_title": { "type": "string", "required": true },
     "panel_description": { "type": "text" },

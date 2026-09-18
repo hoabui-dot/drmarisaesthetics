@@ -67,6 +67,39 @@ label[for$="sitemap_default_priority"] {
   position: relative;
 }
 
+/* Keep the long Better Blocks document editor usable inside the Content
+ * Manager. The editor remains fully editable; only its viewport scrolls. */
+div:has(> label[for$="contentBetterBlocks"]),
+[id="contentBetterBlocks"],
+[id$=".contentBetterBlocks"],
+[data-testid*="contentBetterBlocks"],
+[data-field-name="contentBetterBlocks"] {
+  min-height: 0;
+  max-height: min(70vh, 60rem) !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+}
+
+div:has(> label[for$="contentBetterBlocks"]) > div,
+[id="contentBetterBlocks"],
+[id$=".contentBetterBlocks"],
+[data-testid*="contentBetterBlocks"],
+[data-field-name="contentBetterBlocks"] {
+  max-height: min(70vh, 60rem) !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+}
+
+div:has(> label[for$="contentBetterBlocks"]) > div > div,
+[id="contentBetterBlocks"] [contenteditable="true"],
+[id$=".contentBetterBlocks"] [contenteditable="true"],
+[data-testid*="contentBetterBlocks"] [contenteditable="true"],
+[data-field-name="contentBetterBlocks"] [contenteditable="true"] {
+  max-height: min(70vh, 60rem) !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+}
+
 label[for$="meta_title"]::after,
 label[for$="meta_description"]::after,
 label[for$="meta_image"]::after,

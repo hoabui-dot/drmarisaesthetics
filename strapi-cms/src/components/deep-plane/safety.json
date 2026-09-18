@@ -1,0 +1,11 @@
+{
+  "collectionName": "components_deep_plane_safeties",
+  "info": { "displayName": "Deep Plane facility safety" },
+  "attributes": {
+    "eyebrow": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "description": { "type": "text" },
+    "cards": { "type": "component", "repeatable": true, "component": "deep-plane.safety-card" },
+    "note": { "type": "text" }
+  }
+}

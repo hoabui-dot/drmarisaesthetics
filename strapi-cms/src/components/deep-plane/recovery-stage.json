@@ -1,0 +1,11 @@
+{
+  "collectionName": "components_deep_plane_recovery_stages",
+  "info": { "displayName": "Deep Plane recovery stage" },
+  "attributes": {
+    "stage_label": { "type": "string", "required": true },
+    "title": { "type": "string", "required": true },
+    "summary": { "type": "string" },
+    "description": { "type": "text" },
+    "items": { "type": "component", "repeatable": true, "component": "deep-plane.checklist-item" }
+  }
+}

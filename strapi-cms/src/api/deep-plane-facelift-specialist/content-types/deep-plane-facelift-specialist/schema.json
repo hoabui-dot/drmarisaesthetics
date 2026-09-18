@@ -1,0 +1,29 @@
+{
+  "kind": "singleType",
+  "collectionName": "deep_plane_facelift_specialists",
+  "info": {
+    "singularName": "deep-plane-facelift-specialist",
+    "pluralName": "deep-plane-facelift-specialists",
+    "displayName": "Mr. Cuong Our Team",
+    "description": "Editorial landing page for the Deep Plane Facelift Specialist route"
+  },
+  "options": { "draftAndPublish": true },
+  "pluginOptions": {},
+  "attributes": {
+    "seo_title": { "type": "string", "required": true },
+    "seo_description": { "type": "text" },
+    "sections": {
+      "type": "dynamiczone",
+      "components": [
+        "deep-plane.hero",
+        "deep-plane.journey",
+        "deep-plane.recovery",
+        "deep-plane.certifications",
+        "deep-plane.safety",
+        "deep-plane.credentials",
+        "deep-plane.faq",
+        "deep-plane.consultation"
+      ]
+    }
+  }
+}

@@ -100,7 +100,7 @@ export function AboutDoctorsSlider({ data }: { data?: DoctorsData | null }) {
         </div>
 
         <div className="mt-10 text-center">
-          <Link href={data?.viewAllLink || '/doctors'} className="inline-flex items-center justify-center rounded-full border border-smilux-hero-primary bg-white px-7 py-3 text-size-body font-bold tracking-wide text-smilux-hero-primary transition-colors hover:bg-smilux-hero-primary hover:text-white">
+          <Link href={data?.viewAllLink || '/our-team'} className="inline-flex items-center justify-center rounded-full border border-smilux-hero-primary bg-white px-7 py-3 text-size-body font-bold tracking-wide text-smilux-hero-primary transition-colors hover:bg-smilux-hero-primary hover:text-white">
             {data?.viewAllLabel || 'VIEW ALL DOCTORS'}
           </Link>
         </div>

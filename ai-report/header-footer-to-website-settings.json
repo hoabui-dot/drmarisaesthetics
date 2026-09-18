@@ -1,0 +1,85 @@
+{
+  "mode": "dry-run",
+  "navigationItems": 7,
+  "footerGroups": 0,
+  "socialLinks": 4,
+  "sourcePreserved": true,
+  "data": {
+    "header_navigation": [
+      {
+        "label": "Home",
+        "href": "/",
+        "isExternal": false,
+        "children": []
+      },
+      {
+        "label": "About Us",
+        "href": "/about-us",
+        "isExternal": false,
+        "children": []
+      },
+      {
+        "label": "Services",
+        "href": "/services",
+        "isExternal": false,
+        "children": []
+      },
+      {
+        "label": "Technology",
+        "href": "/technology",
+        "isExternal": false,
+        "children": []
+      },
+      {
+        "label": "Pricing",
+        "href": "/pricing",
+        "isExternal": false,
+        "children": []
+      },
+      {
+        "label": "Blog",
+        "href": "/news",
+        "isExternal": false,
+        "children": []
+      },
+      {
+        "label": "Contact",
+        "href": "/contact",
+        "isExternal": false,
+        "children": []
+      }
+    ],
+    "footer_description": "We're here to help you achieve a healthy, confident smile with advanced care you can trust.",
+    "footer_link_groups": [],
+    "social_links": [
+      {
+        "platform": "facebook",
+        "url": "https://www.facebook.com/saigonimplant",
+        "icon_class": "fab fa-link",
+        "order": 0,
+        "is_active": true
+      },
+      {
+        "platform": "instagram",
+        "url": "https://instagram.com/saigondentalclinic",
+        "icon_class": "fab fa-link",
+        "order": 0,
+        "is_active": true
+      },
+      {
+        "platform": "youtube",
+        "url": "https://www.youtube.com/@sgdental.official",
+        "icon_class": "fab fa-link",
+        "order": 0,
+        "is_active": true
+      },
+      {
+        "platform": "tiktok",
+        "url": "https://www.tiktok.com/@sgdental.official",
+        "icon_class": "fab fa-link",
+        "order": 0,
+        "is_active": true
+      }
+    ]
+  }
+}

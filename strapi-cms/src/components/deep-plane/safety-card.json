@@ -1,0 +1,11 @@
+{
+  "collectionName": "components_deep_plane_safety_cards",
+  "info": { "displayName": "Deep Plane safety card" },
+  "attributes": {
+    "eyebrow": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "alt": { "type": "string" },
+    "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "items": { "type": "component", "repeatable": true, "component": "deep-plane.checklist-item" }
+  }
+}

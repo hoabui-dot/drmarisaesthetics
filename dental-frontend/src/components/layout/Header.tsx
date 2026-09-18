@@ -55,6 +55,7 @@ import { useMobileAnimation } from '@/src/hooks/useMobileAnimation';
 import { PerformanceAnimation } from '@/src/components/ui/PerformanceAnimation';
 import type { Navigation } from '@/src/types/strapi';
 import { BrandLogo } from '@/src/components/brand/BrandLogo';
+import { HEADER_CTA } from '@/src/lib/constants/site-navigation';
 
 interface HeaderProps {
   navigation: Navigation;
@@ -79,6 +80,7 @@ export function Header({ navigation, logoSrc }: HeaderProps) {
     || pathname === '/services'
     || pathname.startsWith('/services/')
     || pathname === '/treatments'
+    || pathname === '/deep-plane-facelift-specialist'
     || pathname.startsWith('/face/')
     || pathname.startsWith('/news');
   const { open: openBookingModal } = useBookingModal();
@@ -212,7 +214,7 @@ export function Header({ navigation, logoSrc }: HeaderProps) {
 
             {/* Desktop CTA */}
             <div className="hidden lg:flex items-center space-x-3 xl:space-x-4">
-              {navigation.ctaText && navigation.ctaLink && (
+              {(
                 /*
                  * anim-scale-in: CSS keyframe kf-scale-in with 0.3s delay.
                  * Runs once on mount; animation-fill-mode: both keeps it visible.
@@ -236,7 +238,7 @@ export function Header({ navigation, logoSrc }: HeaderProps) {
                     `}
                   >
                     <CalendarDays className="mr-2 h-4 w-4" aria-hidden="true" />
-                    <span className="relative z-10">{navigation.ctaText}</span>
+                    <span className="relative z-10">{HEADER_CTA.label}</span>
                   </button>
                 </PerformanceAnimation>
               )}
@@ -310,7 +312,7 @@ export function Header({ navigation, logoSrc }: HeaderProps) {
               ))
             ) : null}
             {/* Mobile CTA in nav - Hidden on mobile, shown on tablet+ */}
-            {navigation.ctaText && navigation.ctaLink && (
+            {(
               <div className="pt-4 sm:pt-5 hidden sm:block">
                 <button
                   onClick={() => { openBookingModal(); closeMobileMenu(); }}
@@ -320,7 +322,7 @@ export function Header({ navigation, logoSrc }: HeaderProps) {
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
-                  {navigation.ctaText}
+                  {HEADER_CTA.label}
                 </button>
               </div>
             )}
@@ -340,7 +342,7 @@ export function Header({ navigation, logoSrc }: HeaderProps) {
        * On mobile (shouldSimplify) we still play the slide-up but without the
        * overshoot curve so low-end devices don't drop frames on mount.
        */}
-      {false && navigation.ctaText && navigation.ctaLink && (
+      {false && (
         <PerformanceAnimation
           preset="slide-up"
           duration={0.45}

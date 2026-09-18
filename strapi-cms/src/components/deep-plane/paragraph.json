@@ -1,0 +1,5 @@
+{
+  "collectionName": "components_deep_plane_paragraphs",
+  "info": { "displayName": "Deep Plane paragraph" },
+  "attributes": { "text": { "type": "text", "required": true } }
+}

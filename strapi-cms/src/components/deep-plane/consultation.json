@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_deep_plane_consultations",
+  "info": { "displayName": "Deep Plane consultation" },
+  "attributes": {
+    "eyebrow": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "image_alt": { "type": "string" },
+    "form_title": { "type": "string" },
+    "form_description": { "type": "text" }
+  }
+}

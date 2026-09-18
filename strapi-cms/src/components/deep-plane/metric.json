@@ -1,0 +1,8 @@
+{
+  "collectionName": "components_deep_plane_metrics",
+  "info": { "displayName": "Deep Plane metric" },
+  "attributes": {
+    "value": { "type": "string", "required": true },
+    "label": { "type": "string", "required": true }
+  }
+}

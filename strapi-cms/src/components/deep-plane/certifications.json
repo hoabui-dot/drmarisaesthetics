@@ -1,0 +1,10 @@
+{
+  "collectionName": "components_deep_plane_certifications",
+  "info": { "displayName": "Deep Plane certifications" },
+  "attributes": {
+    "eyebrow": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "description": { "type": "text" },
+    "cards": { "type": "component", "repeatable": true, "component": "deep-plane.certification-card" }
+  }
+}

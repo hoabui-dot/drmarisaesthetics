@@ -11,6 +11,13 @@
   "pluginOptions": {},
   "attributes": {
     "seo": { "type": "component", "repeatable": false, "component": "seo.page-seo" },
+    "navigationLabel": { "type": "string", "required": false },
+    "navigationOrder": {
+      "type": "customField",
+      "customField": "global::service-navigation-order",
+      "required": false,
+      "min": 1
+    },
     "title": { "type": "string", "required": true },
     "slug": { "type": "uid", "targetField": "title", "required": true },
     "category": {

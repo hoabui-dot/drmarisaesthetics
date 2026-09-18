@@ -1,5 +1,10 @@
 import './seo-help.css'
+import englishTranslations from './i18n/en.json'
 import vietnameseTranslations from './i18n/vi.json'
+import type { StrapiApp } from '@strapi/admin/strapi-admin'
+
+const SERVICE_NAVIGATION_ORDER_FIELD = 'service-navigation-order'
+const LIST_VIEW_COLUMNS_HOOK = 'Admin/CM/pages/ListView/inject-column-in-table'
 
 type AdminResponsePayload = {
   error?: unknown
@@ -106,14 +111,65 @@ const installClipboardFallback = () => {
   }
 }
 
+const formatAdminDateTime = (value: unknown) => {
+  if (!value) return '-'
+
+  const date = new Date(String(value))
+  if (Number.isNaN(date.getTime())) return '-'
+
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    day: '2-digit',
+    hour: '2-digit',
+    hour12: false,
+    minute: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  }).formatToParts(date)
+  const values = Object.fromEntries(parts.map(({ type, value: partValue }) => [type, partValue]))
+
+  return `${values.hour}:${values.minute} ${values.day}/${values.month}/${values.year}`
+}
+
 export default {
-  // Admin interface languages are independent from content locales. English
-  // remains Strapi's fallback; Vietnamese is exposed in Profile → Experience.
+  // Admin interface languages are independent from content locales. Register
+  // both explicitly so English is available in Profile → Experience and
+  // custom field labels do not fall back to raw translation keys.
   config: {
-    locales: ['vi'],
+    locales: ['en', 'vi'],
     translations: {
+      en: englishTranslations,
       vi: vietnameseTranslations,
     },
+  },
+
+  register(app: StrapiApp) {
+    app.customFields.register({
+      name: SERVICE_NAVIGATION_ORDER_FIELD,
+      type: 'integer',
+      intlLabel: {
+        id: 'custom-field.service-navigation-order.label',
+        defaultMessage: 'Header Menu Order',
+      },
+      intlDescription: {
+        id: 'custom-field.service-navigation-order.description',
+        defaultMessage: 'Choose the position of this service in the header Services menu.',
+      },
+      components: {
+        Input: async () => import('./ServiceNavigationOrderInput'),
+      },
+    })
+
+    app.registerHook(LIST_VIEW_COLUMNS_HOOK, (payload: any) => ({
+      ...payload,
+      displayedHeaders: payload.displayedHeaders.map((header: any) =>
+        header.name === 'updatedAt'
+          ? {
+              ...header,
+              cellFormatter: (row: { updatedAt?: string }) => formatAdminDateTime(row.updatedAt),
+            }
+          : header,
+      ),
+    }))
   },
 
   bootstrap() {

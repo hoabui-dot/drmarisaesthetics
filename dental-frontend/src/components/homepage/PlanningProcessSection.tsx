@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
+import { CheckCircle2 } from 'lucide-react'
 import { animate, createTimeline, onScroll } from 'animejs'
 
 export type PlanningStep = {
@@ -10,6 +11,7 @@ export type PlanningStep = {
   description: string
   image: string
   imageAlt: string
+  items?: string[]
 }
 
 export const planningSteps: PlanningStep[] = [
@@ -223,6 +225,7 @@ export function PlanningProcessSection({
                       <h3 data-planning-title>{step.title}</h3>
                     </div>
                     <p data-planning-description>{step.description}</p>
+                    {step.items?.length ? <ul className="planning-process__step-items">{step.items.map((item) => <li key={item}><CheckCircle2 size={16} aria-hidden="true" /><span>{item}</span></li>)}</ul> : null}
                   </div>
                 </li>
               ))}

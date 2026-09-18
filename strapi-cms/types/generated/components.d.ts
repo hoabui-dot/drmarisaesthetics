@@ -1235,8 +1235,7 @@ export interface HomepageHeroSection extends Struct.ComponentSchema {
     image_alt: Schema.Attribute.String;
     paragraph_one: Schema.Attribute.Text;
     paragraph_two: Schema.Attribute.Text;
-    title_line_1: Schema.Attribute.String & Schema.Attribute.Required;
-    title_line_2: Schema.Attribute.String & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
     trust_labels: Schema.Attribute.Component<'homepage.text-item', true>;
   };
 }

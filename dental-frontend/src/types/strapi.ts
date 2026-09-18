@@ -189,8 +189,6 @@ export interface StrapiNavigation {
     documentId: string;
     navigation: NavItem[];
     logo?: any;
-    ctaText?: string;
-    ctaLink?: string;
     createdAt: string;
     updatedAt: string;
     publishedAt: string;
@@ -203,7 +201,6 @@ export interface NavChild {
   label: string;
   href: string;
   isExternal?: boolean;
-  icon?: string | null;
 }
 
 export interface NavItem {
@@ -211,7 +208,8 @@ export interface NavItem {
   label: string;
   href: string;
   isExternal?: boolean;
-  icon?: string | null;
+  /** Parent items such as Our Team may be dropdown-only. */
+  isClickable?: boolean;
   children?: NavChild[];
 }
 
@@ -223,8 +221,6 @@ export interface Navigation {
     width: number;
     height: number;
   };
-  ctaText?: string;
-  ctaLink?: string;
 }
 
 // ============================================================================
@@ -295,11 +291,8 @@ export interface Footer {
   logo?: Media;
   description: string;
   contactInfo: ContactInfo;
-  links: FooterLink[];
   linkGroups: FooterLinkGroup[];
   socialLinks: SocialLink[];
-  appointmentLabel: string;
-  appointmentHref: string;
   copyrightText?: string;
   tagline: string;
 }
@@ -329,7 +322,6 @@ export interface WebsiteSettingGlobalCta {
   title: string;
   editorialLead?: string;
   description?: string;
-  buttonLabel: string;
   panelEyebrow: string;
   panelTitle: string;
   panelDescription?: string;
@@ -350,27 +342,23 @@ export interface WebsiteSettingBookingForm {
   successEyebrow: string;
   successTitle: string;
   successDescription?: string;
-  successActionLabel?: string;
-  successActionHref?: string;
-  submitLabel: string;
-  submittingLabel: string;
-  procedurePlaceholder: string;
-  messagePlaceholder: string;
 }
 
 export interface WebsiteSetting {
   siteName: string;
-  siteNameLocalized?: string;
   logo?: Media;
-  favicon?: Media;
   defaultOpenGraphImage?: Media;
   address: string;
   phonePrimary: string;
   openingHours?: string;
-  website?: string;
   mapLatitude?: number;
   mapLongitude?: number;
   mapZoom?: number;
+  headerNavigation?: NavItem[];
+  footerDescription?: string;
+  footerLinkGroups?: FooterLinkGroup[];
+  footerCopyrightText?: string;
+  footerTagline?: string;
   contactMethods: WebsiteSettingContactMethod[];
   socialLinks: WebsiteSettingSocialLink[];
   globalCta?: WebsiteSettingGlobalCta;

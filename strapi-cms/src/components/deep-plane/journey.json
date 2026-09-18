@@ -1,0 +1,10 @@
+{
+  "collectionName": "components_deep_plane_journeys",
+  "info": { "displayName": "Deep Plane surgical journey" },
+  "attributes": {
+    "eyebrow": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "description": { "type": "text" },
+    "steps": { "type": "component", "repeatable": true, "component": "deep-plane.journey-step" }
+  }
+}

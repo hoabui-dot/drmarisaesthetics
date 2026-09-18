@@ -40,6 +40,7 @@ import type {
   HomepageCertificationComponent,
 } from "@/src/types/strapi";
 import { normalizeHomepageEditorial, type HomepageEditorialData } from "@/src/types/homepage-editorial";
+import { DEEP_PLANE_FACELIFT_SPECIALIST, type DeepPlaneFaceliftSpecialistData, type DeepPlaneSectionKey } from "@/src/lib/constants/deep-plane-facelift-specialist";
 import { ourTeamMockData, type OurTeamData } from "@/src/data/our-team";
 import { resultsMockData, type ResultsData } from "@/src/data/results";
 import type { WebsiteSetting } from "@/src/types/strapi";
@@ -106,6 +107,125 @@ export async function getTreatmentsPage(isDraftMode = false): Promise<TreatmentP
   } catch (error) {
     console.warn("[getTreatmentsPage] Falling back to local treatments content", error);
     return null;
+  }
+}
+
+/** Fetches the Deep Plane Specialist landing page. The local constant remains
+ * the safe fallback while the Strapi entry is being created or unpublished. */
+export async function getDeepPlaneFaceliftSpecialist(isDraftMode = false): Promise<DeepPlaneFaceliftSpecialistData> {
+  try {
+    const response = await apiClient<any>("/api/deep-plane-facelift-specialist", {
+      params: {
+        "populate[sections][populate]": "*",
+        status: isDraftMode ? "draft" : "published",
+      },
+      isDraftMode,
+      cache: "no-store",
+      tags: ["deep-plane-facelift-specialist"],
+    });
+    const value = response?.data;
+    if (!value) return DEEP_PLANE_FACELIFT_SPECIALIST;
+    const componentKeys: Record<string, DeepPlaneSectionKey> = {
+      "deep-plane.hero": "hero",
+      "deep-plane.journey": "journey",
+      "deep-plane.recovery": "recovery",
+      "deep-plane.certifications": "certifications",
+      "deep-plane.safety": "safety",
+      "deep-plane.credentials": "credentials",
+      "deep-plane.faq": "faq",
+      "deep-plane.consultation": "consultation",
+    };
+    const legacySections = [
+      ["hero", value.hero],
+      ["journey", value.journey],
+      ["recovery", value.recovery],
+      ["certifications", value.certifications],
+      ["safety", value.safety],
+      ["credentials", value.credentials],
+      ["faq", value.faq],
+      ["consultation", value.consultation],
+    ] as const;
+    const rawSections = Array.isArray(value.sections) && value.sections.length
+      ? value.sections
+      : legacySections.filter(([, section]) => section).map(([key, section]) => ({ __component: `deep-plane.${key}`, ...section }));
+    const sectionValues = (key: DeepPlaneSectionKey) => rawSections.find((section: any) => componentKeys[section.__component] === key) || {};
+    const hero = sectionValues("hero");
+    const journey = sectionValues("journey");
+    const recovery = sectionValues("recovery");
+    const certifications = sectionValues("certifications");
+    const safety = sectionValues("safety");
+    const credentials = sectionValues("credentials");
+    const faq = sectionValues("faq");
+    const consultation = sectionValues("consultation");
+    const sections = rawSections
+      .map((section: any) => {
+        const key = componentKeys[section.__component];
+        if (!key) return null;
+        const fallback = DEEP_PLANE_FACELIFT_SPECIALIST.sections.find((item) => item.key === key);
+        return { key, id: section.id ? `deep-plane-${key}-${section.id}` : fallback?.id || key };
+      })
+      .filter(Boolean) as Array<{ key: DeepPlaneSectionKey; id: string }>;
+    const media = (item: any, fallback: string) => item ? (getMediaUrl(item) || fallback) : fallback;
+    const checklistText = (item: any) => typeof item === "string" ? item : item?.text || item?.label || item?.title || "";
+    const checklistTexts = (items: any) => Array.isArray(items)
+      ? items.map(checklistText).filter(Boolean)
+      : [];
+    const metricTuple = (item: any) => Array.isArray(item)
+      ? [item[0] || "", item[1] || ""]
+      : [item?.value || "", item?.label || ""];
+    const journeyTuple = (step: any, index: number) => [
+      String(index + 1).padStart(2, "0"),
+      Array.isArray(step) ? step[1] || "" : step?.badge || "",
+      Array.isArray(step) ? step[2] || "" : step?.title || "",
+      Array.isArray(step) ? step[3] || "" : step?.description || "",
+      Array.isArray(step) ? step[4] || "" : step?.phase || "",
+    ];
+    const recoveryStageTuple = (stage: any) => Array.isArray(stage)
+      ? stage
+      : [stage?.stage_label || "", stage?.title || "", stage?.summary || "", stage?.description || "", checklistTexts(stage?.items)];
+    const recoverySteps = Array.isArray(recovery.steps) && recovery.steps.length
+      ? recovery.steps.map((step: any, index: number) => {
+        const fallback = DEEP_PLANE_FACELIFT_SPECIALIST.recovery.steps[index] || DEEP_PLANE_FACELIFT_SPECIALIST.recovery.steps[0];
+        return {
+          number: step.number || fallback.number,
+          title: step.title || fallback.title,
+          description: step.description || fallback.description,
+          items: Array.isArray(step.items) ? checklistTexts(step.items) : fallback.items,
+          image: media(step.image, fallback.image),
+          imageAlt: step.image_alt || fallback.imageAlt,
+        };
+      })
+      : DEEP_PLANE_FACELIFT_SPECIALIST.recovery.steps;
+    return {
+      sections: sections.length ? sections : DEEP_PLANE_FACELIFT_SPECIALIST.sections,
+      seo: {
+        title: value.seo_title || DEEP_PLANE_FACELIFT_SPECIALIST.seo.title,
+        description: value.seo_description || DEEP_PLANE_FACELIFT_SPECIALIST.seo.description,
+      },
+      hero: {
+        ...DEEP_PLANE_FACELIFT_SPECIALIST.hero,
+        eyebrow: hero.eyebrow || DEEP_PLANE_FACELIFT_SPECIALIST.hero.eyebrow,
+        title: hero.title || DEEP_PLANE_FACELIFT_SPECIALIST.hero.title,
+        description: hero.description || DEEP_PLANE_FACELIFT_SPECIALIST.hero.description,
+        image: media(hero.image, DEEP_PLANE_FACELIFT_SPECIALIST.hero.image),
+        imageAlt: hero.image_alt || DEEP_PLANE_FACELIFT_SPECIALIST.hero.imageAlt,
+        verifiedLabel: hero.verified_label || DEEP_PLANE_FACELIFT_SPECIALIST.hero.verifiedLabel,
+        verifiedTitle: hero.verified_title || DEEP_PLANE_FACELIFT_SPECIALIST.hero.verifiedTitle,
+        verifiedMeta: hero.verified_meta || DEEP_PLANE_FACELIFT_SPECIALIST.hero.verifiedMeta,
+        checklist: Array.isArray(hero.checklist) ? checklistTexts(hero.checklist) : DEEP_PLANE_FACELIFT_SPECIALIST.hero.checklist,
+        metrics: Array.isArray(hero.metrics) ? hero.metrics.map(metricTuple) : DEEP_PLANE_FACELIFT_SPECIALIST.hero.metrics,
+      },
+      journey: { ...DEEP_PLANE_FACELIFT_SPECIALIST.journey, id: journey.id ? `deep-plane-journey-${journey.id}` : DEEP_PLANE_FACELIFT_SPECIALIST.journey.id, eyebrow: journey.eyebrow || DEEP_PLANE_FACELIFT_SPECIALIST.journey.eyebrow, title: journey.title || DEEP_PLANE_FACELIFT_SPECIALIST.journey.title, description: journey.description || DEEP_PLANE_FACELIFT_SPECIALIST.journey.description, steps: Array.isArray(journey.steps) ? journey.steps.map(journeyTuple) : DEEP_PLANE_FACELIFT_SPECIALIST.journey.steps },
+      recovery: { ...DEEP_PLANE_FACELIFT_SPECIALIST.recovery, id: recovery.section_id || DEEP_PLANE_FACELIFT_SPECIALIST.recovery.id, eyebrow: recovery.eyebrow || DEEP_PLANE_FACELIFT_SPECIALIST.recovery.eyebrow, title: recovery.title || DEEP_PLANE_FACELIFT_SPECIALIST.recovery.title, description: recovery.description || DEEP_PLANE_FACELIFT_SPECIALIST.recovery.description, stages: Array.isArray(recovery.stages) ? recovery.stages.map(recoveryStageTuple) : DEEP_PLANE_FACELIFT_SPECIALIST.recovery.stages, steps: recoverySteps, note: recovery.note || DEEP_PLANE_FACELIFT_SPECIALIST.recovery.note },
+      certifications: { ...DEEP_PLANE_FACELIFT_SPECIALIST.certifications, id: certifications.section_id || DEEP_PLANE_FACELIFT_SPECIALIST.certifications.id, eyebrow: certifications.eyebrow || DEEP_PLANE_FACELIFT_SPECIALIST.certifications.eyebrow, title: certifications.title || DEEP_PLANE_FACELIFT_SPECIALIST.certifications.title, description: certifications.description || DEEP_PLANE_FACELIFT_SPECIALIST.certifications.description, cards: Array.isArray(certifications.cards) ? certifications.cards.map((card: any) => ({ image: media(card.image, ""), imageAlt: card.image_alt || card.imageAlt || "" })) : DEEP_PLANE_FACELIFT_SPECIALIST.certifications.cards },
+      safety: { ...DEEP_PLANE_FACELIFT_SPECIALIST.safety, id: safety.section_id || DEEP_PLANE_FACELIFT_SPECIALIST.safety.id, eyebrow: safety.eyebrow || DEEP_PLANE_FACELIFT_SPECIALIST.safety.eyebrow, title: safety.title || DEEP_PLANE_FACELIFT_SPECIALIST.safety.title, description: safety.description || DEEP_PLANE_FACELIFT_SPECIALIST.safety.description, cards: Array.isArray(safety.cards) ? safety.cards.map((card: any) => ({ image: media(card.image, ""), title: card.title || "", eyebrow: card.eyebrow || "", alt: card.alt || card.image_alt || "", items: checklistTexts(card.items) })) : DEEP_PLANE_FACELIFT_SPECIALIST.safety.cards, note: safety.note || DEEP_PLANE_FACELIFT_SPECIALIST.safety.note },
+      credentials: { ...DEEP_PLANE_FACELIFT_SPECIALIST.credentials, id: credentials.section_id || DEEP_PLANE_FACELIFT_SPECIALIST.credentials.id, eyebrow: credentials.eyebrow || DEEP_PLANE_FACELIFT_SPECIALIST.credentials.eyebrow, title: credentials.title || DEEP_PLANE_FACELIFT_SPECIALIST.credentials.title, image: media(credentials.image, DEEP_PLANE_FACELIFT_SPECIALIST.credentials.image), imageAlt: credentials.image_alt || DEEP_PLANE_FACELIFT_SPECIALIST.credentials.imageAlt, paragraphs: Array.isArray(credentials.paragraphs) ? credentials.paragraphs.map((paragraph: any) => typeof paragraph === "string" ? paragraph : paragraph?.text || "").filter(Boolean) : DEEP_PLANE_FACELIFT_SPECIALIST.credentials.paragraphs, cards: Array.isArray(credentials.cards) ? credentials.cards.map((card: any) => Array.isArray(card) ? card : [card?.title || "", card?.description || ""]) : DEEP_PLANE_FACELIFT_SPECIALIST.credentials.cards },
+      faq: { ...DEEP_PLANE_FACELIFT_SPECIALIST.faq, id: faq.section_id || DEEP_PLANE_FACELIFT_SPECIALIST.faq.id, eyebrow: faq.eyebrow || DEEP_PLANE_FACELIFT_SPECIALIST.faq.eyebrow, title: faq.title || DEEP_PLANE_FACELIFT_SPECIALIST.faq.title, description: faq.description || DEEP_PLANE_FACELIFT_SPECIALIST.faq.description, items: Array.isArray(faq.items) ? faq.items.map((item: any) => Array.isArray(item) ? item : [item?.question || "", item?.answer || ""]) : DEEP_PLANE_FACELIFT_SPECIALIST.faq.items },
+      consultation: { ...DEEP_PLANE_FACELIFT_SPECIALIST.consultation, id: consultation.section_id || DEEP_PLANE_FACELIFT_SPECIALIST.consultation.id, eyebrow: consultation.eyebrow || DEEP_PLANE_FACELIFT_SPECIALIST.consultation.eyebrow, title: consultation.title || DEEP_PLANE_FACELIFT_SPECIALIST.consultation.title, image: media(consultation.image, DEEP_PLANE_FACELIFT_SPECIALIST.consultation.image), imageAlt: consultation.image_alt || DEEP_PLANE_FACELIFT_SPECIALIST.consultation.imageAlt, address: consultation.address || DEEP_PLANE_FACELIFT_SPECIALIST.consultation.address, hours: consultation.hours || DEEP_PLANE_FACELIFT_SPECIALIST.consultation.hours, phone: consultation.phone || DEEP_PLANE_FACELIFT_SPECIALIST.consultation.phone, formTitle: consultation.form_title || DEEP_PLANE_FACELIFT_SPECIALIST.consultation.formTitle, formDescription: consultation.form_description || DEEP_PLANE_FACELIFT_SPECIALIST.consultation.formDescription, mapAddress: consultation.map_address || DEEP_PLANE_FACELIFT_SPECIALIST.consultation.mapAddress },
+    } as DeepPlaneFaceliftSpecialistData;
+  } catch (error) {
+    console.warn("[getDeepPlaneFaceliftSpecialist] Falling back to local page content", error);
+    return DEEP_PLANE_FACELIFT_SPECIALIST;
   }
 }
 
@@ -261,7 +381,6 @@ export async function getServiceOptions(): Promise<Array<{ value: string; label:
   try {
     const response = await apiClient<any>("/api/services", {
       params: {
-        "filters[category][$eq]": "Plastic Surgery",
         pagination: { pageSize: 100 },
         sort: ["title:asc"],
       },
@@ -269,25 +388,42 @@ export async function getServiceOptions(): Promise<Array<{ value: string; label:
       tags: ["services"],
     });
     return (response?.data || [])
-      .filter((service: any) => service.slug && service.title)
-      .map((service: any) => ({ value: service.slug, label: service.title }));
+      .filter((service: any) => service.slug && (service.navigationLabel || service.title))
+      .map((service: any) => ({ value: service.slug, label: service.navigationLabel || service.title }));
   } catch {
     return [];
   }
 }
 
-/** Fetch the Strapi single type that powers the Stitch Our Team page. */
-export async function getOurTeam(isDraftMode: boolean = false): Promise<OurTeamData | null> {
+/** Return the independently managed labels used by the header Services menu. */
+export async function getServiceNavigationOptions(): Promise<Array<{ value: string; label: string }>> {
   try {
-    const response = await apiClient<any>("/api/our-team", {
-      // Dynamic-zone component fields and nested repeatable components are
-      // intentionally populated here. Without this, the Content Manager can
-      // contain the data while the frontend receives only component shells.
-      params: { populate: "*" },
-      isDraftMode,
-      tags: ["our-team"],
+    const response = await apiClient<any>("/api/services", {
+      params: {
+        pagination: { pageSize: 100 },
+        sort: ["title:asc"],
+      },
+      isDraftMode: false,
+      tags: ["services"],
     });
-    const value = response?.data;
+    const services = (response?.data || [])
+      .filter((service: any) => service.slug && (service.navigationLabel || service.title))
+
+    const assigned = services
+      .filter((service: any) => Number.isInteger(Number(service.navigationOrder)) && Number(service.navigationOrder) > 0)
+      .sort((a: any, b: any) => Number(a.navigationOrder) - Number(b.navigationOrder));
+    const unassigned = services
+      .filter((service: any) => !Number.isInteger(Number(service.navigationOrder)) || Number(service.navigationOrder) <= 0)
+      .sort(() => Math.random() - 0.5);
+
+    return [...assigned, ...unassigned]
+      .map((service: any) => ({ value: service.slug, label: service.navigationLabel || service.title }));
+  } catch {
+    return [];
+  }
+}
+
+function mapOurTeamData(value: any): OurTeamData | null {
     if (!value) return null;
     const sections = Array.isArray(value.sections) ? value.sections : [];
     const hero = sections.find((section: any) => section.__component === "our-team.hero-section");
@@ -363,6 +499,17 @@ export async function getOurTeam(isDraftMode: boolean = false): Promise<OurTeamD
       consultation: consultation ? { ...ourTeamMockData.consultation, title: consultation.title || ourTeamMockData.consultation.title, description: consultation.description || ourTeamMockData.consultation.description } : ourTeamMockData.consultation,
       faq: faq ? { ...ourTeamMockData.faq, eyebrow: faq.eyebrow || ourTeamMockData.faq.eyebrow, title: faq.title || ourTeamMockData.faq.title, backgroundImage: image(faq.background_image), items: (faq.items || []).map((item: any) => ({ question: item.question, answer: item.answer })) } : ourTeamMockData.faq,
     };
+}
+
+/** Fetch the Strapi single type that powers the Stitch Our Team page. */
+export async function getOurTeam(isDraftMode: boolean = false): Promise<OurTeamData | null> {
+  try {
+    const response = await apiClient<any>("/api/our-team", {
+      params: { populate: "*" },
+      isDraftMode,
+      tags: ["our-team"],
+    });
+    return mapOurTeamData(response?.data);
   } catch (error) {
     console.warn("[getOurTeam] Unable to fetch Our Team data", error);
     return null;
@@ -417,8 +564,9 @@ export async function getWebsiteSetting(isDraftMode: boolean = false): Promise<W
     const response = await apiClient<any>("/api/website-setting", {
       params: {
         "populate[logo]": "true",
-        "populate[favicon]": "true",
         "populate[default_open_graph_image]": "true",
+        "populate[header_navigation][populate][children]": "true",
+        "populate[footer_link_groups][populate][links]": "true",
         "populate[contact_methods][populate][icon]": "true",
         "populate[social_links]": "true",
         "populate[booking_form][populate][visual_image]": "true",
@@ -433,17 +581,25 @@ export async function getWebsiteSetting(isDraftMode: boolean = false): Promise<W
     if (!value) return null;
     return {
       siteName: value.site_name || "DR. MARIS AESTHETICS",
-      siteNameLocalized: value.site_name_localized,
       logo: value.logo ? { url: getMediaUrl(value.logo), alt: value.logo.alternativeText || value.site_name, width: value.logo.width || 0, height: value.logo.height || 0 } : undefined,
-      favicon: value.favicon ? { url: getMediaUrl(value.favicon), alt: value.favicon.alternativeText || value.site_name, width: value.favicon.width || 0, height: value.favicon.height || 0 } : undefined,
       defaultOpenGraphImage: value.default_open_graph_image ? { url: getMediaUrl(value.default_open_graph_image), alt: value.default_open_graph_image.alternativeText || value.site_name, width: value.default_open_graph_image.width || 0, height: value.default_open_graph_image.height || 0 } : undefined,
       address: value.address || "",
       phonePrimary: value.phone_primary || "",
       openingHours: value.opening_hours,
-      website: value.website,
       mapLatitude: value.map_latitude == null ? undefined : Number(value.map_latitude),
       mapLongitude: value.map_longitude == null ? undefined : Number(value.map_longitude),
       mapZoom: value.map_zoom == null ? undefined : Number(value.map_zoom),
+      headerNavigation: Array.isArray(value.header_navigation) ? value.header_navigation.map((item: any) => ({
+        id: item.id,
+        label: item.label || '',
+        href: item.href || '#',
+        isExternal: item.is_external || false,
+        children: Array.isArray(item.children) ? item.children.map((child: any) => ({ id: child.id, label: child.label || '', href: child.href || '#', isExternal: child.is_external || false })) : undefined,
+      })) : undefined,
+      footerDescription: value.footer_description || undefined,
+      footerLinkGroups: Array.isArray(value.footer_link_groups) ? value.footer_link_groups.map((group: any) => ({ id: group.id, heading: group.heading || '', links: Array.isArray(group.links) ? group.links.map((link: any) => ({ id: link.id, label: link.label || '', href: link.href || '#' })) : [] })) : undefined,
+      footerCopyrightText: value.footer_copyright_text || undefined,
+      footerTagline: value.footer_tagline || undefined,
       contactMethods: (value.contact_methods || []).filter((item: any) => item.is_active !== false).sort((a: any, b: any) => (a.order || 0) - (b.order || 0)).map((item: any) => ({ ...item, isActive: item.is_active !== false, icon: item.icon ? { url: getMediaUrl(item.icon), alt: item.icon.alternativeText || item.label, width: item.icon.width || 0, height: item.icon.height || 0 } : undefined })),
       socialLinks: (value.social_links || []).filter((item: any) => item.is_active !== false).sort((a: any, b: any) => (a.order || 0) - (b.order || 0)).map((item: any) => ({ ...item, iconClass: item.icon_class, isActive: item.is_active !== false })),
       globalCta: value.global_cta ? {
@@ -451,7 +607,6 @@ export async function getWebsiteSetting(isDraftMode: boolean = false): Promise<W
         title: value.global_cta.title || "Your case deserves a surgical plan built around you.",
         editorialLead: value.global_cta.editorial_lead || undefined,
         description: value.global_cta.description || undefined,
-        buttonLabel: value.global_cta.button_label || "Start Your Consultation",
         panelEyebrow: value.global_cta.panel_eyebrow || "PRIVATE CONSULTATION",
         panelTitle: value.global_cta.panel_title || "Begin with a clinical review.",
         panelDescription: value.global_cta.panel_description || undefined,
@@ -471,12 +626,6 @@ export async function getWebsiteSetting(isDraftMode: boolean = false): Promise<W
         successEyebrow: value.booking_form.success_eyebrow || "CASE RECEIVED",
         successTitle: value.booking_form.success_title || "Your case has been received.",
         successDescription: value.booking_form.success_description || undefined,
-        successActionLabel: value.booking_form.success_action_label || undefined,
-        successActionHref: value.booking_form.success_action_href || undefined,
-        submitLabel: value.booking_form.submit_label || "Submit Case for Review",
-        submittingLabel: value.booking_form.submitting_label || "Sending…",
-        procedurePlaceholder: value.booking_form.procedure_placeholder || "Select an area or procedure",
-        messagePlaceholder: value.booking_form.message_placeholder || "Tell us what you would like help understanding.",
       } : undefined,
     };
   } catch (error) {
@@ -618,14 +767,12 @@ export async function getNavigation(): Promise<Navigation> {
         label: item.label || "",
         href: item.href || "#",
         isExternal: item.isExternal || false,
-        icon: item.icon || null,
         children: item.children
           ? item.children.map((child) => ({
             id: child.id,
             label: child.label || "",
             href: child.href || "#",
             isExternal: child.isExternal || false,
-            icon: child.icon || null,
           }))
           : undefined,
       };
@@ -641,8 +788,6 @@ export async function getNavigation(): Promise<Navigation> {
           height: 0,
         }
         : undefined,
-      ctaText: response.data.ctaText || undefined,
-      ctaLink: response.data.ctaLink || undefined,
     };
 
     return result;
@@ -681,11 +826,8 @@ export async function getFooter(): Promise<Footer> {
       return {
         description: "",
         contactInfo: { id: 0, address: "", phone: "", email: "" },
-        links: [],
         linkGroups: [],
         socialLinks: [],
-        appointmentLabel: "BOOK APPOINTMENT",
-        appointmentHref: "/#home-booking",
         tagline: "Designed with care for your smile.",
       };
     }
@@ -738,11 +880,8 @@ export async function getFooter(): Promise<Footer> {
           phone: "",
           email: "",
         },
-      links: response.data.footer_links || [],
       linkGroups: response.data.link_groups || [],
       socialLinks: response.data.social_links || [],
-      appointmentLabel: response.data.appointment_label || "BOOK APPOINTMENT",
-      appointmentHref: response.data.appointment_href || "/#home-booking",
       copyrightText: response.data.copyright_text,
       tagline: response.data.tagline || "Designed with care for your smile.",
     };
@@ -752,11 +891,8 @@ export async function getFooter(): Promise<Footer> {
     return {
       description: "",
       contactInfo: { id: 0, address: "", phone: "", email: "" },
-      links: [],
       linkGroups: [],
       socialLinks: [],
-      appointmentLabel: "BOOK APPOINTMENT",
-      appointmentHref: "/#home-booking",
       tagline: "Designed with care for your smile.",
     };
   }
@@ -852,8 +988,8 @@ export async function getHomepage(isDraftMode: boolean = false): Promise<Homepag
           tags: ["services"],
         });
         homepageServiceOptions = (servicesResponse.data || [])
-          .filter((service: any) => service.slug && service.title)
-          .map((service: any) => ({ value: service.slug, label: service.title }));
+          .filter((service: any) => service.slug && (service.navigationLabel || service.title))
+          .map((service: any) => ({ value: service.slug, label: service.navigationLabel || service.title }));
       } catch {
         homepageServiceOptions = [];
       }
@@ -1402,329 +1538,7 @@ export async function getHomepage(isDraftMode: boolean = false): Promise<Homepag
 }
 
 /**
- * Fetches the Customers page data from Strapi CMS
- * Priority:
- *   1. /api/customer (new Customer single type with dynamic zone layout)
- *   2. /api/pages?filters[slug][$eq]=customers (legacy pages collection with JSON content)
- *   3. Default fallback content
- */
-export async function getCustomersPage(isDraftMode: boolean = false): Promise<{
-  page: { title: string; description: string; slug: string } | null;
-  content: any;
-}> {
-  // 1. Try the new Customer single type first
-  try {
-    const fetchCustomer = async (draft: boolean) => apiClient<any>("/api/customer", {
-      params: {
-        "populate[layout][populate]": "*",
-        "populate[layout][on][customer.hero][populate]":
-          "image1,image2,image3,image4",
-        "populate[layout][on][customer.combined-testimonial-result][populate][items][populate]":
-          "beforeImage,afterImage",
-        "populate[layout][on][customer.success-stories][populate][stories][populate]":
-          "avatar",
-        "populate[layout][on][customer.benefits][populate][benefits][populate]":
-          "icon",
-        "populate[layout][on][customer.statistics][populate][stats][populate]":
-          "icon",
-        "populate[layout][on][customer.why-choose-us][populate][features][populate]":
-          "icon",
-        "populate[layout][on][customer.reviews][populate][checklist][populate]":
-          "icon",
-        "populate[layout][on][customer.faq][populate][questions][populate]":
-          "*",
-        "populate[layout][on][customer.cta][populate][contact_info][populate]":
-          "address_icon,phone_icon,email_icon",
-      },
-      tags: ["customer"],
-      isDraftMode: draft,
-    });
-
-    let customerResponse = await fetchCustomer(isDraftMode);
-
-    // Fallback: If published is empty (e.g. raw SQL migration), fetch draft
-    if (!customerResponse?.data && !isDraftMode) {
-      customerResponse = await fetchCustomer(true);
-    }
-
-    if (customerResponse?.data) {
-      // Strapi v5 returns data: { id, documentId, ...attributes }
-      const data = customerResponse.data;
-      const content = transformCustomersLayoutToContent(data.layout);
-
-      // Customer's page title is the canonical title edited at the single
-      // type root. The legacy hero component also has a title field, but the
-      // customer UI renders the hero presentation. Keep that presentation in
-      // sync so draft preview shows the exact title saved in the CMS.
-      if (content?.hero && data.title) {
-        content.hero.title = cleanDescription(data.title);
-      }
-      return {
-        page: {
-          title: data.title || "",
-          description: cleanDescription(data.description) || "",
-          slug: "customers",
-        },
-        content,
-      };
-    }
-  } catch {
-  }
-
-  // 2. Fall back to pages collection (legacy - 024-create-customer-page.js data)
-  try {
-    const fetchPages = async (draft: boolean) => apiClient<any>("/api/pages", {
-      params: {
-        "filters[slug][$eq]": "customers",
-        populate: "*",
-      },
-      tags: ["pages"],
-      isDraftMode: draft,
-    });
-
-    let pagesResponse = await fetchPages(isDraftMode);
-
-    if ((!pagesResponse?.data || pagesResponse.data.length === 0) && !isDraftMode) {
-      pagesResponse = await fetchPages(true);
-    }
-
-    if (pagesResponse?.data && pagesResponse.data.length > 0) {
-      const pageData = pagesResponse.data[0];
-
-      let content = null;
-      if (pageData.content) {
-        try {
-          content = JSON.parse(pageData.content);
-        } catch {
-          content = pageData.content;
-        }
-      }
-
-      // Clean the legacy content if it has hero/descriptions
-      if (content && typeof content === 'object') {
-        // 1. Hero
-        if (content.hero) {
-          content.hero.badge = cleanDescription(content.hero.badge);
-          content.hero.title = cleanDescription(content.hero.title);
-          content.hero.description = cleanDescription(content.hero.description);
-          content.hero.subtitle = cleanDescription(content.hero.subtitle);
-        }
-        // 2. Success Stories
-        if (content.successStories) {
-          content.successStories.badge = cleanDescription(content.successStories.badge);
-          content.successStories.title = cleanDescription(content.successStories.title);
-          content.successStories.description = cleanDescription(content.successStories.description);
-          if (Array.isArray(content.successStories.stories)) {
-            content.successStories.stories.forEach((s: any) => {
-              s.quote = cleanDescription(s.quote);
-            });
-          }
-        }
-        // 3. Before After Gallery
-        if (content.beforeAfterGallery) {
-          content.beforeAfterGallery.title = cleanDescription(content.beforeAfterGallery.title);
-          content.beforeAfterGallery.subtitle = cleanDescription(content.beforeAfterGallery.subtitle);
-          if (Array.isArray(content.beforeAfterGallery.items)) {
-            content.beforeAfterGallery.items.forEach((item: any) => {
-              item.content = cleanDescription(item.content);
-            });
-          }
-        }
-        // 4. Why Choose Us
-        if (content.whyChooseUs) {
-          content.whyChooseUs.badge = cleanDescription(content.whyChooseUs.badge);
-          content.whyChooseUs.title = cleanDescription(content.whyChooseUs.title);
-          content.whyChooseUs.description = cleanDescription(content.whyChooseUs.description);
-          if (Array.isArray(content.whyChooseUs.features)) {
-            content.whyChooseUs.features.forEach((f: any) => {
-              f.description = cleanDescription(f.description);
-            });
-          }
-        }
-        // 5. Reviews
-        if (content.reviews) {
-          content.reviews.badge = cleanDescription(content.reviews.badge);
-          content.reviews.title = cleanDescription(content.reviews.title);
-          content.reviews.description = cleanDescription(content.reviews.description);
-          content.reviews.rating_subtitle = cleanDescription(content.reviews.rating_subtitle);
-        }
-      }
-
-      return {
-        page: {
-          title: pageData.title || "",
-          description: cleanDescription(pageData.description) || "",
-          slug: pageData.slug || "",
-        },
-        content,
-      };
-    }
-  } catch (pagesError) {
-  }
-
-  // 3. Return null result if all API calls fail (will trigger Error UI)
-  return { page: null, content: null };
-}
-
-/**
- * Transform Customer single type layout components to content structure.
- * Component names match schemas defined in 027-create-customer-schemas.js:
- *   customer.hero, customer.success-stories, customer.benefits,
- *   customer.statistics, customer.faq, customer.cta
- */
-function transformCustomersLayoutToContent(layout: any[]): any {
-  if (!layout || !Array.isArray(layout)) return null;
-
-  const content: any = {};
-
-  for (const component of layout) {
-    // __component format: "customer.success-stories" -> split gives ["customer", "success-stories"]
-    const componentType = component.__component?.split(".")[1];
-
-    switch (componentType) {
-      case "hero":
-        content.hero = {
-          badge: cleanDescription(component.badge),
-          title: cleanDescription(component.title),
-          description: cleanDescription(component.description),
-          // Convert separate image fields or JSON field back to the array format expected by the frontend
-          images: (Array.isArray(component.images) ? component.images : [
-            component.image1,
-            component.image2,
-            component.image3,
-            component.image4,
-          ])
-            .map((img: any) => {
-              if (!img) return null;
-              // If it's already a transformed object from JSON field
-              if (img.path || img.url) {
-                return {
-                  type: "strapi",
-                  path: img.path || img.url,
-                  alt: img.alt || img.alternativeText || img.name || "",
-                };
-              }
-              return null;
-            })
-            .filter(Boolean),
-        };
-        break;
-
-      // Matches schema: customer.success-stories
-      case "success-stories":
-        content.successStories = {
-          badge: cleanDescription(component.badge),
-          title: cleanDescription(component.title),
-          description: cleanDescription(component.description),
-          // stories is a repeatable component (customer.story-item)
-          stories: (component.stories || []).map((s: any) => ({
-            name: s.name,
-            treatment: s.treatment,
-            quote: cleanDescription(s.quote),
-            rating: s.rating ?? 5,
-            avatar: s.avatar
-              ? {
-                url: getMediaUrl(s.avatar),
-                alt: s.avatar.alternativeText || s.author || "",
-              }
-              : null,
-          })),
-        };
-        break;
-
-      // Matches schema: customer.combined-testimonial-result
-      case "combined-testimonial-result":
-        content.beforeAfterGallery = {
-          title: cleanDescription(component.title),
-          subtitle: cleanDescription(component.subtitle),
-          // items is a repeatable component (customer.combined-testimonial-result-item)
-          items: (component.items || []).map((item: any) => ({
-            customerName: item.customerName,
-            content: cleanDescription(item.content),
-            rating: item.rating,
-            country: item.country,
-            treatmentType: item.treatmentType,
-            beforeImage: item.beforeImage
-              ? {
-                url: getMediaUrl(item.beforeImage),
-                alt: getMediaAlt(item.beforeImage, `${item.treatmentType || ""} - Before`),
-              }
-              : null,
-            avatar: item.avatar
-              ? {
-                url: getMediaUrl(item.avatar),
-                alt: getMediaAlt(item.avatar, item.customerName),
-              }
-              : null,
-            afterImage: item.afterImage
-              ? {
-                url: getMediaUrl(item.afterImage),
-                alt: getMediaAlt(item.afterImage, `${item.treatmentType || ""} - After`),
-              }
-              : null,
-          })),
-        };
-        break;
-
-      // Matches schema: customer.reviews
-      case "reviews":
-        content.reviews = {
-          badge: cleanDescription(component.badge),
-          title: cleanDescription(component.title),
-          rating: component.rating,
-          total_reviews: component.total_reviews,
-          rating_subtitle: cleanDescription(component.rating_subtitle),
-          description: cleanDescription(component.description),
-          // checklist is a repeatable component (customer.review-checklist-item)
-          checklist: (component.checklist || []).map((item: any) => ({
-            text: cleanDescription(item.text),
-            icon: item.icon
-              ? {
-                url: getMediaUrl(item.icon),
-                alt: item.icon.alternativeText || item.text || "",
-              }
-              : null,
-          })),
-        };
-        break;
-
-      // Matches schema: customer.why-choose-us
-      case "why-choose-us":
-        content.whyChooseUs = {
-          badge: cleanDescription(component.badge),
-          title: cleanDescription(component.title),
-          description: cleanDescription(component.description),
-          // features is a repeatable component (customer.feature-item)
-          features: (component.features || []).map((feature: any) => ({
-            title: cleanDescription(feature.title),
-            description: cleanDescription(feature.description),
-            icon: feature.icon
-              ? {
-                url: getMediaUrl(feature.icon),
-                alt: feature.icon.alternativeText || feature.title || "",
-              }
-              : null,
-          })),
-        };
-        break;
-
-      default:
-        console.warn(
-          `[transformCustomersLayoutToContent] Unknown component type: ${componentType}`,
-        );
-    }
-  }
-
-  return content;
-}
-
-/**
- * Get contact page content
- *
- * Fetches contact page with all sections from CMS.
- * Contact page is a Single Type with hero (including map), form, and CTA.
- *
- * @returns Contact page object with all sections
+ * Get contact page content from the Strapi single type.
  */
 export interface ContactPageBlock {
   id: string;
@@ -1786,7 +1600,6 @@ export async function getContactPage(isDraftMode: boolean = false): Promise<Cont
           formTitle: block.form_title || '',
           formIntro: cleanDescription(block.form_intro) || '',
           serviceOptions: [],
-          locationOptions: (block.location_options || []).map((option: any) => ({ label: option.label || '', value: option.value || '' })),
           privacyPolicyLabel: block.privacy_policy_label || '',
           privacyPolicyHref: block.privacy_policy_href || '',
           submitLabel: block.submit_label || '',
@@ -1905,7 +1718,7 @@ export async function getAboutPage(isDraftMode: boolean = false): Promise<any> {
         doctorsSlider = {
           title: data.doctors.title || "Meet Our Doctors",
           viewAllLabel: data.doctors.view_all_label || "VIEW ALL DOCTORS",
-          viewAllLink: data.doctors.view_all_link || "/doctors",
+          viewAllLink: data.doctors.view_all_link || "/our-team",
           doctors: (data.doctors.doctors || []).map((doctor: any) => ({
             id: doctor.id,
             name: doctor.name || "",
@@ -1965,9 +1778,6 @@ export async function getAboutPage(isDraftMode: boolean = false): Promise<any> {
         editorialLead: cleanDescription(data.hero.editorial_lead || data.hero.supportingParagraph) || "",
         description: cleanDescription(data.hero.description) || "",
         secondaryDescription: cleanDescription(data.hero.secondary_description) || "",
-        primaryButtonLabel: data.hero.primary_button_label || "MEET DR. MARIS",
-        secondaryButtonLabel: data.hero.secondary_button_label || "REQUEST AN ONLINE CONSULTATION",
-        secondaryButtonLink: data.hero.secondary_button_link || "/contact",
         image: data.hero.image ? getMediaUrl(data.hero.image) : data.hero.backgroundImage ? getMediaUrl(data.hero.backgroundImage) : null,
         imageAlt: data.hero.image_alt || getMediaAlt(data.hero.image || data.hero.backgroundImage, "Dr. Maris, Lead Plastic Surgeon at Maris Aesthetics"),
       }

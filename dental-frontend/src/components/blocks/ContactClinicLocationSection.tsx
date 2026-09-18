@@ -18,6 +18,7 @@ interface ClinicLocationData {
 export interface ContactMapSettings {
   address?: string
   phonePrimary?: string
+  openingHours?: string
   mapLatitude?: number
   mapLongitude?: number
   mapZoom?: number

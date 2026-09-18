@@ -4,6 +4,12 @@ export default {
    * CMS content is never created or seeded here.
    */
   register({ strapi }) {
+    strapi.customFields.register({
+      name: "service-navigation-order",
+      type: "integer",
+      inputSize: { default: 6, isResizable: true },
+    });
+
     // webtools-addon-sitemap@1.3.1 probes this compatibility endpoint.
     strapi.server.router.get("/webtools/sitemap/init", (ctx) => {
       ctx.body = { ok: true };
@@ -50,11 +56,9 @@ export default {
       if (publicRole) {
         const publicReadActions = [
           "api::redirect.redirect.find",
-          "api::navigation.navigation.find",
           "api::homepage.homepage.find",
           "api::our-team.our-team.find",
           "api::result.result.find",
-          "api::footer.footer.find",
           "api::seo-manager-settings.seo-manager-settings.find",
           "api::canonical-rule.canonical-rule.find",
           "api::blog.blog.find",

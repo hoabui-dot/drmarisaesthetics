@@ -1,0 +1,5 @@
+{
+  "collectionName": "components_deep_plane_checklist_items",
+  "info": { "displayName": "Deep Plane checklist item" },
+  "attributes": { "text": { "type": "string", "required": true } }
+}

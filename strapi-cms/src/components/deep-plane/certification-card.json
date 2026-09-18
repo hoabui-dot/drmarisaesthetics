@@ -1,0 +1,8 @@
+{
+  "collectionName": "components_deep_plane_certification_cards",
+  "info": { "displayName": "Deep Plane certification card" },
+  "attributes": {
+    "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "image_alt": { "type": "string" }
+  }
+}

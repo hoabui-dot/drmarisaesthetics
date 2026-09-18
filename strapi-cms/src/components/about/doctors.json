@@ -16,7 +16,7 @@
     },
     "view_all_link": {
       "type": "string",
-      "default": "/doctors"
+      "default": "/our-team"
     },
     "doctors": {
       "type": "component",

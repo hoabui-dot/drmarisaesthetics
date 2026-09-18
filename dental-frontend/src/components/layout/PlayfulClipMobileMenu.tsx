@@ -7,6 +7,7 @@ import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useReducedMotion } from 'motion/react'
 import type { Navigation, NavItem } from '@/src/types/strapi'
+import { HEADER_CTA } from '@/src/lib/constants/site-navigation'
 
 type PlayfulClipMobileMenuProps = {
   open: boolean
@@ -15,7 +16,8 @@ type PlayfulClipMobileMenuProps = {
   onBook: () => void
 }
 
-function MenuLink({ href, label, open, onClose, child = false }: { href: string; label: string; open: boolean; onClose: () => void; child?: boolean }) {
+function MenuLink({ href, label, open, onClose, child = false, clickable = true, onToggle }: { href: string; label: string; open: boolean; onClose: () => void; child?: boolean; clickable?: boolean; onToggle?: () => void }) {
+  if (!clickable) return <button type="button" onClick={onToggle} className="playful-clip-menu__link"><span>{label}</span></button>
   return <Link href={href} tabIndex={open ? 0 : -1} onClick={onClose} className={child ? 'playful-clip-menu__child-link' : 'playful-clip-menu__link'}>
     <span>{label}</span><ArrowUpRight aria-hidden="true" />
   </Link>
@@ -33,7 +35,7 @@ function MenuGroup({ item, open, onClose }: { item: NavItem; open: boolean; onCl
 
   return <div className="playful-clip-menu__group">
     <div className="playful-clip-menu__group-heading">
-      <MenuLink href={item.href} label={item.label} open={open} onClose={onClose} />
+      <MenuLink href={item.href} label={item.label} open={open} onClose={onClose} clickable={item.isClickable !== false} onToggle={() => setExpanded((value) => !value)} />
       <button type="button" className="playful-clip-menu__group-toggle" aria-label={`${expanded ? 'Collapse' : 'Expand'} ${item.label} menu`} aria-expanded={expanded} onClick={() => setExpanded((value) => !value)}>
         <ChevronDown aria-hidden="true" />
       </button>
@@ -99,7 +101,7 @@ export function PlayfulClipMobileMenu({ open, navigation, onClose, onBook }: Pla
           {navigation.navigation.map((item) => <div key={item.id} data-clip-menu-item><MenuGroup item={item} open={open} onClose={onClose} /></div>)}
         </div>
         <div ref={footer => { if (footer) footer.dataset.clipMenuFooter = 'true' }} data-clip-menu-footer className="playful-clip-menu__footer">
-          {navigation.ctaText && navigation.ctaLink ? <button type="button" tabIndex={open ? 0 : -1} onClick={() => { onBook(); onClose() }} className="booking-inline-cta playful-clip-menu__cta">{navigation.ctaText}<ArrowUpRight aria-hidden="true" /></button> : null}
+          <button type="button" tabIndex={open ? 0 : -1} onClick={() => { onBook(); onClose() }} className="booking-inline-cta playful-clip-menu__cta">{HEADER_CTA.label}<ArrowUpRight aria-hidden="true" /></button>
           <span>Ho Chi Minh City · Vietnam</span>
         </div>
       </div>

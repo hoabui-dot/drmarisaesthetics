@@ -53,6 +53,8 @@ export default [
   "strapi::session",
   "strapi::favicon",
   "strapi::public",
+  // Keep unassigned services at the end of the navigationOrder list.
+  "global::service-navigation-list",
   // Rate limiting for booking submissions
   "global::rate-limit",
   // Booking status validator (must come after body parser)

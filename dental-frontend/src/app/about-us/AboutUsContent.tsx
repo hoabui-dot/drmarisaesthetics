@@ -23,7 +23,7 @@ export function AboutUsContent({ content }: AboutUsContentProps) {
   const featuredServices = content.featuredServices
   const serviceOptions = (featuredServices?.services || []).map((service: any) => ({
     value: service.slug,
-    label: service.title,
+    label: service.navigationLabel || service.title,
   }))
 
   const renderSection = (section: string) => {

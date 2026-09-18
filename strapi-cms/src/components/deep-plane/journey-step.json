@@ -1,0 +1,10 @@
+{
+  "collectionName": "components_deep_plane_journey_steps",
+  "info": { "displayName": "Deep Plane journey step" },
+  "attributes": {
+    "badge": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "description": { "type": "text" },
+    "phase": { "type": "string" }
+  }
+}

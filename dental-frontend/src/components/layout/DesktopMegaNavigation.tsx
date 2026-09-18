@@ -115,9 +115,15 @@ export function DesktopMegaNavigation({ items, activeSection, onNavigate }: Desk
           const dropdownTriggerClass = `desktop-mega-navigation__trigger group relative flex items-center gap-1 rounded-lg px-3 py-2 transition-colors ${active ? '' : 'after:absolute after:bottom-1 after:left-3 after:right-3 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:transition-transform after:duration-200 hover:after:scale-x-100'}`
 
           return <div key={item.id} ref={(node) => { triggerRefs.current[key] = node }} className="relative flex items-center" onMouseEnter={() => openMenu(item)} onFocusCapture={() => openMenu(item)}>
-            <Link href={item.href} data-active={active || undefined} onClick={() => { onNavigate?.(item.href); closeMenu() }} className={dropdownTriggerClass}>
-              <span className="relative z-10">{item.label}</span>
-            </Link>
+            {item.isClickable === false ? (
+              <button type="button" aria-haspopup="menu" onClick={() => openMenu(item)} className={dropdownTriggerClass}>
+                <span className="relative z-10">{item.label}</span>
+              </button>
+            ) : (
+              <Link href={item.href} data-active={active || undefined} onClick={() => { onNavigate?.(item.href); closeMenu() }} className={dropdownTriggerClass}>
+                <span className="relative z-10">{item.label}</span>
+              </Link>
+            )}
             <button ref={(node) => { toggleRefs.current[key] = node }} type="button" aria-label={`Open ${item.label} menu`} aria-expanded={activeMenu === key} aria-controls={`mega-menu-${key}`} data-active={active || undefined} onClick={() => { if (activeMenu === key) closeMenu(true); else openMenu(item) }} className="desktop-mega-navigation__trigger relative -ml-1 flex items-center rounded-lg px-2 py-2" onFocus={() => openMenu(item)}>
               <motion.span className="relative z-10" animate={{ rotate: activeMenu === key ? 180 : 0 }} transition={motionTransition}><ChevronDown size={15} aria-hidden="true" /></motion.span>
             </button>
@@ -131,7 +137,7 @@ export function DesktopMegaNavigation({ items, activeSection, onNavigate }: Desk
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.div key={activeMenu} initial="hidden" animate="visible" exit="exit" variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { delayChildren: reduceMotion ? 0 : 0.04, staggerChildren: reduceMotion ? 0 : 0.045 } }, exit: { opacity: 0, transition: { duration: reduceMotion ? 0 : 0.12 } } }} className="inline-grid w-max max-w-[calc(100vw-2.5rem)] grid-cols-[max-content] gap-0.5">
                   {activeItem.children.map((child) => <motion.div key={child.id} variants={{ hidden: { opacity: 0, y: 8 }, visible: { opacity: 1, y: 0, transition: reduceMotion ? { duration: 0 } : { duration: 0.24, ease: [0.22, 1, 0.36, 1] } }, exit: { opacity: 0, y: -4 } }}>
-                    <Link href={child.href} data-current={isCurrent(child.href) || undefined} onClick={() => { onNavigate?.(child.href); closeMenu() }} className={`desktop-mega-navigation__item group/mega relative block w-max max-w-[calc(100vw-2.5rem)] overflow-hidden rounded-md px-3.5 py-2.5 whitespace-nowrap transition-colors ${isCurrent(child.href) ? 'bg-[var(--smilux-primary)]' : ''}`}>
+                    <Link href={child.href} data-current={isCurrent(child.href) || undefined} onClick={() => { onNavigate?.(child.href); closeMenu() }} className={`desktop-mega-navigation__item group/mega relative block w-full max-w-[calc(100vw-2.5rem)] overflow-hidden rounded-md px-3.5 py-2.5 whitespace-nowrap transition-colors ${isCurrent(child.href) ? 'bg-[var(--smilux-primary)]' : ''}`}>
                       <span aria-hidden="true" className="desktop-mega-navigation__item-highlight pointer-events-none absolute inset-0 rounded-md opacity-0 transition-opacity duration-200 group-hover/mega:opacity-100" />
                       <span className="relative z-10 flex items-center gap-2">{child.label}</span>
                     </Link>

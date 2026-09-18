@@ -1567,7 +1567,6 @@ export interface ApiWebsiteSettingWebsiteSetting
       Schema.Attribute.Private;
     default_open_graph_image: Schema.Attribute.Media<'images'>;
     email: Schema.Attribute.Email & Schema.Attribute.Required;
-    favicon: Schema.Attribute.Media<'images'>;
     global_cta: Schema.Attribute.Component<'website-setting.global-cta', false>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -1585,7 +1584,6 @@ export interface ApiWebsiteSettingWebsiteSetting
     phone_secondary: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     site_name: Schema.Attribute.String & Schema.Attribute.Required;
-    site_name_localized: Schema.Attribute.String;
     social_links: Schema.Attribute.Component<
       'website-setting.social-link',
       true
@@ -1593,7 +1591,6 @@ export interface ApiWebsiteSettingWebsiteSetting
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    website: Schema.Attribute.String;
   };
 }
 

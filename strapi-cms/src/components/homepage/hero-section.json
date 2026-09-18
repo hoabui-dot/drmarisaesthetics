@@ -3,7 +3,7 @@
   "info": { "displayName": "Hero section" },
   "options": {},
   "attributes": {
-    "eyebrow": { "type": "string" }, "title_line_1": { "type": "string", "required": true }, "title_line_2": { "type": "string", "required": true },
+    "eyebrow": { "type": "string" }, "title": { "type": "string", "required": true },
     "editorial_lead": { "type": "text" }, "paragraph_one": { "type": "text" }, "paragraph_two": { "type": "text" },
     "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] }, "image_alt": { "type": "string" }, "trust_labels": { "type": "component", "repeatable": true, "component": "homepage.text-item" }
   }

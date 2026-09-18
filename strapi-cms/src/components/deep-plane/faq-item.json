@@ -1,0 +1,8 @@
+{
+  "collectionName": "components_deep_plane_faq_items",
+  "info": { "displayName": "Deep Plane FAQ item" },
+  "attributes": {
+    "question": { "type": "string", "required": true },
+    "answer": { "type": "text", "required": true }
+  }
+}

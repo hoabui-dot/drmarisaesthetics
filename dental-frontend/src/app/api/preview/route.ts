@@ -24,7 +24,6 @@ export async function GET(request: NextRequest) {
     homepage: '/',
     'about-page': '/about-us',
     'contact-page': '/contact',
-    customer: '/customers',
   }
   const target = routes[type] || (type === 'blog' && slug ? `/news/${encodeURIComponent(slug)}` : null)
     || (type === 'page' && slug ? `/${encodeURIComponent(slug)}` : null)

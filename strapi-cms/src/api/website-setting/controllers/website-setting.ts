@@ -8,8 +8,9 @@ export default factories.createCoreController('api::website-setting.website-sett
       status: ctx.query.status === 'draft' ? 'draft' : 'published',
       populate: {
         logo: true,
-        favicon: true,
         default_open_graph_image: true,
+        header_navigation: { populate: { children: true } },
+        footer_link_groups: { populate: { links: true } },
         contact_methods: { populate: { icon: true } },
         social_links: true,
         global_cta: { populate: { background_image: true, steps: true } },

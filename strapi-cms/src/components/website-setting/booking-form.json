@@ -15,11 +15,5 @@
     "success_eyebrow": { "type": "string" },
     "success_title": { "type": "string" },
     "success_description": { "type": "text" },
-    "success_action_label": { "type": "string" },
-    "success_action_href": { "type": "string" },
-    "submit_label": { "type": "string" },
-    "submitting_label": { "type": "string" },
-    "procedure_placeholder": { "type": "string" },
-    "message_placeholder": { "type": "string" }
   }
 }

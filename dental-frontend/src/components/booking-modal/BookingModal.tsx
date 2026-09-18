@@ -4,11 +4,12 @@ import { useEffect, useRef, useState } from 'react'
 import { ArrowRight, Check, X } from 'lucide-react'
 import { toast } from 'sonner'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
-import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js'
+import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import { contactFormSchema, type ContactFormData } from '@/src/lib/validations/contact-form'
 import { useBookingModal } from './BookingModalContext'
 import { CountryPicker, defaultCountry, type CountryOption } from '@/src/components/forms/CountryPicker'
 import { SelectBase, type SelectOption } from '@/src/components/ui/SelectBase'
+import { formatNationalPhone, normalizeNationalPhone } from '@/src/components/forms/phoneFormatting'
 
 const fallbackBookingForm = {
   visualEyebrow: 'DIRECT SURGEON CARE', visualTitle: 'Your case is reviewed before you travel.',
@@ -19,24 +20,14 @@ const fallbackBookingForm = {
   privacyText: 'Your information is private and confidential. We will never share your case details without permission.',
   successEyebrow: 'CASE RECEIVED', successTitle: 'Your case has been received.',
   successDescription: 'Our team will review the information you provided and contact you regarding the appropriate next step.',
-  submitLabel: 'Submit Case for Review', submittingLabel: 'Sending…',
-  procedurePlaceholder: 'Select an area or procedure', messagePlaceholder: 'Tell us what you would like help understanding.',
 }
 
-function normalizeNationalPhone(value: string, country: CountryOption) {
-  const trimmed = value.trim(), digits = value.replace(/\D/g, ''), dialCode = country.dialCode.slice(1)
-  if (trimmed.startsWith('+') && digits.startsWith(dialCode)) return digits.slice(dialCode.length)
-  if (trimmed.startsWith('00') && digits.startsWith(`00${dialCode}`)) return digits.slice(dialCode.length + 2)
-  return digits
-}
-
-function formatNationalPhone(value: string, country: CountryOption) {
-  if (!value) return ''
-  const nationalFormat = new AsYouType(country.code).input(value), parsed = parsePhoneNumberFromString(value, country.code)
-  if (!parsed || !parsed.isValid()) return nationalFormat
-  const international = parsed.formatInternational(), prefix = `${country.dialCode} `
-  return international.startsWith(prefix) ? international.slice(prefix.length) : international
-}
+const BOOKING_FORM_UI_COPY = {
+  submitLabel: 'Submit Case for Review',
+  submittingLabel: 'Sending…',
+  procedurePlaceholder: 'Select an area or procedure',
+  messagePlaceholder: 'Tell us what you would like help understanding.',
+} as const
 
 export function BookingModal() {
   const { isOpen, close, serviceOptions, bookingForm, context } = useBookingModal()
@@ -44,7 +35,7 @@ export function BookingModal() {
   const { executeRecaptcha } = useGoogleReCaptcha()
   const [isSubmitting, setIsSubmitting] = useState(false), [status, setStatus] = useState<'idle' | 'error' | 'success'>('idle')
   const [errors, setErrors] = useState<Record<string, string>>({}), [phoneCountry, setPhoneCountry] = useState<CountryOption>(defaultCountry)
-  const [form, setForm] = useState({ fullName: '', email: '', phoneNumber: '', type: context.consultationType, procedure: context.procedure, message: '' })
+  const [form, setForm] = useState({ fullName: '', email: '', phoneNumber: '', type: context.consultationType, procedure: context.procedure, otherService: '', message: '' })
   const dialogRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => { if (!isOpen) return; setStatus('idle'); setErrors({}); setForm((current) => ({ ...current, type: context.consultationType, procedure: context.procedure })) }, [isOpen, context.consultationType, context.procedure])
@@ -69,6 +60,7 @@ export function BookingModal() {
     const parsedPhone = form.phoneNumber.trim() ? parsePhoneNumberFromString(form.phoneNumber, phoneCountry.code) : undefined
     if (!parsedPhone || !parsedPhone.isValid()) next.phoneNumber = 'Please enter a valid phone number for the selected country.'
     if (!form.procedure) next.procedure = 'Please select an area or procedure.'
+    if (form.procedure === 'Other' && !form.otherService.trim()) next.otherService = 'Please specify the service you are interested in.'
     setErrors(next); return Object.keys(next).length === 0
   }
   const submit = async (event: React.FormEvent) => {
@@ -86,7 +78,7 @@ export function BookingModal() {
       if (!recaptchaToken) throw new Error('Missing reCAPTCHA token')
       const message = [`Consultation type: ${form.type === 'revision' ? 'Revision Surgery' : 'Cosmetic Surgery Consultation'}`, `Area / procedure: ${form.procedure}`, form.message ? `Case description: ${form.message}` : ''].filter(Boolean).join('\n')
       const parsedPhone = parsePhoneNumberFromString(form.phoneNumber, phoneCountry.code); if (!parsedPhone || !parsedPhone.isValid()) throw new Error('Invalid phone number')
-      const payload: ContactFormData = { fullName: form.fullName, email: form.email, phoneNumber: parsedPhone.number, service: form.procedure || 'Consultation', otherService: '', message, recaptchaToken }
+      const payload: ContactFormData = { fullName: form.fullName, email: form.email, phoneNumber: parsedPhone.number, service: form.procedure || 'Consultation', otherService: form.procedure === 'Other' ? form.otherService.trim() : '', message, recaptchaToken }
       if (!contactFormSchema.safeParse(payload).success) throw new Error('Invalid form')
       const response = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
       if (!response.ok) {
@@ -97,7 +89,7 @@ export function BookingModal() {
       setStatus('success'); toast.success('Your case has been received.', { description: 'Our team will contact you regarding the appropriate next step.' })
     } catch { setStatus('error') } finally { setIsSubmitting(false) }
   }
-  const procedureOptions: SelectOption[] = [...serviceOptions.map((option) => ({ label: option, value: option })), { label: 'Other', value: 'Other' }]
+  const procedureOptions: SelectOption[] = [...serviceOptions.filter((option) => option.value !== 'Other'), { label: 'Others', value: 'Other' }]
   const visualStyle = bookingForm?.visualImage?.url ? { backgroundImage: `url('${bookingForm.visualImage.url}')` } : undefined
 
   return <>
@@ -108,7 +100,7 @@ export function BookingModal() {
         <section className="booking-modal__content"><button type="button" className="booking-modal__close" onClick={close} aria-label="Close consultation form"><X size={19} /></button>
           {status === 'success' ? <div className="booking-modal__success"><span><Check size={22} /></span><span className="booking-modal__eyebrow">{copy.successEyebrow}</span><h2>{copy.successTitle}</h2>{copy.successDescription ? <p>{copy.successDescription}</p> : null}</div> : <>
             <div className="booking-modal__heading"><span className="booking-modal__eyebrow">{copy.formEyebrow}</span><h2 id="booking-modal-title">{copy.formTitle}</h2>{copy.formDescription ? <p>{copy.formDescription}</p> : null}</div>
-            <form onSubmit={submit} noValidate><div className="booking-modal__step"><div className="booking-modal__fields"><Field label="Full Name" value={form.fullName} onChange={(value) => update('fullName', value)} error={errors.fullName} autoComplete="name" /><Field label="Email Address" optional type="email" value={form.email} onChange={(value) => update('email', value)} error={errors.email} autoComplete="email" /><label className="booking-modal__field booking-modal__field--phone"><span>WhatsApp / Phone</span><div className="booking-modal__phone-field"><CountryPicker label="Phone country code" value={phoneCountry} onChange={setPhoneCountry} error={errors.phoneNumber} /><span className="booking-modal__phone-prefix" aria-hidden="true">({phoneCountry.dialCode})</span><input type="tel" value={formatNationalPhone(form.phoneNumber, phoneCountry)} onChange={(event) => update('phoneNumber', normalizeNationalPhone(event.target.value, phoneCountry))} autoComplete="tel" inputMode="tel" /></div>{errors.phoneNumber ? <small>{errors.phoneNumber}</small> : null}</label><label className="booking-modal__field booking-modal__field--full"><span>Area / Procedure</span><SelectBase value={form.procedure} options={procedureOptions} onChange={(value) => update('procedure', value)} placeholder={copy.procedurePlaceholder} ariaLabel="Area or procedure" invalid={Boolean(errors.procedure)} />{errors.procedure ? <small>{errors.procedure}</small> : null}</label><label className="booking-modal__field booking-modal__field--full"><span>Brief Case Description <small className="booking-modal__optional-note">(Optional)</small></span><textarea rows={3} value={form.message} onChange={(event) => update('message', event.target.value)} placeholder={copy.messagePlaceholder} /></label>{status === 'error' ? <p className="booking-modal__error" role="alert">We could not send your case. Please try again or contact our team directly.</p> : null}</div></div><div className="booking-modal__actions"><span /><button type="submit" className="booking-modal__primary" disabled={isSubmitting}>{isSubmitting ? copy.submittingLabel : copy.submitLabel} <ArrowRight size={16} /></button></div></form>{copy.privacyText ? <p className="booking-modal__privacy">{copy.privacyText}</p> : null}
+            <form onSubmit={submit} noValidate><div className="booking-modal__step"><div className="booking-modal__fields"><Field label="Full Name" value={form.fullName} onChange={(value) => update('fullName', value)} error={errors.fullName} autoComplete="name" /><Field label="Email Address" optional type="email" value={form.email} onChange={(value) => update('email', value)} error={errors.email} autoComplete="email" /><label className="booking-modal__field booking-modal__field--phone"><span>WhatsApp / Phone</span><div className="booking-modal__phone-field"><CountryPicker label="Phone country code" value={phoneCountry} onChange={setPhoneCountry} error={errors.phoneNumber} /><span className="booking-modal__phone-prefix" aria-hidden="true">({phoneCountry.dialCode})</span><input type="tel" value={formatNationalPhone(form.phoneNumber, phoneCountry)} onChange={(event) => update('phoneNumber', normalizeNationalPhone(event.target.value, phoneCountry))} autoComplete="tel" inputMode="tel" /></div>{errors.phoneNumber ? <small>{errors.phoneNumber}</small> : null}</label><label className="booking-modal__field booking-modal__field--full"><span>Area / Procedure</span><SelectBase value={form.procedure} options={procedureOptions} onChange={(value) => update('procedure', value)} placeholder={BOOKING_FORM_UI_COPY.procedurePlaceholder} ariaLabel="Area or procedure" invalid={Boolean(errors.procedure)} />{errors.procedure ? <small>{errors.procedure}</small> : null}</label>{form.procedure === 'Other' ? <label className="booking-modal__field booking-modal__field--full"><span>Please specify the service <b>*</b></span><input type="text" value={form.otherService} onChange={(event) => update('otherService', event.target.value)} placeholder="Tell us which service you are interested in" />{errors.otherService ? <small>{errors.otherService}</small> : null}</label> : null}<label className="booking-modal__field booking-modal__field--full"><span>Brief Case Description <small className="booking-modal__optional-note">(Optional)</small></span><textarea rows={3} value={form.message} onChange={(event) => update('message', event.target.value)} placeholder={BOOKING_FORM_UI_COPY.messagePlaceholder} /></label>{status === 'error' ? <p className="booking-modal__error" role="alert">We could not send your case. Please try again or contact our team directly.</p> : null}</div></div><div className="booking-modal__actions"><span /><button type="submit" className="booking-modal__primary" disabled={isSubmitting}>{isSubmitting ? BOOKING_FORM_UI_COPY.submittingLabel : BOOKING_FORM_UI_COPY.submitLabel} <ArrowRight size={16} /></button></div></form>{copy.privacyText ? <p className="booking-modal__privacy">{copy.privacyText}</p> : null}
           </>}
         </section>
       </div>

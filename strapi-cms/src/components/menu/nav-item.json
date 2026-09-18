@@ -19,12 +19,11 @@
       "repeatable": true,
       "component": "menu.nav-child"
     },
-    "isExternal": {
+    "isExternal": { "type": "boolean", "default": false },
+    "isClickable": {
       "type": "boolean",
-      "default": false
-    },
-    "icon": {
-      "type": "string"
+      "default": true,
+      "required": false
     }
   }
 }

@@ -15,7 +15,7 @@ function DoctorPortrait({ doctor, featured = false }: { doctor: HomepageDoctorBl
 }
 
 function ProfileLink({ doctor }: { doctor: HomepageDoctorBlock['doctors'][number] }) {
-  return <Link href={doctor.profileLink || '/doctors'} className="doctor-profile-link">View Profile <ArrowRight aria-hidden="true" /></Link>
+  return <Link href={doctor.profileLink || '/our-team'} className="doctor-profile-link">View Profile <ArrowRight aria-hidden="true" /></Link>
 }
 
 function FeaturedDoctorCard({ doctor }: { doctor: HomepageDoctorBlock['doctors'][number] }) {

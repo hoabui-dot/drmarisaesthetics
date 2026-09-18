@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_deep_plane_recoveries",
+  "info": { "displayName": "Deep Plane recovery protocol" },
+  "attributes": {
+    "eyebrow": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "description": { "type": "text" },
+    "stages": { "type": "component", "repeatable": true, "component": "deep-plane.recovery-stage" },
+    "steps": { "type": "component", "repeatable": true, "component": "deep-plane.recovery-step" },
+    "note": { "type": "text" }
+  }
+}

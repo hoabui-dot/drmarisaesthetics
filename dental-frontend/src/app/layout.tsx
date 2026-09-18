@@ -11,43 +11,19 @@ import { CLINIC_INFO } from '@/src/lib/constants/contact'
 
 import { BRAND_LOGO_PATH } from '@/src/lib/constants/brand'
 import type { ContactMethod, Footer as FooterData, Navigation } from '@/src/types/strapi'
-import { getWebsiteSetting } from '@/src/lib/api/queries'
+import { getServiceNavigationOptions, getWebsiteSetting } from '@/src/lib/api/queries'
 import { GlobalCtaProvider } from '@/src/components/providers/GlobalCtaProvider'
+import { FALLBACK_FOOTER, FALLBACK_HEADER_NAVIGATION } from '@/src/lib/constants/site-navigation'
 
 const staticNavigation: Navigation = {
-  navigation: [
-    { id: 1, label: 'About', href: '/about-us' },
-    { id: 2, label: 'Our Team', href: '/our-team' },
-    { id: 3, label: 'Services', href: '/services', children: [
-      { id: 71, label: 'Blepharoplasty', href: '/services/blepharoplasty' },
-      { id: 72, label: 'Breast Augmentation', href: '/services/breast-augmentation' },
-      { id: 73, label: 'Buttock Augmentation', href: '/services/buttock-augmentation' },
-      { id: 74, label: 'Facelift', href: '/services/facelift' },
-      { id: 75, label: 'Gastric Sleeve', href: '/services/gastric-sleeve' },
-      { id: 76, label: 'Labiaplasty', href: '/services/labiaplasty' },
-      { id: 77, label: 'Liposuction', href: '/services/liposuction' },
-      { id: 78, label: 'Rhinoplasty', href: '/services/rhinoplasty' },
-    ] },
-    { id: 4, label: 'Treatments', href: '/treatments' },
-    { id: 5, label: 'Results', href: '/results' },
-    { id: 7, label: 'Journal', href: '/news' },
-    { id: 6, label: 'Contact', href: '/contact' },
-  ],
-  ctaText: 'BOOK A CONSULTATION',
-  ctaLink: '/contact#form-section',
+  navigation: FALLBACK_HEADER_NAVIGATION.map((item) => ({ ...item })),
 }
 
 const staticFooter: FooterData = {
   description: 'A surgeon-led aesthetic practice providing personalized, hospital-based cosmetic surgery care in Ho Chi Minh City.',
   contactInfo: { id: 1, address: 'City International Hospital, Ho Chi Minh City, Vietnam', phone: '+84 28 1234 5678', email: '' },
-  links: [],
-  linkGroups: [
-    { id: 1, heading: 'EXPLORE', links: [{ id: 1, label: 'About Us', href: '/about-us' }, { id: 2, label: 'Our Team', href: '/our-team' }, { id: 3, label: 'Services', href: '/services' }, { id: 4, label: 'Treatments', href: '/treatments' }] },
-    { id: 2, heading: 'PATIENT JOURNEY', links: [{ id: 5, label: 'Patient Results', href: '/results' }, { id: 6, label: 'Patient Journal', href: '/news' }, { id: 7, label: 'Contact & Consultation', href: '/contact' }, { id: 8, label: 'Medical Disclaimer', href: '/medical-disclaimer' }] },
-  ],
+  linkGroups: FALLBACK_FOOTER.linkGroups.map((group) => ({ ...group, links: group.links.map((link) => ({ ...link })) })),
   socialLinks: [],
-  appointmentLabel: 'BOOK A CONSULTATION',
-  appointmentHref: '/contact#form-section',
   copyrightText: '© 2026 DR. MARIS AESTHETICS. ALL RIGHTS RESERVED.',
   tagline: 'Surgeon-led. Hospital-based. Individually planned.',
 }
@@ -56,6 +32,33 @@ const staticContactMethods: ContactMethod[] = [
   { id: 1, type: 'phone', label: 'Call our team', href: 'tel:+842812345678', order: 1, isActive: true },
   { id: 2, type: 'whatsapp', label: 'WhatsApp', href: 'https://wa.me/842812345678', order: 2, isActive: true },
 ]
+
+function buildNavigation(serviceOptions: Array<{ value: string; label: string }>, configuredNavigation?: Navigation['navigation']): Navigation {
+  const sourceNavigation = configuredNavigation?.length ? configuredNavigation : staticNavigation.navigation
+  return {
+    ...staticNavigation,
+    navigation: sourceNavigation.map((item) => item.href === '/services'
+      ? {
+          ...item,
+          isClickable: item.isClickable !== false,
+          children: serviceOptions.map((service, index) => ({
+            id: 7000 + index,
+            label: service.label,
+            href: `/services/${service.value}`,
+          })),
+        }
+      : item.href === '/our-team'
+        ? {
+            ...item,
+            isClickable: false,
+            children: [
+              { id: 8001, label: 'Dr. Huy', href: '/our-team' },
+              { id: 8002, label: 'Dr. Cuong', href: '/deep-plane-facelift-specialist' },
+            ],
+          }
+        : item),
+  }
+}
 
 /**
  * Root Layout
@@ -87,8 +90,8 @@ interface RootLayoutProps {
 }
 
 export default async function RootLayout({ children }: RootLayoutProps) {
-  const navigation = staticNavigation;
-  const websiteSetting = await getWebsiteSetting();
+  const [websiteSetting, serviceOptions] = await Promise.all([getWebsiteSetting(), getServiceNavigationOptions()]);
+  const navigation = buildNavigation(serviceOptions, websiteSetting?.headerNavigation);
   const settingsContactMethods = websiteSetting?.contactMethods?.map((method) => ({
     id: method.id || 0,
     type: method.type,
@@ -103,12 +106,16 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   const contactMethods = settingsContactMethods.length > 0 ? settingsContactMethods : staticContactMethods;
   const footer: FooterData = websiteSetting ? {
     ...staticFooter,
+    description: websiteSetting?.footerDescription || FALLBACK_FOOTER.description,
+    linkGroups: websiteSetting?.footerLinkGroups?.length ? websiteSetting.footerLinkGroups : staticFooter.linkGroups,
     contactInfo: {
       ...staticFooter.contactInfo,
       address: websiteSetting.address || staticFooter.contactInfo.address,
       phone: websiteSetting.phonePrimary || staticFooter.contactInfo.phone,
       email: '',
     },
+    copyrightText: websiteSetting?.footerCopyrightText || FALLBACK_FOOTER.copyrightText,
+    tagline: websiteSetting?.footerTagline || FALLBACK_FOOTER.tagline,
     socialLinks: websiteSetting.socialLinks.map((link, index) => ({
       id: link.id || index + 1,
       platform: link.platform,
@@ -116,8 +123,6 @@ export default async function RootLayout({ children }: RootLayoutProps) {
       iconClass: link.iconClass,
     })),
   } : staticFooter;
-  const serviceOptions = ['Rhinoplasty', 'Revision Surgery', 'Facial Contouring', 'Breast Surgery'];
-
   return (
     <html lang="vi">
       <body className="antialiased flex flex-col min-h-screen">
@@ -130,7 +135,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
                 {children}
               </main>
             </GlobalCtaProvider>
-            <Footer footer={footer} logoSrc={websiteSetting?.logo?.url} />
+            <Footer footer={footer} logoSrc={websiteSetting?.logo?.url} mapLatitude={websiteSetting?.mapLatitude} mapLongitude={websiteSetting?.mapLongitude} mapZoom={websiteSetting?.mapZoom} />
 
             {/* Global Features */}
             <FloatingContactWrapper contactMethods={contactMethods} />

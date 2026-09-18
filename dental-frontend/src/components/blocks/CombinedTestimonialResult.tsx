@@ -345,7 +345,7 @@ export function CombinedTestimonialResult({ data }: CombinedTestimonialResultPro
                       </div>
 
                       <Button asChild variant="outline" size="sm" className="hidden sm:flex h-8 rounded-xl border-neutral-200 px-5 hover:bg-primary-50 hover:text-primary-600 hover:border-primary-100 transition-all duration-300 shrink-0 text-xs font-bold">
-                        <Link href="/customers">View Result</Link>
+                        <Link href="/results">View Result</Link>
                       </Button>
                     </div>
                   </div>
@@ -353,7 +353,7 @@ export function CombinedTestimonialResult({ data }: CombinedTestimonialResultPro
                 
                 {/* Mobile Button - only shows on small screens below the info */}
                 <Button asChild variant="outline" size="sm" className="sm:hidden w-full rounded-xl border-neutral-200 hover:bg-primary-50 hover:text-primary-600 transition-all duration-300 mt-2">
-                  <Link href="/customers">View Results</Link>
+                  <Link href="/results">View Results</Link>
                 </Button>
               </PerformanceAnimation>
           </div>

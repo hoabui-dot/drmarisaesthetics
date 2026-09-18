@@ -27,7 +27,6 @@ const staticRoutes: StaticRoute[] = [
   { path: "/about-us", endpoint: "/api/about-page" },
   { path: "/contact", endpoint: "/api/contact-page" },
   { path: "/news" },
-  { path: "/customers", endpoint: "/api/customer" },
 ];
 
 function normalizePath(value: string): string { const path = value.split(/[?#]/)[0].replace(/\/{2,}/g, "/").replace(/\/$/, ""); return path || "/"; }
