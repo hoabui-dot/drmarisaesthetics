@@ -11,8 +11,8 @@ export const FALLBACK_HEADER_NAVIGATION = [
     href: '/our-team',
     isClickable: false,
     children: [
-      { id: 201, label: 'Dr. Huy', href: '/our-team' },
-      { id: 202, label: 'Dr. Cuong', href: '/deep-plane-facelift-specialist' },
+      { id: 201, label: 'Dr. Huy', href: '/our-team/dr-huy' },
+      { id: 202, label: 'Dr. Cuong', href: '/our-team/dr-cuong' },
     ],
   },
   { id: 3, label: 'Services', href: '/services', isClickable: true },

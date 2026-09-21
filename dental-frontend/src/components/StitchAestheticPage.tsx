@@ -131,9 +131,15 @@ export function StitchHomepage({ data, results }: { data?: HomepageEditorialData
 
   return <div ref={homepageRef} className="stitch-page stitch-homepage">
     <section className="stitch-home-hero" data-motion-section="hero"><div className="stitch-home-hero__inner">
+      <div className="stitch-home-hero__mobile-heading" aria-hidden="true">
+        <span className="stitch-kicker"><i /> <span>{typeof hero.eyebrow === 'string' ? hero.eyebrow : 'HOSPITAL-BASED COSMETIC SURGERY · HO CHI MINH CITY'}</span></span>
+        <h2><span className="stitch-hero-line"><span>{heroTitle}</span></span></h2>
+      </div>
       <div className="stitch-home-hero__copy" data-hero-copy-wrap>
-        <span className="stitch-kicker" data-hero-kicker><i data-hero-divider /> <span data-hero-kicker-text>{typeof hero.eyebrow === 'string' ? hero.eyebrow : 'HOSPITAL-BASED COSMETIC SURGERY · HO CHI MINH CITY'}</span></span>
-        <h2><span className="stitch-hero-line"><span data-hero-title-line>{heroTitle}</span></span></h2>
+        <div className="stitch-home-hero__desktop-heading">
+          <span className="stitch-kicker" data-hero-kicker><i data-hero-divider /> <span data-hero-kicker-text>{typeof hero.eyebrow === 'string' ? hero.eyebrow : 'HOSPITAL-BASED COSMETIC SURGERY · HO CHI MINH CITY'}</span></span>
+          <h2><span className="stitch-hero-line"><span data-hero-title-line>{heroTitle}</span></span></h2>
+        </div>
         <p className="stitch-editorial-lead" data-hero-copy>{typeof hero.editorial_lead === 'string' ? hero.editorial_lead : 'Cosmetic surgery is a medical decision before it is an aesthetic one.'}</p>
         <p data-hero-copy>{heroDescription || 'At DR. MARIS AESTHETICS, your case is personally assessed and managed by Dr. Maris, with surgery performed at City International Hospital (CIH) in Ho Chi Minh City.'}</p>
         <p data-hero-copy>{heroSecondary || 'From primary cosmetic procedures to complex revision surgery, every surgical plan begins with your anatomy, medical history, previous procedures and individual goals.'}</p>
@@ -239,6 +245,7 @@ export function StitchAboutUs({ heroImage, content }: { heroImage?: string | nul
         <div>
           <span className="stitch-kicker" data-team-hero-eyebrow><i data-team-hero-divider />{heroEyebrow}</span>
           <h2><span className="stitch-hero-line"><span data-team-hero-title-line>{heroTitle}</span></span></h2>
+          <div className="stitch-about-image stitch-about-image--mobile" aria-hidden="true"><StitchImage src={heroImage || images.heroDoctor} alt="" /></div>
           <blockquote data-team-hero-copy>“{heroLead}”</blockquote>
           <div className="our-team-profile-hero__body" data-team-hero-copy><p>{heroDescription}</p><p>{heroSecondaryDescription}</p></div>
           <div className="stitch-actions" data-team-hero-actions>
@@ -246,7 +253,7 @@ export function StitchAboutUs({ heroImage, content }: { heroImage?: string | nul
             <a className="stitch-button stitch-button--outline" href="/contact">REQUEST AN ONLINE CONSULTATION</a>
           </div>
         </div>
-        <div className="stitch-about-image" data-team-hero-image><StitchImage src={heroImage || images.heroDoctor} alt="Dr. Maris, Lead Plastic Surgeon at Maris Aesthetics" /></div>
+        <div className="stitch-about-image stitch-about-image--desktop" data-team-hero-image><StitchImage src={heroImage || images.heroDoctor} alt="Dr. Maris, Lead Plastic Surgeon at Maris Aesthetics" /></div>
       </div>
     </section>
 
@@ -257,6 +264,7 @@ export function StitchAboutUs({ heroImage, content }: { heroImage?: string | nul
       title={cmsProcess.title || 'Cosmetic Surgery Built Around Direct Surgeon Involvement'}
       description={cmsProcess.description || 'At Maris Aesthetics, the surgeon who consults with you should be the one who operates on you and oversees your recovery. Every stage is planned around the patient, not a procedure menu.'}
       steps={cmsProcessSteps}
+      showStepImagesOnMobile
       showActions={false}
     />
 
@@ -267,17 +275,17 @@ export function StitchAboutUs({ heroImage, content }: { heroImage?: string | nul
       </div>
     </section>
 
-    <section className="stitch-section">
+    <section className="stitch-section stitch-about-profile">
       <div className="stitch-container stitch-grid stitch-grid--two">
-        <div className="stitch-portrait"><StitchImage src={cmsImage(cmsProfile.image, images.doctor)} alt={cmsProfile.image_alt || 'Dr. A. Maris, MD'} /></div>
-        <div><span className="stitch-kicker">{cmsProfile.eyebrow || 'DR. MARIS'}</span><h2>{cmsProfile.title || 'Dr. A. Maris, MD'}</h2><p className="stitch-role">{cmsProfile.role || 'Cosmetic &amp; Plastic Surgeon | 6+ Years of Cosmetic Surgery Experience'}</p><p>{cmsProfile.description || 'Dr. Maris focuses on personalized surgical planning across breast, body and facial procedures, with particular attention to patients requiring revision or corrective surgery. He remains directly involved in every step of the journey: consultation, assessment, surgical planning, surgery, and postoperative follow-up.'}</p><div className="stitch-about-philosophy"><h3>{cmsProfile.philosophy_title || 'His Consultation Philosophy'}</h3><p>{cmsProfile.philosophy_description || 'Consultation should provide clarity rather than pressure. We meticulously cover patient concerns, previous surgery, realistic possibilities, surgical suitability, potential limitations, relevant risks, recovery expectations, and international travel considerations.'}</p><a className="stitch-link" href="/team">Learn More About Dr. Maris <ArrowRight size={17} /></a></div></div>
+        <div className="stitch-portrait stitch-about-profile__desktop-image"><StitchImage src={cmsImage(cmsProfile.image, images.doctor)} alt={cmsProfile.image_alt || 'Dr. A. Maris, MD'} /></div>
+        <div className="stitch-about-profile__copy"><span className="stitch-kicker">{cmsProfile.eyebrow || 'DR. MARIS'}</span><h2>{cmsProfile.title || 'Dr. A. Maris, MD'}</h2><div className="stitch-portrait stitch-about-profile__mobile-image" aria-hidden="true"><StitchImage src={cmsImage(cmsProfile.image, images.doctor)} alt="" /></div><p className="stitch-role">{cmsProfile.role || 'Cosmetic &amp; Plastic Surgeon | 6+ Years of Cosmetic Surgery Experience'}</p><p>{cmsProfile.description || 'Dr. Maris focuses on personalized surgical planning across breast, body and facial procedures, with particular attention to patients requiring revision or corrective surgery. He remains directly involved in every step of the journey: consultation, assessment, surgical planning, surgery, and postoperative follow-up.'}</p><div className="stitch-about-philosophy"><h3>{cmsProfile.philosophy_title || 'His Consultation Philosophy'}</h3><p>{cmsProfile.philosophy_description || 'Consultation should provide clarity rather than pressure. We meticulously cover patient concerns, previous surgery, realistic possibilities, surgical suitability, potential limitations, relevant risks, recovery expectations, and international travel considerations.'}</p><a className="stitch-link" href="/team">Learn More About Dr. Maris <ArrowRight size={17} /></a></div></div>
       </div>
     </section>
 
-    <section className="stitch-section stitch-dark" data-team-revision>
+    <section className="stitch-section stitch-dark stitch-about-revision" data-team-revision>
       <div className="stitch-container stitch-grid stitch-grid--two">
-        <div><span className="stitch-kicker" data-revision-reveal>{cmsRevision.eyebrow || 'REVISION &amp; COMPLEX SURGERY'}</span><h2 data-revision-reveal>{cmsRevision.title || 'For Patients Whose Previous Surgery Did Not Go as Planned'}</h2><p data-revision-reveal>{cmsRevision.description || 'Revision patients often face a unique set of challenges. Beyond the physical complications—such as compromised anatomy or excessive scar tissue—there is often a significant emotional burden of anxiety and lost confidence. We approach these cases with the specialized care they require.'}</p><div className="stitch-revision-concerns">{(Array.isArray(cmsRevision.concerns) && cmsRevision.concerns.length ? cmsRevision.concerns.map((item: any) => item.title || item.label).filter(Boolean) : ['Capsular Contracture', 'Breast Implant Rupture', 'Implant Displacement', 'Breast Asymmetry', 'Implant Removal', 'Excessive Scar Tissue', 'Free Silicone', 'Silicone Migration or Leakage', 'Cosmetic Correction']).map((item: string) => <span key={item} data-revision-reveal>{item}</span>)}</div><h3 className="stitch-editorial-lead" data-revision-reveal>{cmsRevision.lead || 'Revision Surgery Is Not Simply “Doing the Procedure Again”'}</h3><p data-revision-reveal>{cmsRevision.lead_description || 'It requires navigating altered tissue planes, managing compromised skin and muscle pockets, and meticulously addressing internal scar tissue to restore support and symmetry. Every revision plan is unique to the patient&apos;s specific anatomical history.'}</p><div data-revision-reveal><div className="stitch-actions"><ConsultationButton>REQUEST A REVISION SURGERY ASSESSMENT</ConsultationButton></div></div></div>
-        <div className="stitch-portrait" data-revision-media><StitchImage src={cmsImage(cmsRevision.image, images.technology)} alt={cmsRevision.image_alt || 'Surgeon examining a 3D medical scan for a complex revision case'} /></div>
+        <div className="stitch-about-revision__copy"><span className="stitch-kicker" data-revision-reveal>{cmsRevision.eyebrow || 'REVISION &amp; COMPLEX SURGERY'}</span><h2 data-revision-reveal>{cmsRevision.title || 'For Patients Whose Previous Surgery Did Not Go as Planned'}</h2><div className="stitch-portrait stitch-about-revision__mobile-image" aria-hidden="true"><StitchImage src={cmsImage(cmsRevision.image, images.technology)} alt="" /></div><p data-revision-reveal>{cmsRevision.description || 'Revision patients often face a unique set of challenges. Beyond the physical complications—such as compromised anatomy or excessive scar tissue—there is often a significant emotional burden of anxiety and lost confidence. We approach these cases with the specialized care they require.'}</p><div className="stitch-revision-concerns">{(Array.isArray(cmsRevision.concerns) && cmsRevision.concerns.length ? cmsRevision.concerns.map((item: any) => item.title || item.label).filter(Boolean) : ['Capsular Contracture', 'Breast Implant Rupture', 'Implant Displacement', 'Breast Asymmetry', 'Implant Removal', 'Excessive Scar Tissue', 'Free Silicone', 'Silicone Migration or Leakage', 'Cosmetic Correction']).map((item: string) => <span key={item} data-revision-reveal>{item}</span>)}</div><h3 className="stitch-editorial-lead" data-revision-reveal>{cmsRevision.lead || 'Revision Surgery Is Not Simply “Doing the Procedure Again”'}</h3><p data-revision-reveal>{cmsRevision.lead_description || 'It requires navigating altered tissue planes, managing compromised skin and muscle pockets, and meticulously addressing internal scar tissue to restore support and symmetry. Every revision plan is unique to the patient&apos;s specific anatomical history.'}</p><div data-revision-reveal><div className="stitch-actions"><ConsultationButton>REQUEST A REVISION SURGERY ASSESSMENT</ConsultationButton></div></div></div>
+        <div className="stitch-portrait stitch-about-revision__desktop-image" data-revision-media><StitchImage src={cmsImage(cmsRevision.image, images.technology)} alt={cmsRevision.image_alt || 'Surgeon examining a 3D medical scan for a complex revision case'} /></div>
       </div>
     </section>
 

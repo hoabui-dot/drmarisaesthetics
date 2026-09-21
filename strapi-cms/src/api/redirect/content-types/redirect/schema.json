@@ -8,7 +8,7 @@
     "description": "Managed URL redirects for legacy and campaign paths."
   },
   "options": {"draftAndPublish": true},
-  "pluginOptions": {},
+  "pluginOptions": { "content-manager": { "visible": false } },
   "attributes": {
     "source_path": {"type": "string", "required": true, "unique": true, "maxLength": 2048},
     "destination_path": {"type": "string", "required": true, "maxLength": 2048},

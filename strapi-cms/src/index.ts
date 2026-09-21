@@ -10,10 +10,48 @@ export default {
       inputSize: { default: 6, isResizable: true },
     });
 
-    // webtools-addon-sitemap@1.3.1 probes this compatibility endpoint.
-    strapi.server.router.get("/webtools/sitemap/init", (ctx) => {
-      ctx.body = { ok: true };
-    });
+    // These SEO records are intentionally hidden from the Content Manager
+    // navigation because they are edited through the SEO Manager plugin.
+    // Strapi's default Content Manager permission registry only exposes
+    // visible content types, which otherwise causes authenticated SEO
+    // Manager requests to fail with 403 (including for Super Admin).
+    // Extend the official Admin role permission reset hook so the hidden
+    // types remain manageable through standard Content Manager endpoints and
+    // can also be granted explicitly to other Admin roles.
+    const roleService = strapi.service("admin::role");
+    const seoContentTypes = [
+      "api::seo-manager-settings.seo-manager-settings",
+      "api::robots-settings.robots-settings",
+      "api::redirect.redirect",
+      "api::canonical-rule.canonical-rule",
+    ];
+    const permissionHook = roleService?.hooks?.willResetSuperAdminPermissions;
+
+    if (permissionHook && !permissionHook.__seoManagerHiddenTypesRegistered) {
+      permissionHook.register(async (permissions) => {
+        const permissionService = strapi.service("admin::permission");
+        const contentTypeService = strapi.service("admin::content-type");
+        const contentTypeActions = permissionService.actionProvider
+          .values()
+          .filter((action) => action.section === "contentTypes");
+
+        for (const action of contentTypeActions) {
+          action.subjects = Array.from(
+            new Set([...action.subjects, ...seoContentTypes]),
+          );
+        }
+
+        const hiddenTypeActions = contentTypeActions.flatMap((action) =>
+          seoContentTypes.map((subject) => ({ ...action, subjects: [subject] })),
+        );
+        const hiddenTypePermissions = contentTypeService.getPermissionsWithNestedFields(
+          hiddenTypeActions,
+        );
+
+        return [...permissions, ...hiddenTypePermissions];
+      });
+      permissionHook.__seoManagerHiddenTypesRegistered = true;
+    }
   },
 
   /**
@@ -26,27 +64,6 @@ export default {
   async bootstrap({ strapi }) {
     console.log("--- Bootstrap: infrastructure-only mode ---");
     try {
-      const hasSitemapTable = await strapi.db.connection.schema.hasTable("wt_sitemap");
-      if (!hasSitemapTable) {
-        await strapi.db.connection.schema.createTable("wt_sitemap", (table) => {
-          table.increments("id").primary();
-          table.string("document_id", 255);
-          table.text("sitemap_string").notNullable();
-          table.string("name", 255).notNullable().defaultTo("default");
-          table.string("type", 255).notNullable().defaultTo("default_hreflang");
-          table.integer("delta").notNullable().defaultTo(1);
-          table.integer("link_count");
-          table.timestamp("created_at");
-          table.timestamp("updated_at");
-          table.timestamp("published_at");
-          table.integer("created_by_id");
-          table.integer("updated_by_id");
-          table.string("locale", 255);
-          table.index(["document_id", "locale", "published_at"], "wt_sitemap_documents_idx");
-        });
-        console.log("[BOOTSTRAP] Created missing Webtools sitemap persistence table.");
-      }
-
       // Permissions are infrastructure configuration. They are only created
       // when absent and never change any content value or publication state.
       const publicRole = await strapi
@@ -57,9 +74,12 @@ export default {
         const publicReadActions = [
           "api::redirect.redirect.find",
           "api::homepage.homepage.find",
+          "api::about-page.about-page.find",
           "api::our-team.our-team.find",
+          "api::deep-plane-facelift-specialist.deep-plane-facelift-specialist.find",
           "api::result.result.find",
           "api::seo-manager-settings.seo-manager-settings.find",
+          "api::robots-settings.robots-settings.find",
           "api::canonical-rule.canonical-rule.find",
           "api::blog.blog.find",
           "api::service.service.find",

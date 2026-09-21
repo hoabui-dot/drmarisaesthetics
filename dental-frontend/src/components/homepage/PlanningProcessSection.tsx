@@ -67,6 +67,7 @@ type PlanningProcessSectionProps = {
   showActions?: boolean
   className?: string
   sectionId?: string
+  showStepImagesOnMobile?: boolean
 }
 
 export function PlanningProcessSection({
@@ -77,6 +78,7 @@ export function PlanningProcessSection({
   showActions = true,
   className = '',
   sectionId = 'planning-process',
+  showStepImagesOnMobile = false,
 }: PlanningProcessSectionProps) {
   const sectionRef = useRef<HTMLElement>(null)
   const activeIndexRef = useRef(0)
@@ -219,6 +221,9 @@ export function PlanningProcessSection({
             <ol className="planning-process__steps">
               {steps.map((step, index) => (
                 <li key={step.number} data-planning-step className={index === activeIndex ? 'is-active' : index < activeIndex ? 'is-complete' : ''}>
+                  {showStepImagesOnMobile && <div className="planning-process__step-image" aria-hidden="true">
+                    <Image src={step.image} alt="" fill sizes="(max-width: 767px) 100vw, 1px" unoptimized />
+                  </div>}
                   <div className="planning-process__step-copy">
                     <div className="planning-process__step-heading">
                       <span className="planning-process__number" data-planning-number>{step.number}</span>

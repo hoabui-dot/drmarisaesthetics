@@ -2094,50 +2094,6 @@ export interface PluginUsersPermissionsUser
   };
 }
 
-export interface PluginWebtoolsAddonSitemapSitemap
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'wt_sitemap';
-  info: {
-    displayName: 'sitemap';
-    pluralName: 'sitemaps';
-    singularName: 'sitemap';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    'content-manager': {
-      visible: false;
-    };
-    'content-type-builder': {
-      visible: false;
-    };
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    delta: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<1>;
-    link_count: Schema.Attribute.Integer;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'plugin::webtools-addon-sitemap.sitemap'
-    > &
-      Schema.Attribute.Private;
-    name: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'default'>;
-    publishedAt: Schema.Attribute.DateTime;
-    sitemap_string: Schema.Attribute.Text & Schema.Attribute.Required;
-    type: Schema.Attribute.Enumeration<['default_hreflang', 'index']> &
-      Schema.Attribute.DefaultTo<'default_hreflang'>;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface PluginWebtoolsUrlAlias extends Struct.CollectionTypeSchema {
   collectionName: 'wt_url_alias';
   info: {
@@ -2278,7 +2234,6 @@ declare module '@strapi/strapi' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
-      'plugin::webtools-addon-sitemap.sitemap': PluginWebtoolsAddonSitemapSitemap;
       'plugin::webtools.url-alias': PluginWebtoolsUrlAlias;
       'plugin::webtools.url-pattern': PluginWebtoolsUrlPattern;
     }

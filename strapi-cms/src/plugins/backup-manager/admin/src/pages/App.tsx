@@ -30,8 +30,8 @@ const downloadBackup = async (type: BackupType, onProgress: (value: number | nul
     headers: token ? { Authorization: `Bearer ${token}` } : undefined,
   });
   if (!response.ok) {
-    const payload = await response.json().catch(() => null) as { error?: { message?: string } } | null;
-    throw new Error(payload?.error?.message || 'Unable to create the backup.');
+    await response.json().catch(() => null);
+    throw new Error('backup-manager.error.create');
   }
 
   const total = Number(response.headers.get('content-length'));
@@ -87,7 +87,8 @@ export const App = () => {
     try {
       await downloadBackup(type, setProgress);
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : 'Unable to create the backup.');
+      console.error('[backup-manager] backup download failed', reason);
+      setError('backup-manager.error.create');
     } finally {
       setLoading(null);
       setProgress(null);
@@ -104,7 +105,15 @@ export const App = () => {
           {formatMessage({ id: 'backup-manager.page.description', defaultMessage: 'Create and download a backup of the current Strapi CMS.' })}
         </Typography>
       </Box>
-      {error ? <Box marginTop={4} padding={4} background="danger100"><Typography textColor="danger700">{error}</Typography></Box> : null}
+      {error ? (
+        <Box marginTop={4} padding={4} background="danger100">
+          <Typography textColor="danger700">
+            {error.startsWith('backup-manager.')
+              ? formatMessage({ id: error, defaultMessage: 'Unable to create the backup.' })
+              : error}
+          </Typography>
+        </Box>
+      ) : null}
       {loading ? (
         <Box marginTop={4} padding={6} background="neutral0" className="backup-manager-progress">
           <Box className="backup-manager-progress__header">

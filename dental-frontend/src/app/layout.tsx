@@ -52,8 +52,8 @@ function buildNavigation(serviceOptions: Array<{ value: string; label: string }>
             ...item,
             isClickable: false,
             children: [
-              { id: 8001, label: 'Dr. Huy', href: '/our-team' },
-              { id: 8002, label: 'Dr. Cuong', href: '/deep-plane-facelift-specialist' },
+              { id: 8001, label: 'Dr. Huy', href: '/our-team/dr-huy' },
+              { id: 8002, label: 'Dr. Cuong', href: '/our-team/dr-cuong' },
             ],
           }
         : item),

@@ -23,7 +23,8 @@ function safeDestination(source: string, destination: string): string | null {
 
 export async function middleware(request: NextRequest) {
   const path = normalize(request.nextUrl.pathname);
-  if (path.startsWith("/_next") || path.startsWith("/api") || path === "/robots.txt" || path === "/sitemap.xml") return NextResponse.next();
+  if (path === "/sitemap") return NextResponse.redirect(new URL("/sitemap.xml", request.url), 308);
+  if (path.startsWith("/_next") || path.startsWith("/api") || path === "/robots.txt" || path === "/sitemap.xml" || path.endsWith("-sitemap.xml") || path === "/sitemap.xsl") return NextResponse.next();
   try {
     const query = new URLSearchParams({
       "filters[source_path][$eq]": path,

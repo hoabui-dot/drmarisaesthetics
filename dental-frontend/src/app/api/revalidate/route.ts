@@ -38,6 +38,11 @@ const MODEL_TAG_MAP: Record<string, string[]> = {
   "contact-page": ["contact-page"],
   news: ["blogs", "news"],
   "seo-manager-settings": ["seo-manager-settings", "structured-data-settings"],
+  service: ["services", "service"],
+  "our-team": ["our-team"],
+  result: ["result"],
+  "treatments-page": ["treatments-page"],
+  "deep-plane-facelift-specialist": ["deep-plane-facelift-specialist"],
   "robots-settings": ["robots-settings"],
   redirect: ["redirects"],
   "canonical-rule": ["canonical-rules"],
@@ -53,6 +58,11 @@ const MODEL_PATH_MAP: Record<string, string[]> = {
   "contact-page": ["/contact"],
   homepage: ["/"],
   "seo-manager-settings": ["/robots.txt", "/sitemap.xml", "/"],
+  service: ["/services"],
+  "our-team": ["/our-team", "/our-team/dr-huy"],
+  result: ["/results"],
+  "treatments-page": ["/treatments"],
+  "deep-plane-facelift-specialist": ["/deep-plane-facelift-specialist", "/our-team/dr-cuong"],
   "robots-settings": ["/robots.txt"],
   "sitemap-manager-settings": ["/sitemap.xml"],
   "canonical-rule": ["/sitemap.xml"],
@@ -65,11 +75,18 @@ const SITEMAP_RELEVANT_MODELS = new Set([
   "contact-page",
   "page",
   "blog",
+  "service",
+  "our-team",
+  "result",
+  "treatments-page",
+  "deep-plane-facelift-specialist",
   "news",
   "seo-manager-settings",
   "robots-settings",
   "canonical-rule",
 ]);
+
+const SITEMAP_PUBLIC_PATHS = ["/sitemap.xml", "/service-sitemap.xml", "/news-sitemap.xml", "/page-sitemap.xml"];
 
 interface WebhookPayload {
   event: string;
@@ -134,6 +151,7 @@ function sitemapEntryPath(modelName: string, slug?: string): string | null {
   if (!slug) return null;
   const model = normalizeModelName(modelName);
   if (model === "blog" || model === "news") return `/news/${slug}`;
+  if (model === "service") return `/services/${slug}`;
   return `/${slug}`;
 }
 
@@ -200,8 +218,8 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // 7. Revalidate specific paths and the sitemap route itself.
-    const paths = [...new Set([...(MODEL_PATH_MAP[normalizedModel] || []), "/sitemap.xml"])];
+    // 7. Revalidate the sitemap index, child documents, human page, and model paths.
+    const paths = [...new Set([...(MODEL_PATH_MAP[normalizedModel] || []), ...SITEMAP_PUBLIC_PATHS])];
     const revalidatedPaths: string[] = [];
 
     // Revalidate model-specific paths

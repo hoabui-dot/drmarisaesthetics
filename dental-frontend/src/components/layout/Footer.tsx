@@ -56,7 +56,7 @@ export function Footer({ footer, logoSrc, mapLatitude, mapLongitude, mapZoom }: 
           />
         </div>
       </div>
-      <div className="site-footer-bottom"><p>{footer?.copyrightText || `© ${new Date().getFullYear()} DR. MARIS AESTHETICS. ALL RIGHTS RESERVED.`}</p><p>{footer?.tagline || "Surgeon-led. Hospital-based. Individually planned."}</p></div>
+      <div className="site-footer-bottom"><p>{footer?.copyrightText || `© ${new Date().getFullYear()} DR. MARIS AESTHETICS. ALL RIGHTS RESERVED.`}</p><nav className="site-footer-bottom-links" aria-label="Legal and site links"><Link href="/sitemap.xml">Sitemap</Link></nav><p>{footer?.tagline || "Surgeon-led. Hospital-based. Individually planned."}</p></div>
     </div>
   </footer>;
 }

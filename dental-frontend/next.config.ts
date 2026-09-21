@@ -8,6 +8,15 @@ const nextConfig: NextConfig = {
   // Enable standalone output for Docker
   output: "standalone",
 
+  // Keep the established profile URLs as permanent aliases while the
+  // canonical doctor profiles live under the Our Team route.
+  async redirects() {
+    return [
+      { source: "/our-team", destination: "/our-team/dr-huy", permanent: true },
+      { source: "/deep-plane-facelift-specialist", destination: "/our-team/dr-cuong", permanent: true },
+    ];
+  },
+
   // Webpack configuration to help resolve modules in Docker
   webpack: (config) => {
     config.resolve.modules = [

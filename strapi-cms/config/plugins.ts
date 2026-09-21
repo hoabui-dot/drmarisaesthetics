@@ -12,28 +12,19 @@ export default ({ env }) => ({
     enabled: true,
     resolve: "./src/plugins/docx-importer",
   },
-  // Webtools provides the admin-managed URL registry used by the sitemap add-on.
-  // Content types opt in separately through pluginOptions.webtools.
+  // Retain Webtools for its existing admin utilities; sitemap ownership lives
+  // exclusively in the SEO Manager.
   webtools: {
     enabled: true,
-  },
-
-  // Admin-managed sitemap endpoint: /api/sitemap/index.xml
-  // The Next.js /sitemap.xml facade remains the canonical public sitemap and
-  // continues to enforce SEO Manager groups, defaults, and page-level no_index.
-  "webtools-addon-sitemap": {
-    enabled: true,
-    config: {
-      cron: "0 0 0 * * *",
-      limit: 45000,
-      xsl: true,
-      autoGenerate: true,
-    },
   },
 
   "backup-manager": {
     enabled: true,
     resolve: "./src/plugins/backup-manager",
+  },
+  "seo-manager": {
+    enabled: true,
+    resolve: "./src/plugins/seo-manager",
   },
 
   // i18n Plugin Configuration
@@ -130,14 +121,6 @@ export default ({ env }) => ({
             query: { type: "service-detail", slug: "{slug}", secret: env("PREVIEW_SECRET", "") },
           },
           published: { url: `${env("FRONTEND_URL", "http://localhost:3000")}/services/{slug}` },
-        },
-        {
-          uid: "api::customer.customer",
-          draft: {
-            url: `${env("FRONTEND_URL", "http://localhost:3000")}/api/preview`,
-            query: { type: "customer", secret: env("PREVIEW_SECRET", "") },
-          },
-          published: { url: `${env("FRONTEND_URL", "http://localhost:3000")}/customers` },
         },
       ],
     },

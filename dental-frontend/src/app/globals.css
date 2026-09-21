@@ -882,6 +882,131 @@
   .our-team-profile-hero__copy .stitch-actions > * { width: 100%; box-sizing: border-box; }
 }
 
+/* Our Team mobile-only editorial ordering. Desktop continues using the
+   original image columns; mobile image copies are enabled only below. */
+.our-team-profile-hero__media--mobile,
+.our-team-professional__media--mobile,
+.our-team-revision__media--mobile,
+.our-team-hospital__media--mobile,
+.our-team-international__media--mobile { display: none !important; }
+
+@media (max-width: 767px) {
+  /* Hero: title first, then portrait, followed by the profile copy. */
+  .stitch-our-team .our-team-profile-hero__heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 3.25rem;
+    text-align: center;
+  }
+  .stitch-our-team .our-team-profile-hero__heading .stitch-kicker { justify-content: center; }
+  .stitch-our-team .our-team-profile-hero__heading h2 { margin: 0 auto; text-align: center; }
+  .stitch-our-team .our-team-profile-hero__media--desktop { display: none !important; }
+  .stitch-our-team .our-team-profile-hero__media--mobile {
+    display: block !important;
+    width: 100%;
+    height: clamp(25rem, 112vw, 36rem);
+    min-height: clamp(25rem, 112vw, 36rem);
+    margin-top: 1.5rem;
+  }
+  .stitch-our-team .our-team-profile-hero__media--mobile > .our-team-profile-hero__image { object-position: center top; }
+
+  /* Medical Authority cards place the icon alongside the title, not in a
+     separate full-width row. */
+  .stitch-our-team .our-team-authority__grid article {
+    display: grid;
+    grid-template-columns: 2.75rem minmax(0, 1fr);
+    align-items: center;
+    column-gap: .85rem;
+    row-gap: .85rem;
+    padding: 1.25rem;
+  }
+  .stitch-our-team .our-team-authority__icon {
+    grid-column: 1;
+    grid-row: 1;
+    width: 2.65rem;
+    height: 2.65rem;
+    margin: 0;
+  }
+  .stitch-our-team .our-team-authority__grid h3 {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+    margin: 0;
+    line-height: 1.35;
+    letter-spacing: .08em;
+  }
+  .stitch-our-team .our-team-authority__grid ul { grid-column: 1 / -1; }
+
+  /* Professional Journey: centered section heading and title-led image. */
+  .stitch-our-team .our-team-professional__copy { display: flex; flex-direction: column; align-items: stretch; }
+  .stitch-our-team .our-team-professional__copy > .stitch-kicker { display: flex; justify-content: center; text-align: center; }
+  .stitch-our-team .our-team-professional__copy > h2 { margin: .75rem auto 0; text-align: center; }
+  .stitch-our-team .our-team-professional__media--desktop { display: none !important; }
+  .stitch-our-team .our-team-professional__media--mobile {
+    display: block !important;
+    width: 100%;
+    height: clamp(18rem, 72vw, 25rem);
+    min-height: clamp(18rem, 72vw, 25rem);
+    margin: 1.5rem 0;
+  }
+
+  /* Qualifications heading only; credential rows retain their readable
+     label/value alignment. */
+  .stitch-our-team .our-team-credentials__grid > div:first-child { text-align: center; }
+  .stitch-our-team .our-team-credentials__grid > div:first-child .stitch-kicker { display: flex; justify-content: center; }
+  .stitch-our-team .our-team-credentials__grid > div:first-child h2 { margin-inline: auto; }
+
+  /* Specialized Care / revision section. */
+  .stitch-our-team .our-team-revision__copy { display: flex; flex-direction: column; align-items: stretch; }
+  .stitch-our-team .our-team-revision__copy > .stitch-kicker { display: flex; justify-content: center; text-align: center; }
+  .stitch-our-team .our-team-revision__copy > h2 { margin: .75rem auto 0; text-align: center; }
+  .stitch-our-team .our-team-revision__media--desktop { display: none !important; }
+  .stitch-our-team .our-team-revision__media--mobile {
+    display: block !important;
+    width: 100%;
+    height: clamp(18rem, 72vw, 25rem);
+    min-height: clamp(18rem, 72vw, 25rem);
+    margin: 1.5rem 0;
+  }
+
+  /* Hospital section: centered icon, badge and title, with image beneath the
+     title before the supporting description. */
+  .stitch-our-team .our-team-hospital__media--desktop { display: none !important; }
+  .stitch-our-team .our-team-hospital__copy { display: flex; flex-direction: column; align-items: stretch; }
+  .stitch-our-team .our-team-hospital__copy > svg { display: block; margin: 0 auto 1.1rem !important; }
+  .stitch-our-team .our-team-hospital__copy > .stitch-kicker { display: flex; justify-content: center; text-align: center; }
+  .stitch-our-team .our-team-hospital__copy > h2 { margin: .75rem auto 0; text-align: center; }
+  .stitch-our-team .our-team-hospital__media--mobile {
+    display: block !important;
+    width: 100%;
+    height: clamp(18rem, 72vw, 25rem);
+    min-height: clamp(18rem, 72vw, 25rem);
+    margin: 1.5rem 0;
+  }
+
+  /* International Patients heading and image order. */
+  .stitch-our-team .our-team-international__copy { display: flex; flex-direction: column; align-items: stretch; }
+  .stitch-our-team .our-team-international__copy > .stitch-kicker { display: flex; justify-content: center; text-align: center; }
+  .stitch-our-team .our-team-international__copy > h2 { margin: .75rem auto 0; text-align: center; }
+  .stitch-our-team .our-team-international__media--desktop { display: none !important; }
+  .stitch-our-team .our-team-international__media--mobile {
+    display: flex !important;
+    width: 100%;
+    margin: 1.5rem 0;
+  }
+
+  /* Keep the shared FAQ accordion layout, but center its heading and subtitle. */
+  .stitch-our-team > .faq-section .faq-section__header {
+    align-items: center;
+    width: 100%;
+    margin-inline: auto;
+    text-align: center;
+  }
+  .stitch-our-team > .faq-section .faq-section__header h2,
+  .stitch-our-team > .faq-section .faq-section__header p { margin-inline: auto; text-align: center; }
+}
+
 @media (max-width: 420px) {
   :root { --stitch-font-size-hero-title-mobile: clamp(2rem, 10.5vw, 2.8rem); }
   .stitch-container { width: calc(100% - 1.5rem); }
@@ -894,6 +1019,114 @@
   .services-list-card__image { height: 7rem; margin-inline: .45rem; }
   .services-list-card__content { padding-inline: .5rem; }
   .services-list-card__content h3 { font-size: .9rem; }
+}
+
+/* Our Team mobile-only section ordering and alignment. These rules are
+   intentionally appended so they win over legacy section-specific styles;
+   desktop continues to use the original single-image grid composition. */
+@media (max-width: 767px) {
+  .stitch-our-team .our-team-profile-hero__heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .stitch-our-team .our-team-profile-hero__heading .stitch-kicker { justify-content: center; }
+  .stitch-our-team .our-team-profile-hero__heading h2 { margin-inline: auto; text-align: center; }
+  .stitch-our-team .our-team-profile-hero__media--desktop,
+  .stitch-our-team .our-team-professional__media--desktop,
+  .stitch-our-team .our-team-revision__media--desktop,
+  .stitch-our-team .our-team-hospital__media--desktop,
+  .stitch-our-team .our-team-international__media--desktop { display: none !important; }
+
+  .stitch-our-team .our-team-profile-hero__media--mobile {
+    display: block !important;
+    position: relative;
+    width: 100%;
+    height: clamp(25rem, 112vw, 36rem);
+    min-height: clamp(25rem, 112vw, 36rem);
+    margin-top: 1.5rem;
+  }
+  .stitch-our-team .our-team-profile-hero__media--mobile > .our-team-profile-hero__image {
+    object-position: center top;
+  }
+
+  .stitch-our-team .our-team-authority__grid article {
+    display: grid;
+    grid-template-columns: 2.75rem minmax(0, 1fr);
+    align-items: center;
+    column-gap: .85rem;
+    row-gap: .85rem;
+  }
+  .stitch-our-team .our-team-authority__icon {
+    grid-column: 1;
+    grid-row: 1;
+    width: 2.65rem;
+    height: 2.65rem;
+    margin: 0;
+  }
+  .stitch-our-team .our-team-authority__grid h3 {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+    margin: 0;
+    line-height: 1.35;
+  }
+  .stitch-our-team .our-team-authority__grid ul { grid-column: 1 / -1; }
+
+  .stitch-our-team .our-team-professional__copy,
+  .stitch-our-team .our-team-revision__copy,
+  .stitch-our-team .our-team-hospital__copy,
+  .stitch-our-team .our-team-international__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .stitch-our-team .our-team-professional__copy > .stitch-kicker,
+  .stitch-our-team .our-team-revision__copy > .stitch-kicker,
+  .stitch-our-team .our-team-hospital__copy > .stitch-kicker,
+  .stitch-our-team .our-team-international__copy > .stitch-kicker {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+  }
+  .stitch-our-team .our-team-professional__copy > h2,
+  .stitch-our-team .our-team-revision__copy > h2,
+  .stitch-our-team .our-team-hospital__copy > h2,
+  .stitch-our-team .our-team-international__copy > h2 {
+    margin: .75rem auto 0;
+    text-align: center;
+  }
+  .stitch-our-team .our-team-professional__media--mobile,
+  .stitch-our-team .our-team-revision__media--mobile,
+  .stitch-our-team .our-team-hospital__media--mobile {
+    display: block !important;
+    position: relative;
+    width: 100%;
+    height: clamp(18rem, 72vw, 25rem);
+    min-height: clamp(18rem, 72vw, 25rem);
+    margin: 1.5rem 0;
+  }
+  .stitch-our-team .our-team-international__media--mobile {
+    display: flex !important;
+    position: relative;
+    width: 100%;
+    min-height: clamp(18rem, 72vw, 25rem);
+    margin: 1.5rem 0;
+  }
+  .stitch-our-team .our-team-hospital__copy > svg { display: block; margin: 0 auto 1.1rem !important; }
+  .stitch-our-team .our-team-credentials__grid > div:first-child { text-align: center; }
+  .stitch-our-team .our-team-credentials__grid > div:first-child .stitch-kicker { display: flex; justify-content: center; }
+  .stitch-our-team .our-team-credentials__grid > div:first-child h2 { margin-inline: auto; }
+
+  .stitch-our-team > .faq-section .faq-section__header {
+    align-items: center;
+    width: 100%;
+    margin-inline: auto;
+    text-align: center;
+  }
+  .stitch-our-team > .faq-section .faq-section__header h2,
+  .stitch-our-team > .faq-section .faq-section__header p { margin-inline: auto; text-align: center; }
 }
 
 /* Stitch Contact and Treatment editorial overrides. */
@@ -1117,6 +1350,7 @@
 .stitch-proof-row b { color: var(--stitch-color-proof-divider); }
 .stitch-home-hero { min-height: var(--stitch-hero-min-height); padding-top: 7rem; background: var(--stitch-color-clinical-surface); }
 .stitch-home-hero__inner { display: grid; min-height: var(--stitch-hero-content-min-height); grid-template-columns: 55% 45%; }
+.stitch-home-hero__mobile-heading { display: none; }
 .stitch-home-hero__copy { display: flex; flex-direction: column; justify-content: center; padding: var(--stitch-hero-copy-padding); background: var(--stitch-color-clinical-surface); }
 .stitch-homepage .stitch-home-hero__copy h2 { max-width: 43.75rem; margin-bottom: 2.5rem; font-size: var(--stitch-font-size-hero-title); }
 .stitch-home-hero__copy p { margin: .65rem 0; font-size: var(--stitch-font-size-hero-copy); }
@@ -4811,6 +5045,17 @@
   margin: 0;
 }
 
+.site-footer-bottom-links a {
+  color: var(--smilux-footer-muted);
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+
+.site-footer-bottom-links a:hover,
+.site-footer-bottom-links a:focus-visible {
+  color: var(--smilux-footer-heading);
+}
+
 @media (max-width: 1023px) {
   .site-footer-main {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -5714,7 +5959,11 @@
 
 @media (max-width: 767px) {
   .stitch-homepage .stitch-home-hero__inner { display: flex; min-height: 0; flex-direction: column; }
-  .stitch-homepage .stitch-home-hero__copy { order: 1; padding: 2.75rem 1.25rem 3rem; }
+  .stitch-homepage .stitch-home-hero__mobile-heading { display: block; order: 1; padding: 2.75rem 1.25rem 1.25rem; background: var(--stitch-color-clinical-surface); text-align: center; }
+  .stitch-homepage .stitch-home-hero__mobile-heading .stitch-kicker { justify-content: center; }
+  .stitch-homepage .stitch-home-hero__mobile-heading h2 { max-width: 43.75rem; margin: 1.25rem auto 0; font-size: var(--stitch-font-size-hero-title-mobile); line-height: 1.05; text-align: center; }
+  .stitch-homepage .stitch-home-hero__copy { order: 3; padding: 1.75rem 1.25rem 3rem; }
+  .stitch-homepage .stitch-home-hero__desktop-heading { display: none; }
   .stitch-homepage .stitch-home-hero__image { order: 2; width: 100%; height: min(100vw, 30rem); min-height: min(100vw, 30rem); margin: 0; }
   .stitch-homepage .stitch-home-hero__copy h2 { margin-bottom: 1.25rem; }
   .stitch-homepage .stitch-home-hero__copy .stitch-editorial-lead { font-size: 1.35rem; line-height: 1.28; }
@@ -5848,6 +6097,13 @@
 .deep-plane-recovery-process + .deep-plane-facelift__note { width: min(100% - 2.5rem, 68rem); align-items: flex-start; justify-content: flex-start; margin-top: clamp(2rem, 4vw, 3.5rem); margin-bottom: clamp(2.5rem, 5vw, 4rem); text-align: left; }
 
 .mobile-booking-button { display: none; }
+
+/* About Us uses responsive-only image placements; desktop keeps its original
+   two-column image siblings. */
+.stitch-about-image--mobile,
+.stitch-about-profile__mobile-image,
+.stitch-about-revision__mobile-image,
+.planning-process__step-image { display: none; }
 
 @media (max-width: 767px) {
   .mobile-booking-button {
@@ -6949,6 +7205,41 @@
   .stitch-home-hero__image,
   .stitch-homepage .stitch-home-hero__image,
   .stitch-our-team .stitch-home-hero__image { min-height: clamp(20rem, 72vw, 26rem); height: auto; }
+
+  /* Keep the homepage hero sequence deterministic on mobile. The hero has a
+     separate mobile heading so the doctor image can sit immediately below the
+     title, before the supporting copy and actions. Grid areas are intentional
+     here because earlier shared responsive rules also set flex order values. */
+  .stitch-homepage .stitch-home-hero__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "heading"
+      "image"
+      "copy";
+    min-height: 0;
+  }
+
+  .stitch-homepage .stitch-home-hero__mobile-heading {
+    display: block;
+    grid-area: heading;
+    order: initial;
+  }
+
+  .stitch-homepage .stitch-home-hero__image {
+    grid-area: image;
+    order: initial;
+    width: 100%;
+    height: clamp(28rem, 120vw, 40rem);
+    min-height: clamp(28rem, 120vw, 40rem);
+    margin: 0;
+  }
+
+  .stitch-homepage .stitch-home-hero__copy {
+    grid-area: copy;
+    order: initial;
+  }
+
   .stitch-swipe-chapter .stitch-revision,
   .stitch-swipe-chapter .stitch-hospital { min-height: 0; padding-block: 0 !important; }
   .stitch-swipe-chapter .stitch-swipe-outer,
@@ -6962,4 +7253,355 @@
   .stitch-results-pin { min-height: 0; padding-block: 3.5rem; }
   .booking-modal { width: 100%; max-height: calc(100svh - 1rem); }
   .booking-modal__content { max-height: calc(100svh - 1rem); }
+
+  /* About hero: title, full-width portrait, then supporting editorial content. */
+  .stitch-about .stitch-about-intro { padding-block: 6.5rem 3rem; }
+  .stitch-about-intro > .stitch-container { display: block; }
+  .stitch-about-intro > .stitch-container > div:first-child { display: flex; flex-direction: column; align-items: stretch; }
+  .stitch-about-intro .stitch-kicker { justify-content: center; text-align: center; }
+  .stitch-about-intro h2 { margin: 1rem auto 0; white-space: normal; text-align: center; }
+  .stitch-about-image--desktop { display: none; }
+  .stitch-about-image--mobile { display: block; width: 100%; height: clamp(25rem, 112vw, 36rem); min-height: clamp(25rem, 112vw, 36rem); margin: 1.5rem 0 .25rem; }
+  .stitch-about-image--mobile img { object-position: center top; }
+
+  /* Direct Surgeon Care becomes an editorial image-and-copy card sequence,
+     matching the stacked Signature Procedures treatment on the homepage. */
+  .about-surgeon-process .planning-process__header { margin-inline: auto; text-align: center; }
+  .about-surgeon-process .planning-process__header .stitch-kicker { display: flex; justify-content: center; }
+  .about-surgeon-process .planning-process__header h2,
+  .about-surgeon-process .planning-process__header p { margin-inline: auto; }
+  .about-surgeon-process .planning-process__visual-wrap { display: none; }
+  .about-surgeon-process .planning-process__story { display: block; }
+  .about-surgeon-process .planning-process__steps { gap: 1rem; }
+  .about-surgeon-process .planning-process__steps li {
+    display: block;
+    min-height: 0;
+    padding: 0 0 1.1rem;
+    overflow: hidden;
+    border: 1px solid var(--stitch-color-proof-divider);
+    color: var(--stitch-color-deep-navy);
+    background: var(--stitch-color-quiet-surface);
+  }
+  .about-surgeon-process .planning-process__step-image {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: clamp(13rem, 58vw, 20rem);
+    overflow: hidden;
+    background: var(--stitch-color-clinical-surface);
+  }
+  .about-surgeon-process .planning-process__step-image img { object-fit: cover; }
+  .about-surgeon-process .planning-process__step-copy { display: block; padding: 1rem 1.1rem 0; opacity: 1 !important; }
+  .about-surgeon-process .planning-process__step-heading { display: flex; align-items: baseline; gap: .7rem; }
+  .about-surgeon-process .planning-process__number,
+  .about-surgeon-process .planning-process__steps li.is-active .planning-process__number,
+  .about-surgeon-process .planning-process__steps li.is-complete .planning-process__number {
+    display: inline;
+    width: auto;
+    height: auto;
+    flex: 0 0 auto;
+    border: 0;
+    border-radius: 0;
+    color: var(--stitch-color-glass-blue);
+    background: transparent;
+    box-shadow: none;
+    font-size: clamp(1.9rem, 8vw, 2.5rem);
+    line-height: 1;
+  }
+  .about-surgeon-process .planning-process__steps h3 { margin: 0; font-size: clamp(1.35rem, 5.7vw, 1.7rem); }
+  .about-surgeon-process .planning-process__steps p { margin-top: .65rem; opacity: 1 !important; }
+  .about-surgeon-process .planning-process__step-copy [data-planning-title],
+  .about-surgeon-process .planning-process__step-copy [data-planning-number],
+  .about-surgeon-process .planning-process__step-copy [data-planning-description] { opacity: 1 !important; }
+
+  /* Center the editorial section heading without changing its two-column
+     desktop composition. */
+  .stitch-about .stitch-surface > .stitch-container.stitch-grid--two > div:first-child { text-align: center; }
+  .stitch-about .stitch-surface > .stitch-container.stitch-grid--two > div:first-child .stitch-kicker { display: flex; justify-content: center; }
+  .stitch-about .stitch-surface > .stitch-container.stitch-grid--two > div:first-child h2 { margin-inline: auto; }
+
+  /* Surgeon profile: copy heading leads into its portrait on mobile only. */
+  .stitch-about-profile > .stitch-container { display: block; }
+  .stitch-about-profile__desktop-image { display: none; }
+  .stitch-about-profile__copy { display: flex; flex-direction: column; align-items: stretch; text-align: center; }
+  .stitch-about-profile__copy > .stitch-kicker { justify-content: center; }
+  .stitch-about-profile__copy > h2 { margin: .75rem auto 0; }
+  .stitch-about-profile__mobile-image { display: block; width: 100%; height: clamp(25rem, 112vw, 36rem); min-height: clamp(25rem, 112vw, 36rem); margin: 1.5rem 0; }
+  .stitch-about-profile__mobile-image img { object-position: center top; }
+  .stitch-about-profile__copy > p,
+  .stitch-about-profile__copy .stitch-about-philosophy { text-align: left; }
+
+  /* Revision section mirrors the same mobile title → image → content rhythm. */
+  .stitch-about-revision > .stitch-container { display: block; }
+  .stitch-about-revision__desktop-image { display: none; }
+  .stitch-about-revision__copy { display: flex; flex-direction: column; align-items: stretch; }
+  .stitch-about-revision__copy > .stitch-kicker { justify-content: center; text-align: center; }
+  .stitch-about-revision__copy > h2 { margin: .75rem auto 0; text-align: center; }
+  .stitch-about-revision__mobile-image { display: block; width: 100%; height: clamp(20rem, 82vw, 29rem); min-height: clamp(20rem, 82vw, 29rem); margin: 1.5rem 0; }
+  .stitch-about-revision__mobile-image img { object-position: center top; }
+}
+
+/* Dr. Cuong profile: mobile-only image copies must be hidden by default;
+   desktop keeps the original two-column image/copy arrangement. */
+.deep-plane-facelift__hero-image--mobile,
+.deep-plane-facelift__credentials-image--mobile { display:none !important; }
+
+@media (max-width: 767px) {
+  .deep-plane-facelift__hero-copy { display:flex; flex-direction:column; align-items:stretch; text-align:center; }
+  .deep-plane-facelift__hero-copy > .stitch-kicker { justify-content:center; }
+  .deep-plane-facelift__hero-copy > h1 { margin-inline:auto; text-align:center; }
+  .deep-plane-facelift__hero-image--desktop,
+  .deep-plane-facelift__credentials-image--desktop { display:none !important; }
+  .deep-plane-facelift__hero-image--mobile {
+    display:block !important;
+    position:relative;
+    width:100%;
+    min-height:clamp(22rem,92vw,32rem);
+    margin:1.5rem 0;
+  }
+  .deep-plane-facelift__hero-image--mobile img { object-position:center top; }
+  .deep-plane-facelift__hero-copy > .deep-plane-facelift__lead,
+  .deep-plane-facelift__hero-copy > .deep-plane-facelift__checklist,
+  .deep-plane-facelift__hero-copy > .deep-plane-facelift__actions,
+  .deep-plane-facelift__hero-copy > .deep-plane-facelift__metrics { text-align:left; }
+
+  .deep-plane-facelift__credentials > div { display:flex; flex-direction:column; align-items:stretch; }
+  .deep-plane-facelift__credentials > div > .stitch-kicker { justify-content:center; text-align:center; }
+  .deep-plane-facelift__credentials > div > h2 { margin: .75rem auto 0; text-align:center; }
+  .deep-plane-facelift__credentials-image--mobile {
+    display:block !important;
+    position:relative;
+    width:100%;
+    min-height:clamp(22rem,92vw,32rem);
+    margin:1.5rem 0;
+  }
+  .deep-plane-facelift__credentials-image--mobile img { object-position:center top; }
+
+  .deep-plane-recovery-process .planning-process__header { margin-inline:auto; text-align:center; }
+  .deep-plane-recovery-process .planning-process__header .stitch-kicker { display:flex; justify-content:center; }
+  .deep-plane-recovery-process .planning-process__header h2,
+  .deep-plane-recovery-process .planning-process__header p { margin-inline:auto; }
+  .deep-plane-recovery-process .planning-process__visual-wrap { display:none; }
+  .deep-plane-recovery-process .planning-process__story { display:block; }
+  .deep-plane-recovery-process .planning-process__steps { gap:1rem; }
+  .deep-plane-recovery-process .planning-process__steps li {
+    display:block;
+    min-height:0;
+    padding:0 0 1.1rem;
+    overflow:hidden;
+    border:1px solid var(--stitch-color-proof-divider);
+    color:var(--stitch-color-deep-navy);
+    background:var(--stitch-color-quiet-surface);
+  }
+  .deep-plane-recovery-process .planning-process__step-image {
+    position:relative;
+    display:block;
+    width:100%;
+    height:clamp(13rem,58vw,20rem);
+    overflow:hidden;
+    background:var(--stitch-color-clinical-surface);
+  }
+  .deep-plane-recovery-process .planning-process__step-image img { object-fit:cover; }
+  .deep-plane-recovery-process .planning-process__step-copy { display:block; padding:1rem 1.1rem 0; opacity:1 !important; }
+  .deep-plane-recovery-process .planning-process__step-heading { display:flex; align-items:baseline; gap:.7rem; }
+  .deep-plane-recovery-process .planning-process__number,
+  .deep-plane-recovery-process .planning-process__steps li.is-active .planning-process__number,
+  .deep-plane-recovery-process .planning-process__steps li.is-complete .planning-process__number {
+    display:inline;
+    width:auto;
+    height:auto;
+    flex:0 0 auto;
+    border:0;
+    border-radius:0;
+    color:var(--stitch-color-glass-blue);
+    background:transparent;
+    box-shadow:none;
+    font-size:clamp(1.9rem,8vw,2.5rem);
+    line-height:1;
+  }
+  .deep-plane-recovery-process .planning-process__steps h3 { margin:0; font-size:clamp(1.35rem,5.7vw,1.7rem); }
+  .deep-plane-recovery-process .planning-process__steps p { margin-top:.65rem; opacity:1 !important; }
+  .deep-plane-recovery-process .planning-process__step-copy [data-planning-title],
+  .deep-plane-recovery-process .planning-process__step-copy [data-planning-number],
+  .deep-plane-recovery-process .planning-process__step-copy [data-planning-description] { opacity:1 !important; }
+}
+
+/* Final Our Team mobile overrides; desktop layout remains untouched. */
+@media (max-width: 767px) {
+  .stitch-our-team .our-team-profile-hero__heading { display:flex; flex-direction:column; align-items:center; text-align:center; }
+  .stitch-our-team .our-team-profile-hero__heading .stitch-kicker { justify-content:center; }
+  .stitch-our-team .our-team-profile-hero__heading h2 { margin-inline:auto; text-align:center; }
+  .stitch-our-team .our-team-profile-hero__media--desktop,
+  .stitch-our-team .our-team-professional__media--desktop,
+  .stitch-our-team .our-team-revision__media--desktop,
+  .stitch-our-team .our-team-hospital__media--desktop,
+  .stitch-our-team .our-team-international__media--desktop { display:none !important; }
+  .stitch-our-team .our-team-profile-hero__media--mobile { display:block !important; position:relative; width:100%; height:clamp(25rem,112vw,36rem); min-height:clamp(25rem,112vw,36rem); margin-top:1.5rem; }
+  .stitch-our-team .our-team-profile-hero__media--mobile > .our-team-profile-hero__image { object-position:center top; }
+
+  .stitch-our-team .our-team-authority__grid article { display:grid; grid-template-columns:2.75rem minmax(0,1fr); align-items:center; column-gap:.85rem; row-gap:.85rem; }
+  .stitch-our-team .our-team-authority__icon { grid-column:1; grid-row:1; width:2.65rem; height:2.65rem; margin:0; }
+  .stitch-our-team .our-team-authority__grid h3 { grid-column:2; grid-row:1; min-width:0; margin:0; line-height:1.35; }
+  .stitch-our-team .our-team-authority__grid ul { grid-column:1 / -1; }
+
+  .stitch-our-team .our-team-professional__copy,
+  .stitch-our-team .our-team-revision__copy,
+  .stitch-our-team .our-team-hospital__copy,
+  .stitch-our-team .our-team-international__copy { display:flex; flex-direction:column; align-items:stretch; }
+  .stitch-our-team .our-team-professional__copy > .stitch-kicker,
+  .stitch-our-team .our-team-revision__copy > .stitch-kicker,
+  .stitch-our-team .our-team-hospital__copy > .stitch-kicker,
+  .stitch-our-team .our-team-international__copy > .stitch-kicker { display:flex; justify-content:center; text-align:center; }
+  .stitch-our-team .our-team-professional__copy > h2,
+  .stitch-our-team .our-team-revision__copy > h2,
+  .stitch-our-team .our-team-hospital__copy > h2,
+  .stitch-our-team .our-team-international__copy > h2 { margin:.75rem auto 0; text-align:center; }
+  .stitch-our-team .our-team-professional__media--mobile,
+  .stitch-our-team .our-team-revision__media--mobile,
+  .stitch-our-team .our-team-hospital__media--mobile { display:block !important; position:relative; width:100%; height:clamp(18rem,72vw,25rem); min-height:clamp(18rem,72vw,25rem); margin:1.5rem 0; }
+  .stitch-our-team .our-team-international__media--mobile { display:flex !important; position:relative; width:100%; min-height:clamp(18rem,72vw,25rem); margin:1.5rem 0; }
+  .stitch-our-team .our-team-hospital__copy > svg { display:block; margin:0 auto 1.1rem !important; }
+
+  .stitch-our-team .our-team-credentials__grid > div:first-child { text-align:center; }
+  .stitch-our-team .our-team-credentials__grid > div:first-child .stitch-kicker { display:flex; justify-content:center; }
+  .stitch-our-team .our-team-credentials__grid > div:first-child h2 { margin-inline:auto; }
+  .stitch-our-team > .faq-section .faq-section__header { align-items:center; width:100%; margin-inline:auto; text-align:center; }
+  .stitch-our-team > .faq-section .faq-section__header h2,
+  .stitch-our-team > .faq-section .faq-section__header p { margin-inline:auto; text-align:center; }
+}
+
+/* Dr. Cuong hero metrics: a compact, balanced stat panel on mobile only. */
+@media (max-width: 767px) {
+  .deep-plane-facelift__hero-copy > .deep-plane-facelift__metrics {
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    gap:.65rem;
+    margin-top:1.5rem;
+    padding:0;
+    border:0;
+    text-align:center;
+  }
+  .deep-plane-facelift__hero-copy > .deep-plane-facelift__metrics > div {
+    display:flex;
+    min-width:0;
+    min-height:6.25rem;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:.35rem;
+    padding:.85rem .65rem;
+    border:1px solid var(--stitch-color-proof-divider);
+    border-radius:.65rem;
+    background:var(--stitch-color-clinical-surface);
+  }
+  .deep-plane-facelift__hero-copy > .deep-plane-facelift__metrics > div:last-child {
+    grid-column:1 / -1;
+    min-height:4.5rem;
+    flex-direction:row;
+    gap:.8rem;
+    padding:.75rem 1rem;
+    background:var(--stitch-color-quiet-surface);
+  }
+  .deep-plane-facelift__hero-copy > .deep-plane-facelift__metrics strong {
+    color:var(--stitch-color-deep-navy);
+    font-size:clamp(1.25rem,5.4vw,1.6rem);
+    line-height:1;
+    white-space:nowrap;
+  }
+  .deep-plane-facelift__hero-copy > .deep-plane-facelift__metrics span {
+    max-width:13rem;
+    color:var(--stitch-color-muted);
+    font-size:.875rem;
+    line-height:1.35;
+    text-align:center;
+  }
+  .deep-plane-facelift__hero-copy > .deep-plane-facelift__metrics > div:last-child span { text-align:left; }
+}
+
+/* Treatments page mobile editorial alignment. Desktop layout is unchanged. */
+@media (max-width: 767px) {
+  .stitch-treatment-landing__article > #overview > .stitch-kicker,
+  .stitch-treatment-landing__article > #concerns > .stitch-kicker,
+  .stitch-treatment-landing .stitch-surgical-atlas__heading > .stitch-kicker {
+    display:flex;
+    justify-content:center;
+    text-align:center;
+  }
+  .stitch-treatment-landing__article > #overview > h2,
+  .stitch-treatment-landing__article > #concerns > h2,
+  .stitch-treatment-landing .stitch-surgical-atlas__heading > h2 {
+    margin-inline:auto;
+    text-align:center;
+    text-wrap:balance;
+  }
+  .stitch-treatment-landing .stitch-surgical-atlas__heading { margin-inline:auto; text-align:center; }
+  .stitch-treatment-landing .stitch-surgical-atlas__heading > .stitch-treatment-landing__lead { margin-inline:auto; text-align:left; }
+  .stitch-treatment-landing .stitch-surgical-atlas__chapters article {
+    display:grid;
+    grid-template-columns:auto minmax(0, 1fr);
+    column-gap:.9rem;
+    row-gap:.55rem;
+    align-items:baseline;
+    padding:1.25rem 0 1.75rem;
+  }
+  .stitch-treatment-landing .stitch-surgical-atlas__chapter-number {
+    grid-column:1;
+    grid-row:1;
+    margin:0;
+    font-size:1.3rem;
+    line-height:1.1;
+  }
+  .stitch-treatment-landing .stitch-surgical-atlas__chapters h3 {
+    grid-column:2;
+    grid-row:1;
+    min-width:0;
+    margin:0;
+    line-height:1.2;
+  }
+  .stitch-treatment-landing .stitch-surgical-atlas__chapters p {
+    grid-column:2;
+    grid-row:2;
+  }
+  .stitch-treatment-landing > .stitch-consultation .stitch-consultation__copy > .stitch-kicker {
+    display:block;
+    text-align:center;
+  }
+  .stitch-treatment-landing > .stitch-consultation .stitch-consultation__copy > h2 {
+    margin-inline:auto;
+    text-align:center;
+    text-wrap:balance;
+  }
+}
+
+/* Images move between title and copy only on mobile; desktop originals stay
+   in their existing positions and the mobile copies remain hidden. */
+.stitch-treatment-landing__image--mobile,
+.stitch-surgical-atlas__visual-wrap--mobile { display:none !important; }
+
+@media (max-width: 767px) {
+  .stitch-treatment-landing__article > #overview { display:flex; flex-direction:column; }
+  .stitch-treatment-landing__article > #overview > .stitch-kicker { order:1; }
+  .stitch-treatment-landing__article > #overview > h2 { order:2; margin:0; }
+  .stitch-treatment-landing__article > #overview > .stitch-treatment-landing__image--mobile {
+    display:block !important;
+    position:relative;
+    order:3;
+    width:100%;
+    height:clamp(17rem,62vw,23rem);
+    margin:1.15rem 0 1.5rem;
+  }
+  .stitch-treatment-landing__article > #overview > .stitch-treatment-landing__copy { order:4; }
+  .stitch-treatment-landing__article > #overview > .stitch-treatment-landing__image--desktop { display:none !important; }
+
+  .stitch-treatment-landing .stitch-surgical-atlas__heading > .stitch-surgical-atlas__visual-wrap--mobile {
+    display:block !important;
+    position:relative;
+    top:auto;
+    width:100%;
+    margin:1.15rem 0 1.5rem;
+  }
+  .stitch-treatment-landing .stitch-surgical-atlas__visual-wrap--mobile .stitch-surgical-atlas__visual {
+    min-height:clamp(17rem,62vw,23rem);
+  }
+  .stitch-treatment-landing .stitch-surgical-atlas__layout > .stitch-surgical-atlas__visual-wrap--desktop { display:none !important; }
 }

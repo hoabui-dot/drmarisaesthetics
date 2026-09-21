@@ -1,0 +1,20 @@
+{
+  "name": "seo-manager",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Central admin workspace for global SEO, robots, redirects and canonical rules",
+  "exports": {
+    "./strapi-admin": {
+      "source": "./admin/src/index.ts",
+      "import": "./admin/src/index.ts",
+      "default": "./admin/src/index.ts"
+    },
+    "./strapi-server": "./strapi-server.js",
+    "./package.json": "./package.json"
+  },
+  "strapi": {
+    "name": "seo-manager",
+    "displayName": "SEO Manager",
+    "kind": "plugin"
+  }
+}

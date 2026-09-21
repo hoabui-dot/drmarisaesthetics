@@ -27,6 +27,10 @@
       "type": "boolean",
       "default": false
     },
+    "include_in_sitemap": {
+      "type": "boolean",
+      "default": true
+    },
     "no_follow": {
       "type": "boolean",
       "default": false
@@ -47,6 +51,6 @@
     "structured_data_json": {
       "type": "json",
       "description": "Optional page-specific Schema.org JSON-LD entity or graph. Only add facts visible on this page."
-    },
+    }
   }
 }

@@ -77,6 +77,7 @@ export function Header({ navigation, logoSrc }: HeaderProps) {
     || pathname === '/contact'
     || pathname === '/results'
     || pathname === '/our-team'
+    || pathname.startsWith('/our-team/')
     || pathname === '/services'
     || pathname.startsWith('/services/')
     || pathname === '/treatments'
