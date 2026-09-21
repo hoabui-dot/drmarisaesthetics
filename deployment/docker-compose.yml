@@ -1,0 +1,93 @@
+name: drmaris-production
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: drmaris-prod-postgres
+    restart: unless-stopped
+    env_file:
+      - ./drmaris-env/drmaris.production.postgres.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - drmaris-production
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d dental_cms_strapi"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  strapi:
+    image: vanhoadotbui2628/drmaris_aesthetics_cms:20260921-release-v1
+    platform: linux/amd64
+    container_name: drmaris-prod-strapi
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - ./drmaris-env/drmaris.production.strapi.env
+    environment:
+      HOST: 0.0.0.0
+      PORT: 22345
+      NODE_ENV: production
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_SSL: "false"
+      DATABASE_SCHEMA: public
+      NEXTJS_URL: http://frontend:2234
+      SITE_INDEXING_ENABLED: "true"
+    volumes:
+      - strapi_uploads:/opt/app/public/uploads
+      - strapi_cache:/opt/app/.cache
+    ports:
+      - "22345:22345"
+    networks:
+      - drmaris-production
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:22345/_health', r => process.exit(r.statusCode >= 200 && r.statusCode < 300 ? 0 : 1))"]
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
+      retries: 3
+
+  frontend:
+    image: vanhoadotbui2628/drmaris_aesthetics_frontend:20260921-release-v1
+    platform: linux/amd64
+    container_name: drmaris-prod-frontend
+    restart: unless-stopped
+    depends_on:
+      strapi:
+        condition: service_healthy
+    env_file:
+      - ./drmaris-env/drmaris.production.frontend.env
+    environment:
+      NODE_ENV: production
+      PORT: 2234
+      HOSTNAME: 0.0.0.0
+      STRAPI_URL: http://strapi:22345
+    ports:
+      - "2234:2234"
+    networks:
+      - drmaris-production
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:2234"]
+      interval: 30s
+      timeout: 10s
+      start_period: 40s
+      retries: 3
+
+volumes:
+  postgres_data:
+    name: dental-postgres-data
+    external: true
+  strapi_uploads:
+    name: dental-strapi-uploads
+    external: true
+  strapi_cache:
+    name: dental-strapi-cache
+
+networks:
+  drmaris-production:
+    name: drmaris-production
