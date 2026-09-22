@@ -16,12 +16,16 @@ async function verifyRecaptcha(token: string): Promise<boolean> {
   }
 
   try {
+    const verificationBody = new URLSearchParams({
+      secret: secretKey,
+      response: token,
+    });
     const response = await fetch(
-      `https://www.google.com/recaptcha/api/siteverify`,
+      "https://www.google.com/recaptcha/api/siteverify",
       {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `secret=${secretKey}&response=${token}`,
+        body: verificationBody.toString(),
       },
     );
 
@@ -86,8 +90,11 @@ export async function POST(request: NextRequest) {
     let isValidRecaptcha = true;
     
     // Only verify reCAPTCHA in production to avoid localhost issues
-    if (process.env.NODE_ENV === "production") {
+    const recaptchaEnabled = process.env.RECAPTCHA_ENABLED !== "false";
+    if (process.env.NODE_ENV === "production" && recaptchaEnabled) {
       isValidRecaptcha = await verifyRecaptcha(data.recaptchaToken);
+    } else if (!recaptchaEnabled) {
+      console.info("[Contact API] recaptcha-disabled");
     }
 
     if (!isValidRecaptcha) {

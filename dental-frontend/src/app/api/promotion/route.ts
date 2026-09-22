@@ -49,11 +49,12 @@ export async function POST(request: NextRequest) {
 
     // Verify reCAPTCHA token
     let isValidRecaptcha = true;
-    if (process.env.NODE_ENV === "production" && recaptchaToken) {
+    const recaptchaEnabled = process.env.RECAPTCHA_ENABLED !== "false";
+    if (process.env.NODE_ENV === "production" && recaptchaEnabled && recaptchaToken) {
       isValidRecaptcha = await verifyRecaptcha(recaptchaToken);
     }
 
-    if (!isValidRecaptcha && recaptchaToken) {
+    if (recaptchaEnabled && !isValidRecaptcha && recaptchaToken) {
       return NextResponse.json(
         { success: false, error: "Security verification failed." },
         { status: 400 },

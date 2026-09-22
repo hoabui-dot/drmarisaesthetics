@@ -67,25 +67,32 @@ export function BookingModal() {
     event.preventDefault(); if (!validateForm()) return; setIsSubmitting(true); setStatus('idle')
     try {
       const isProduction = process.env.NODE_ENV === 'production'
-      if (isProduction && !executeRecaptcha) {
+      const recaptchaEnabled = process.env.NEXT_PUBLIC_RECAPTCHA_ENABLED !== 'false'
+      if (isProduction && recaptchaEnabled && !executeRecaptcha) {
         console.warn('[Booking] reCAPTCHA is not ready; submission was not sent')
         toast.error('Security verification is still loading. Please try again in a moment.')
         setStatus('error')
         return
       }
-      const recaptchaToken = executeRecaptcha ? await executeRecaptcha('booking_modal') : 'local-development'
-      console.info('[Booking] reCAPTCHA token received', { available: Boolean(recaptchaToken), production: isProduction })
-      if (!recaptchaToken) throw new Error('Missing reCAPTCHA token')
       const message = [`Consultation type: ${form.type === 'revision' ? 'Revision Surgery' : 'Cosmetic Surgery Consultation'}`, `Area / procedure: ${form.procedure}`, form.message ? `Case description: ${form.message}` : ''].filter(Boolean).join('\n')
       const parsedPhone = parsePhoneNumberFromString(form.phoneNumber, phoneCountry.code); if (!parsedPhone || !parsedPhone.isValid()) throw new Error('Invalid phone number')
-      const payload: ContactFormData = { fullName: form.fullName, email: form.email, phoneNumber: parsedPhone.number, service: form.procedure || 'Consultation', otherService: form.procedure === 'Other' ? form.otherService.trim() : '', message, recaptchaToken }
-      if (!contactFormSchema.safeParse(payload).success) throw new Error('Invalid form')
-      const response = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
-      if (!response.ok) {
+      const submitContact = async (attempt: number) => {
+        const recaptchaToken = recaptchaEnabled && executeRecaptcha ? await executeRecaptcha('booking_modal') : 'recaptcha-disabled'
+        console.info('[Booking] reCAPTCHA token received', { available: Boolean(recaptchaToken), production: isProduction, attempt })
+        if (!recaptchaToken) throw new Error('Missing reCAPTCHA token')
+        const payload: ContactFormData = { fullName: form.fullName, email: form.email, phoneNumber: parsedPhone.number, service: form.procedure || 'Consultation', otherService: form.procedure === 'Other' ? form.otherService.trim() : '', message, recaptchaToken }
+        if (!contactFormSchema.safeParse(payload).success) throw new Error('Invalid form')
+        const response = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+        if (response.ok) return
         const errorBody = await response.json().catch(() => ({}))
-        console.error('[Booking] submission rejected', { status: response.status, error: errorBody?.error || 'unknown' })
+        console.error('[Booking] submission rejected', { status: response.status, error: errorBody?.error || 'unknown', attempt })
+        if (attempt === 1 && response.status === 400 && errorBody?.error?.toLowerCase().includes('security verification')) {
+          await new Promise((resolve) => setTimeout(resolve, 250))
+          return submitContact(2)
+        }
         throw new Error(errorBody?.error || 'Submission failed')
       }
+      await submitContact(1)
       setStatus('success'); toast.success('Your case has been received.', { description: 'Our team will contact you regarding the appropriate next step.' })
     } catch { setStatus('error') } finally { setIsSubmitting(false) }
   }
