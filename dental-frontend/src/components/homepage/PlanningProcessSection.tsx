@@ -68,6 +68,7 @@ type PlanningProcessSectionProps = {
   className?: string
   sectionId?: string
   showStepImagesOnMobile?: boolean
+  plainVisual?: boolean
 }
 
 export function PlanningProcessSection({
@@ -79,6 +80,7 @@ export function PlanningProcessSection({
   className = '',
   sectionId = 'planning-process',
   showStepImagesOnMobile = false,
+  plainVisual = false,
 }: PlanningProcessSectionProps) {
   const sectionRef = useRef<HTMLElement>(null)
   const activeIndexRef = useRef(0)
@@ -108,7 +110,7 @@ export function PlanningProcessSection({
         .add(number, { opacity: [0.3, 1], scale: [0.85, 1], duration: 520, ease: 'outCubic' }, 0)
         .add(title, { opacity: [0, 1], y: [16, 0], duration: 520, ease: 'outCubic' }, 90)
         .add(description, { opacity: [0, 1], y: [12, 0], duration: 520, ease: 'outCubic' }, 180)
-      if (visualMedia) {
+      if (visualMedia && !plainVisual) {
         timeline.add(visualMedia, { opacity: [0.9, 1], scale: [1.025, 1], duration: 560, ease: 'outCubic' }, 60)
       }
       timeline.play()
@@ -195,7 +197,7 @@ export function PlanningProcessSection({
       timelinesRef.current.forEach((timeline) => timeline.pause().revert())
       timelinesRef.current = []
     }
-  }, [])
+  }, [plainVisual])
 
   return (
     <section ref={sectionRef} id={sectionId} data-planning-process className={`stitch-section planning-process ${className}`.trim()} aria-labelledby={`${sectionId}-title`}>
@@ -210,7 +212,7 @@ export function PlanningProcessSection({
           <div className="planning-process__visual-wrap">
             <div className="planning-process__visual" aria-hidden="true">
               <Image src={steps[activeIndex].image} alt={steps[activeIndex].imageAlt} fill sizes="(max-width: 900px) 100vw, 40vw" className="planning-process__visual-media" data-planning-visual-media unoptimized />
-              <span className="planning-process__visual-wash" />
+              {!plainVisual && <span className="planning-process__visual-wash" />}
               <span className="planning-process__visual-kicker">DR. MARIS AESTHETICS</span>
               <span className="planning-process__visual-label">{steps[activeIndex].title}</span>
             </div>

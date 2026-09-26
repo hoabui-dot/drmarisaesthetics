@@ -1,3 +1,10 @@
+# Deprecated: shared-origin Strapi Admin
+
+This document is retained only as historical migration context. It is no
+longer the production deployment strategy. Do not use it for new deployments.
+The current strategy is documented in
+[`admin-subdomain-strapi.md`](./admin-subdomain-strapi.md).
+
 # Frontend URL và proxy Strapi Admin trên cùng domain
 
 Tài liệu này mô tả cách triển khai frontend Next.js và Strapi CMS trên cùng một public origin. Người dùng truy cập website bằng frontend URL; Strapi Admin được mở qua `/admin` và Nginx proxy nội bộ tới container Strapi.

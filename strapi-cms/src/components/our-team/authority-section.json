@@ -6,6 +6,8 @@
     "eyebrow": { "type": "string" },
     "title": { "type": "string", "required": true },
     "description": { "type": "text" },
+    "certificate_image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "certificate_image_alt": { "type": "string" },
     "cards": { "type": "component", "repeatable": true, "component": "our-team.authority-card" }
   }
 }

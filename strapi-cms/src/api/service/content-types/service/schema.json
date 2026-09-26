@@ -25,6 +25,12 @@
       "enum": ["Plastic Surgery"],
       "required": false
     },
+    "categories": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::service-category.service-category",
+      "inversedBy": "services"
+    },
     "coverImage": { "type": "media", "multiple": false, "required": false, "allowedTypes": ["images"] },
     "metaDescription": { "type": "text", "required": false },
     "contentBetterBlocks": {

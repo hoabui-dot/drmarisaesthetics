@@ -70,7 +70,7 @@ COPY --chown=node:node --from=build /opt/app ./
 COPY --chown=root:root docker-entrypoint.sh /usr/local/bin/strapi-entrypoint
 RUN chmod 755 /usr/local/bin/strapi-entrypoint
 
-ENV PATH /opt/node_modules/.bin:$PATH
+ENV PATH=/opt/node_modules/.bin:$PATH
 
 ENTRYPOINT ["/usr/local/bin/strapi-entrypoint"]
 

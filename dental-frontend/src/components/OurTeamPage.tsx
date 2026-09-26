@@ -30,7 +30,31 @@ export function OurTeamPage({ data = ourTeamMockData }: { data?: OurTeamData }) 
   return <main ref={pageRef} className="stitch-page stitch-our-team">
     <section className="our-team-profile-hero" data-team-hero><div className="our-team-profile-hero__grid stitch-container"><div className="our-team-profile-hero__heading"><span className="stitch-kicker" data-team-hero-eyebrow><i data-team-hero-divider />{hero.eyebrow}</span><h2><span className="stitch-hero-line"><span data-team-hero-title-line>{hero.title}</span></span></h2><div className="our-team-profile-hero__media our-team-profile-hero__media--mobile" aria-hidden="true"><TeamImage src={hero.image} alt="" className="our-team-profile-hero__image" /></div></div><div className="our-team-profile-hero__copy"><div className="our-team-profile-hero__identity" data-team-hero-copy><p>Dr. Tran Minh Huy</p><span>Specialist Level I in Aesthetic Surgery, Vietnam</span></div><div className="our-team-profile-hero__body">{hero.paragraphs.map((paragraph) => <p key={paragraph} data-team-hero-copy>{paragraph}</p>)}</div><div className="stitch-actions" data-team-hero-actions><ConsultationButton className="stitch-button stitch-button--dark">Request a Consultation</ConsultationButton><a className="stitch-button stitch-button--outline" href="#revision">Explore Surgical Expertise <ArrowRight size={17} /></a></div></div><div className="our-team-profile-hero__media our-team-profile-hero__media--desktop" data-team-hero-image><TeamImage src={hero.image} alt={hero.imageAlt} className="our-team-profile-hero__image" /></div></div></section>
 
-    <section className="our-team-authority"><div className="stitch-container"><div className="our-team-section-heading"><span className="stitch-kicker">{data.authority.eyebrow}</span><h2>{data.authority.title}</h2><p>{data.authority.description}</p></div><div className="our-team-authority__grid">{data.authority.cards.map(({ title, items }, index) => { const Icon = [GraduationCap, BadgeCheck, Award][index % 3]; return <article key={title}><span className="our-team-authority__icon"><Icon size={24} aria-hidden="true" /></span><h3>{title}</h3><ul>{items.map(item => <li key={item}><CheckCircle2 size={15} aria-hidden="true" />{item}</li>)}</ul></article> })}</div></div></section>
+    <section className="our-team-authority" aria-labelledby="medical-authority-title">
+      <div className="stitch-container">
+        <div className="our-team-section-heading">
+          <span className="stitch-kicker">{data.authority.eyebrow}</span>
+          <h2 id="medical-authority-title">{data.authority.title}</h2>
+          <p>{data.authority.description}</p>
+        </div>
+        <div className={`our-team-authority__layout${data.authority.certificateImage ? ' our-team-authority__layout--certificate' : ''}`}>
+          {data.authority.certificateImage && (
+            <figure className="our-team-authority__certificate">
+              <Image src={data.authority.certificateImage} alt={data.authority.certificateImageAlt || 'Medical certificate of Dr. Tran Minh Huy'} width={900} height={1200} sizes="(max-width: 900px) 100vw, 45vw" unoptimized />
+            </figure>
+          )}
+          <div className="our-team-authority__cards">
+            {data.authority.cards.map(({ title, items }, index) => {
+              const Icon = [GraduationCap, BadgeCheck, Award][index % 3]
+              return <article className="our-team-authority__card" key={title}>
+                <h3><Icon size={22} aria-hidden="true" /><span>{title}</span></h3>
+                <ul>{items.map(item => <li key={item}><CheckCircle2 size={15} aria-hidden="true" /><span>{item}</span></li>)}</ul>
+              </article>
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
 
     <section className="our-team-professional"><div className="stitch-container our-team-professional__grid"><div className="our-team-professional__copy"><span className="stitch-kicker">{professional?.eyebrow || 'PROFESSIONAL JOURNEY'}</span><h2>{professional?.title || 'Experience Across Cosmetic Surgery &amp; Hospital Environments'}</h2><div className="our-team-professional__media our-team-professional__media--mobile" aria-hidden="true"><TeamImage src={professional?.image || data.professionalImage || hero.image} alt="" /></div><p>{professional?.description || 'Dr. Maris&apos;s professional background includes experience across cosmetic surgery institutions and a hospital environment in Ho Chi Minh City.'}</p><div className="our-team-timeline">{(professional?.steps?.length ? professional.steps : careerTimeline.map((title, index) => ({ number: `0${index + 1}`, title, description: '' }))).map(step => <div key={step.number + step.title}><b>{step.number}</b><span>{step.title}</span></div>)}</div></div><div className="our-team-professional__media our-team-professional__media--desktop"><TeamImage src={professional?.image || data.professionalImage || hero.image} alt={professional?.imageAlt || 'Modern premium clinic hallway in Ho Chi Minh City'} /></div></div></section>
 

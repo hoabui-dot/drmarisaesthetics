@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_homepage_video_sections",
+  "info": {
+    "displayName": "Homepage video section",
+    "description": "Responsive YouTube video shown immediately below the homepage hero."
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "youtube_url": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

@@ -20,6 +20,7 @@ export default factories.createCoreController(
             sections: {
               on: {
                 "homepage.hero-section": { populate: ["image", "trust_labels"] },
+                "homepage.video-section": { populate: [] },
                 "homepage.signature-procedures-section": { populate: { items: { populate: ["image"] } } },
                 "homepage.maris-method-section": { populate: ["image", "steps"] },
                 "homepage.revision-surgery-section": { populate: ["image", "mobile_image"] },

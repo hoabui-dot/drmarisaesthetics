@@ -14,7 +14,7 @@ export default factories.createCoreController('api::our-team.our-team' as any, (
             'our-team.professional-section': { populate: { image: true, items: true, steps: true } },
             'our-team.international-section': { populate: { image: true, steps: true } },
             'our-team.revision-section': { populate: { image: true, concerns: true } },
-            'our-team.authority-section': { populate: { cards: { populate: { items: true } } } },
+            'our-team.authority-section': { populate: { certificate_image: true, cards: { populate: { items: true } } } },
             'our-team.credentials-section': { populate: { rows: true } },
             'our-team.hospital-section': { populate: { image: true, proof_items: true } },
             'our-team.faq-section': { populate: { background_image: true, items: true } },

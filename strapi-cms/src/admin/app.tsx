@@ -4,6 +4,8 @@ import vietnameseTranslations from './i18n/vi.json'
 import type { StrapiApp } from '@strapi/admin/strapi-admin'
 
 const SERVICE_NAVIGATION_ORDER_FIELD = 'service-navigation-order'
+const RESULT_CATEGORY_ID_FIELD = 'result-category-id'
+const RESULT_CATEGORY_MULTI_SELECT_FIELD = 'result-category-multi-select'
 const LIST_VIEW_COLUMNS_HOOK = 'Admin/CM/pages/ListView/inject-column-in-table'
 
 type AdminResponsePayload = {
@@ -156,6 +158,38 @@ export default {
       },
       components: {
         Input: async () => import('./ServiceNavigationOrderInput'),
+      },
+    })
+
+    app.customFields.register({
+      name: RESULT_CATEGORY_ID_FIELD,
+      type: 'string',
+      intlLabel: {
+        id: 'custom-field.result-category-id.label',
+        defaultMessage: 'Category ID',
+      },
+      intlDescription: {
+        id: 'custom-field.result-category-id.description',
+        defaultMessage: 'Generated automatically from the category definition.',
+      },
+      components: {
+        Input: async () => import('./ResultCategoryInput'),
+      },
+    })
+
+    app.customFields.register({
+      name: RESULT_CATEGORY_MULTI_SELECT_FIELD,
+      type: 'json',
+      intlLabel: {
+        id: 'custom-field.result-category-multi-select.label',
+        defaultMessage: 'Result categories',
+      },
+      intlDescription: {
+        id: 'custom-field.result-category-multi-select.description',
+        defaultMessage: 'Optionally select one or more categories for this case.',
+      },
+      components: {
+        Input: async () => import('./ResultCategoryInput'),
       },
     })
 

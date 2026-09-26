@@ -6,12 +6,26 @@ This stack has a unique Compose project name (`drmaris-production`) and referenc
 - `drmaris-env/drmaris.production.strapi.env`
 - `drmaris-env/drmaris.production.frontend.env`
 
-It does not use a default `.env` file or require `docker compose --env-file`. It runs prebuilt images only:
+It does not use a default `.env` file or require `docker compose --env-file`. It runs prebuilt images only; image tags are maintained in `docker-compose.yml`:
 
-- `vanhoadotbui2628/drmaris_aesthetics_cms:20260921-release-v1`
-- `vanhoadotbui2628/drmaris_aesthetics_frontend:20260921-release-v1`
+- `vanhoadotbui2628/drmaris_aesthetics_cms:20260923-admin-origin-v1`
+- `vanhoadotbui2628/drmaris_aesthetics_frontend:20260922-recaptcha-bypass-v1`
 
 The frontend tag is the production-specific image already built and pushed to Docker Hub. Production servers should pull it, not build it.
+
+## Public host layout
+
+The production frontend and Strapi Admin use separate HTTPS hosts:
+
+- `https://drmarisaesthetics.com` → Next.js frontend on port `2234`
+- `https://admin.drmarisaesthetics.com` → Strapi, including `/admin`, plugin APIs, public API routes, and `/uploads/`, on port `22345`
+
+The old shared-origin `/admin` proxy document is deprecated. Use
+`../docs/deployment/nginx-drmaris-admin-subdomain.conf` and
+`admin-subdomain-strapi.md` instead.
+
+Before cutover, create an `A`/`AAAA` record for `admin.drmarisaesthetics.com`
+pointing to the production VPS and issue a certificate for that hostname.
 
 ## Prepare production values
 
@@ -39,4 +53,6 @@ The images are built and published under the dedicated DR. MARIS repositories. F
 
 ## Verification
 
-After startup, check `https://drmarisaesthetics.com/`, `https://drmarisaesthetics.com/admin`, and `docker compose logs --tail=100 frontend` / `strapi`.
+After startup, check `https://drmarisaesthetics.com/`, `https://admin.drmarisaesthetics.com/admin`, and `docker compose logs --tail=100 frontend` / `strapi`.
+
+For the production booking-form HTTP 500 investigation and verification checklist, see [booking-form-production-500-runbook.md](./booking-form-production-500-runbook.md).

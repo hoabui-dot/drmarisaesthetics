@@ -3,6 +3,8 @@ export type OurTeamData = {
   hospitalImage?: string
   internationalImage?: string
   authority: {
+    certificateImage?: string
+    certificateImageAlt?: string
     eyebrow: string
     title: string
     description: string

@@ -13,6 +13,7 @@ import {
   type BookingNotificationData,
   type PromotionNotificationData,
 } from "./templates/staff-notification";
+import { getWebsiteSetting } from "@/src/lib/api/queries";
 
 // Email addresses from environment
 const EMAIL_TO_ADMIN = process.env.EMAIL_TO_ADMIN || "";
@@ -30,9 +31,26 @@ export async function sendBookingNotifications(
   data: BookingNotificationData,
 ): Promise<boolean> {
   try {
+    const websiteSetting = await getWebsiteSetting();
+    const siteName = websiteSetting?.siteName || "DR. MARIS AESTHETICS";
+    const configuredLogoUrl = websiteSetting?.logo?.url?.trim();
+    let logoUrl: string | undefined;
+
+    if (configuredLogoUrl) {
+      try {
+        const publicOrigin = process.env.NEXT_PUBLIC_SERVER_URL || "https://drmarisaesthetics.com";
+        const resolvedLogoUrl = new URL(configuredLogoUrl, publicOrigin);
+        if (resolvedLogoUrl.protocol === "http:" || resolvedLogoUrl.protocol === "https:") {
+          logoUrl = resolvedLogoUrl.toString();
+        }
+      } catch {
+        console.warn("[Notifications] Website logo URL could not be resolved");
+      }
+    }
+
     // Generate email content
     const subject = generateBookingNotificationSubject(data);
-    const html = generateBookingNotificationEmail(data);
+    const html = generateBookingNotificationEmail({ ...data, siteName, logoUrl });
 
     // Determine recipients
     const recipients: string[] = [];

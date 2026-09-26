@@ -42,7 +42,7 @@ import type {
 import { normalizeHomepageEditorial, type HomepageEditorialData } from "@/src/types/homepage-editorial";
 import { DEEP_PLANE_FACELIFT_SPECIALIST, type DeepPlaneFaceliftSpecialistData, type DeepPlaneSectionKey } from "@/src/lib/constants/deep-plane-facelift-specialist";
 import { ourTeamMockData, type OurTeamData } from "@/src/data/our-team";
-import { resultsMockData, type ResultsData } from "@/src/data/results";
+import { resultsMockData, type ResultCategory, type ResultsData } from "@/src/data/results";
 import type { WebsiteSetting } from "@/src/types/strapi";
 import type { TreatmentPageData, TreatmentPageItem, TreatmentPageSection } from "@/src/types/treatments-page";
 
@@ -116,7 +116,20 @@ export async function getDeepPlaneFaceliftSpecialist(isDraftMode = false): Promi
   try {
     const response = await apiClient<any>("/api/deep-plane-facelift-specialist", {
       params: {
-        "populate[sections][populate]": "*",
+        // Dynamic-zone components need explicit `on` fragments. The broad
+        // sections populate only reaches the section's direct fields; it does
+        // not reliably populate media nested inside repeatable components.
+        "populate[sections][on][deep-plane.hero][populate]": "*",
+        "populate[sections][on][deep-plane.journey][populate]": "*",
+        "populate[sections][on][deep-plane.recovery][populate][stages][populate][items][populate]": "*",
+        "populate[sections][on][deep-plane.recovery][populate][steps][populate][items][populate]": "*",
+        "populate[sections][on][deep-plane.recovery][populate][steps][populate][image]": "true",
+        "populate[sections][on][deep-plane.certifications][populate][cards][populate][image]": "true",
+        "populate[sections][on][deep-plane.safety][populate][cards][populate][items][populate]": "*",
+        "populate[sections][on][deep-plane.safety][populate][cards][populate][image]": "true",
+        "populate[sections][on][deep-plane.credentials][populate]": "*",
+        "populate[sections][on][deep-plane.faq][populate]": "*",
+        "populate[sections][on][deep-plane.consultation][populate]": "*",
         status: isDraftMode ? "draft" : "published",
       },
       isDraftMode,
@@ -166,6 +179,14 @@ export async function getDeepPlaneFaceliftSpecialist(isDraftMode = false): Promi
       })
       .filter(Boolean) as Array<{ key: DeepPlaneSectionKey; id: string }>;
     const media = (item: any, fallback: string) => item ? (getMediaUrl(item) || fallback) : fallback;
+    // The published Strapi entry currently has these uploads in its media
+    // library but returns null for the nested card relations. Keep the cards
+    // visible until those relations are saved on the published entry.
+    const safetyImageFallbacks = [
+      "/api/strapi-media/uploads/deep_plane_safety_1_8322b82e30.jpg",
+      "/api/strapi-media/uploads/deep_plane_safety_2_3249b59859.jpg",
+      "/api/strapi-media/uploads/deep_plane_safety_3_a1b41ca8a1.jpg",
+    ];
     const checklistText = (item: any) => typeof item === "string" ? item : item?.text || item?.label || item?.title || "";
     const checklistTexts = (items: any) => Array.isArray(items)
       ? items.map(checklistText).filter(Boolean)
@@ -217,8 +238,24 @@ export async function getDeepPlaneFaceliftSpecialist(isDraftMode = false): Promi
       },
       journey: { ...DEEP_PLANE_FACELIFT_SPECIALIST.journey, id: journey.id ? `deep-plane-journey-${journey.id}` : DEEP_PLANE_FACELIFT_SPECIALIST.journey.id, eyebrow: journey.eyebrow || DEEP_PLANE_FACELIFT_SPECIALIST.journey.eyebrow, title: journey.title || DEEP_PLANE_FACELIFT_SPECIALIST.journey.title, description: journey.description || DEEP_PLANE_FACELIFT_SPECIALIST.journey.description, steps: Array.isArray(journey.steps) ? journey.steps.map(journeyTuple) : DEEP_PLANE_FACELIFT_SPECIALIST.journey.steps },
       recovery: { ...DEEP_PLANE_FACELIFT_SPECIALIST.recovery, id: recovery.section_id || DEEP_PLANE_FACELIFT_SPECIALIST.recovery.id, eyebrow: recovery.eyebrow || DEEP_PLANE_FACELIFT_SPECIALIST.recovery.eyebrow, title: recovery.title || DEEP_PLANE_FACELIFT_SPECIALIST.recovery.title, description: recovery.description || DEEP_PLANE_FACELIFT_SPECIALIST.recovery.description, stages: Array.isArray(recovery.stages) ? recovery.stages.map(recoveryStageTuple) : DEEP_PLANE_FACELIFT_SPECIALIST.recovery.stages, steps: recoverySteps, note: recovery.note || DEEP_PLANE_FACELIFT_SPECIALIST.recovery.note },
-      certifications: { ...DEEP_PLANE_FACELIFT_SPECIALIST.certifications, id: certifications.section_id || DEEP_PLANE_FACELIFT_SPECIALIST.certifications.id, eyebrow: certifications.eyebrow || DEEP_PLANE_FACELIFT_SPECIALIST.certifications.eyebrow, title: certifications.title || DEEP_PLANE_FACELIFT_SPECIALIST.certifications.title, description: certifications.description || DEEP_PLANE_FACELIFT_SPECIALIST.certifications.description, cards: Array.isArray(certifications.cards) ? certifications.cards.map((card: any) => ({ image: media(card.image, ""), imageAlt: card.image_alt || card.imageAlt || "" })) : DEEP_PLANE_FACELIFT_SPECIALIST.certifications.cards },
-      safety: { ...DEEP_PLANE_FACELIFT_SPECIALIST.safety, id: safety.section_id || DEEP_PLANE_FACELIFT_SPECIALIST.safety.id, eyebrow: safety.eyebrow || DEEP_PLANE_FACELIFT_SPECIALIST.safety.eyebrow, title: safety.title || DEEP_PLANE_FACELIFT_SPECIALIST.safety.title, description: safety.description || DEEP_PLANE_FACELIFT_SPECIALIST.safety.description, cards: Array.isArray(safety.cards) ? safety.cards.map((card: any) => ({ image: media(card.image, ""), title: card.title || "", eyebrow: card.eyebrow || "", alt: card.alt || card.image_alt || "", items: checklistTexts(card.items) })) : DEEP_PLANE_FACELIFT_SPECIALIST.safety.cards, note: safety.note || DEEP_PLANE_FACELIFT_SPECIALIST.safety.note },
+      certifications: { ...DEEP_PLANE_FACELIFT_SPECIALIST.certifications, id: certifications.section_id || DEEP_PLANE_FACELIFT_SPECIALIST.certifications.id, eyebrow: certifications.eyebrow || DEEP_PLANE_FACELIFT_SPECIALIST.certifications.eyebrow, title: certifications.title || DEEP_PLANE_FACELIFT_SPECIALIST.certifications.title, description: certifications.description || DEEP_PLANE_FACELIFT_SPECIALIST.certifications.description, cards: Array.isArray(certifications.cards) ? certifications.cards.map((card: any) => ({ image: media(card.image, ""), imageAlt: card.image_alt || card.imageAlt || "", imageLabel: card.image_label || card.imageLabel || "", imageIssuer: card.image_issuer || card.imageIssuer || "" })) : DEEP_PLANE_FACELIFT_SPECIALIST.certifications.cards },
+      safety: {
+        ...DEEP_PLANE_FACELIFT_SPECIALIST.safety,
+        id: safety.section_id || DEEP_PLANE_FACELIFT_SPECIALIST.safety.id,
+        eyebrow: safety.eyebrow || DEEP_PLANE_FACELIFT_SPECIALIST.safety.eyebrow,
+        title: safety.title || DEEP_PLANE_FACELIFT_SPECIALIST.safety.title,
+        description: safety.description || DEEP_PLANE_FACELIFT_SPECIALIST.safety.description,
+        cards: Array.isArray(safety.cards)
+          ? safety.cards.map((card: any, index: number) => ({
+            image: media(card.image, safetyImageFallbacks[index] || ""),
+            title: card.title || "",
+            eyebrow: card.eyebrow || "",
+            alt: card.alt || card.image_alt || "",
+            items: checklistTexts(card.items),
+          }))
+          : DEEP_PLANE_FACELIFT_SPECIALIST.safety.cards,
+        note: safety.note || DEEP_PLANE_FACELIFT_SPECIALIST.safety.note,
+      },
       credentials: { ...DEEP_PLANE_FACELIFT_SPECIALIST.credentials, id: credentials.section_id || DEEP_PLANE_FACELIFT_SPECIALIST.credentials.id, eyebrow: credentials.eyebrow || DEEP_PLANE_FACELIFT_SPECIALIST.credentials.eyebrow, title: credentials.title || DEEP_PLANE_FACELIFT_SPECIALIST.credentials.title, image: media(credentials.image, DEEP_PLANE_FACELIFT_SPECIALIST.credentials.image), imageAlt: credentials.image_alt || DEEP_PLANE_FACELIFT_SPECIALIST.credentials.imageAlt, paragraphs: Array.isArray(credentials.paragraphs) ? credentials.paragraphs.map((paragraph: any) => typeof paragraph === "string" ? paragraph : paragraph?.text || "").filter(Boolean) : DEEP_PLANE_FACELIFT_SPECIALIST.credentials.paragraphs, cards: Array.isArray(credentials.cards) ? credentials.cards.map((card: any) => Array.isArray(card) ? card : [card?.title || "", card?.description || ""]) : DEEP_PLANE_FACELIFT_SPECIALIST.credentials.cards },
       faq: { ...DEEP_PLANE_FACELIFT_SPECIALIST.faq, id: faq.section_id || DEEP_PLANE_FACELIFT_SPECIALIST.faq.id, eyebrow: faq.eyebrow || DEEP_PLANE_FACELIFT_SPECIALIST.faq.eyebrow, title: faq.title || DEEP_PLANE_FACELIFT_SPECIALIST.faq.title, description: faq.description || DEEP_PLANE_FACELIFT_SPECIALIST.faq.description, items: Array.isArray(faq.items) ? faq.items.map((item: any) => Array.isArray(item) ? item : [item?.question || "", item?.answer || ""]) : DEEP_PLANE_FACELIFT_SPECIALIST.faq.items },
       consultation: { ...DEEP_PLANE_FACELIFT_SPECIALIST.consultation, id: consultation.section_id || DEEP_PLANE_FACELIFT_SPECIALIST.consultation.id, eyebrow: consultation.eyebrow || DEEP_PLANE_FACELIFT_SPECIALIST.consultation.eyebrow, title: consultation.title || DEEP_PLANE_FACELIFT_SPECIALIST.consultation.title, image: media(consultation.image, DEEP_PLANE_FACELIFT_SPECIALIST.consultation.image), imageAlt: consultation.image_alt || DEEP_PLANE_FACELIFT_SPECIALIST.consultation.imageAlt, address: consultation.address || DEEP_PLANE_FACELIFT_SPECIALIST.consultation.address, hours: consultation.hours || DEEP_PLANE_FACELIFT_SPECIALIST.consultation.hours, phone: consultation.phone || DEEP_PLANE_FACELIFT_SPECIALIST.consultation.phone, formTitle: consultation.form_title || DEEP_PLANE_FACELIFT_SPECIALIST.consultation.formTitle, formDescription: consultation.form_description || DEEP_PLANE_FACELIFT_SPECIALIST.consultation.formDescription, mapAddress: consultation.map_address || DEEP_PLANE_FACELIFT_SPECIALIST.consultation.mapAddress },
@@ -446,6 +483,8 @@ function mapOurTeamData(value: any): OurTeamData | null {
     return {
       ...ourTeamMockData,
       authority: authority ? {
+        certificateImage: image(authority.certificate_image),
+        certificateImageAlt: authority.certificate_image_alt || authority.certificate_image?.alternativeText || "Medical certificate of Dr. Tran Minh Huy",
         eyebrow: authority.eyebrow || ourTeamMockData.authority.eyebrow,
         title: authority.title || ourTeamMockData.authority.title,
         description: authority.description || ourTeamMockData.authority.description,
@@ -520,25 +559,43 @@ export async function getOurTeam(isDraftMode: boolean = false): Promise<OurTeamD
 export async function getResults(isDraftMode: boolean = false): Promise<ResultsData | null> {
   try {
     const response = await apiClient<any>("/api/result", {
-      params: { status: isDraftMode ? "draft" : "published" },
+      params: {
+        status: isDraftMode ? "draft" : "published",
+        "populate[categories]": "true",
+        "populate[cases][populate][image]": "true",
+      },
       isDraftMode,
       cache: "no-store",
       tags: ["results"],
     });
     const value = response?.data;
     if (!value) return null;
+    const mappedCategories: ResultCategory[] = Array.isArray(value.categories)
+      ? value.categories
+        .map((category: any) => ({ id: String(category.category_id || ''), label: String(category.label || '').trim() }))
+        .filter((category: { id: string; label: string }) => category.id && category.label)
+      : [];
+    const categories = mappedCategories;
     return {
       title: value.title || resultsMockData.title,
       introduction: value.introduction || resultsMockData.introduction,
+      categories,
       cases: (value.cases || []).map((item: any) => {
         const fallbackCase = resultsMockData.cases.find((candidate) => candidate.caseNumber === (item.case_number || item.caseNumber));
+        const legacyCategory = item.category || fallbackCase?.category;
+        const legacyCategoryId = item.category_id || categories.find((category) => category.label.toLocaleLowerCase() === String(legacyCategory || '').toLocaleLowerCase())?.id;
+        const categoryIds = Array.isArray(item.category_ids)
+          ? item.category_ids.map((categoryId: unknown) => String(categoryId || '').trim()).filter(Boolean)
+          : legacyCategoryId ? [String(legacyCategoryId)] : [];
         return {
         caseNumber: item.case_number || item.caseNumber || "",
         // Repeatable Strapi components do not always expose their own
         // timestamps. In that case the uploaded composite image timestamp is
         // the closest stable creation signal for the Results API ordering.
         createdAt: item.createdAt || item.created_at || item.image?.createdAt || item.image?.created_at || undefined,
-        category: item.category,
+        categoryIds,
+        categoryId: legacyCategoryId,
+        category: legacyCategory,
         title: item.title || "",
         subtitle: item.subtitle || "",
         image: getMediaUrl(item.image || item.composite_image) || fallbackCase?.image || "",

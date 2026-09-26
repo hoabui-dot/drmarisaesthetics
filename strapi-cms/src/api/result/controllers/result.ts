@@ -6,7 +6,10 @@ export default factories.createCoreController('api::result.result' as any, ({ st
     const entity = await strapi.documents('api::result.result' as any).findFirst({
       ...sanitizedQuery,
       status: ctx.query.status === 'draft' ? 'draft' : 'published',
-      populate: { cases: { populate: { image: true } } },
+      populate: {
+        categories: true,
+        cases: { populate: { image: true } },
+      },
     })
     return this.transformResponse(entity)
   },

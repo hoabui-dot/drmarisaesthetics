@@ -93,7 +93,7 @@ export function BookingModal() {
         throw new Error(errorBody?.error || 'Submission failed')
       }
       await submitContact(1)
-      setStatus('success'); toast.success('Your case has been received.', { description: 'Our team will contact you regarding the appropriate next step.' })
+      setStatus('success'); toast.success('Your case has been received.', { description: 'Our team will contact you regarding the appropriate next step.' }); close()
     } catch { setStatus('error') } finally { setIsSubmitting(false) }
   }
   const procedureOptions: SelectOption[] = [...serviceOptions.filter((option) => option.value !== 'Other'), { label: 'Others', value: 'Other' }]

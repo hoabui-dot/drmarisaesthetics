@@ -1754,6 +1754,8 @@ export interface OurTeamAuthoritySection extends Struct.ComponentSchema {
   };
   attributes: {
     cards: Schema.Attribute.Component<'our-team.authority-card', true>;
+    certificate_image: Schema.Attribute.Media<'images'>;
+    certificate_image_alt: Schema.Attribute.String;
     description: Schema.Attribute.Text;
     eyebrow: Schema.Attribute.String;
     title: Schema.Attribute.String & Schema.Attribute.Required;
@@ -1904,6 +1906,8 @@ export interface ResultCase extends Struct.ComponentSchema {
   };
   attributes: {
     case_number: Schema.Attribute.String & Schema.Attribute.Required;
+    category_id: Schema.Attribute.String;
+    category_ids: Schema.Attribute.JSON;
     category: Schema.Attribute.String;
     image: Schema.Attribute.Media<'images'>;
     image_alt: Schema.Attribute.Text;
@@ -1911,6 +1915,17 @@ export interface ResultCase extends Struct.ComponentSchema {
     recovery: Schema.Attribute.String;
     subtitle: Schema.Attribute.String;
     title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface ResultCategory extends Struct.ComponentSchema {
+  collectionName: 'components_result_categories';
+  info: {
+    displayName: 'Patient result category';
+  };
+  attributes: {
+    category_id: Schema.Attribute.String & Schema.Attribute.Required;
+    label: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
@@ -2635,6 +2650,7 @@ declare module '@strapi/strapi' {
       'our-team.revision-section': OurTeamRevisionSection;
       'our-team.step': OurTeamStep;
       'result.case': ResultCase;
+      'result.category': ResultCategory;
       'seo.page-seo': SeoPageSeo;
       'seo.robots-rule': SeoRobotsRule;
       'seo.sitemap-override': SeoSitemapOverride;

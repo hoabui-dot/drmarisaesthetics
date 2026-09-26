@@ -45,6 +45,7 @@
       "type": "dynamiczone",
       "components": [
         "homepage.hero-section",
+        "homepage.video-section",
         "homepage.signature-procedures-section",
         "homepage.maris-method-section",
         "homepage.revision-surgery-section",

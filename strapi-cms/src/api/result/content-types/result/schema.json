@@ -7,6 +7,7 @@
   "attributes": {
     "title": { "type": "string", "required": true },
     "introduction": { "type": "text", "required": true },
+    "categories": { "type": "component", "repeatable": true, "component": "result.category" },
     "cases": { "type": "component", "repeatable": true, "component": "result.case" },
     "disclaimer_label": { "type": "string", "required": true },
     "disclaimer": { "type": "text", "required": true },

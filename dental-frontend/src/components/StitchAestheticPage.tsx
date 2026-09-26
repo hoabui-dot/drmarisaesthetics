@@ -18,6 +18,7 @@ import { useRef } from 'react'
 import type { HomepageEditorialData } from '@/src/types/homepage-editorial'
 import type { ResultsData } from '@/src/data/results'
 import { getMediaUrl } from '@/src/lib/api/queries'
+import { HomepageYoutubeSection } from '@/src/components/homepage/HomepageYoutubeSection'
 
 /* const legacyImages = {
   hero: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCTeb4K7icJOejOCNmhoM1L_97JimcI6Qtyot9YzMr51gD3_D096TT551datl7elzq4TGEQz-bEMf8KBAUaMGPSuRx-gXA7LQDE6AxQJeik8HAprXx5WLc0J8tMTKQRuN5tTfMsno6xTgx-ocAouFxiXWQRiCATFFvjwsLvpxprL1m7V9S-mUEXDc3L_aWSsmNthvE245NzLwUH0W-RYhnjXBO7LUB-OAqjk5SNLSZFeUzTH3V751D0',
@@ -90,6 +91,7 @@ export function StitchHomepage({ data, results }: { data?: HomepageEditorialData
   useHomepageMotion(homepageRef)
   useSignatureProceduresMotion(homepageRef)
   const hero = data?.hero_content ?? {}
+  const video = data?.video_section ?? {}
   const signature = data?.signature_procedures ?? {}
   const method = data?.maris_method ?? data?.surgical_care_process ?? {}
   const revision = data?.revision_surgery ?? {}
@@ -148,6 +150,8 @@ export function StitchHomepage({ data, results }: { data?: HomepageEditorialData
       </div>
       <div className="stitch-home-hero__image" data-hero-image><div data-hero-image-media className="stitch-motion-image"><StitchImage src={cmsImage(hero.image || hero.image_url || hero.doctor_image, images.heroDoctor)} alt={typeof hero.image_alt === 'string' ? hero.image_alt : 'Dr. Maris in a clinical setting'} /></div></div>
     </div></section>
+
+    <HomepageYoutubeSection content={video} />
 
       <section className="stitch-section stitch-procedures" data-motion-section="procedures" data-signature-procedures><div className="stitch-container"><div className="stitch-section-heading"><span className="stitch-kicker" data-signature-motion data-signature-eyebrow>{typeof signature.eyebrow === 'string' ? signature.eyebrow : 'SIGNATURE PROCEDURES'}</span><h2><span className="stitch-hero-line"><span data-signature-motion data-signature-title>{signatureTitle}</span></span></h2><p className="stitch-lead" data-signature-motion data-signature-copy>{typeof signature.description === 'string' ? signature.description : 'Explore the procedures Dr. Maris performs with the same clinical discipline: careful assessment, transparent planning and a recovery strategy that respects the individual.'}</p></div><div className="stitch-procedure-grid">{procedureItems.map((item, index) => { const record = item as Record<string, unknown>; const number = String(record.number || `0${index + 1}`); const title = String(record.title || 'Procedure'); const copy = String(record.description || ''); const image = cmsImage(record.image_url || record.image, images.technology); const alt = String(record.image_alt || record.imageAlt || title); const fallbackHref = title === 'Rhinoplasty' ? '/services/rhinoplasty' : `/treatments#${title.toLowerCase().replaceAll(' ', '-')}`; const cmsHref = typeof record.href === 'string' ? record.href.trim() : ''; const href = cmsHref || fallbackHref; return <a className="stitch-procedure-panel" href={href} key={`${title}-${index}`} data-procedure-panel data-signature-panel data-procedure-index={index}><div className="stitch-procedure-panel__image"><StitchImage src={image} alt={alt} /><span className="stitch-procedure-panel__curtain" data-signature-curtain aria-hidden="true" /></div><div className="stitch-procedure-panel__body"><b data-signature-motion data-signature-number>{number}</b><div><h3 data-signature-motion data-signature-panel-title>{title}</h3><p data-signature-motion data-signature-panel-description>{copy}</p><span className="stitch-link" data-signature-motion data-signature-panel-cta>Explore Procedure <ArrowRight size={16} /></span></div></div></a> })}</div></div></section>
 

@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "service_categories",
+  "info": {
+    "singularName": "service-category",
+    "pluralName": "service-categories",
+    "displayName": "Service Category",
+    "description": "Developer-independent taxonomy used by the Services filter."
+  },
+  "options": { "draftAndPublish": false },
+  "pluginOptions": {},
+  "attributes": {
+    "category_id": {
+      "type": "uid",
+      "targetField": "label",
+      "required": true,
+      "unique": true
+    },
+    "label": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "services": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::service.service",
+      "mappedBy": "categories"
+    }
+  }
+}

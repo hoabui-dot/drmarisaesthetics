@@ -13,6 +13,7 @@
     "check:admin-translations": "node scripts/check-admin-translations.cjs",
     "lint": "eslint .",
     "test:docx": "node --test test/docx-better-blocks.test.cjs",
+    "test:result-taxonomy": "node --experimental-strip-types --test test/result-taxonomy.test.mjs",
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {

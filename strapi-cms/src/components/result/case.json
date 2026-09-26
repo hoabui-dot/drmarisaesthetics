@@ -4,7 +4,18 @@
   "options": {},
   "attributes": {
     "case_number": { "type": "string", "required": true },
-    "category": { "type": "string" },
+    "category_ids": {
+      "type": "customField",
+      "customField": "global::result-category-multi-select"
+    },
+    "category_id": {
+      "type": "string",
+      "pluginOptions": { "content-manager": { "visible": false } }
+    },
+    "category": {
+      "type": "string",
+      "pluginOptions": { "content-manager": { "visible": false } }
+    },
     "title": { "type": "string", "required": true },
     "subtitle": { "type": "string" },
     "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },

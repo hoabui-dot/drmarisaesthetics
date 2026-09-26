@@ -3,6 +3,8 @@
   "info": { "displayName": "Deep Plane certification card" },
   "attributes": {
     "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
-    "image_alt": { "type": "string" }
+    "image_alt": { "type": "string" },
+    "image_label": { "type": "string" },
+    "image_issuer": { "type": "string" }
   }
 }

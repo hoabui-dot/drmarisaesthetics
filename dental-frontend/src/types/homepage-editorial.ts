@@ -5,6 +5,7 @@ export type HomepageEditorialData = {
   metadata_title?: string
   metadata_description?: string
   hero_content?: HomepageSectionContent | null
+  video_section?: HomepageSectionContent | null
   signature_procedures?: HomepageSectionContent | null
   surgical_care_process?: HomepageSectionContent | null
   maris_method?: HomepageSectionContent | null
@@ -20,6 +21,7 @@ export type HomepageEditorialData = {
 
 export const HOMEPAGE_SECTION_ORDER = [
   'hero_content',
+  'video_section',
   'signature_procedures',
   'surgical_care_process',
   'maris_method',
@@ -43,6 +45,7 @@ export function normalizeHomepageEditorial(raw: Record<string, unknown>): Homepa
   const result: HomepageEditorialData = { title: typeof raw.title === 'string' ? raw.title : undefined }
   const componentFields: Record<string, string> = {
     hero_content: 'hero_section',
+    video_section: 'video_section',
     signature_procedures: 'signature_procedures_section',
     surgical_care_process: 'surgical_care_process_section',
     maris_method: 'maris_method_section',
@@ -58,6 +61,7 @@ export function normalizeHomepageEditorial(raw: Record<string, unknown>): Homepa
   const dynamicSections = Array.isArray(raw.sections) ? raw.sections : []
   const dynamicAliases: Record<string, string> = {
     'hero-section': 'hero_content',
+    'video-section': 'video_section',
     'signature-procedures-section': 'signature_procedures',
     'surgical-care-process-section': 'surgical_care_process',
     'maris-method-section': 'maris_method',

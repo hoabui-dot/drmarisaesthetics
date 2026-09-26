@@ -9,6 +9,18 @@ export default {
       type: "integer",
       inputSize: { default: 6, isResizable: true },
     });
+    strapi.customFields.register({
+      name: "result-category-id",
+      type: "string",
+    });
+    strapi.customFields.register({
+      name: "result-category-select",
+      type: "string",
+    });
+    strapi.customFields.register({
+      name: "result-category-multi-select",
+      type: "json",
+    });
 
     // These SEO records are intentionally hidden from the Content Manager
     // navigation because they are edited through the SEO Manager plugin.

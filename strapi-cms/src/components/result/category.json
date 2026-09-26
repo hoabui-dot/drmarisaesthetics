@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_result_categories",
+  "info": { "displayName": "Patient result category" },
+  "options": {},
+  "attributes": {
+    "category_id": {
+      "type": "customField",
+      "customField": "global::result-category-id",
+      "required": true
+    },
+    "label": { "type": "string", "required": true }
+  }
+}

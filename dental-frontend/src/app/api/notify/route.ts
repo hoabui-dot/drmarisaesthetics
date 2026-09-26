@@ -20,6 +20,7 @@ export async function POST(request: NextRequest) {
       sendBookingNotifications({
         fullName: data.fullName,
         phoneNumber: data.phoneNumber,
+        email: data.email,
         service: data.service,
         otherService: data.otherService,
         message: data.message,

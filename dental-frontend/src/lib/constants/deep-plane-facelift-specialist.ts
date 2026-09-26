@@ -70,9 +70,9 @@ export const DEEP_PLANE_FACELIFT_SPECIALIST = {
     title: 'International Certifications & Accreditations',
     description: 'Recognized by leading global surgical & medical organizations, our practice meets the highest international standards in patient safety, credentialing, and clinical care.',
     cards: [
-      { image: '/images/deep-plane-facelift/medical-documentation.jpg', imageAlt: 'Healthcare professional reviewing clinical documentation' },
-      { image: '/images/deep-plane-facelift/clinical-review.jpg', imageAlt: 'Healthcare professional reviewing a clinical record' },
-      { image: '/images/deep-plane-facelift/clinical-safety.jpg', imageAlt: 'Healthcare professional holding clinical safety documentation' },
+      { image: '/images/deep-plane-facelift/medical-documentation.jpg', imageAlt: 'Healthcare professional reviewing clinical documentation', imageLabel: '', imageIssuer: '' },
+      { image: '/images/deep-plane-facelift/clinical-review.jpg', imageAlt: 'Healthcare professional reviewing a clinical record', imageLabel: '', imageIssuer: '' },
+      { image: '/images/deep-plane-facelift/clinical-safety.jpg', imageAlt: 'Healthcare professional holding clinical safety documentation', imageLabel: '', imageIssuer: '' },
     ],
   },
   safety: {

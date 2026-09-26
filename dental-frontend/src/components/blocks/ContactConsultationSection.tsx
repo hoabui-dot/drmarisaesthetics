@@ -56,6 +56,7 @@ function ContactRow({ contact }: { contact: Contact }) {
 
 export function ContactConsultationSection({ data, formOnly = false }: { data: ContactConsultationData; formOnly?: boolean }) {
   const { executeRecaptcha } = useGoogleReCaptcha()
+  const recaptchaEnabled = process.env.NEXT_PUBLIC_RECAPTCHA_ENABLED !== 'false'
   const services = [...(data.serviceOptions || []).filter((option) => option.value !== 'Other'), otherServiceOption]
   const [phoneCountry, setPhoneCountry] = useState<CountryOption>(defaultCountry)
   const [form, setForm] = useState({ name: '', phone: '', email: '', preferredContact: contactMethodOptions[0].value, service: services[0]?.value || '', otherService: '', message: '', consent: false })
@@ -68,13 +69,17 @@ export function ContactConsultationSection({ data, formOnly = false }: { data: C
     if (!canSubmit) return
     setStatus('sending')
     try {
-      const recaptchaToken = executeRecaptcha ? await executeRecaptcha('contact_consultation') : 'local-development'
+      const recaptchaToken = recaptchaEnabled && executeRecaptcha ? await executeRecaptcha('contact_consultation') : 'recaptcha-disabled'
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ fullName: form.name.trim(), phoneNumber: parsePhoneNumberFromString(form.phone, phoneCountry.code)?.number || form.phone.trim(), email: form.email.trim(), service: form.service, otherService: form.service === 'Other' ? form.otherService.trim() : '', message: `Preferred contact: ${form.preferredContact} | ${form.message.trim()}`, recaptchaToken }),
       })
-      if (!response.ok) throw new Error('Contact request failed')
+      if (!response.ok) {
+        const errorBody = await response.json().catch(() => ({}))
+        console.error('[Contact page] submission rejected', { status: response.status, error: errorBody?.error || 'unknown' })
+        throw new Error(errorBody?.error || 'Contact request failed')
+      }
       setStatus('success')
       setForm({ name: '', phone: '', email: '', preferredContact: contactMethodOptions[0].value, service: services[0]?.value || '', otherService: '', message: '', consent: false })
     } catch {

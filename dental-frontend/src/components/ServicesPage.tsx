@@ -13,25 +13,46 @@ export type ServiceListItem = {
   slug: string
   description?: string
   category?: string
+  categoryIds?: string[]
+  categories?: Array<{ id: string; label: string }>
   imageUrl?: string | null
   imageAlt?: string
 }
 
-const categories = ['All Services', 'Face & Neck', 'Breast', 'Body Contouring', 'Other']
+export type ServiceCategory = { id: string; label: string }
 
-function serviceCategory(service: ServiceListItem) {
-  if (service.category) return service.category
-  if (/breast/i.test(service.title)) return 'Breast'
-  if (/buttock|liposuction|gastric|labiaplasty/i.test(service.title)) return 'Body Contouring'
-  if (/rhinoplasty|blepharoplasty|facelift|neck|face/i.test(service.title)) return 'Face & Neck'
-  return 'Other'
+const ALL_SERVICES_FILTER_KEY = '__all_services__'
+
+function serviceCategoryLabels(service: ServiceListItem) {
+  const labels = service.categories?.map((category) => category.label).filter(Boolean) || []
+  if (labels.length) return labels
+  return service.category ? [service.category] : []
 }
 
-export function ServicesPage({ services }: { services: ServiceListItem[] }) {
+function serviceCategoryLabel(service: ServiceListItem) {
+  return serviceCategoryLabels(service).join(' · ') || 'Clinical service'
+}
+
+function getFilterCategories(services: ServiceListItem[], configuredCategories: ServiceCategory[]) {
+  if (configuredCategories.length) return configuredCategories
+
+  const categoryMap = new Map<string, { id: string; label: string }>()
+  services.forEach((service) => {
+    service.categories?.forEach((category) => {
+      if (category.id && category.label && !categoryMap.has(category.id)) categoryMap.set(category.id, category)
+    })
+  })
+  return Array.from(categoryMap.values()).sort((a, b) => a.label.localeCompare(b.label))
+}
+
+export function ServicesPage({ services, categories: configuredCategories = [] }: { services: ServiceListItem[]; categories?: ServiceCategory[] }) {
   const reduceMotion = Boolean(useReducedMotion())
-  const [filter, setFilter] = useState('All Services')
+  const [filter, setFilter] = useState(ALL_SERVICES_FILTER_KEY)
+  const categories = useMemo(() => getFilterCategories(services, configuredCategories), [configuredCategories, services])
   const filteredServices = useMemo(
-    () => filter === 'All Services' ? services : services.filter((service) => serviceCategory(service) === filter),
+    () => filter === ALL_SERVICES_FILTER_KEY
+      ? services
+      : services.filter((service) => service.categoryIds?.includes(filter)),
     [filter, services],
   )
 
@@ -44,9 +65,13 @@ export function ServicesPage({ services }: { services: ServiceListItem[] }) {
           <p className="results-page__editorial-lead">Surgeon-led procedures planned around anatomy, safety and long-term recovery.</p>
           <p className="results-page__supporting-copy">Explore the procedures Dr. Maris performs with direct clinical involvement from assessment through follow-up.</p>
           <div className="results-filters" role="group" aria-label="Filter services">
-            {categories.map((category) => <button key={category} type="button" className={filter === category ? 'is-active' : ''} aria-pressed={filter === category} onClick={() => setFilter(category)}>
-              {filter === category && <motion.span layoutId="services-active-filter" className="results-filters__active-surface" transition={reduceMotion ? { duration: 0 } : { duration: .3, ease: 'easeOut' }} />}
-              <span className="results-filters__label">{category}</span>
+            <button type="button" className={filter === ALL_SERVICES_FILTER_KEY ? 'is-active' : ''} aria-pressed={filter === ALL_SERVICES_FILTER_KEY} onClick={() => setFilter(ALL_SERVICES_FILTER_KEY)}>
+              {filter === ALL_SERVICES_FILTER_KEY && <motion.span layoutId="services-active-filter" className="results-filters__active-surface" transition={reduceMotion ? { duration: 0 } : { duration: .3, ease: 'easeOut' }} />}
+              <span className="results-filters__label">ALL SERVICES</span>
+            </button>
+            {categories.map((category) => <button key={category.id} type="button" className={filter === category.id ? 'is-active' : ''} aria-pressed={filter === category.id} onClick={() => setFilter(category.id)}>
+              {filter === category.id && <motion.span layoutId="services-active-filter" className="results-filters__active-surface" transition={reduceMotion ? { duration: 0 } : { duration: .3, ease: 'easeOut' }} />}
+              <span className="results-filters__label">{category.label}</span>
             </button>)}
           </div>
         </div>
@@ -59,7 +84,7 @@ export function ServicesPage({ services }: { services: ServiceListItem[] }) {
               <Link href={`/services/${service.slug}`} className="blog-result-card__link">
                 <div className="result-pair result-pair--single blog-result-card__image">{service.imageUrl ? <Image src={service.imageUrl} alt={service.imageAlt || service.title} fill sizes="(max-width: 900px) 100vw, 50vw" className="object-cover" unoptimized /> : null}</div>
                 <div className="result-card__body">
-                  <div className="result-card__heading"><div><span className="blog-result-card__category">{serviceCategory(service)}</span><h3>{service.title}</h3><p>{service.description || 'Explore a personalized surgical plan with Dr. Maris.'}</p></div></div>
+                  <div className="result-card__heading"><div><span className="blog-result-card__category">{serviceCategoryLabel(service)}</span><h3>{service.title}</h3><p>{service.description || 'Explore a personalized surgical plan with Dr. Maris.'}</p></div></div>
                   <span className="result-card__action">Explore service <ArrowRight size={15} /></span>
                 </div>
               </Link>

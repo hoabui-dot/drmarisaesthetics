@@ -1037,6 +1037,7 @@ export interface ApiResultResult extends Struct.SingleTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    categories: Schema.Attribute.Component<'result.category', true>;
     cases: Schema.Attribute.Component<'result.case', true>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &

@@ -1,6 +1,9 @@
 export type ResultCase = {
   caseNumber: string
   createdAt?: string
+  categoryIds?: string[]
+  /** Legacy single-category field retained for existing static/API records. */
+  categoryId?: string
   category?: string
   title: string
   subtitle: string
@@ -16,9 +19,15 @@ export type ResultCase = {
   recovery: string
 }
 
+export type ResultCategory = {
+  id: string
+  label: string
+}
+
 export type ResultsData = {
   title: string
   introduction: string
+  categories: ResultCategory[]
   cases: ResultCase[]
   disclaimerLabel: string
   disclaimer: string
@@ -29,6 +38,12 @@ export type ResultsData = {
 export const resultsMockData: ResultsData = {
   title: 'Patient Results Gallery',
   introduction: 'Explore a selection of patient outcomes following procedures performed by Dr. Maris. Every result is unique and reflects individual anatomy, surgical planning, and healing.',
+  categories: [
+    { id: 'face-neck', label: 'Face & Neck' },
+    { id: 'rhinoplasty', label: 'Rhinoplasty' },
+    { id: 'breast', label: 'Breast' },
+    { id: 'body-contouring', label: 'Body Contouring' },
+  ],
   cases: [
     {
       caseNumber: '042', category: 'Face & Neck', title: 'Deep Plane Facelift', subtitle: 'Combined with Neck Lift & Fat Grafting',
