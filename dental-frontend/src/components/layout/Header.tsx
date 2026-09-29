@@ -152,6 +152,11 @@ export function Header({ navigation, logoSrc }: HeaderProps) {
     setMobileMenuOpen(false);
   }, [pathname]);
 
+  useEffect(() => {
+    document.body.classList.toggle('mobile-menu-open', mobileMenuOpen);
+    return () => document.body.classList.remove('mobile-menu-open');
+  }, [mobileMenuOpen]);
+
   const toggleMobileMenu = () => setMobileMenuOpen((v) => !v);
   const closeMobileMenu  = () => setMobileMenuOpen(false);
 
@@ -167,7 +172,7 @@ export function Header({ navigation, logoSrc }: HeaderProps) {
        */}
       <header
         className={`
-          fixed top-0 inset-x-0 z-50
+          fixed top-0 inset-x-0 ${mobileMenuOpen ? 'z-[250]' : 'z-50'}
           transition-[background-color,border-color,box-shadow] ease-out ${shouldSimplify ? 'duration-0' : 'duration-300'}
           ${scrolled || !isHeroRoute
             ? 'bg-white shadow-sm border-b border-smilux-border'

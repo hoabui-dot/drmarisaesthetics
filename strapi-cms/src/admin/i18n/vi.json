@@ -1173,9 +1173,6 @@
   "content-manager.components.deep-plane.faq-item.question": "Câu hỏi",
   "content-manager.components.deep-plane.faq-item.answer": "Câu trả lời",
   "content-manager.content-types.api::deep-plane-facelift-specialist.deep-plane-facelift-specialist.sections": "Các section của trang",
-  "content-manager.components.homepage.video-section.eyebrow": "Nhãn phụ",
-  "content-manager.components.homepage.video-section.title": "Tiêu đề",
-  "content-manager.components.homepage.video-section.description": "Mô tả",
   "content-manager.components.homepage.video-section.youtube_url": "URL YouTube",
   "content-manager.components.result.case.category_ids": "Danh mục"
 }

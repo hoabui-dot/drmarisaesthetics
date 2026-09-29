@@ -37,26 +37,48 @@ function buildNavigation(serviceOptions: Array<{ value: string; label: string }>
   const sourceNavigation = configuredNavigation?.length ? configuredNavigation : staticNavigation.navigation
   return {
     ...staticNavigation,
-    navigation: sourceNavigation.map((item) => item.href === '/services'
-      ? {
-          ...item,
-          isClickable: item.isClickable !== false,
-          children: serviceOptions.map((service, index) => ({
+    // Repeatable component array order in Website Settings is the canonical
+    // menu order. Do not sort these items or replace configured dropdowns.
+    navigation: sourceNavigation.map((item) => {
+      if (item.href === '/services') {
+        const optionsBySlug = new Map(serviceOptions.map((service) => [service.value, service]))
+        const configuredChildren = item.children || []
+        const configuredSlugs = new Set<string>()
+        const orderedConfiguredChildren = configuredChildren.map((child) => {
+          const pathname = child.href.split(/[?#]/, 1)[0].replace(/\/+$/, '')
+          const slug = pathname.startsWith('/services/') ? pathname.slice('/services/'.length) : ''
+          const service = optionsBySlug.get(slug)
+          if (service) configuredSlugs.add(slug)
+          return service ? { ...child, label: service.label } : child
+        })
+        const addedServices = serviceOptions
+          .filter((service) => !configuredSlugs.has(service.value))
+          .map((service, index) => ({
             id: 7000 + index,
             label: service.label,
             href: `/services/${service.value}`,
-          })),
+          }))
+
+        return {
+          ...item,
+          isClickable: item.isClickable !== false,
+          children: [...orderedConfiguredChildren, ...addedServices],
         }
-      : item.href === '/our-team'
-        ? {
-            ...item,
-            isClickable: false,
-            children: [
-              { id: 8001, label: 'Dr. Huy', href: '/our-team/dr-huy' },
-              { id: 8002, label: 'Dr. Cuong', href: '/our-team/dr-cuong' },
-            ],
-          }
-        : item),
+      }
+
+      if (item.href === '/our-team') {
+        return {
+          ...item,
+          isClickable: item.isClickable !== false,
+          children: item.children?.length ? item.children : [
+            { id: 8001, label: 'Dr. Huy', href: '/our-team/dr-huy' },
+            { id: 8002, label: 'Dr. Cuong', href: '/our-team/dr-cuong' },
+          ],
+        }
+      }
+
+      return item
+    }),
   }
 }
 

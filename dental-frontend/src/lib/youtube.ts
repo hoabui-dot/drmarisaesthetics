@@ -1,6 +1,6 @@
 export function getYoutubeEmbedUrl(
   source: string,
-  options: { autoplay?: boolean } = {},
+  options: { autoplay?: boolean; background?: boolean } = {},
 ): string | null {
   try {
     const url = new URL(source.trim())
@@ -17,7 +17,9 @@ export function getYoutubeEmbedUrl(
 
     if (!/^[A-Za-z0-9_-]{11}$/.test(videoId)) return null
 
-    const query = options.autoplay ? '?autoplay=1&rel=0' : '?rel=0'
+    const query = options.background
+      ? `?autoplay=1&mute=1&controls=0&playsinline=1&loop=1&playlist=${videoId}&rel=0`
+      : options.autoplay ? '?autoplay=1&rel=0' : '?rel=0'
     return `https://www.youtube.com/embed/${videoId}${query}`
   } catch {
     return null

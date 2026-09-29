@@ -57,6 +57,47 @@ async function ensureContentManagerFieldPermissions(strapi: any) {
   }
 }
 
+async function ensureServiceEditLayout(strapi: any) {
+  const uid = 'api::service.service'
+  const contentType = strapi.contentTypes?.[uid]
+  const contentTypeService = strapi.plugin('content-manager')?.service('content-types')
+  if (!contentType || !contentTypeService) return
+
+  try {
+    const configuration = await contentTypeService.findConfiguration(contentType)
+    const rows = configuration?.layouts?.edit
+    if (!Array.isArray(rows)) return
+
+    const categoryRowIndex = rows.findIndex((row: any[]) =>
+      Array.isArray(row) && row.some((field: any) => field?.name === 'service_category_id'),
+    )
+    const blocksRowIndex = rows.findIndex((row: any[]) =>
+      Array.isArray(row) && row.some((field: any) => field?.name === 'contentBetterBlocks'),
+    )
+    if (categoryRowIndex === -1 || blocksRowIndex === -1 || categoryRowIndex < blocksRowIndex) return
+
+    const categoryField = rows[categoryRowIndex].find((field: any) => field?.name === 'service_category_id')
+    if (!categoryField) return
+
+    const nextRows = rows
+      .map((row: any[]) => row.filter((field: any) => field !== categoryField))
+      .filter((row: any[]) => row.length > 0)
+    const nextBlocksRowIndex = nextRows.findIndex((row: any[]) =>
+      row.some((field: any) => field?.name === 'contentBetterBlocks'),
+    )
+    if (nextBlocksRowIndex === -1) return
+
+    nextRows.splice(nextBlocksRowIndex, 0, [categoryField])
+    await contentTypeService.updateConfiguration(contentType, {
+      ...configuration,
+      layouts: { ...configuration.layouts, edit: nextRows },
+    })
+    strapi.log.info('[Bootstrap] Service Category moved before Content Better Blocks in Service editor.')
+  } catch (error: any) {
+    strapi.log.warn(`[Bootstrap] Could not update Service editor layout: ${error?.message || 'unknown error'}`)
+  }
+}
+
 const WEBSITE_SETTING_UID = 'api::website-setting.website-setting'
 const CATEGORY_FIELDS = ['blog_categories', 'service_categories'] as const
 
@@ -226,6 +267,7 @@ export default {
     console.log("--- Bootstrap: infrastructure-only mode ---");
     try {
       await ensureContentManagerFieldPermissions(strapi)
+      await ensureServiceEditLayout(strapi)
 
       // Permissions are infrastructure configuration. They are only created
       // when absent and never change any content value or publication state.

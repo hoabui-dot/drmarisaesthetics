@@ -330,7 +330,7 @@ export async function getServiceNavigationOptions(): Promise<Array<{ value: stri
       .sort((a: any, b: any) => Number(a.navigationOrder) - Number(b.navigationOrder));
     const unassigned = services
       .filter((service: any) => !Number.isInteger(Number(service.navigationOrder)) || Number(service.navigationOrder) <= 0)
-      .sort(() => Math.random() - 0.5);
+      .sort((a: any, b: any) => String(a.navigationLabel || a.title).localeCompare(String(b.navigationLabel || b.title)));
 
     return [...assigned, ...unassigned]
       .map((service: any) => ({ value: service.slug, label: service.navigationLabel || service.title }));
@@ -534,8 +534,9 @@ export async function getWebsiteSetting(isDraftMode: boolean = false): Promise<W
         id: item.id,
         label: item.label || '',
         href: item.href || '#',
-        isExternal: item.is_external || false,
-        children: Array.isArray(item.children) ? item.children.map((child: any) => ({ id: child.id, label: child.label || '', href: child.href || '#', isExternal: child.is_external || false })) : undefined,
+        isExternal: item.isExternal ?? item.is_external ?? false,
+        isClickable: item.isClickable ?? item.is_clickable ?? true,
+        children: Array.isArray(item.children) ? item.children.map((child: any) => ({ id: child.id, label: child.label || '', href: child.href || '#', isExternal: child.isExternal ?? child.is_external ?? false })) : undefined,
       })) : undefined,
       footerDescription: value.footer_description || undefined,
       footerLinkGroups: Array.isArray(value.footer_link_groups) ? value.footer_link_groups.map((group: any) => ({ id: group.id, heading: group.heading || '', links: Array.isArray(group.links) ? group.links.map((link: any) => ({ id: link.id, label: link.label || '', href: link.href || '#' })) : [] })) : undefined,

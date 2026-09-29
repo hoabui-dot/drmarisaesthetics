@@ -85,6 +85,15 @@ Settings category component tables. Category ID remains an internal stable
 value: Strapi fills it during Website Settings create/update and hides it from
 the Admin form. Editors manage only the label and optional icon.
 
+### `013-homepage-video-only.sql`
+
+Removes the old eyebrow, title, and description columns from the Homepage video
+component. The section now consists only of a YouTube URL; it renders as a
+full-viewport-width, autoplaying muted video directly below the hero.
+Apply this after deploying the Strapi schema that no longer exposes those
+fields. It is safe when the columns were already removed or the component table
+does not exist.
+
 ## Manual promotion merge
 
 The copy step is intentionally outside this directory. From the repository

@@ -1173,9 +1173,6 @@
   "content-manager.components.deep-plane.faq-item.question": "Question",
   "content-manager.components.deep-plane.faq-item.answer": "Answer",
   "content-manager.content-types.api::deep-plane-facelift-specialist.deep-plane-facelift-specialist.sections": "Page sections",
-  "content-manager.components.homepage.video-section.eyebrow": "Eyebrow",
-  "content-manager.components.homepage.video-section.title": "Title",
-  "content-manager.components.homepage.video-section.description": "Description",
   "content-manager.components.homepage.video-section.youtube_url": "YouTube URL",
   "content-manager.components.result.case.category_ids": "Categories"
 }

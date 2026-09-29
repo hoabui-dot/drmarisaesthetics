@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { ArrowUpRight, ChevronDown } from 'lucide-react'
+import { ArrowUpRight, CalendarDays, ChevronDown } from 'lucide-react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useReducedMotion } from 'motion/react'
@@ -101,7 +101,7 @@ export function PlayfulClipMobileMenu({ open, navigation, onClose, onBook }: Pla
           {navigation.navigation.map((item) => <div key={item.id} data-clip-menu-item><MenuGroup item={item} open={open} onClose={onClose} /></div>)}
         </div>
         <div ref={footer => { if (footer) footer.dataset.clipMenuFooter = 'true' }} data-clip-menu-footer className="playful-clip-menu__footer">
-          <button type="button" tabIndex={open ? 0 : -1} onClick={() => { onBook(); onClose() }} className="booking-inline-cta playful-clip-menu__cta">{HEADER_CTA.label}<ArrowUpRight aria-hidden="true" /></button>
+          <button type="button" tabIndex={open ? 0 : -1} onClick={() => { onBook(); onClose() }} className="booking-inline-cta playful-clip-menu__cta"><CalendarDays aria-hidden="true" />{HEADER_CTA.label}</button>
           <span>Ho Chi Minh City · Vietnam</span>
         </div>
       </div>

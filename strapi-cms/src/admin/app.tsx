@@ -8,7 +8,64 @@ const RESULT_CATEGORY_ID_FIELD = 'result-category-id'
 const RESULT_CATEGORY_MULTI_SELECT_FIELD = 'result-category-multi-select'
 const WEBSITE_CATEGORY_ID_FIELD = 'website-category-id'
 const LIST_VIEW_COLUMNS_HOOK = 'Admin/CM/pages/ListView/inject-column-in-table'
+const EDIT_VIEW_LAYOUT_HOOK = 'Admin/CM/pages/EditView/mutate-edit-view-layout'
+const SERVICE_UID = 'api::service.service'
 const BOOKING_SUBMISSION_UID = 'api::booking-submission.booking-submission'
+
+type EditViewLayoutPayload = {
+  layout?: { layout?: unknown[][]; [key: string]: unknown } | unknown[][]
+  model?: string
+  [key: string]: unknown
+}
+
+const moveServiceCategoryBeforeBetterBlocks = (payload: EditViewLayoutPayload) => {
+  const isServiceEditView = payload.model === SERVICE_UID || (
+    typeof window !== 'undefined' &&
+    decodeURIComponent(window.location.pathname).includes(`/content-manager/collection-types/${SERVICE_UID}`)
+  )
+  if (!isServiceEditView || !payload.layout) return payload
+
+  const editLayout = payload.layout
+  const rows = (Array.isArray(editLayout) ? editLayout : editLayout.layout) as unknown[][]
+  if (!Array.isArray(rows) || rows.some((row) => !Array.isArray(row))) return payload
+
+  let categoryField: unknown
+  rows.flat().forEach((field: unknown) => {
+    if (
+      !categoryField &&
+      field &&
+      typeof field === 'object' &&
+      'name' in field &&
+      field.name === 'service_category_id'
+    ) categoryField = field
+  })
+  if (!categoryField) return payload
+
+  const withoutCategory = rows
+    .map((row) => row.filter((field) => field !== categoryField))
+    .filter((row) => row.length > 0)
+
+  let inserted = false
+  const nextRows: unknown[][] = []
+  withoutCategory.forEach((row) => {
+    if (!inserted && row.some((field) => (
+      field &&
+      typeof field === 'object' &&
+      'name' in field &&
+      field.name === 'contentBetterBlocks'
+    ))) {
+      nextRows.push([categoryField])
+      inserted = true
+    }
+    nextRows.push(row)
+  })
+
+  if (!inserted) return payload
+  return {
+    ...payload,
+    layout: Array.isArray(editLayout) ? nextRows : { ...editLayout, layout: nextRows },
+  }
+}
 
 type AdminResponsePayload = {
   error?: unknown
@@ -367,6 +424,10 @@ export default {
         ),
       }),
     }))
+
+    app.registerHook(EDIT_VIEW_LAYOUT_HOOK, (payload: EditViewLayoutPayload) => (
+      moveServiceCategoryBeforeBetterBlocks(payload)
+    ))
   },
 
   bootstrap() {

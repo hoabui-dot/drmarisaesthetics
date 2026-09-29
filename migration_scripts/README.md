@@ -54,3 +54,8 @@ Use `--write` to save drafts. Add `--publish` only after reviewing the
 preview and confirming the sample content should be public. The script keeps
 existing category IDs and refuses to create posts if the CMS has not generated
 IDs for the Website Settings categories.
+
+`219-seed-service-category-assignments.js` follows the same explicit workflow
+for service taxonomy. It adds the service categories that are missing from
+Website Settings and assigns the current Service records by slug. Run without
+flags for preview, then use `--write --publish` after reviewing the mapping.
