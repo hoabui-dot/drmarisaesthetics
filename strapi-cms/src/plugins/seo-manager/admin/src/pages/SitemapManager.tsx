@@ -57,9 +57,7 @@ function buildParentRoutes(report: Report): SitemapParentRoute[] {
     if (!source) return []
     const routePrefix = (source.routePattern || '').replace(/\/:([^/]+).*$/, '')
     const prefix = staticParentPath || routePrefix
-    const isRootCollection = source.uid === 'api::page.page'
     const matches = (path: string) => {
-      if (isRootCollection) return path.split('/').filter(Boolean).length === 1 && !staticPaths.has(path)
       return Boolean(prefix) && path !== prefix && path.startsWith(`${prefix}/`)
     }
     const children = new Map<string, SitemapChildRoute>()

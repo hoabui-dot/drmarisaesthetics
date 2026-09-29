@@ -1,53 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { contactFormSchema } from "@/src/lib/validations/contact-form";
 import { sendBookingNotifications } from "@/src/lib/email/notifications";
-
-/**
- * Verify reCAPTCHA token with Google API
- *
- * @param token - reCAPTCHA token from frontend
- * @returns Promise<boolean> - true if verification succeeds and score >= 0.5
- */
-async function verifyRecaptcha(token: string): Promise<boolean> {
-  const secretKey = process.env.RECAPTCHA_SECRET_KEY;
-
-  if (!secretKey) {
-    return false;
-  }
-
-  try {
-    const verificationBody = new URLSearchParams({
-      secret: secretKey,
-      response: token,
-    });
-    const response = await fetch(
-      "https://www.google.com/recaptcha/api/siteverify",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: verificationBody.toString(),
-      },
-    );
-
-    const data = await response.json();
-    console.log("[reCAPTCHA Verify Contact] Full Response:", data);
-
-    if (!data.success) {
-      console.error("[reCAPTCHA Verify Contact] Failed! Error codes:", data["error-codes"]);
-      return false;
-    }
-    
-    if (data.score < 0.5) {
-      console.warn(`[reCAPTCHA Verify Contact] Score too low (${data.score}). Failing request.`);
-      return false;
-    }
-
-    return true;
-  } catch (error) {
-    console.error("[reCAPTCHA Verify Contact] Fetch Error:", error);
-    return false;
-  }
-}
+import { normalizeBookingSubmissionSource } from "@/src/lib/submissions";
+import {
+  isRecaptchaEnabled,
+  shouldVerifyRecaptcha,
+  verifyRecaptchaToken,
+} from "@/src/lib/security/recaptcha";
 
 /**
  * Contact Form Submission API Route
@@ -86,14 +45,11 @@ export async function POST(request: NextRequest) {
       messageLength: data.message?.length || 0,
     });
 
-    // Verify reCAPTCHA token
+    // Verify reCAPTCHA only when the production runtime flag is enabled.
     let isValidRecaptcha = true;
-    
-    // Only verify reCAPTCHA in production to avoid localhost issues
-    const recaptchaEnabled = process.env.RECAPTCHA_ENABLED !== "false";
-    if (process.env.NODE_ENV === "production" && recaptchaEnabled) {
-      isValidRecaptcha = await verifyRecaptcha(data.recaptchaToken);
-    } else if (!recaptchaEnabled) {
+    if (shouldVerifyRecaptcha()) {
+      isValidRecaptcha = await verifyRecaptchaToken(data.recaptchaToken);
+    } else if (!isRecaptchaEnabled()) {
       console.info("[Contact API] recaptcha-disabled");
     }
 
@@ -134,6 +90,7 @@ export async function POST(request: NextRequest) {
           full_name: data.fullName,
           email: data.email || null,
           phone_number: data.phoneNumber,
+          country: data.country || null,
           service: data.service,
           other_service: data.otherService || null,
           message: data.message || null,
@@ -142,6 +99,8 @@ export async function POST(request: NextRequest) {
             request.headers.get("x-real-ip") ||
             "unknown",
           user_agent: request.headers.get("user-agent"),
+          submission_type: "booking",
+          submission_source: normalizeBookingSubmissionSource(data.submissionSource),
           booking_status: "new",
         },
       }),
@@ -176,10 +135,13 @@ export async function POST(request: NextRequest) {
     sendBookingNotifications({
       fullName: data.fullName,
       phoneNumber: data.phoneNumber,
+      country: data.country,
       email: data.email || undefined,
       service: data.service,
       otherService: data.otherService,
       message: data.message,
+      submissionType: "booking",
+      submissionSource: normalizeBookingSubmissionSource(data.submissionSource),
     }).then((sent) => {
       console.info("[Contact API] email-notification-completed", { sent });
     }).catch((emailError) => {

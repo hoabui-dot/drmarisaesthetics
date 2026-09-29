@@ -13,6 +13,8 @@ export default factories.createCoreController('api::website-setting.website-sett
         footer_link_groups: { populate: { links: true } },
         contact_methods: { populate: { icon: true } },
         social_links: true,
+        blog_categories: { populate: { icon: true } },
+        service_categories: { populate: { icon: true } },
         global_cta: { populate: { background_image: true, steps: true } },
         booking_form: { populate: { visual_image: true, visual_points: true } },
       },

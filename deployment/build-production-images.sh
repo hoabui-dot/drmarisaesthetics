@@ -33,6 +33,15 @@ required_env_value() {
   printf '%s' "${value}"
 }
 
+require_boolean_value() {
+  local key="$1"
+  local value="$2"
+  if [[ "${value}" != "true" && "${value}" != "false" ]]; then
+    echo "${key} must be exactly true or false" >&2
+    exit 1
+  fi
+}
+
 for required_file in "${COMPOSE_FILE}" "${STRAPI_ENV_FILE}" "${FRONTEND_ENV_FILE}"; do
   if [[ ! -f "${required_file}" ]]; then
     echo "Missing required deployment file: ${required_file}" >&2
@@ -57,6 +66,9 @@ NEXT_PUBLIC_STRAPI_API_TOKEN="$(required_env_value "${FRONTEND_ENV_FILE}" NEXT_P
 NEXT_PUBLIC_SERVER_URL="$(required_env_value "${FRONTEND_ENV_FILE}" NEXT_PUBLIC_SERVER_URL)"
 NEXT_PUBLIC_RECAPTCHA_SITE_KEY="$(required_env_value "${FRONTEND_ENV_FILE}" NEXT_PUBLIC_RECAPTCHA_SITE_KEY)"
 NEXT_PUBLIC_RECAPTCHA_ENABLED="$(required_env_value "${FRONTEND_ENV_FILE}" NEXT_PUBLIC_RECAPTCHA_ENABLED)"
+RECAPTCHA_ENABLED="$(required_env_value "${FRONTEND_ENV_FILE}" RECAPTCHA_ENABLED)"
+require_boolean_value NEXT_PUBLIC_RECAPTCHA_ENABLED "${NEXT_PUBLIC_RECAPTCHA_ENABLED}"
+require_boolean_value RECAPTCHA_ENABLED "${RECAPTCHA_ENABLED}"
 
 echo "Building CMS image: ${CMS_IMAGE}"
 docker build \

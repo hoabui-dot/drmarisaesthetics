@@ -10,7 +10,9 @@
   "options": {
     "draftAndPublish": false
   },
-  "pluginOptions": {},
+  "pluginOptions": {
+    "content-manager": { "visible": false }
+  },
   "attributes": {
     "phone_number": {
       "type": "string",

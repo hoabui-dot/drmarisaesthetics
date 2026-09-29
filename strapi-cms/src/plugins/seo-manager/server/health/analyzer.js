@@ -5,7 +5,7 @@ const CATEGORY_LABELS = Object.freeze({
   metadata: 'Metadata', indexing: 'Indexing', canonical: 'Canonical', sitemap: 'Sitemap',
   redirect: 'Redirects', 'structured-data': 'Structured data', image: 'Images', content: 'Content trust',
 });
-const INCLUDED_COLLECTION_TYPES = new Set(['api::page.page', 'api::blog.blog', 'api::service.service']);
+const INCLUDED_COLLECTION_TYPES = new Set(['api::blog.blog', 'api::service.service']);
 const INCLUDED_STATIC_PATHS = new Set([
   '/', '/about-us', '/contact', '/our-team/dr-huy', '/our-team/dr-cuong', '/results', '/treatments',
   '/services', '/news',
@@ -111,7 +111,6 @@ function analyzeSeoHealth(input) {
     const title = clean(pageSeo.meta_title || pageSeo.metaTitle || document.seo_title || document.metadata_title || document.title || document.navigationLabel);
     let description = clean(pageSeo.meta_description || pageSeo.metaDescription || document.seo_description || document.metadata_description);
     if (!description && document.uid === 'api::blog.blog') description = clean(document.metaDescription || title);
-    if (!description && document.uid === 'api::page.page') description = clean(document.description || `Learn more about ${title}`);
     if (!description && document.uid === 'api::service.service') description = clean(document.metaDescription);
     if (!description && document.uid === 'api::deep-plane-facelift-specialist.deep-plane-facelift-specialist') description = clean(document.seo_description);
     return { title, description, seo };

@@ -1,64 +1,33 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendPromotionNotification } from "@/src/lib/email/notifications";
-
-/**
- * Verify reCAPTCHA token with Google API
- */
-async function verifyRecaptcha(token: string): Promise<boolean> {
-  const secretKey = process.env.RECAPTCHA_SECRET_KEY;
-  if (!secretKey) return false;
-
-  try {
-    const response = await fetch(
-      `https://www.google.com/recaptcha/api/siteverify`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `secret=${secretKey}&response=${token}`,
-      },
-    );
-
-    const data = await response.json();
-    console.log("[reCAPTCHA Verify Promotion] Full Response:", data);
-
-    if (!data.success) {
-      console.error("[reCAPTCHA Verify Promotion] Failed! Error codes:", data["error-codes"]);
-      return false;
-    }
-    
-    if (data.score < 0.5) {
-      console.warn(`[reCAPTCHA Verify Promotion] Score too low (${data.score}). Failing request.`);
-      return false;
-    }
-
-    return true;
-  } catch (error) {
-    console.error("[reCAPTCHA Verify Promotion] Fetch Error:", error);
-    return false;
-  }
-}
+import {
+  isRecaptchaEnabled,
+  shouldVerifyRecaptcha,
+  verifyRecaptchaToken,
+} from "@/src/lib/security/recaptcha";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { phone_number, promotion_name, recaptchaToken } = body;
+    const { phone_number, promotion_name, country, recaptchaToken } = body;
 
     if (!phone_number) {
       return NextResponse.json({ success: false, error: "Validation failed" }, { status: 400 });
     }
 
-    // Verify reCAPTCHA token
-    let isValidRecaptcha = true;
-    const recaptchaEnabled = process.env.RECAPTCHA_ENABLED !== "false";
-    if (process.env.NODE_ENV === "production" && recaptchaEnabled && recaptchaToken) {
-      isValidRecaptcha = await verifyRecaptcha(recaptchaToken);
-    }
-
-    if (recaptchaEnabled && !isValidRecaptcha && recaptchaToken) {
-      return NextResponse.json(
-        { success: false, error: "Security verification failed." },
-        { status: 400 },
-      );
+    // Verify reCAPTCHA only when the production runtime flag is enabled.
+    if (shouldVerifyRecaptcha()) {
+      if (
+        typeof recaptchaToken !== "string" ||
+        !(await verifyRecaptchaToken(recaptchaToken))
+      ) {
+        return NextResponse.json(
+          { success: false, error: "Security verification failed." },
+          { status: 400 },
+        );
+      }
+    } else if (!isRecaptchaEnabled()) {
+      console.info("[Promotion API] recaptcha-disabled");
     }
 
     // Submit to Strapi API
@@ -72,7 +41,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const strapiResponse = await fetch(`${strapiUrl}/api/promotion-submissions`, {
+    const strapiResponse = await fetch(`${strapiUrl}/api/booking-submissions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -80,8 +49,20 @@ export async function POST(request: NextRequest) {
       },
       body: JSON.stringify({
         data: {
-          phone_number: phone_number,
-          promotion_status: "new",
+          full_name: null,
+          phone_number,
+          country: country || null,
+          email: null,
+          service: null,
+          message: promotion_name ? `Claim Your Offer: ${promotion_name}` : "Claim Your Offer",
+          submission_type: "promotion",
+          submission_source: "promotion_popup",
+          booking_status: "new",
+          ip_address:
+            request.headers.get("x-forwarded-for") ||
+            request.headers.get("x-real-ip") ||
+            "unknown",
+          user_agent: request.headers.get("user-agent"),
         },
       }),
     });
@@ -104,7 +85,7 @@ export async function POST(request: NextRequest) {
       { success: true, message: "Thank you! We'll send your voucher shortly." },
       { status: 200 },
     );
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { success: false, error: "Something went wrong. Please try again." },
       { status: 500 },

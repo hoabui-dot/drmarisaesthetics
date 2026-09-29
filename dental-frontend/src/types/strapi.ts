@@ -8,23 +8,6 @@
 // Strapi API Response Types (Raw)
 // ============================================================================
 
-export interface StrapiResponse<T> {
-  data: T;
-  meta?: {
-    pagination?: {
-      page: number;
-      pageSize: number;
-      pageCount: number;
-      total: number;
-    };
-  };
-}
-
-export interface StrapiEntity<T> {
-  id: number;
-  attributes: T;
-}
-
 export interface StrapiMedia {
   data: {
     id: number;
@@ -52,22 +35,6 @@ export interface StrapiMedia {
 // Strapi Content Type Attributes
 // ============================================================================
 
-export interface PageAttributes {
-  title: string;
-  slug: string;
-  content?: string; // Rich text content field
-  cover?: StrapiMedia; // Cover image
-  description?: string; // Text description
-  publishDate?: string; // Publish date
-  metaTitle?: string | null;
-  metaDescription?: string | null;
-  layout?: BlockComponent[];
-  createdAt: string;
-  updatedAt: string;
-  publishedAt?: string;
-  seo?: PageSeo;
-}
-
 export interface PageSeo {
   meta_title?: string | null;
   meta_description?: string | null;
@@ -79,97 +46,6 @@ export interface PageSeo {
   open_graph_description?: string | null;
   structured_data_enabled?: boolean | null;
   structured_data_json?: unknown;
-}
-
-export type BlockComponent = HeroComponent | ServicesComponent | CTAComponent;
-
-export interface HeroComponent {
-  __component: "blocks.hero";
-  id: number;
-  heading: string;
-  subheading: string | null;
-  image: StrapiMedia;
-}
-
-export interface ServicesComponent {
-  __component: "blocks.services";
-  id: number;
-  heading: string;
-  items: ServiceItem[];
-}
-
-export interface ServiceItem {
-  id: number;
-  title: string;
-  description: string;
-  image: StrapiMedia;
-}
-
-export interface CTAComponent {
-  __component: "blocks.cta";
-  id: number;
-  text: string;
-  buttonLabel: string;
-  link: string;
-}
-
-// ============================================================================
-// Strapi API Response Types (Typed)
-// ============================================================================
-
-export type StrapiPage = StrapiResponse<StrapiEntity<PageAttributes>>;
-export type StrapiPages = StrapiResponse<StrapiEntity<PageAttributes>[]>;
-
-// ============================================================================
-// Frontend Types (Transformed)
-// ============================================================================
-
-export interface Page {
-  id: number;
-  title: string;
-  slug: string;
-  updatedAt?: string;
-  content?: string; // Rich text content field
-  cover?: Media; // Cover image
-  description?: string; // Text description
-  publishDate?: string; // Publish date
-  seo: {
-    metaTitle: string;
-    metaDescription: string;
-    metaImage?: Media;
-    canonicalUrl?: string;
-    noIndex?: boolean;
-    noFollow?: boolean;
-    openGraphTitle?: string;
-    openGraphDescription?: string;
-  };
-  layout: Block[];
-}
-
-export type Block = HeroBlock | ServicesBlock | CTABlock;
-
-export interface HeroBlock {
-  blockType: "hero";
-  heading: string;
-  subheading?: string;
-  image?: Media;
-}
-
-export interface ServicesBlock {
-  blockType: "services";
-  heading: string;
-  items: {
-    title: string;
-    description: string;
-    image?: Media;
-  }[];
-}
-
-export interface CTABlock {
-  blockType: "cta";
-  text: string;
-  buttonLabel: string;
-  link: string;
 }
 
 export interface Media {
@@ -317,6 +193,12 @@ export interface WebsiteSettingSocialLink {
   isActive?: boolean;
 }
 
+export interface WebsiteCategory {
+  id: string;
+  label: string;
+  icon?: Media;
+}
+
 export interface WebsiteSettingGlobalCta {
   eyebrow: string;
   title: string;
@@ -363,6 +245,8 @@ export interface WebsiteSetting {
   socialLinks: WebsiteSettingSocialLink[];
   globalCta?: WebsiteSettingGlobalCta;
   bookingForm?: WebsiteSettingBookingForm;
+  blogCategories: WebsiteCategory[];
+  serviceCategories: WebsiteCategory[];
 }
 
 // ============================================================================

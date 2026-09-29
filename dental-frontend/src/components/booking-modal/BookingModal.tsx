@@ -67,7 +67,7 @@ export function BookingModal() {
     event.preventDefault(); if (!validateForm()) return; setIsSubmitting(true); setStatus('idle')
     try {
       const isProduction = process.env.NODE_ENV === 'production'
-      const recaptchaEnabled = process.env.NEXT_PUBLIC_RECAPTCHA_ENABLED !== 'false'
+      const recaptchaEnabled = process.env.NEXT_PUBLIC_RECAPTCHA_ENABLED === 'true'
       if (isProduction && recaptchaEnabled && !executeRecaptcha) {
         console.warn('[Booking] reCAPTCHA is not ready; submission was not sent')
         toast.error('Security verification is still loading. Please try again in a moment.')
@@ -80,7 +80,7 @@ export function BookingModal() {
         const recaptchaToken = recaptchaEnabled && executeRecaptcha ? await executeRecaptcha('booking_modal') : 'recaptcha-disabled'
         console.info('[Booking] reCAPTCHA token received', { available: Boolean(recaptchaToken), production: isProduction, attempt })
         if (!recaptchaToken) throw new Error('Missing reCAPTCHA token')
-        const payload: ContactFormData = { fullName: form.fullName, email: form.email, phoneNumber: parsedPhone.number, service: form.procedure || 'Consultation', otherService: form.procedure === 'Other' ? form.otherService.trim() : '', message, recaptchaToken }
+        const payload: ContactFormData = { fullName: form.fullName, email: form.email, phoneNumber: parsedPhone.number, country: phoneCountry.name, service: form.procedure || 'Consultation', otherService: form.procedure === 'Other' ? form.otherService.trim() : '', message, submissionSource: 'booking_modal', recaptchaToken }
         if (!contactFormSchema.safeParse(payload).success) throw new Error('Invalid form')
         const response = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
         if (response.ok) return

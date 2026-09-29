@@ -26,17 +26,10 @@
       "targetField": "title",
       "required": true
     },
-    "category": {
-      "type": "enumeration",
-      "enum": [
-        "Implant Dentistry",
-        "Cosmetic Dentistry",
-        "Orthodontics",
-        "Preventive Care",
-        "Dental Technology",
-        "General Knowledge",
-        "Plastic Surgery"
-      ],
+    "blog_category_id": {
+      "type": "customField",
+      "customField": "global::website-category-id",
+      "options": { "categoryType": "blog" },
       "required": false
     },
     "coverImage": {

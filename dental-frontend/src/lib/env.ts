@@ -31,6 +31,9 @@ const serverEnvSchema = z.object({
 
   // reCAPTCHA Secret (Server-side)
   RECAPTCHA_SECRET_KEY: z.string().min(1, "RECAPTCHA_SECRET_KEY is required"),
+  RECAPTCHA_ENABLED: z
+    .string()
+    .regex(/^(true|false)$/, "RECAPTCHA_ENABLED must be 'true' or 'false'"),
 
   // Email Configuration (Server-side)
   SMTP_HOST: z.string().min(1, "SMTP_HOST is required"),
@@ -96,6 +99,12 @@ const clientEnvSchema = z.object({
   NEXT_PUBLIC_RECAPTCHA_SITE_KEY: z
     .string()
     .min(1, "NEXT_PUBLIC_RECAPTCHA_SITE_KEY is required"),
+  NEXT_PUBLIC_RECAPTCHA_ENABLED: z
+    .string()
+    .regex(
+      /^(true|false)$/,
+      "NEXT_PUBLIC_RECAPTCHA_ENABLED must be 'true' or 'false'",
+    ),
 });
 
 type ServerEnv = z.infer<typeof serverEnvSchema>;
@@ -172,6 +181,7 @@ if (isServer && !isBuildPhase) {
       "STRAPI_API_TOKEN",
       "NEXT_PREVIEW_SECRET",
       "RECAPTCHA_SECRET_KEY",
+      "RECAPTCHA_ENABLED",
       "SMTP_HOST",
       "SMTP_PORT",
       "SMTP_SECURE",
@@ -195,6 +205,7 @@ if (isServer && !isBuildPhase) {
       "NEXT_PUBLIC_STRAPI_API_TOKEN",
       "NEXT_PUBLIC_SERVER_URL",
       "NEXT_PUBLIC_RECAPTCHA_SITE_KEY",
+      "NEXT_PUBLIC_RECAPTCHA_ENABLED",
     ],
   );
 } else if (isServer && isBuildPhase) {
@@ -207,6 +218,7 @@ if (isServer && !isBuildPhase) {
       "NEXT_PUBLIC_STRAPI_API_TOKEN",
       "NEXT_PUBLIC_SERVER_URL",
       "NEXT_PUBLIC_RECAPTCHA_SITE_KEY",
+      "NEXT_PUBLIC_RECAPTCHA_ENABLED",
     ],
   );
 }
@@ -235,6 +247,9 @@ export const NEXT_PREVIEW_SECRET = isServer
   : "";
 export const RECAPTCHA_SECRET_KEY = isServer
   ? (process.env.RECAPTCHA_SECRET_KEY as string)
+  : "";
+export const RECAPTCHA_ENABLED = isServer
+  ? (process.env.RECAPTCHA_ENABLED as string)
   : "";
 export const SMTP_HOST = isServer ? (process.env.SMTP_HOST as string) : "";
 export const SMTP_PORT = isServer ? (process.env.SMTP_PORT as string) : "";
@@ -280,3 +295,5 @@ export const NEXT_PUBLIC_SERVER_URL =
   process.env.NEXT_PUBLIC_SERVER_URL as string;
 export const NEXT_PUBLIC_RECAPTCHA_SITE_KEY =
   process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string;
+export const NEXT_PUBLIC_RECAPTCHA_ENABLED =
+  process.env.NEXT_PUBLIC_RECAPTCHA_ENABLED as string;

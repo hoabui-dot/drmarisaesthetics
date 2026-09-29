@@ -14,12 +14,6 @@ let snapshotCreatedAt = 0;
 
 const CONTENT_MODELS = [
   {
-    uid: 'api::page.page', label: 'Page', kind: 'collection', path: (item) => item.slug ? `/${item.slug}` : '',
-    fields: ['title', 'slug', 'description', 'publishDate', 'publishedAt', 'updatedAt'],
-    populate: { seo: { populate: ['meta_image'] }, cover: true }, canonicalSupported: true,
-    sitemapSupported: true, structuredDataGenerated: true, pageSeoConsumed: true,
-  },
-  {
     uid: 'api::blog.blog', label: 'Blog', kind: 'collection', path: (item) => item.slug ? `/news/${item.slug}` : '',
     fields: ['title', 'slug', 'metaDescription', 'publishedAt', 'updatedAt'],
     populate: { seo: { populate: ['meta_image'] }, coverImage: true }, canonicalSupported: true,

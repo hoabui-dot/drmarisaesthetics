@@ -7,6 +7,7 @@ import { getCountryCallingCode, type CountryCode } from "libphonenumber-js";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { SelectBase } from '@/src/components/ui/SelectBase';
 import { CountryFlag } from '@/src/components/forms/CountryPicker';
+import type { BookingSubmissionSource } from '@/src/lib/submissions';
 
 type ServiceOption = { value: string; label: string };
 
@@ -69,7 +70,7 @@ function CountryPicker({ value, onChange, error }: { value: typeof defaultCountr
   );
 }
 
-export function HomeBookingForm({ serviceOptions, submitLabel = "REQUEST CONSULTATION" }: { serviceOptions?: ServiceOption[]; submitLabel?: string }) {
+export function HomeBookingForm({ serviceOptions, submitLabel = "REQUEST CONSULTATION", submissionSource = "homepage" }: { serviceOptions?: ServiceOption[]; submitLabel?: string; submissionSource?: BookingSubmissionSource }) {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const [country, setCountry] = useState(defaultCountry);
   const [values, setValues] = useState({ fullName: "", phone: "", email: "", service: "", message: "" });
@@ -89,8 +90,11 @@ export function HomeBookingForm({ serviceOptions, submitLabel = "REQUEST CONSULT
     if (Object.keys(nextErrors).length) return;
     setStatus("sending");
     try {
-      const recaptchaToken = executeRecaptcha ? await executeRecaptcha("booking_consultation") : "local-development";
-      const response = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ fullName: values.fullName.trim(), phoneNumber: `${country.dialCode}${values.phone.replace(/\D/g, "")}`, email: values.email.trim(), service: values.service, message: values.message.trim(), recaptchaToken }) });
+      const recaptchaEnabled = process.env.NEXT_PUBLIC_RECAPTCHA_ENABLED === "true";
+      const recaptchaToken = recaptchaEnabled && executeRecaptcha
+        ? await executeRecaptcha("booking_consultation")
+        : "recaptcha-disabled";
+      const response = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ fullName: values.fullName.trim(), phoneNumber: `${country.dialCode}${values.phone.replace(/\D/g, "")}`, country: country.name, email: values.email.trim(), service: values.service, message: values.message.trim(), submissionSource, recaptchaToken }) });
       if (!response.ok) throw new Error("Submission failed");
       setStatus("success");
       setValues({ fullName: "", phone: "", email: "", service: "", message: "" });

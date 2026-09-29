@@ -6,11 +6,7 @@
  */
 
 import { apiClient } from "./client";
-import { transformPage } from "./transformers";
 import type {
-  Page,
-  StrapiPages,
-  StrapiPage,
   Navigation,
   StrapiNavigation,
   Footer,
@@ -136,7 +132,10 @@ export async function getDeepPlaneFaceliftSpecialist(isDraftMode = false): Promi
       cache: "no-store",
       tags: ["deep-plane-facelift-specialist"],
     });
-    const value = response?.data;
+    const value = response?.data?.attributes
+      || response?.data?.data?.attributes
+      || response?.data?.data
+      || response?.data;
     if (!value) return DEEP_PLANE_FACELIFT_SPECIALIST;
     const componentKeys: Record<string, DeepPlaneSectionKey> = {
       "deep-plane.hero": "hero",
@@ -291,126 +290,6 @@ function cleanDescription(desc: any): string | undefined {
     }
   }
   return desc;
-}
-
-/**
- * Get a page by slug
- *
- * Fetches a single page from the CMS using slug filter.
- * Uses populate=* to include all first-level relations
- *
- * @param slug - Page slug (e.g., "dental-implants")
- * @param isDraftMode - Whether to fetch draft content (for preview)
- * @returns Transformed page data or null if not found
- */
-export async function getPageBySlug(
-  slug: string,
-  isDraftMode: boolean = false,
-): Promise<Page | null> {
-  try {
-    // Query API with filters and populate
-    const response = await apiClient<StrapiPages>("/api/pages", {
-      params: {
-        "filters[slug][$eq]": slug,
-        populate: "*",
-      },
-      isDraftMode,
-      tags: ["pages", "page"], // Cache tags for revalidation
-    });
-
-    // API returns array even for single result
-    if (!response.data || response.data.length === 0) {
-      console.warn(`Page not found: ${slug}`);
-      return null;
-    }
-
-    // Transform first result from API format to frontend format
-    const strapiPage: StrapiPage = {
-      data: response.data[0],
-      meta: response.meta,
-    };
-
-    return transformPage(strapiPage);
-  } catch (error) {
-    return null;
-  }
-}
-
-/**
- * Get all page slugs
- *
- * Used for static generation (generateStaticParams).
- * Only fetches slug field for performance.
- * Only fetches published pages for production builds.
- *
- * @returns Array of page slugs
- */
-export async function getAllPageSlugs(): Promise<string[]> {
-  try {
-    // Only fetch slug field for performance
-    // Only fetch published pages (not drafts) - Strapi v5 uses status=published
-    const response = await apiClient<StrapiPages>("/api/pages", {
-      params: {
-        "fields[0]": "slug",
-        status: "published", // Strapi v5: Only published pages for static generation
-      },
-      tags: ["pages"], // Cache tag for revalidation
-    });
-
-    if (!response.data || response.data.length === 0) {
-      return [];
-    }
-
-    // Extract slugs from response
-    // Handle both Strapi v4 (page.attributes.slug) and v5 (page.slug)
-    return response.data
-      .map((page) => {
-        // Type assertion for v5 flat structure
-        const pageData = page as any;
-        return page.attributes?.slug || pageData.slug;
-      })
-      .filter((slug): slug is string => Boolean(slug));
-  } catch (error) {
-    return [];
-  }
-}
-
-/**
- * Get all pages
- *
- * Fetches multiple pages with full data.
- * Used for homepage listing or sitemap generation.
- *
- * @param limit - Maximum number of pages to return (default: 10)
- * @returns Array of transformed pages
- */
-export async function getAllPages(limit: number = 10): Promise<Page[]> {
-  try {
-    // Fetch pages with pagination and populate
-    const response = await apiClient<StrapiPages>("/api/pages", {
-      params: {
-        "pagination[limit]": limit,
-        populate: "*",
-        sort: "createdAt:desc", // Newest first
-      },
-      tags: ["pages"], // Cache tag for revalidation
-    });
-
-    if (!response.data || response.data.length === 0) {
-      return [];
-    }
-
-    // Transform all pages
-    return response.data.map((page) => {
-      const strapiPage: StrapiPage = {
-        data: page,
-        meta: response.meta,
-      };
-      return transformPage(strapiPage);
-    });
-  } catch (error) {
-    return [];
-  }
 }
 
 /** Return the canonical service list used by all appointment forms. */
@@ -568,7 +447,10 @@ export async function getResults(isDraftMode: boolean = false): Promise<ResultsD
       cache: "no-store",
       tags: ["results"],
     });
-    const value = response?.data;
+    const value = response?.data?.attributes
+      || response?.data?.data?.attributes
+      || response?.data?.data
+      || response?.data;
     if (!value) return null;
     const mappedCategories: ResultCategory[] = Array.isArray(value.categories)
       ? value.categories
@@ -628,6 +510,8 @@ export async function getWebsiteSetting(isDraftMode: boolean = false): Promise<W
         "populate[social_links]": "true",
         "populate[booking_form][populate][visual_image]": "true",
         "populate[booking_form][populate][visual_points]": "true",
+        "populate[blog_categories][populate][icon]": "true",
+        "populate[service_categories][populate][icon]": "true",
         status: isDraftMode ? "draft" : "published",
       },
       isDraftMode,
@@ -684,11 +568,39 @@ export async function getWebsiteSetting(isDraftMode: boolean = false): Promise<W
         successTitle: value.booking_form.success_title || "Your case has been received.",
         successDescription: value.booking_form.success_description || undefined,
       } : undefined,
+      blogCategories: normalizeWebsiteCategories(value.blog_categories),
+      serviceCategories: normalizeWebsiteCategories(value.service_categories),
     };
   } catch (error) {
     console.warn("[getWebsiteSetting] Unable to fetch website settings", error);
     return null;
   }
+}
+
+function normalizeWebsiteCategories(value: unknown): WebsiteSetting['blogCategories'] {
+  const entries = Array.isArray(value)
+    ? value
+    : Array.isArray((value as any)?.data)
+      ? (value as any).data
+      : [];
+  return entries.flatMap((entry: any) => {
+    const item = entry?.attributes || entry?.data?.attributes || entry?.data || entry;
+    const id = typeof item?.category_id === 'string' ? item.category_id.trim() : '';
+    const label = typeof item?.label === 'string' ? item.label.trim() : '';
+    if (!id || !label) return [];
+    const icon = item.icon?.data?.attributes || item.icon?.data || item.icon?.attributes || item.icon;
+    const iconUrl = icon?.url ? getMediaUrl(icon) : '';
+    return [{
+      id,
+      label,
+      icon: iconUrl ? {
+        url: iconUrl,
+        alt: icon.alternativeText || label,
+        width: icon.width || 0,
+        height: icon.height || 0,
+      } : undefined,
+    }];
+  });
 }
 
 /**

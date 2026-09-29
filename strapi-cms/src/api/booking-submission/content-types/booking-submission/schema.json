@@ -4,8 +4,8 @@
   "info": {
     "singularName": "booking-submission",
     "pluralName": "booking-submissions",
-    "displayName": "Booking Submission",
-    "description": "Contact and booking form submissions from website"
+    "displayName": "Form Submissions",
+    "description": "Booking, promotion and newsletter submissions from the website"
   },
   "options": {
     "draftAndPublish": false
@@ -14,19 +14,18 @@
   "attributes": {
     "full_name": {
       "type": "string",
-      "required": true,
-      "minLength": 2,
       "maxLength": 100
     },
     "phone_number": {
       "type": "string",
-      "required": true,
-      "minLength": 8,
       "maxLength": 20
     },
-    "service": {
+    "country": {
       "type": "string",
-      "required": true
+      "maxLength": 100
+    },
+    "service": {
+      "type": "string"
     },
     "email": {
       "type": "email",
@@ -52,7 +51,28 @@
     "booking_status": {
       "type": "enumeration",
       "enum": ["new", "contacted", "scheduled", "completed", "cancelled"],
-      "default": "new"
+      "default": "new",
+      "required": false
+    },
+    "submission_type": {
+      "type": "enumeration",
+      "enum": ["booking", "promotion", "newsletter"],
+      "default": "booking",
+      "required": true
+    },
+    "submission_source": {
+      "type": "enumeration",
+      "enum": [
+        "homepage",
+        "about_us",
+        "contact",
+        "booking_modal",
+        "service_detail",
+        "promotion_popup",
+        "blog_newsletter"
+      ],
+      "default": "booking_modal",
+      "required": true
     }
   }
 }

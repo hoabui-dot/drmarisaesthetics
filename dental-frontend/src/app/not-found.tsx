@@ -4,7 +4,7 @@ import Link from 'next/link'
  * Not Found Page
  * 
  * Displayed when a page slug doesn't exist in the CMS.
- * Triggered by notFound() function in [slug]/page.tsx
+ * Used by Next.js when an application route cannot resolve a resource.
  */
 
 export default function NotFound() {

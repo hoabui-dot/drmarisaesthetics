@@ -8,11 +8,12 @@ import { ServiceContentRenderer } from '@/src/components/services/ServiceContent
 import { ServiceDetailSidebar } from '@/src/components/services/ServiceDetailSidebar'
 import { ServiceFaqSection, type ServiceFaqData } from '@/src/components/services/ServiceFaqSection'
 import { buildSeoMetadata } from '@/src/lib/seo/seo-manager'
+import { getWebsiteSetting } from '@/src/lib/api/queries'
 
 type MediaValue = { url?: string; alternativeText?: string; attributes?: { url?: string; alternativeText?: string }; data?: { attributes?: { url?: string; alternativeText?: string }; url?: string } }
 type BetterBlockChild = { text?: string; children?: BetterBlockChild[] }
 type BetterBlock = { type?: string; level?: number; children?: BetterBlockChild[] }
-type Blog = { id: number; title: string; slug: string; category?: string; metaDescription?: string; coverImage?: MediaValue; contentBetterBlocks?: BetterBlock[]; faq?: ServiceFaqData | null; publishedAt?: string; createdAt?: string; seo?: unknown }
+type Blog = { id: number; title: string; slug: string; blog_category_id?: string | null; metaDescription?: string; coverImage?: MediaValue; contentBetterBlocks?: BetterBlock[]; faq?: ServiceFaqData | null; publishedAt?: string; createdAt?: string; seo?: unknown }
 
 const mediaUrl = (value?: MediaValue) => {
   const media = value?.data?.attributes || value?.data || value?.attributes || value
@@ -70,7 +71,8 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
   const slug = (await params).slug
   const blog = await getBlog(slug)
   if (!blog) notFound()
-  const latestBlogs = await getLatestBlogs(blog.slug)
+  const [latestBlogs, websiteSetting] = await Promise.all([getLatestBlogs(blog.slug), getWebsiteSetting()])
+  const categoryLabel = websiteSetting?.blogCategories.find((category) => category.id === blog.blog_category_id)?.label
   const image = mediaUrl(blog.coverImage)
   const blocks = blog.contentBetterBlocks || []
   const indexItems = getIndexItems(blocks, blog.slug)
@@ -78,9 +80,10 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
   return <main className="service-detail-page blog-detail-page">
     <section className="service-detail-hero service-detail-hero--editorial">
       <div className="service-detail-hero__media" aria-hidden="true">{image ? <Image src={image} alt="" fill priority sizes="100vw" /> : null}</div>
-      <div className="service-detail-hero__content">
-        <nav className="service-detail-breadcrumb" aria-label="Breadcrumb"><Link href="/">Home</Link><span aria-hidden="true">›</span><Link href="/news">Patient Planning Journal</Link><span aria-hidden="true">›</span><span>{blog.title}</span></nav>
-        <h2>{blog.title}</h2>
+        <div className="service-detail-hero__content">
+          <nav className="service-detail-breadcrumb" aria-label="Breadcrumb"><Link href="/">Home</Link><span aria-hidden="true">›</span><Link href="/news">Patient Planning Journal</Link><span aria-hidden="true">›</span><span>{blog.title}</span></nav>
+          {categoryLabel ? <span className="blog-result-card__category">{categoryLabel}</span> : null}
+          <h2>{blog.title}</h2>
         {blog.metaDescription ? <p className="service-detail-hero__description">{blog.metaDescription}</p> : null}
       </div>
     </section>

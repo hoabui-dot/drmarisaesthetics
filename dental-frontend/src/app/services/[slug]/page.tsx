@@ -6,11 +6,12 @@ import { apiClient } from '@/src/lib/api/client'
 import { ServiceContentRenderer } from '@/src/components/services/ServiceContentRenderer'
 import { ServiceDetailSidebar } from '@/src/components/services/ServiceDetailSidebar'
 import { ServiceFaqSection, type ServiceFaqData } from '@/src/components/services/ServiceFaqSection'
+import { getWebsiteSetting } from '@/src/lib/api/queries'
 
 type MediaValue = { url?: string; attributes?: { url?: string }; data?: { attributes?: { url?: string }; url?: string } }
 type BetterBlockChild = { text?: string; children?: BetterBlockChild[] }
 type BetterBlock = { type?: string; level?: number; children?: BetterBlockChild[] }
-type Service = { id: number; title: string; slug: string; contentBetterBlocks?: BetterBlock[]; metaDescription?: string; coverImage?: MediaValue; faq?: ServiceFaqData | null; publishedAt?: string; createdAt?: string }
+type Service = { id: number; title: string; slug: string; service_category_id?: string | null; contentBetterBlocks?: BetterBlock[]; metaDescription?: string; coverImage?: MediaValue; faq?: ServiceFaqData | null; publishedAt?: string; createdAt?: string }
 
 const imageUrl = (value?: MediaValue) => {
   const media = value?.data?.attributes || value?.data || value?.attributes || value
@@ -79,7 +80,8 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
   const service = await getService(slug)
   if (!service) notFound()
 
-  const latestServices = await getLatestServices(service.slug)
+  const [latestServices, websiteSetting] = await Promise.all([getLatestServices(service.slug), getWebsiteSetting()])
+  const categoryLabel = websiteSetting?.serviceCategories.find((category) => category.id === service.service_category_id)?.label
   const image = getServiceImage(service)
   const blocks = service.contentBetterBlocks || []
   const indexItems = getIndexItems(blocks, service.slug)
@@ -90,7 +92,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
         <div className="service-detail-hero__media" aria-hidden="true">{image ? <Image src={image} alt="" fill priority sizes="100vw" /> : null}</div>
         <div className="service-detail-hero__content">
           <nav className="service-detail-breadcrumb" aria-label="Breadcrumb"><Link href="/">Home</Link><span aria-hidden="true">›</span><Link href="/services">Services</Link><span aria-hidden="true">›</span><span>{service.title}</span></nav>
-          <span className="stitch-kicker">DR. MARIS AESTHETICS · PLASTIC SURGERY</span>
+          <span className="stitch-kicker">{categoryLabel ? `${categoryLabel} · DR. MARIS AESTHETICS` : 'DR. MARIS AESTHETICS · PLASTIC SURGERY'}</span>
           <h2>{service.title}</h2>
           {service.metaDescription ? <p className="service-detail-hero__description">{service.metaDescription}</p> : null}
         </div>

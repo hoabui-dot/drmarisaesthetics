@@ -26,7 +26,6 @@ const WEBHOOK_SECRET = process.env.STRAPI_WEBHOOK_SECRET;
 
 // Model to tag mapping
 const MODEL_TAG_MAP: Record<string, string[]> = {
-  page: ["pages", "page"],
   article: ["articles", "article"],
   "bai-viet": ["articles", "bai-viet", "blogs"],
   blog: ["blogs", "article"],
@@ -40,6 +39,7 @@ const MODEL_TAG_MAP: Record<string, string[]> = {
   "seo-manager-settings": ["seo-manager-settings", "structured-data-settings"],
   service: ["services", "service"],
   "service-category": ["services", "service-categories"],
+  "website-setting": ["website-setting", "services", "blogs"],
   "our-team": ["our-team"],
   result: ["result"],
   "treatments-page": ["treatments-page"],
@@ -51,7 +51,6 @@ const MODEL_TAG_MAP: Record<string, string[]> = {
 
 // Model to path mapping for specific revalidation
 const MODEL_PATH_MAP: Record<string, string[]> = {
-  page: ["/"],
   article: ["/", "/news"],
   "bai-viet": ["/", "/news"],
   blog: ["/", "/news"],
@@ -61,6 +60,7 @@ const MODEL_PATH_MAP: Record<string, string[]> = {
   "seo-manager-settings": ["/robots.txt", "/sitemap.xml", "/"],
   service: ["/services"],
   "service-category": ["/services"],
+  "website-setting": ["/services", "/news"],
   "our-team": ["/our-team", "/our-team/dr-huy"],
   result: ["/results"],
   "treatments-page": ["/treatments"],
@@ -75,7 +75,6 @@ const SITEMAP_RELEVANT_MODELS = new Set([
   "homepage",
   "about-page",
   "contact-page",
-  "page",
   "blog",
   "service",
   "our-team",
@@ -110,12 +109,12 @@ interface WebhookPayload {
 
 /**
  * Extract model name from Strapi webhook payload
- * Strapi sends model in format: "api::page.page" or just "page"
+ * Strapi sends model in format: "api::blog.blog" or just "blog"
  */
 function extractModelName(payload: WebhookPayload): string | null {
   // Try direct model field
   if (payload.model) {
-    // Extract from "api::page.page" format
+    // Extract from "api::blog.blog" format
     const match = payload.model.match(/api::([^.]+)\./);
     return match ? match[1] : payload.model;
   }

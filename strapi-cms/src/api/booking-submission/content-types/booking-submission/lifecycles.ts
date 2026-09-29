@@ -1,8 +1,10 @@
 /**
  * Booking Submission Lifecycles
  *
- * Lifecycle hooks for booking submission content type
+ * Lifecycle hooks for booking submission content type.
  */
+
+import { normalizeBookingSubmission } from "../../validation";
 
 export default {
   /**
@@ -12,41 +14,12 @@ export default {
   async beforeUpdate(event: any) {
     const { data } = event.params;
 
-    // Log the update attempt
-    console.log("[Booking Submission Lifecycle] beforeUpdate triggered", {
-      documentId: event.params.where?.documentId,
-      data: data,
-      booking_status: data?.booking_status,
-    });
-
-    // Validate booking_status if provided
-    if (data.booking_status) {
-      const validStatuses = [
-        "new",
-        "contacted",
-        "scheduled",
-        "completed",
-        "cancelled",
-      ];
-
-      if (!validStatuses.includes(data.booking_status)) {
-        console.error(
-          "[Booking Submission Lifecycle] Invalid booking_status value",
-          {
-            provided: data.booking_status,
-            valid: validStatuses,
-          },
-        );
-
-        throw new Error(
-          `Invalid booking_status. Must be one of: ${validStatuses.join(", ")}`,
-        );
-      }
-
-      console.log("[Booking Submission Lifecycle] Status validation passed", {
-        booking_status: data.booking_status,
-      });
+    const normalized = normalizeBookingSubmission(data || {}, true);
+    if (normalized.error) {
+      throw new Error(normalized.error);
     }
+
+    event.params.data = normalized.data;
   },
 
   /**

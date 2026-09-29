@@ -1,4 +1,4 @@
-import type { Page, HomepageBlock } from '@/src/types/strapi'
+import type { HomepageBlock } from '@/src/types/strapi'
 import dynamic from 'next/dynamic'
 import { EmptyState } from './EmptyState'
 
@@ -46,7 +46,7 @@ const EquipmentShowcaseSection = dynamic(() => import('./blocks/EquipmentShowcas
 const ConsultationSection = dynamic(() => import('./blocks/ConsultationSection').then(m => ({ default: m.ConsultationSection })), { loading: () => <SectionSkeleton height="520px" /> })
 
 interface BlockRendererProps {
-  layout: Page['layout'] | HomepageBlock[]
+  layout: HomepageBlock[]
 }
 
 export function BlockRenderer({ layout }: BlockRendererProps) {

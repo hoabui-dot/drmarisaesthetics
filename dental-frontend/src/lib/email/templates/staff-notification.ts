@@ -1,21 +1,18 @@
-/**
- * Staff Notification Email Templates
- * Single-file Responsive HTML with Inline CSS
- */
+import { escapeHtml, formatPhoneNumber, getServiceDisplayName } from "./helpers";
 
-import {
-  formatPhoneNumber,
-  getServiceDisplayName,
-  escapeHtml,
-} from "./helpers";
+export type SubmissionType = "booking" | "promotion" | "newsletter";
 
 export interface BookingNotificationData {
-  fullName: string;
-  phoneNumber: string;
+  fullName?: string;
+  phoneNumber?: string;
+  country?: string;
   email?: string;
-  service: string;
+  service?: string;
+  serviceLabel?: string;
   otherService?: string;
   message?: string;
+  submissionType?: SubmissionType;
+  submissionSource?: string;
   siteName?: string;
   logoUrl?: string;
 }
@@ -23,162 +20,57 @@ export interface BookingNotificationData {
 export interface PromotionNotificationData {
   phoneNumber: string;
   promotionName?: string;
+  country?: string;
 }
 
-// Global wrapper to enforce system-ui font and background
-const wrapHTML = (content: string, borderRadius = 16) => `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>DR. MARIS AESTHETICS</title>
-  <!--[if mso]>
-  <style type="text/css">
-    body, table, td {font-family: Arial, Helvetica, sans-serif !important;}
-  </style>
-  <![endif]-->
-</head>
-<body style="margin: 0; padding: 0; background-color: #F8FAFC; -webkit-font-smoothing: antialiased; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-  <table role="presentation" style="width: 100%; border-collapse: collapse; background-color: #F8FAFC; padding: 40px 0;">
-    <tr>
-      <td align="center" style="padding: 40px 20px;">
-        <table role="presentation" style="max-width: 600px; width: 100%; border-collapse: collapse; background-color: #FFFFFF; border: 1px solid #E2E8F0; border-radius: ${borderRadius}px; overflow: hidden;">
-          <tr>
-            <td>
-              ${content}
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-</body>
-</html>
-`.trim();
+const wrapHTML = (content: string) => `
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="IE=edge"><title>DR. MARIS AESTHETICS</title></head>
+<body style="margin:0;padding:0;background:#F8FAFC;font-family:Arial,Helvetica,sans-serif;color:#172B4D;-webkit-font-smoothing:antialiased;"><table role="presentation" style="width:100%;border-collapse:collapse;background:#F8FAFC;"><tr><td align="center" style="padding:32px 16px;"><table role="presentation" style="width:100%;max-width:600px;border-collapse:collapse;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:4px;overflow:hidden;"><tr><td>${content}</td></tr></table></td></tr></table></body></html>`.trim();
 
-/**
- * Generate Booking notification email HTML
- */
-export function generateBookingNotificationEmail(
-  data: BookingNotificationData,
-): string {
-  const serviceName =
-    data.service === "Other" && data.otherService
-      ? data.otherService
-      : getServiceDisplayName(data.service);
+function row(label: string, value: string, options: { link?: string; multiline?: boolean } = {}) {
+  const content = options.link
+    ? `<a href="${escapeHtml(options.link)}" style="color:#174A7E;text-decoration:none;">${escapeHtml(value)}</a>`
+    : escapeHtml(value);
+  const style = options.multiline ? "white-space:pre-wrap;overflow-wrap:anywhere;font-weight:400;" : "";
+  return `<tr><td style="width:138px;padding:12px 12px 12px 16px;border-bottom:1px solid #E8EDF3;color:#64748B;font-size:14px;vertical-align:top;">${escapeHtml(label)}</td><td style="padding:12px 16px 12px 0;border-bottom:1px solid #E8EDF3;color:#172B4D;font-size:15px;line-height:1.5;font-weight:600;vertical-align:top;${style}">${content}</td></tr>`;
+}
 
+function serviceName(data: BookingNotificationData) {
+  if (data.service === "Other" && data.otherService?.trim()) return data.otherService.trim();
+  return data.serviceLabel?.trim() || (data.service ? getServiceDisplayName(data.service) : "");
+}
+
+export function generateBookingNotificationEmail(data: BookingNotificationData): string {
+  const type = data.submissionType || "booking";
   const siteName = data.siteName || "DR. MARIS AESTHETICS";
-  const safeLogoUrl = data.logoUrl && /^https?:\/\//i.test(data.logoUrl)
-    ? data.logoUrl
-    : undefined;
-  const phoneLink = data.phoneNumber.replace(/[^\d+]/g, "");
+  const logoUrl = data.logoUrl && /^https?:\/\//i.test(data.logoUrl) ? data.logoUrl : undefined;
+  const title = type === "promotion" ? "New promotion claim" : type === "newsletter" ? "New newsletter signup" : "New consultation request";
+  const description = type === "promotion" ? "A promotion claim was submitted through the website." : type === "newsletter" ? "A new email joined the website newsletter." : "A new request was submitted through the website.";
   const rows = [
-    `<tr><td style="width: 138px; padding: 13px 12px 13px 16px; border-bottom: 1px solid #E8EDF3; color: #64748B; font-size: 14px; vertical-align: top;">Full name</td><td style="padding: 13px 16px 13px 0; border-bottom: 1px solid #E8EDF3; color: #172B4D; font-size: 15px; font-weight: 600; vertical-align: top;">${escapeHtml(data.fullName)}</td></tr>`,
-    `<tr><td style="width: 138px; padding: 13px 12px 13px 16px; border-bottom: 1px solid #E8EDF3; color: #64748B; font-size: 14px; vertical-align: top;">Phone</td><td style="padding: 13px 16px 13px 0; border-bottom: 1px solid #E8EDF3; color: #172B4D; font-size: 15px; font-weight: 600; vertical-align: top;"><a href="tel:${escapeHtml(phoneLink)}" style="color: #174A7E; text-decoration: none;">${escapeHtml(formatPhoneNumber(data.phoneNumber))}</a></td></tr>`,
-    ...(data.email?.trim() ? [`<tr><td style="width: 138px; padding: 13px 12px 13px 16px; border-bottom: 1px solid #E8EDF3; color: #64748B; font-size: 14px; vertical-align: top;">Email</td><td style="padding: 13px 16px 13px 0; border-bottom: 1px solid #E8EDF3; color: #172B4D; font-size: 15px; vertical-align: top;"><a href="mailto:${escapeHtml(data.email.trim())}" style="color: #174A7E; text-decoration: none;">${escapeHtml(data.email.trim())}</a></td></tr>`] : []),
-    `<tr><td style="width: 138px; padding: 13px 12px 13px 16px; ${data.message?.trim() ? "border-bottom: 1px solid #E8EDF3;" : ""} color: #64748B; font-size: 14px; vertical-align: top;">Requested service</td><td style="padding: 13px 16px 13px 0; ${data.message?.trim() ? "border-bottom: 1px solid #E8EDF3;" : ""} color: #172B4D; font-size: 15px; font-weight: 600; vertical-align: top;">${escapeHtml(serviceName)}</td></tr>`,
-    ...(data.message?.trim() ? [`<tr><td style="width: 138px; padding: 13px 12px 13px 16px; color: #64748B; font-size: 14px; vertical-align: top;">Message</td><td style="padding: 13px 16px 13px 0; color: #172B4D; font-size: 14px; line-height: 1.65; white-space: pre-wrap; overflow-wrap: anywhere; vertical-align: top;">${escapeHtml(data.message.trim())}</td></tr>`] : []),
-  ].join("");
-
-  const content = `
-    <table role="presentation" style="width: 100%; border-collapse: collapse;">
-      <tr>
-        <td style="height: 4px; background-color: #C5A880; font-size: 0; line-height: 0;">&nbsp;</td>
-      </tr>
-      <tr>
-        <td align="center" style="padding: 28px 28px 22px; background-color: #FFFFFF;">
-          ${safeLogoUrl ? `<img src="${escapeHtml(safeLogoUrl)}" alt="${escapeHtml(siteName)}" width="170" style="display: block; width: auto; max-width: 170px; max-height: 58px; object-fit: contain; border: 0; margin: 0 auto 18px;">` : `<p style="margin: 0 0 16px; color: #174A7E; font-size: 13px; font-weight: 700; letter-spacing: 1.4px;">${escapeHtml(siteName)}</p>`}
-          <h1 style="margin: 0; color: #102A4C; font-size: 23px; line-height: 1.3; font-weight: 600; letter-spacing: -0.3px;">New consultation request</h1>
-          <p style="margin: 8px 0 0; color: #64748B; font-size: 14px; line-height: 1.5;">A new request was submitted through the website.</p>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding: 24px 28px 30px; background-color: #F8FAFC; border-top: 1px solid #E8EDF3;">
-          <table role="presentation" style="width: 100%; border-collapse: collapse; background-color: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 3px;">
-            ${rows}
-          </table>
-          <p style="margin: 20px 0 0; color: #64748B; font-size: 12px; line-height: 1.5;">${escapeHtml(siteName)} · Website booking form</p>
-        </td>
-      </tr>
-    </table>
-  `;
-
-  return wrapHTML(content, 4);
-}
-
-export function generateBookingNotificationSubject(data: BookingNotificationData): string {
-  const serviceName =
-    data.service === "Other" && data.otherService
-      ? data.otherService
-      : getServiceDisplayName(data.service);
-
-  return `New Booking: ${data.fullName} - ${serviceName}`;
-}
-
-/**
- * Generate Promotion notification email HTML
- */
-export function generatePromotionNotificationEmail(
-  data: PromotionNotificationData,
-): string {
-  const content = `
-    <!-- Header -->
-    <div style="background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%); padding: 40px 30px; text-align: center;">
-      <div style="display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; background-color: rgba(255,255,255,0.15); border-radius: 12px; margin-bottom: 16px;">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>
-      </div>
-      <h2 style="color: #FFFFFF; font-size: 22px; font-weight: 600; margin: 0 0 6px 0; letter-spacing: -0.5px;">New Promotion Claim</h2>
-      <p style="color: #DBEAFE; font-size: 15px; margin: 0; font-weight: 400;">DR. MARIS AESTHETICS</p>
-    </div>
-
-    <!-- Body -->
-    <div style="padding: 32px 30px 40px 30px;">
-      
-      <!-- Action Banner -->
-      <div style="background-color: #EFF6FF; border: 1px solid #DBEAFE; padding: 14px 18px; border-radius: 10px; margin-bottom: 32px; display: flex; align-items: center; gap: 12px;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        <p style="margin: 0; color: #1E40AF; font-weight: 500; font-size: 14px;">Action Required: Customer claimed a voucher. Please call them.</p>
-      </div>
-
-      <!-- Customer Information -->
-      <div>
-        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px; border-bottom: 1px solid #F1F5F9; padding-bottom: 12px;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          <h2 style="font-size: 15px; font-weight: 600; color: #0F172A; margin: 0;">Customer Information</h2>
-        </div>
-        
-        <table style="width: 100%; border-collapse: collapse;">
-          ${data.promotionName ? `
-          <tr>
-            <td style="padding: 10px 0; border-bottom: 1px solid #F8FAFC; width: 120px;">
-              <span style="font-weight: 500; color: #64748B; font-size: 14px;">Promotion</span>
-            </td>
-            <td style="padding: 10px 0; border-bottom: 1px solid #F8FAFC;">
-              <span style="color: #0F172A; font-weight: 600; font-size: 15px;">${escapeHtml(data.promotionName)}</span>
-            </td>
-          </tr>
-          ` : ""}
-          <tr>
-            <td style="padding: 10px 0; ${data.promotionName ? '' : 'width: 120px;'}">
-              <span style="font-weight: 500; color: #64748B; font-size: 14px;">Phone</span>
-            </td>
-            <td style="padding: 10px 0;">
-              <a href="tel:${data.phoneNumber}" style="color: #2563EB; text-decoration: none; font-weight: 600; font-size: 15px;">
-                ${formatPhoneNumber(data.phoneNumber)}
-              </a>
-            </td>
-          </tr>
-        </table>
-      </div>
-    </div>
-  `;
-
+    data.fullName?.trim() ? row("Full name", data.fullName.trim()) : "",
+    data.phoneNumber?.trim() ? row("Phone", formatPhoneNumber(data.phoneNumber.trim()), { link: `tel:${data.phoneNumber.replace(/[^\d+]/g, "")}` }) : "",
+    data.country?.trim() ? row("Country", data.country.trim()) : "",
+    data.email?.trim() ? row("Email", data.email.trim(), { link: `mailto:${data.email.trim()}` }) : "",
+    serviceName(data) ? row("Requested service", serviceName(data)) : "",
+    data.message?.trim() ? row("Note", data.message.trim(), { multiline: true }) : "",
+  ].filter(Boolean).join("");
+  const safeRows = rows || row("Submission type", type);
+  const content = `<table role="presentation" style="width:100%;border-collapse:collapse;"><tr><td style="height:4px;background:#C5A880;font-size:0;line-height:0;">&nbsp;</td></tr><tr><td align="center" style="padding:26px 28px 20px;background:#FFFFFF;">${logoUrl ? `<img src="${escapeHtml(logoUrl)}" alt="${escapeHtml(siteName)}" width="170" style="display:block;width:auto;max-width:170px;max-height:58px;object-fit:contain;border:0;margin:0 auto 16px;">` : `<p style="margin:0 0 14px;color:#174A7E;font-size:13px;font-weight:700;letter-spacing:1.4px;">${escapeHtml(siteName)}</p>`}<h1 style="margin:0;color:#102A4C;font-size:23px;line-height:1.3;font-weight:600;">${escapeHtml(title)}</h1><p style="margin:8px 0 0;color:#64748B;font-size:14px;line-height:1.5;">${escapeHtml(description)}</p></td></tr><tr><td style="padding:22px 28px 28px;background:#F8FAFC;border-top:1px solid #E8EDF3;"><table role="presentation" style="width:100%;border-collapse:collapse;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:3px;">${safeRows}</table><p style="margin:18px 0 0;color:#64748B;font-size:12px;line-height:1.5;">${escapeHtml(siteName)} · Website form submission</p></td></tr></table>`;
   return wrapHTML(content);
 }
 
+export function generateBookingNotificationSubject(data: BookingNotificationData): string {
+  const type = data.submissionType || "booking";
+  const prefix = type === "promotion" ? "New Promotion Claim" : type === "newsletter" ? "New Newsletter Signup" : "New Booking";
+  const identity = data.fullName?.trim() || data.email?.trim() || data.phoneNumber?.trim() || "Website form";
+  const service = serviceName(data);
+  return `${prefix}: ${identity}${service ? ` - ${service}` : ""}`;
+}
+
+export function generatePromotionNotificationEmail(data: PromotionNotificationData): string {
+  return generateBookingNotificationEmail({ phoneNumber: data.phoneNumber, country: data.country, message: data.promotionName ? `Claim Your Offer: ${data.promotionName}` : "Claim Your Offer", submissionType: "promotion" });
+}
+
 export function generatePromotionNotificationSubject(data: PromotionNotificationData): string {
-  const name = data.promotionName ? `[${data.promotionName}] ` : "";
-  return `New VIP Voucher Claim - ${name}Phone: ${data.phoneNumber}`;
+  return generateBookingNotificationSubject({ phoneNumber: data.phoneNumber, message: data.promotionName ? `Claim Your Offer: ${data.promotionName}` : "Claim Your Offer", submissionType: "promotion" });
 }

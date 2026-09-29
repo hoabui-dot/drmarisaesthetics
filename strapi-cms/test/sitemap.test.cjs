@@ -16,7 +16,6 @@ function createStrapiFixture({ services = [], redirects = [], canonicals = [], i
     'api::redirect.redirect': redirects,
     'api::canonical-rule.canonical-rule': canonicals,
     'api::blog.blog': [],
-    'api::page.page': [],
   };
 
   return {

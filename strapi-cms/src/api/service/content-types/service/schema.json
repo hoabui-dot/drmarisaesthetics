@@ -20,16 +20,11 @@
     },
     "title": { "type": "string", "required": true },
     "slug": { "type": "uid", "targetField": "title", "required": true },
-    "category": {
-      "type": "enumeration",
-      "enum": ["Plastic Surgery"],
+    "service_category_id": {
+      "type": "customField",
+      "customField": "global::website-category-id",
+      "options": { "categoryType": "service" },
       "required": false
-    },
-    "categories": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::service-category.service-category",
-      "inversedBy": "services"
     },
     "coverImage": { "type": "media", "multiple": false, "required": false, "allowedTypes": ["images"] },
     "metaDescription": { "type": "text", "required": false },

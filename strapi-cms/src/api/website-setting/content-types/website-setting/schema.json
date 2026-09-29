@@ -27,6 +27,8 @@
     "contact_methods": { "type": "component", "repeatable": true, "component": "website-setting.contact-method" },
     "social_links": { "type": "component", "repeatable": true, "component": "website-setting.social-link" },
     "global_cta": { "type": "component", "repeatable": false, "component": "website-setting.global-cta" },
-    "booking_form": { "type": "component", "repeatable": false, "component": "website-setting.booking-form" }
+    "booking_form": { "type": "component", "repeatable": false, "component": "website-setting.booking-form" },
+    "blog_categories": { "type": "component", "repeatable": true, "component": "website-setting.blog-category" },
+    "service_categories": { "type": "component", "repeatable": true, "component": "website-setting.service-category" }
   }
 }

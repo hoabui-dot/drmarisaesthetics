@@ -9,7 +9,7 @@ const baseInput = (overrides = {}) => ({
   robots: { indexing_enabled: true, rules: [] }, globalOpenGraphImage: { url: '/uploads/global.webp' }, redirects: [], canonicalRules: [], ...overrides,
 });
 const page = (overrides = {}) => ({
-  uid: 'api::page.page', kind: 'collection', documentId: 'doc-1', locale: 'en', path: '/about', title: 'About our clinic',
+  uid: 'api::blog.blog', kind: 'collection', documentId: 'doc-1', locale: 'en', path: '/news/about', title: 'About our clinic',
   description: 'A sufficiently detailed page description for the clinic and its patient services.', publishedAt: '2026-01-01T00:00:00.000Z',
   pageSeoConsumed: true, canonicalSupported: true, sitemapSupported: true, structuredDataGenerated: true,
   seo: { meta_title: 'About our clinic', meta_description: 'A sufficiently detailed page description for the clinic and its patient services.', meta_image: { url: '/uploads/about.webp', alternativeText: 'Clinic team' }, canonical_url: 'https://example.test/about' },

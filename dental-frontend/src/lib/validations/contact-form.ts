@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { BOOKING_SUBMISSION_SOURCES } from "@/src/lib/submissions";
 
 /**
  * Contact Form Validation Schema
@@ -41,6 +42,10 @@ export const contactFormSchema = z
       .string()
       .max(1000, "Message must be less than 1000 characters")
       .optional(),
+
+    country: z.string().max(100, "Country name is too long").optional(),
+
+    submissionSource: z.enum(BOOKING_SUBMISSION_SOURCES).optional(),
 
     recaptchaToken: z.string().min(1, "reCAPTCHA verification required"),
   })

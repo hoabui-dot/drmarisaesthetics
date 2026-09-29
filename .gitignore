@@ -228,6 +228,7 @@ TROUBLESHOOT_*.md
 ssl/
 *.pem
 *.sql
+!migration-production/*.sql
 prod-dental-frontend-log.txt
 
 # Temporary folders

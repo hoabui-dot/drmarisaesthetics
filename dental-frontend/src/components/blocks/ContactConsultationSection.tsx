@@ -54,9 +54,9 @@ function ContactRow({ contact }: { contact: Contact }) {
   )
 }
 
-export function ContactConsultationSection({ data, formOnly = false }: { data: ContactConsultationData; formOnly?: boolean }) {
+export function ContactConsultationSection({ data, formOnly = false, submissionSource = formOnly ? 'service_detail' : 'contact' }: { data: ContactConsultationData; formOnly?: boolean; submissionSource?: 'contact' | 'service_detail' }) {
   const { executeRecaptcha } = useGoogleReCaptcha()
-  const recaptchaEnabled = process.env.NEXT_PUBLIC_RECAPTCHA_ENABLED !== 'false'
+  const recaptchaEnabled = process.env.NEXT_PUBLIC_RECAPTCHA_ENABLED === 'true'
   const services = [...(data.serviceOptions || []).filter((option) => option.value !== 'Other'), otherServiceOption]
   const [phoneCountry, setPhoneCountry] = useState<CountryOption>(defaultCountry)
   const [form, setForm] = useState({ name: '', phone: '', email: '', preferredContact: contactMethodOptions[0].value, service: services[0]?.value || '', otherService: '', message: '', consent: false })
@@ -73,7 +73,7 @@ export function ContactConsultationSection({ data, formOnly = false }: { data: C
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ fullName: form.name.trim(), phoneNumber: parsePhoneNumberFromString(form.phone, phoneCountry.code)?.number || form.phone.trim(), email: form.email.trim(), service: form.service, otherService: form.service === 'Other' ? form.otherService.trim() : '', message: `Preferred contact: ${form.preferredContact} | ${form.message.trim()}`, recaptchaToken }),
+        body: JSON.stringify({ fullName: form.name.trim(), phoneNumber: parsePhoneNumberFromString(form.phone, phoneCountry.code)?.number || form.phone.trim(), country: phoneCountry.name, email: form.email.trim(), service: form.service, otherService: form.service === 'Other' ? form.otherService.trim() : '', message: `Preferred contact: ${form.preferredContact} | ${form.message.trim()}`, submissionSource, recaptchaToken }),
       })
       if (!response.ok) {
         const errorBody = await response.json().catch(() => ({}))

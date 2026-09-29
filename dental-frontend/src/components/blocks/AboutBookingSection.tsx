@@ -42,7 +42,7 @@ export function AboutBookingSection({ data, serviceOptions = [] }: { data?: Abou
         <div className="about-booking-form-region">
           <h2 id="about-booking-heading">{data?.heading || 'Book a Consultation'}</h2>
           <span className="about-booking-rule" aria-hidden="true" />
-          <HomeBookingForm serviceOptions={serviceOptions} submitLabel="REQUEST APPOINTMENT" />
+          <HomeBookingForm serviceOptions={serviceOptions} submitLabel="REQUEST APPOINTMENT" submissionSource="about_us" />
         </div>
         <aside className="about-booking-clinic" aria-label="Clinic contact information">
           <h3>{clinicName}</h3>

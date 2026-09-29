@@ -8,12 +8,10 @@ import { sendEmail, type EmailOptions } from "./email-service";
 import {
   generateBookingNotificationEmail,
   generateBookingNotificationSubject,
-  generatePromotionNotificationEmail,
-  generatePromotionNotificationSubject,
   type BookingNotificationData,
   type PromotionNotificationData,
 } from "./templates/staff-notification";
-import { getWebsiteSetting } from "@/src/lib/api/queries";
+import { getServiceOptions, getWebsiteSetting } from "@/src/lib/api/queries";
 
 // Email addresses from environment
 const EMAIL_TO_ADMIN = process.env.EMAIL_TO_ADMIN || "";
@@ -32,6 +30,8 @@ export async function sendBookingNotifications(
 ): Promise<boolean> {
   try {
     const websiteSetting = await getWebsiteSetting();
+    const serviceOptions = data.service ? await getServiceOptions() : [];
+    const serviceLabel = data.serviceLabel || serviceOptions.find((option) => option.value === data.service)?.label;
     const siteName = websiteSetting?.siteName || "DR. MARIS AESTHETICS";
     const configuredLogoUrl = websiteSetting?.logo?.url?.trim();
     let logoUrl: string | undefined;
@@ -49,8 +49,9 @@ export async function sendBookingNotifications(
     }
 
     // Generate email content
-    const subject = generateBookingNotificationSubject(data);
-    const html = generateBookingNotificationEmail({ ...data, siteName, logoUrl });
+    const notificationData = { ...data, serviceLabel, siteName, logoUrl };
+    const subject = generateBookingNotificationSubject(notificationData);
+    const html = generateBookingNotificationEmail(notificationData);
 
     // Determine recipients
     const recipients: string[] = [];
@@ -96,42 +97,13 @@ export async function sendBookingNotifications(
 export async function sendPromotionNotification(
   data: PromotionNotificationData,
 ): Promise<boolean> {
-  try {
-    // Generate email content
-    const subject = generatePromotionNotificationSubject(data);
-    const html = generatePromotionNotificationEmail(data);
-
-    // Determine recipients
-    const recipients: string[] = [];
-    if (EMAIL_TO_ADMIN) recipients.push(EMAIL_TO_ADMIN);
-    if (EMAIL_TO_STAFF && EMAIL_TO_STAFF !== EMAIL_TO_ADMIN) {
-      recipients.push(EMAIL_TO_STAFF);
-    }
-
-    if (recipients.length === 0) {
-      console.warn(
-        "[Notifications] No staff email addresses configured (EMAIL_TO_ADMIN, EMAIL_TO_STAFF)",
-      );
-      return false;
-    }
-
-    // Send email
-    const emailOptions: EmailOptions = {
-      to: recipients,
-      subject,
-      html,
-    };
-
-    const result = await sendEmail(emailOptions);
-
-    if (result.success) {
-      return true;
-    } else {
-      return false;
-    }
-  } catch (error) {
-    return false;
-  }
+  return sendBookingNotifications({
+    phoneNumber: data.phoneNumber,
+    country: data.country,
+    message: data.promotionName ? `Claim Your Offer: ${data.promotionName}` : "Claim Your Offer",
+    submissionType: "promotion",
+    submissionSource: "promotion_popup",
+  });
 }
 
 /**

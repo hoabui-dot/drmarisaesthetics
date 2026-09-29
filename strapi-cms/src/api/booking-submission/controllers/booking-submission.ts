@@ -3,6 +3,7 @@
  */
 
 import { factories } from "@strapi/strapi";
+import { normalizeBookingSubmission } from "../validation";
 
 export default factories.createCoreController(
   "api::booking-submission.booking-submission" as any,
@@ -15,32 +16,34 @@ export default factories.createCoreController(
      */
     async create(ctx) {
       try {
-        // Log incoming request for debugging
-        strapi.log.info("[Booking Submission] New submission received", {
-          ip: ctx.request.ip,
-          userAgent: ctx.request.headers["user-agent"],
-        });
+        const data = ctx.request.body?.data;
+        if (!data || typeof data !== "object" || Array.isArray(data)) {
+          ctx.status = 400;
+          return {
+            error: { status: 400, name: "ValidationError", message: "Submission data is required" },
+          };
+        }
 
-        // Get the request body data
-        const { data } = ctx.request.body;
-
-        // Ensure booking_status is set to "new" if not provided
-        const submissionData = {
-          ...data,
-          booking_status: data.booking_status || "new",
-        };
+        const normalized = normalizeBookingSubmission(data as Record<string, unknown>);
+        if (normalized.error || !normalized.data) {
+          ctx.status = 400;
+          return {
+            error: { status: 400, name: "ValidationError", message: normalized.error },
+          };
+        }
 
         // Create the submission using Strapi's document service
         const entity = await strapi
           .documents("api::booking-submission.booking-submission")
           .create({
-            data: submissionData,
+            data: normalized.data as any,
           });
 
         // Log success
         strapi.log.info("[Booking Submission] Created successfully", {
           id: entity.id,
-          service: entity.service,
+          submission_type: entity.submission_type,
+          submission_source: entity.submission_source,
           booking_status: entity.booking_status,
         });
 
@@ -146,51 +149,20 @@ export default factories.createCoreController(
       try {
         const { id } = ctx.params;
 
-        // Get the request body data
-        const { data } = ctx.request.body;
+        const data = ctx.request.body?.data;
+        if (!data || typeof data !== "object" || Array.isArray(data)) {
+          ctx.status = 400;
+          return {
+            error: { status: 400, name: "ValidationError", message: "Submission data is required" },
+          };
+        }
 
-        // Log the incoming update request for debugging
-        strapi.log.info("[Booking Submission] Update request received", {
-          documentId: id,
-          data: data,
-          booking_status: data?.booking_status,
-        });
-
-        // Validate booking_status if provided
-        if (data.booking_status) {
-          const validStatuses = [
-            "new",
-            "contacted",
-            "scheduled",
-            "completed",
-            "cancelled",
-          ];
-          if (!validStatuses.includes(data.booking_status)) {
-            strapi.log.error(
-              "[Booking Submission] Invalid booking_status value",
-              {
-                provided: data.booking_status,
-                valid: validStatuses,
-              },
-            );
-            ctx.status = 400;
-            return {
-              error: {
-                status: 400,
-                name: "ValidationError",
-                message: `Invalid booking_status. Must be one of: ${validStatuses.join(", ")}`,
-                details: {
-                  errors: [
-                    {
-                      path: ["booking_status"],
-                      message: `Invalid booking_status value: ${data.booking_status}`,
-                      name: "ValidationError",
-                    },
-                  ],
-                },
-              },
-            };
-          }
+        const normalized = normalizeBookingSubmission(data as Record<string, unknown>, true);
+        if (normalized.error || !normalized.data) {
+          ctx.status = 400;
+          return {
+            error: { status: 400, name: "ValidationError", message: normalized.error },
+          };
         }
 
         // Update the submission
@@ -198,7 +170,7 @@ export default factories.createCoreController(
           .documents("api::booking-submission.booking-submission")
           .update({
             documentId: id,
-            data: data,
+            data: normalized.data as any,
           });
 
         if (!entity) {
@@ -219,8 +191,8 @@ export default factories.createCoreController(
           details: error.details || {},
         });
 
-        // Check if it's a validation error
-        if (error.message && error.message.includes("booking_status")) {
+        // Check if it is a validation error from one of the discriminators.
+        if (error.message && /submission_type|submission_source|booking_status/.test(error.message)) {
           ctx.status = 400;
           return {
             error: {

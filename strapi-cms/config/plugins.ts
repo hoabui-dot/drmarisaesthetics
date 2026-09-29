@@ -58,23 +58,6 @@ export default ({ env }) => ({
     config: {
       contentTypes: [
         {
-          uid: "api::page.page",
-          draft: {
-            url: `${env("FRONTEND_URL", "http://localhost:3000")}/api/preview`,
-            query: {
-              type: "page",
-              slug: "{slug}",
-              secret: env(
-                "PREVIEW_SECRET",
-                "your-secure-preview-secret-change-in-production",
-              ),
-            },
-          },
-          published: {
-            url: `${env("FRONTEND_URL", "http://localhost:3000")}/{slug}`,
-          },
-        },
-        {
           uid: "api::homepage.homepage",
           draft: {
             url: `${env("FRONTEND_URL", "http://localhost:3000")}/api/preview`,

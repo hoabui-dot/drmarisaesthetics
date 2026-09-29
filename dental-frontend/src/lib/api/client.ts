@@ -45,7 +45,7 @@ function isRetryable(error: unknown): boolean {
 /**
  * Fetch data from CMS API
  *
- * @param endpoint - API endpoint (e.g., '/api/pages')
+ * @param endpoint - API endpoint (e.g., '/api/homepage')
  * @param options - Fetch options including params and draft mode
  * @returns Parsed JSON response
  */

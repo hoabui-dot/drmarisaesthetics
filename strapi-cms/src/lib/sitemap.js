@@ -30,7 +30,6 @@ const STATIC_ROUTES = [
 const COLLECTION_ROUTES = [
   { uid: 'api::service.service', sitemapKey: 'service', label: 'Services', singularLabel: 'Service', group: 'Services', prefix: '/services', routePattern: '/services/:slug', slugField: 'slug', fields: ['title', 'slug', 'updatedAt', 'publishedAt', 'locale'], populate: { seo: true } },
   { uid: 'api::blog.blog', sitemapKey: 'news', label: 'News', singularLabel: 'News article', group: 'News', prefix: '/news', routePattern: '/news/:slug', slugField: 'slug', fields: ['title', 'slug', 'updatedAt', 'publishedAt', 'locale'], populate: { seo: true } },
-  { uid: 'api::page.page', sitemapKey: 'page', label: 'Pages', singularLabel: 'Page', group: 'Pages', prefix: '', routePattern: '/:slug', slugField: 'slug', fields: ['title', 'slug', 'updatedAt', 'publishedAt', 'locale'], populate: { seo: true } },
 ];
 
 function enabledByConfig(config, key) {

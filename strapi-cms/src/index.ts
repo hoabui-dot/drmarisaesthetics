@@ -1,9 +1,154 @@
+import { randomUUID } from 'node:crypto'
+
+function parseAdminPermissionProperties(value: unknown): unknown {
+  if (typeof value !== 'string') return value
+  try { return JSON.parse(value) } catch { return value }
+}
+
+function getPermissionFields(value: unknown): string[] {
+  const parsed = parseAdminPermissionProperties(value)
+  if (Array.isArray(parsed)) return parsed.filter((field): field is string => typeof field === 'string')
+  if (!parsed || typeof parsed !== 'object') return []
+  const properties = parsed as Record<string, unknown>
+  if (Array.isArray(properties.fields)) return properties.fields.filter((field): field is string => typeof field === 'string')
+  return []
+}
+
+function normalisePermissionProperties(value: unknown): Record<string, unknown> {
+  const parsed = parseAdminPermissionProperties(value)
+  return parsed && typeof parsed === 'object' && !Array.isArray(parsed)
+    ? parsed as Record<string, unknown>
+    : {}
+}
+
+async function ensureContentManagerFieldPermissions(strapi: any) {
+  const requirements: Record<string, string[]> = {
+    'api::website-setting.website-setting': [
+      'blog_categories', 'blog_categories.category_id', 'blog_categories.label', 'blog_categories.icon',
+      'service_categories', 'service_categories.category_id', 'service_categories.label', 'service_categories.icon',
+    ],
+    'api::blog.blog': ['blog_category_id'],
+    'api::service.service': ['service_category_id'],
+  }
+  const permissionQuery = strapi.db.connection('admin_permissions')
+  const actions = [
+    'plugin::content-manager.explorer.create',
+    'plugin::content-manager.explorer.read',
+    'plugin::content-manager.explorer.update',
+  ]
+
+  for (const [subject, requiredFields] of Object.entries(requirements)) {
+    const permissions = await permissionQuery
+      .where({ subject })
+      .whereIn('action', actions)
+      .select(['id', 'action', 'properties'])
+    const completeFields = [...new Set([
+      ...requiredFields,
+      ...permissions.flatMap((permission: any) => getPermissionFields(permission.properties)),
+    ])]
+
+    for (const permission of permissions) {
+      const properties = normalisePermissionProperties(permission.properties)
+      const nextProperties = { ...properties, fields: completeFields }
+      if (JSON.stringify(properties) === JSON.stringify(nextProperties)) continue
+      await permissionQuery.where({ id: permission.id }).update({ properties: nextProperties })
+      strapi.log.info(`[Bootstrap] Repaired Content Manager field permissions for ${subject} (${permission.action}).`)
+    }
+  }
+}
+
+const WEBSITE_SETTING_UID = 'api::website-setting.website-setting'
+const CATEGORY_FIELDS = ['blog_categories', 'service_categories'] as const
+
+type WebsiteCategory = { id?: string | number; category_id?: string | null; [key: string]: unknown }
+type WebsiteCategoriesData = Partial<Record<(typeof CATEGORY_FIELDS)[number], WebsiteCategory[]>>
+
+function ensureWebsiteCategoryIds(data: WebsiteCategoriesData | undefined, existing?: WebsiteCategoriesData) {
+  if (!data) return
+
+  for (const field of CATEGORY_FIELDS) {
+    const categories = data[field]
+    if (!Array.isArray(categories)) continue
+
+    const existingIds = new Map(
+      (Array.isArray(existing?.[field]) ? existing[field] : [])
+        .filter((category) => category?.id != null && category.category_id)
+        .map((category) => [String(category.id), category.category_id as string]),
+    )
+    const usedIds = new Set<string>()
+
+    data[field] = categories.map((category) => {
+      const submittedId = typeof category.category_id === 'string' ? category.category_id.trim() : ''
+      const priorId = category.id != null ? existingIds.get(String(category.id)) : undefined
+      const id = submittedId || priorId || randomUUID()
+      // IDs are internal stable keys. If a malformed payload repeats an ID,
+      // repair only the duplicate item instead of linking two labels together.
+      const uniqueId = usedIds.has(id) ? randomUUID() : id
+      usedIds.add(uniqueId)
+      return { ...category, category_id: uniqueId }
+    })
+  }
+}
+
+async function getWebsiteCategories(strapi: any, documentId: string, status: string | undefined) {
+  if (!documentId) return undefined
+  return strapi.documents(WEBSITE_SETTING_UID).findOne({
+    documentId,
+    status: status === 'published' ? 'published' : 'draft',
+    populate: { blog_categories: true, service_categories: true },
+  })
+}
+
+function registerWebsiteCategoryMiddleware(strapi: any) {
+  strapi.documents.use(async (context: any, next: () => Promise<unknown>) => {
+    if (context.uid !== WEBSITE_SETTING_UID || !['create', 'update'].includes(context.action)) {
+      return next()
+    }
+
+    const params = context.params || {}
+    const data = params.data as WebsiteCategoriesData | undefined
+    const existing = context.action === 'update'
+      ? await getWebsiteCategories(strapi, params.documentId, params.status)
+      : undefined
+    const oldCategoryIds = Object.fromEntries(CATEGORY_FIELDS.map((field) => [
+      field,
+      (Array.isArray(existing?.[field]) ? existing[field] : [])
+        .map((category) => category.category_id)
+        .filter((id): id is string => typeof id === 'string' && Boolean(id)),
+    ])) as Record<(typeof CATEGORY_FIELDS)[number], string[]>
+
+    ensureWebsiteCategoryIds(data, existing || undefined)
+    const result = await next()
+
+    if (existing && data) {
+      for (const [field, assignmentField, uid] of [
+        ['blog_categories', 'blog_category_id', 'api::blog.blog'],
+        ['service_categories', 'service_category_id', 'api::service.service'],
+      ] as const) {
+        if (!Array.isArray(data[field])) continue
+        const retained = new Set(data[field].map((category) => category.category_id).filter(Boolean))
+        const removed = oldCategoryIds[field].filter((id) => !retained.has(id))
+        if (removed.length) {
+          await strapi.db.query(uid).updateMany({
+            where: { [assignmentField]: { $in: removed } },
+            data: { [assignmentField]: null },
+          })
+        }
+      }
+    }
+
+    return result
+  })
+}
+
 export default {
   /**
    * Register only framework/plugin compatibility routes.
    * CMS content is never created or seeded here.
    */
   register({ strapi }) {
+    registerWebsiteCategoryMiddleware(strapi)
+
     strapi.customFields.register({
       name: "service-navigation-order",
       type: "integer",
@@ -20,6 +165,10 @@ export default {
     strapi.customFields.register({
       name: "result-category-multi-select",
       type: "json",
+    });
+    strapi.customFields.register({
+      name: "website-category-id",
+      type: "string",
     });
 
     // These SEO records are intentionally hidden from the Content Manager
@@ -76,6 +225,8 @@ export default {
   async bootstrap({ strapi }) {
     console.log("--- Bootstrap: infrastructure-only mode ---");
     try {
+      await ensureContentManagerFieldPermissions(strapi)
+
       // Permissions are infrastructure configuration. They are only created
       // when absent and never change any content value or publication state.
       const publicRole = await strapi

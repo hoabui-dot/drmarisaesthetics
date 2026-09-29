@@ -31,6 +31,15 @@ pointing to the production VPS and issue a certificate for that hostname.
 
 Replace all `CHANGE_ME` values in the three env files using the production secret store/current production values. Keep the database password identical in the PostgreSQL and Strapi env files. Do not commit or share these files.
 
+### reCAPTCHA flags
+
+The two flags must be configured together:
+
+- `NEXT_PUBLIC_RECAPTCHA_ENABLED` is a frontend build-time flag. Changing it requires rebuilding the frontend image.
+- `RECAPTCHA_ENABLED` is a frontend server runtime flag. Changing it requires recreating the frontend container.
+
+For local/test or controlled maintenance skip mode, set both to `false`. For normal public production verification, set both to `true`, provide the matching public site key and keep the secret key server-side only. The image build script validates both values and passes only the public flag into the Next.js build.
+
 ## Production server commands
 
 Copy the whole `deployment` directory to `/home/neurosus/drmaris/deployment`, then run these commands from that directory:

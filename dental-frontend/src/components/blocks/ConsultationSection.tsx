@@ -15,7 +15,7 @@ export function ConsultationSection({ data }: { data: HomepageConsultationBlock 
       <div className="home-booking-column home-booking-form-column">
         <p className="eyebrow">{data.formHeading || data.title}</p>
         <span className="home-booking-rule" aria-hidden="true" />
-        <HomeBookingForm serviceOptions={data.serviceOptions} submitLabel={data.submitLabel} />
+        <HomeBookingForm serviceOptions={data.serviceOptions} submitLabel={data.submitLabel} submissionSource="homepage" />
       </div>
       <aside className="home-booking-column home-booking-info">
         <p className="eyebrow">{data.clinicEyebrow || "DR. MARIS AESTHETICS"}</p>

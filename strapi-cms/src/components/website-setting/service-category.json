@@ -1,0 +1,10 @@
+{
+  "collectionName": "components_website_setting_service_categories",
+  "info": { "displayName": "Service category" },
+  "options": {},
+  "attributes": {
+    "category_id": { "type": "string", "required": false },
+    "label": { "type": "string", "required": true },
+    "icon": { "type": "media", "multiple": false, "allowedTypes": ["images"] }
+  }
+}

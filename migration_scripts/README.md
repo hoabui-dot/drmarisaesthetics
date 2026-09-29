@@ -34,3 +34,23 @@ Do not remove the PostgreSQL or uploads volumes during deployment. Avoid `docker
 Strapi runs files in `strapi-cms/database/migrations` once and records completed migrations in `strapi_migrations`. The active database has recorded the repository migrations through `2026.09.13.000001_remove_obsolete_service_metadata.js`; routine restart/rebuild will not rerun those completed migrations. Before adding a new automatic migration, review every `DROP`, `DELETE`, `TRUNCATE`, and column removal, and make sure it is data-preserving or explicitly intended and backed up.
 
 Content changes belong in Content Manager or a separately reviewed external migration—not in Strapi bootstrap or Docker startup.
+
+## Explicit blog taxonomy seed
+
+`218-seed-blog-category-content.js` is an optional, idempotent data seed. It
+adds ten blog categories to Website Settings when missing, then creates or
+updates ten blog posts and assigns each post to its stable Website Settings
+category ID. It is never run automatically.
+
+Preview first:
+
+```bash
+STRAPI_URL=http://127.0.0.1:22345 \
+STRAPI_API_TOKEN="$STRAPI_API_TOKEN" \
+node migration_scripts/218-seed-blog-category-content.js
+```
+
+Use `--write` to save drafts. Add `--publish` only after reviewing the
+preview and confirming the sample content should be public. The script keeps
+existing category IDs and refuses to create posts if the CMS has not generated
+IDs for the Website Settings categories.

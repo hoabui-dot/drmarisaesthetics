@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
   const secret = searchParams.get('secret')
   const expectedSecret = process.env.NEXT_PREVIEW_SECRET
   const slug = searchParams.get('slug')
-  const type = searchParams.get('type') || 'page'
+  const type = searchParams.get('type') || ''
 
   if (!expectedSecret || secret !== expectedSecret) {
     return NextResponse.json({ error: 'Invalid preview secret' }, { status: 401 })
@@ -26,7 +26,6 @@ export async function GET(request: NextRequest) {
     'contact-page': '/contact',
   }
   const target = routes[type] || (type === 'blog' && slug ? `/news/${encodeURIComponent(slug)}` : null)
-    || (type === 'page' && slug ? `/${encodeURIComponent(slug)}` : null)
 
   if (!target) {
     return NextResponse.json({ error: 'A valid preview type and slug are required' }, { status: 400 })
