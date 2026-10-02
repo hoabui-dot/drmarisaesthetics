@@ -3,6 +3,7 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
 
 import Image from 'next/image'
+import type { CSSProperties } from 'react'
 import { ArrowRight, CheckCircle2, CalendarDays } from 'lucide-react'
 import { useBookingModal } from '@/src/components/booking-modal/BookingModalContext'
 import { useHomepageMotion } from '@/src/hooks/useHomepageMotion'
@@ -18,7 +19,7 @@ import { useRef } from 'react'
 import type { HomepageEditorialData } from '@/src/types/homepage-editorial'
 import type { ResultsData } from '@/src/data/results'
 import { getMediaUrl } from '@/src/lib/api/queries'
-import { HomepageYoutubeSection } from '@/src/components/homepage/HomepageYoutubeSection'
+import { CustomerVideoTestimonial } from '@/src/components/homepage/CustomerVideoTestimonial'
 
 /* const legacyImages = {
   hero: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCTeb4K7icJOejOCNmhoM1L_97JimcI6Qtyot9YzMr51gD3_D096TT551datl7elzq4TGEQz-bEMf8KBAUaMGPSuRx-gXA7LQDE6AxQJeik8HAprXx5WLc0J8tMTKQRuN5tTfMsno6xTgx-ocAouFxiXWQRiCATFFvjwsLvpxprL1m7V9S-mUEXDc3L_aWSsmNthvE245NzLwUH0W-RYhnjXBO7LUB-OAqjk5SNLSZFeUzTH3V751D0',
@@ -86,6 +87,22 @@ function ResponsiveStitchImage({ desktopSrc, mobileSrc, alt }: { desktopSrc: str
   </>
 }
 
+function getImageAspectRatio(media: unknown): string | undefined {
+  if (!media || typeof media !== 'object') return undefined
+  const source = Array.isArray(media) ? media[0] : media
+  if (!source || typeof source !== 'object') return undefined
+  const record = source as Record<string, unknown>
+  const entity = record.data && typeof record.data === 'object'
+    ? record.data as Record<string, unknown>
+    : record
+  const attributes = entity.attributes && typeof entity.attributes === 'object'
+    ? entity.attributes as Record<string, unknown>
+    : entity
+  const width = Number(attributes.width)
+  const height = Number(attributes.height)
+  return width > 0 && height > 0 ? `${width} / ${height}` : undefined
+}
+
 export function StitchHomepage({ data, results }: { data?: HomepageEditorialData; results?: ResultsData | null }) {
   const homepageRef = useRef<HTMLDivElement>(null)
   useHomepageMotion(homepageRef)
@@ -130,6 +147,7 @@ export function StitchHomepage({ data, results }: { data?: HomepageEditorialData
   const cmsImage = (value: unknown, fallback: string): string => {
     return getMediaUrl(value) || fallback
   }
+  const heroImageAspectRatio = getImageAspectRatio(hero.image || hero.image_url || hero.doctor_image) || '4 / 5'
 
   return <div ref={homepageRef} className="stitch-page stitch-homepage">
     <section className="stitch-home-hero" data-motion-section="hero"><div className="stitch-home-hero__inner">
@@ -148,10 +166,16 @@ export function StitchHomepage({ data, results }: { data?: HomepageEditorialData
         <div className="stitch-actions" data-hero-actions><ConsultationButton className="stitch-button stitch-button--dark" /><a className="stitch-button stitch-button--outline" href="#journey">Explore Surgical Procedures <ArrowRight size={17} /></a></div>
         <div className="stitch-proof-row" data-hero-proof>{heroProof.map((item, index) => <span key={`${item}-${index}`}>{index > 0 && <b aria-hidden="true">|</b>}{item}</span>)}</div>
       </div>
-      <div className="stitch-home-hero__image" data-hero-image><div data-hero-image-media className="stitch-motion-image"><StitchImage src={cmsImage(hero.image || hero.image_url || hero.doctor_image, images.heroDoctor)} alt={typeof hero.image_alt === 'string' ? hero.image_alt : 'Dr. Maris in a clinical setting'} /></div></div>
+      <div className="stitch-home-hero__image" data-hero-image style={{ '--homepage-hero-image-ratio': heroImageAspectRatio } as CSSProperties}><div data-hero-image-media className="stitch-motion-image"><StitchImage src={cmsImage(hero.image || hero.image_url || hero.doctor_image, images.heroDoctor)} alt={typeof hero.image_alt === 'string' ? hero.image_alt : 'Dr. Maris in a clinical setting'} /></div></div>
     </div></section>
 
-    <HomepageYoutubeSection content={video} />
+    <CustomerVideoTestimonial
+      youtubeUrl={typeof video.youtube_url === 'string' ? video.youtube_url : ''}
+      quote={typeof video.quote === 'string' ? video.quote : ''}
+      customerName={typeof video.customer_name === 'string' ? video.customer_name : undefined}
+      customerDescription={typeof video.customer_description === 'string' ? video.customer_description : undefined}
+      thumbnailUrl={typeof video.thumbnail_url === 'string' ? video.thumbnail_url : undefined}
+    />
 
       <section className="stitch-section stitch-procedures" data-motion-section="procedures" data-signature-procedures><div className="stitch-container"><div className="stitch-section-heading"><span className="stitch-kicker" data-signature-motion data-signature-eyebrow>{typeof signature.eyebrow === 'string' ? signature.eyebrow : 'SIGNATURE PROCEDURES'}</span><h2><span className="stitch-hero-line"><span data-signature-motion data-signature-title>{signatureTitle}</span></span></h2><p className="stitch-lead" data-signature-motion data-signature-copy>{typeof signature.description === 'string' ? signature.description : 'Explore the procedures Dr. Maris performs with the same clinical discipline: careful assessment, transparent planning and a recovery strategy that respects the individual.'}</p></div><div className="stitch-procedure-grid">{procedureItems.map((item, index) => { const record = item as Record<string, unknown>; const number = String(record.number || `0${index + 1}`); const title = String(record.title || 'Procedure'); const copy = String(record.description || ''); const image = cmsImage(record.image_url || record.image, images.technology); const alt = String(record.image_alt || record.imageAlt || title); const fallbackHref = title === 'Rhinoplasty' ? '/services/rhinoplasty' : `/treatments#${title.toLowerCase().replaceAll(' ', '-')}`; const cmsHref = typeof record.href === 'string' ? record.href.trim() : ''; const href = cmsHref || fallbackHref; return <a className="stitch-procedure-panel" href={href} key={`${title}-${index}`} data-procedure-panel data-signature-panel data-procedure-index={index}><div className="stitch-procedure-panel__image"><StitchImage src={image} alt={alt} /><span className="stitch-procedure-panel__curtain" data-signature-curtain aria-hidden="true" /></div><div className="stitch-procedure-panel__body"><b data-signature-motion data-signature-number>{number}</b><div><h3 data-signature-motion data-signature-panel-title>{title}</h3><p data-signature-motion data-signature-panel-description>{copy}</p><span className="stitch-link" data-signature-motion data-signature-panel-cta>Explore Procedure <ArrowRight size={16} /></span></div></div></a> })}</div></div></section>
 

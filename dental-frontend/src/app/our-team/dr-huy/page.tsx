@@ -28,7 +28,7 @@ export default async function DrHuyProfileRoute() {
     }),
   ])
 
-  return <><StructuredDataScript data={structuredData} /><OurTeamPage data={cmsData || ourTeamMockData} /></>
+  return <><StructuredDataScript data={structuredData} /><OurTeamPage data={cmsData || ourTeamMockData} drHuyImageTreatment /></>
 }
 
 export const dynamic = 'force-dynamic'

@@ -25,6 +25,14 @@ for migration in migration-production/00{3,4,5}-*.sql migration-production/01{1,
     -v ON_ERROR_STOP=1 \
     -f "$migration"
 done
+
+psql "$DATABASE_URL" \
+  -v ON_ERROR_STOP=1 \
+  -f migration-production/013-homepage-video-only.sql
+
+psql "$DATABASE_URL" \
+  -v ON_ERROR_STOP=1 \
+  -f migration-production/014-homepage-video-testimonial-fields.sql
 ```
 
 The migrations are structural and idempotent. They never seed or copy CRM
@@ -88,11 +96,22 @@ the Admin form. Editors manage only the label and optional icon.
 ### `013-homepage-video-only.sql`
 
 Removes the old eyebrow, title, and description columns from the Homepage video
-component. The section now consists only of a YouTube URL; it renders as a
-full-viewport-width, autoplaying muted video directly below the hero.
+component as part of its transition to a YouTube-URL-based video section.
 Apply this after deploying the Strapi schema that no longer exposes those
 fields. It is safe when the columns were already removed or the component table
-does not exist.
+does not exist. This cleanup does **not** register the component in Content
+Manager: production must first run a Strapi CMS image built with
+`strapi-cms/src/components/homepage/video-section.json` and the updated Homepage
+dynamic-zone schema. Strapi synchronizes that component's database storage from
+the deployed schema; no separate create-table migration is needed here.
+
+### `014-homepage-video-testimonial-fields.sql`
+
+Adds nullable quote, customer name, customer description, and optional thumbnail
+URL fields to Homepage's YouTube video component. Deploy the matching Strapi
+schema first, then run this migration. It does not populate editorial content;
+enter testimonial values manually in Homepage Content Manager. The frontend
+waits for a valid YouTube URL and quote before rendering the section.
 
 ## Manual promotion merge
 

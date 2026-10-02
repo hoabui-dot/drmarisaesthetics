@@ -1174,5 +1174,9 @@
   "content-manager.components.deep-plane.faq-item.answer": "Câu trả lời",
   "content-manager.content-types.api::deep-plane-facelift-specialist.deep-plane-facelift-specialist.sections": "Các section của trang",
   "content-manager.components.homepage.video-section.youtube_url": "URL YouTube",
+  "content-manager.components.homepage.video-section.quote": "Lời chia sẻ của khách hàng",
+  "content-manager.components.homepage.video-section.customer_name": "Tên khách hàng",
+  "content-manager.components.homepage.video-section.customer_description": "Thông tin bổ sung về khách hàng",
+  "content-manager.components.homepage.video-section.thumbnail_url": "URL ảnh thumbnail video (không bắt buộc)",
   "content-manager.components.result.case.category_ids": "Danh mục"
 }

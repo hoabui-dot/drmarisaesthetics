@@ -21,13 +21,13 @@ const careerTimeline = ['Koren Star Cosmetic Hospital', 'Asia International Cosm
 const revisionConcerns = ['capsular contracture', 'implant rupture', 'implant displacement', 'breast asymmetry', 'symmastia', 'implant removal', 'excessive scar tissue', 'free silicone', 'silicone migration or leakage', 'failed breast augmentation']
 const reviewItems = ['current concerns', 'recent photographs', 'medical history', 'previous surgery information', 'implant details', 'previous operation reports', 'relevant investigations']
 
-export function OurTeamPage({ data = ourTeamMockData }: { data?: OurTeamData }) {
+export function OurTeamPage({ data = ourTeamMockData, drHuyImageTreatment = false }: { data?: OurTeamData; drHuyImageTreatment?: boolean }) {
   const { hero, revision } = data
   const professional = data.professional
   const international = data.internationalPatients
   const pageRef = useRef<HTMLElement>(null)
   useOurTeamMotion(pageRef)
-  return <main ref={pageRef} className="stitch-page stitch-our-team">
+  return <main ref={pageRef} className={`stitch-page stitch-our-team${drHuyImageTreatment ? ' stitch-our-team--dr-huy' : ''}`}>
     <section className="our-team-profile-hero" data-team-hero><div className="our-team-profile-hero__grid stitch-container"><div className="our-team-profile-hero__heading"><span className="stitch-kicker" data-team-hero-eyebrow><i data-team-hero-divider />{hero.eyebrow}</span><h2><span className="stitch-hero-line"><span data-team-hero-title-line>{hero.title}</span></span></h2><div className="our-team-profile-hero__media our-team-profile-hero__media--mobile" aria-hidden="true"><TeamImage src={hero.image} alt="" className="our-team-profile-hero__image" /></div></div><div className="our-team-profile-hero__copy"><div className="our-team-profile-hero__identity" data-team-hero-copy><p>Dr. Tran Minh Huy</p><span>Specialist Level I in Aesthetic Surgery, Vietnam</span></div><div className="our-team-profile-hero__body">{hero.paragraphs.map((paragraph) => <p key={paragraph} data-team-hero-copy>{paragraph}</p>)}</div><div className="stitch-actions" data-team-hero-actions><ConsultationButton className="stitch-button stitch-button--dark">Request a Consultation</ConsultationButton><a className="stitch-button stitch-button--outline" href="#revision">Explore Surgical Expertise <ArrowRight size={17} /></a></div></div><div className="our-team-profile-hero__media our-team-profile-hero__media--desktop" data-team-hero-image><TeamImage src={hero.image} alt={hero.imageAlt} className="our-team-profile-hero__image" /></div></div></section>
 
     <section className="our-team-authority" aria-labelledby="medical-authority-title">

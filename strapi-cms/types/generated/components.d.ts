@@ -2044,10 +2044,14 @@ export interface HomepageTitleLine extends Struct.ComponentSchema {
 export interface HomepageVideoSection extends Struct.ComponentSchema {
   collectionName: 'components_homepage_video_sections';
   info: {
-    description: 'Full-width YouTube video displayed immediately below the homepage hero.';
+    description: 'Customer video testimonial displayed directly below the homepage hero.';
     displayName: 'Homepage video section';
   };
   attributes: {
+    customer_description: Schema.Attribute.Text;
+    customer_name: Schema.Attribute.String;
+    quote: Schema.Attribute.Text;
+    thumbnail_url: Schema.Attribute.Text;
     youtube_url: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }

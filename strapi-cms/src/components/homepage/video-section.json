@@ -2,13 +2,25 @@
   "collectionName": "components_homepage_video_sections",
   "info": {
     "displayName": "Homepage video section",
-    "description": "Full-width YouTube video displayed immediately below the homepage hero."
+    "description": "Customer video testimonial displayed directly below the homepage hero."
   },
   "options": {},
   "attributes": {
     "youtube_url": {
       "type": "string",
       "required": true
+    },
+    "quote": {
+      "type": "text"
+    },
+    "customer_name": {
+      "type": "string"
+    },
+    "customer_description": {
+      "type": "text"
+    },
+    "thumbnail_url": {
+      "type": "text"
     }
   }
 }

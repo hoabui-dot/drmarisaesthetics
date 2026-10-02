@@ -1174,5 +1174,9 @@
   "content-manager.components.deep-plane.faq-item.answer": "Answer",
   "content-manager.content-types.api::deep-plane-facelift-specialist.deep-plane-facelift-specialist.sections": "Page sections",
   "content-manager.components.homepage.video-section.youtube_url": "YouTube URL",
+  "content-manager.components.homepage.video-section.quote": "Customer quote",
+  "content-manager.components.homepage.video-section.customer_name": "Customer name",
+  "content-manager.components.homepage.video-section.customer_description": "Customer description",
+  "content-manager.components.homepage.video-section.thumbnail_url": "Video thumbnail URL (optional)",
   "content-manager.components.result.case.category_ids": "Categories"
 }
