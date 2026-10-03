@@ -10,6 +10,15 @@
       "type": "string",
       "required": true
     },
+    "title": {
+      "type": "string",
+      "required": true,
+      "default": "A patient's perspective",
+      "maxLength": 255
+    },
+    "subtitle": {
+      "type": "text"
+    },
     "quote": {
       "type": "text"
     },

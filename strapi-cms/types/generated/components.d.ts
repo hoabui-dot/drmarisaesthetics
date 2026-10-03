@@ -2053,7 +2053,14 @@ export interface HomepageVideoSection extends Struct.ComponentSchema {
     customer_description: Schema.Attribute.Text;
     customer_name: Schema.Attribute.String;
     quote: Schema.Attribute.Text;
+    subtitle: Schema.Attribute.Text;
     thumbnail_url: Schema.Attribute.Text;
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 255;
+      }> &
+      Schema.Attribute.DefaultTo<"A patient's perspective">;
     youtube_url: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }

@@ -139,6 +139,14 @@ Strapi schema first, apply this migration, then reselect the homepage cases in
 Content Manager. The frontend falls back to the latest six cases until a valid
 selection is saved.
 
+### `017-homepage-video-heading.sql`
+
+Adds a required title (with a safe default for existing Homepage video entries)
+and optional subtitle to the Homepage customer-video component. Deploy the
+matching Strapi schema and frontend first, then apply this structural migration.
+Editors can change the title and add or omit the subtitle in Homepage Content
+Manager; it does not seed testimonial copy.
+
 ## Manual promotion merge
 
 The copy step is intentionally outside this directory. From the repository

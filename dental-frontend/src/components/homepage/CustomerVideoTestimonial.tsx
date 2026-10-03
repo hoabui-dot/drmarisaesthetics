@@ -6,6 +6,8 @@ import { getYoutubeEmbedUrl, getYoutubeVideoAspectRatio, getYoutubeVideoId } fro
 
 export interface CustomerVideoTestimonialProps {
   youtubeUrl: string
+  title: string
+  subtitle?: string
   quote: string
   customerName?: string
   customerDescription?: string
@@ -30,6 +32,8 @@ function resolveThumbnailUrl(value: string | undefined, videoId: string): string
 
 export function CustomerVideoTestimonial({
   youtubeUrl,
+  title,
+  subtitle,
   quote,
   customerName,
   customerDescription,
@@ -49,6 +53,10 @@ export function CustomerVideoTestimonial({
 
   return (
     <section className={sectionClassName} aria-label="Customer video testimonial">
+      <header className="stitch-homepage-testimonial__heading">
+        <h2>{title.trim() || 'A patient’s perspective'}</h2>
+        {subtitle?.trim() && <p>{subtitle.trim()}</p>}
+      </header>
       <div className="stitch-homepage-testimonial__inner">
         <div className="stitch-homepage-testimonial__media" data-video-orientation={videoAspectRatio === '9 / 16' ? 'portrait' : 'landscape'}>
           <div className="stitch-homepage-testimonial__frame" style={{ aspectRatio: videoAspectRatio }}>

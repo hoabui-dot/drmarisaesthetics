@@ -213,6 +213,8 @@ export function StitchHomepage({ data, results }: { data?: HomepageEditorialData
 
     <CustomerVideoTestimonial
       youtubeUrl={typeof video.youtube_url === 'string' ? video.youtube_url : ''}
+      title={typeof video.title === 'string' ? video.title : ''}
+      subtitle={typeof video.subtitle === 'string' ? video.subtitle : undefined}
       quote={typeof video.quote === 'string' ? video.quote : ''}
       customerName={typeof video.customer_name === 'string' ? video.customer_name : undefined}
       customerDescription={typeof video.customer_description === 'string' ? video.customer_description : undefined}
