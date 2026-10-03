@@ -33,6 +33,14 @@ psql "$DATABASE_URL" \
 psql "$DATABASE_URL" \
   -v ON_ERROR_STOP=1 \
   -f migration-production/014-homepage-video-testimonial-fields.sql
+
+psql "$DATABASE_URL" \
+  -v ON_ERROR_STOP=1 \
+  -f migration-production/015-homepage-patient-result-selection.sql
+
+psql "$DATABASE_URL" \
+  -v ON_ERROR_STOP=1 \
+  -f migration-production/016-homepage-patient-result-stable-selection.sql
 ```
 
 The migrations are structural and idempotent. They never seed or copy CRM
@@ -112,6 +120,24 @@ URL fields to Homepage's YouTube video component. Deploy the matching Strapi
 schema first, then run this migration. It does not populate editorial content;
 enter testimonial values manually in Homepage Content Manager. The frontend
 waits for a valid YouTube URL and quote before rendering the section.
+
+### `015-homepage-patient-result-selection.sql`
+
+Adds the nullable JSON field used by the Homepage patient-results section to
+store selected Result component IDs in editor-defined display order. Deploy the
+matching Strapi schema/custom field first, then apply this migration. It does
+not alter Result cases or populate the Homepage selection; editors choose and
+order up to six saved cases in Homepage Content Manager. This initial ID-based
+format is superseded by migration `016` because repeatable-component IDs may
+change when case entries are replaced.
+
+### `016-homepage-patient-result-stable-selection.sql`
+
+Replaces homepage Result component-row IDs with `case_number` values as the
+ordered selection key, and removes the obsolete ID list. Deploy the matching
+Strapi schema first, apply this migration, then reselect the homepage cases in
+Content Manager. The frontend falls back to the latest six cases until a valid
+selection is saved.
 
 ## Manual promotion merge
 

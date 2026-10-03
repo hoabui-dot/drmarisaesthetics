@@ -1178,5 +1178,6 @@
   "content-manager.components.homepage.video-section.customer_name": "Tên khách hàng",
   "content-manager.components.homepage.video-section.customer_description": "Thông tin bổ sung về khách hàng",
   "content-manager.components.homepage.video-section.thumbnail_url": "URL ảnh thumbnail video (không bắt buộc)",
-  "content-manager.components.result.case.category_ids": "Danh mục"
+  "content-manager.components.result.case.category_ids": "Danh mục",
+  "content-manager.components.homepage.patient-results-section.selected_case_numbers": "Các ca hiển thị trên trang chủ"
 }

@@ -208,6 +208,10 @@ export default {
       type: "json",
     });
     strapi.customFields.register({
+      name: "homepage-result-case-order",
+      type: "json",
+    });
+    strapi.customFields.register({
       name: "website-category-id",
       type: "string",
     });

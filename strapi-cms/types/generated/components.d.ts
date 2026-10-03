@@ -1682,6 +1682,8 @@ export interface HomepagePatientResultsSection extends Struct.ComponentSchema {
   };
   attributes: {
     badge: Schema.Attribute.String;
+    selected_case_numbers: Schema.Attribute.JSON &
+      Schema.Attribute.CustomField<'global::homepage-result-case-order'>;
     subtitle: Schema.Attribute.Text;
     title: Schema.Attribute.String & Schema.Attribute.Required;
   };

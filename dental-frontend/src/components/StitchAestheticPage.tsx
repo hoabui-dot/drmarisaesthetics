@@ -15,7 +15,7 @@ import { PatientResultsGallerySection } from '@/src/components/homepage/PatientR
 import { MotionFaqAccordion } from '@/src/components/ui/motion-faq-accordion'
 import { ConsultationCtaSection } from '@/src/components/blocks/ConsultationCtaSection'
 import { useOurTeamMotion } from '@/src/hooks/useOurTeamMotion'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import type { HomepageEditorialData } from '@/src/types/homepage-editorial'
 import type { ResultsData } from '@/src/data/results'
 import { getMediaUrl } from '@/src/lib/api/queries'
@@ -105,8 +105,50 @@ function getImageAspectRatio(media: unknown): string | undefined {
 
 export function StitchHomepage({ data, results }: { data?: HomepageEditorialData; results?: ResultsData | null }) {
   const homepageRef = useRef<HTMLDivElement>(null)
+  const homepageHeroRef = useRef<HTMLElement>(null)
   useHomepageMotion(homepageRef)
   useSignatureProceduresMotion(homepageRef)
+  useEffect(() => {
+    const hero = homepageHeroRef.current
+    const inner = hero?.querySelector<HTMLElement>('.stitch-home-hero__inner')
+    const badge = hero?.querySelector<HTMLElement>('[data-hero-kicker]')
+    const paragraphTwo = hero?.querySelector<HTMLElement>('[data-hero-paragraph-two]')
+    const image = hero?.querySelector<HTMLElement>('[data-hero-image]')
+    if (!hero || !inner || !badge || !paragraphTwo || !image) return
+
+    let frame = 0
+    const measureImageSpan = () => {
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(() => {
+        if (!window.matchMedia('(min-width: 901px)').matches) {
+          image.style.removeProperty('--homepage-hero-image-top')
+          image.style.removeProperty('--homepage-hero-image-height')
+          return
+        }
+
+        const innerTop = inner.getBoundingClientRect().top
+        const top = badge.getBoundingClientRect().top - innerTop
+        const bottom = paragraphTwo.getBoundingClientRect().bottom - innerTop
+        if (bottom <= top) return
+
+        image.style.setProperty('--homepage-hero-image-top', `${Math.max(0, top)}px`)
+        image.style.setProperty('--homepage-hero-image-height', `${bottom - top}px`)
+      })
+    }
+
+    const resizeObserver = new ResizeObserver(measureImageSpan)
+    resizeObserver.observe(inner)
+    resizeObserver.observe(hero.querySelector<HTMLElement>('.stitch-home-hero__copy') ?? inner)
+    window.addEventListener('resize', measureImageSpan)
+    measureImageSpan()
+    void document.fonts?.ready.then(measureImageSpan)
+
+    return () => {
+      cancelAnimationFrame(frame)
+      resizeObserver.disconnect()
+      window.removeEventListener('resize', measureImageSpan)
+    }
+  }, [])
   const hero = data?.hero_content ?? {}
   const video = data?.video_section ?? {}
   const signature = data?.signature_procedures ?? {}
@@ -150,7 +192,7 @@ export function StitchHomepage({ data, results }: { data?: HomepageEditorialData
   const heroImageAspectRatio = getImageAspectRatio(hero.image || hero.image_url || hero.doctor_image) || '4 / 5'
 
   return <div ref={homepageRef} className="stitch-page stitch-homepage">
-    <section className="stitch-home-hero" data-motion-section="hero"><div className="stitch-home-hero__inner">
+    <section ref={homepageHeroRef} className="stitch-home-hero" data-motion-section="hero"><div className="stitch-home-hero__inner">
       <div className="stitch-home-hero__mobile-heading" aria-hidden="true">
         <span className="stitch-kicker"><i /> <span>{typeof hero.eyebrow === 'string' ? hero.eyebrow : 'HOSPITAL-BASED COSMETIC SURGERY · HO CHI MINH CITY'}</span></span>
         <h2><span className="stitch-hero-line"><span>{heroTitle}</span></span></h2>
@@ -162,7 +204,7 @@ export function StitchHomepage({ data, results }: { data?: HomepageEditorialData
         </div>
         <p className="stitch-editorial-lead" data-hero-copy>{typeof hero.editorial_lead === 'string' ? hero.editorial_lead : 'Cosmetic surgery is a medical decision before it is an aesthetic one.'}</p>
         <p data-hero-copy>{heroDescription || 'At DR. MARIS AESTHETICS, your case is personally assessed and managed by Dr. Maris, with surgery performed at City International Hospital (CIH) in Ho Chi Minh City.'}</p>
-        <p data-hero-copy>{heroSecondary || 'From primary cosmetic procedures to complex revision surgery, every surgical plan begins with your anatomy, medical history, previous procedures and individual goals.'}</p>
+        <p data-hero-copy data-hero-paragraph-two>{heroSecondary || 'From primary cosmetic procedures to complex revision surgery, every surgical plan begins with your anatomy, medical history, previous procedures and individual goals.'}</p>
         <div className="stitch-actions" data-hero-actions><ConsultationButton className="stitch-button stitch-button--dark" /><a className="stitch-button stitch-button--outline" href="#journey">Explore Surgical Procedures <ArrowRight size={17} /></a></div>
         <div className="stitch-proof-row" data-hero-proof>{heroProof.map((item, index) => <span key={`${item}-${index}`}>{index > 0 && <b aria-hidden="true">|</b>}{item}</span>)}</div>
       </div>

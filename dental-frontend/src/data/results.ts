@@ -1,4 +1,5 @@
 export type ResultCase = {
+  id?: string
   caseNumber: string
   createdAt?: string
   categoryIds?: string[]

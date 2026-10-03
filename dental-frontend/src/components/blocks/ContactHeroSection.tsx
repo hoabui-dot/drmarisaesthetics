@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { Clock3, Mail, MapPin, Phone } from 'lucide-react'
+import type { CSSProperties } from 'react'
 
 type ContactCard = {
   label: string
@@ -16,6 +17,8 @@ export type ContactHeroData = {
   subtitle?: string
   description?: string
   heroImageUrl?: string
+  heroImageWidth?: number
+  heroImageHeight?: number
   contactCards?: ContactCard[]
 }
 
@@ -61,7 +64,14 @@ export function ContactHeroSection({ data }: { data: ContactHeroData }) {
           </div>
 
           {data.heroImageUrl ? (
-            <div className="contact-hero-image">
+            <div
+              className="contact-hero-image"
+              style={{
+                '--contact-hero-image-ratio': data.heroImageWidth && data.heroImageHeight
+                  ? `${data.heroImageWidth} / ${data.heroImageHeight}`
+                  : '4 / 3',
+              } as CSSProperties}
+            >
               <Image src={data.heroImageUrl} alt="Dr. Maris consulting with a patient" fill priority unoptimized sizes="(max-width: 1023px) 100vw, 55vw" className="object-cover" />
             </div>
           ) : null}

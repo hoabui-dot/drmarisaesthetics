@@ -125,6 +125,9 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     order: method.order || 0,
     isActive: method.isActive !== false,
   })) || [];
+  const settingsEmail = websiteSetting?.contactMethods
+    ?.find((method) => method.type.toLowerCase() === 'email' && method.isActive !== false)
+    ?.href.replace(/^mailto:/i, '').split('?')[0].trim() || '';
   const contactMethods = settingsContactMethods.length > 0 ? settingsContactMethods : staticContactMethods;
   const footer: FooterData = websiteSetting ? {
     ...staticFooter,
@@ -134,7 +137,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
       ...staticFooter.contactInfo,
       address: websiteSetting.address || staticFooter.contactInfo.address,
       phone: websiteSetting.phonePrimary || staticFooter.contactInfo.phone,
-      email: '',
+      email: settingsEmail,
     },
     copyrightText: websiteSetting?.footerCopyrightText || FALLBACK_FOOTER.copyrightText,
     tagline: websiteSetting?.footerTagline || FALLBACK_FOOTER.tagline,

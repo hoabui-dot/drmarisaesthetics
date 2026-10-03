@@ -470,6 +470,7 @@ export async function getResults(isDraftMode: boolean = false): Promise<ResultsD
           ? item.category_ids.map((categoryId: unknown) => String(categoryId || '').trim()).filter(Boolean)
           : legacyCategoryId ? [String(legacyCategoryId)] : [];
         return {
+        id: item.id == null ? undefined : String(item.id),
         caseNumber: item.case_number || item.caseNumber || "",
         // Repeatable Strapi components do not always expose their own
         // timestamps. In that case the uploaded composite image timestamp is
@@ -1557,6 +1558,8 @@ export async function getContactPage(isDraftMode: boolean = false): Promise<Cont
           subtitle: cleanDescription(block.subtitle),
           description: cleanDescription(block.description),
           heroImageUrl: block.hero_image ? getMediaUrl(block.hero_image) : undefined,
+          heroImageWidth: Number(block.hero_image?.data?.attributes?.width || block.hero_image?.data?.width || block.hero_image?.width) || undefined,
+          heroImageHeight: Number(block.hero_image?.data?.attributes?.height || block.hero_image?.data?.height || block.hero_image?.height) || undefined,
           contactCards: (block.contact_cards || []).map((card: any) => ({
             label: card.label || '',
             value: cleanDescription(card.value) || '',

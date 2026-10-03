@@ -5,6 +5,10 @@
   "attributes": {
     "badge": { "type": "string" },
     "title": { "type": "string", "required": true },
-    "subtitle": { "type": "text" }
+    "subtitle": { "type": "text" },
+    "selected_case_numbers": {
+      "type": "customField",
+      "customField": "global::homepage-result-case-order"
+    }
   }
 }

@@ -19,12 +19,22 @@ export function PatientResultsGallerySection({ content, results }: { content?: H
     ? content.title
     : 'Results are individual. Planning is personal.'
   const subtitle = typeof content?.subtitle === 'string' && content.subtitle.trim() ? content.subtitle : ''
-  const cases = [...(results?.cases || resultsMockData.cases)]
+  const allCases = [...(results?.cases || resultsMockData.cases)]
     .sort((a, b) => {
       if (!a.createdAt && !b.createdAt) return 0
       return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
     })
+  const selectedCaseNumbers = Array.isArray(content?.selected_case_numbers)
+    ? content.selected_case_numbers.map((caseNumber) => String(caseNumber))
+    : []
+  const caseByNumber = new Map(allCases.map((item) => [item.caseNumber, item]))
+  const selectedCases = selectedCaseNumbers
+    .map((caseNumber) => caseByNumber.get(caseNumber))
+    .filter((item): item is (typeof allCases)[number] => Boolean(item))
     .slice(0, 6)
+  // A stale or partially invalid CMS selection should never blank the whole
+  // homepage section. Editors can reselect cases using their case numbers.
+  const cases = selectedCases.length ? selectedCases : allCases.slice(0, 6)
   return <section ref={ref} id="results" className="stitch-section stitch-results-preview" data-results-module>
     <div className="stitch-results-pin" data-results-pin><div className="stitch-container"><div className="stitch-section-heading stitch-results-heading">{badge ? <span className="stitch-kicker">{badge}</span> : null}<h2 className="stitch-editorial-lead">{title}</h2>{subtitle ? <p className="stitch-lead">{subtitle}</p> : null}</div><div className="stitch-results-gallery" data-results-gallery><div className="stitch-results-gallery__track" data-results-track>{cases.map((item) => <article className="stitch-results-card" key={item.caseNumber}><div className="stitch-results-feature__image"><ResultImage src={item.image || item.afterImage || ''} alt={item.imageAlt || item.afterAlt || `Composite before and after result for ${item.title}`} /></div><div className="stitch-results-feature__meta"><span>Case {item.caseNumber}</span><h3>{item.title}</h3><p>{item.subtitle}</p></div></article>)}</div></div></div></div>
   </section>

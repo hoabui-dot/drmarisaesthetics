@@ -6,6 +6,7 @@ import type { StrapiApp } from '@strapi/admin/strapi-admin'
 const SERVICE_NAVIGATION_ORDER_FIELD = 'service-navigation-order'
 const RESULT_CATEGORY_ID_FIELD = 'result-category-id'
 const RESULT_CATEGORY_MULTI_SELECT_FIELD = 'result-category-multi-select'
+const HOMEPAGE_RESULT_CASE_ORDER_FIELD = 'homepage-result-case-order'
 const WEBSITE_CATEGORY_ID_FIELD = 'website-category-id'
 const LIST_VIEW_COLUMNS_HOOK = 'Admin/CM/pages/ListView/inject-column-in-table'
 const EDIT_VIEW_LAYOUT_HOOK = 'Admin/CM/pages/EditView/mutate-edit-view-layout'
@@ -395,6 +396,22 @@ export default {
       },
       components: {
         Input: async () => import('./ResultCategoryInput'),
+      },
+    })
+
+    app.customFields.register({
+      name: HOMEPAGE_RESULT_CASE_ORDER_FIELD,
+      type: 'json',
+      intlLabel: {
+        id: 'custom-field.homepage-result-case-order.label',
+        defaultMessage: 'Homepage patient cases',
+      },
+      intlDescription: {
+        id: 'custom-field.homepage-result-case-order.description',
+        defaultMessage: 'Choose up to six cases from Patient Results. Reorder selected cases to control their display order on the homepage.',
+      },
+      components: {
+        Input: async () => import('./HomepageResultCaseOrderInput'),
       },
     })
 
