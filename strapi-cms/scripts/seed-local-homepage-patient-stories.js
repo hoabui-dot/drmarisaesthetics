@@ -9,40 +9,40 @@ const { Client } = require('pg')
 // These patients are not represented as Dr. Maris patients.
 const patientStories = [
   {
-    youtube_url: 'https://www.youtube.com/watch?v=vM-0UpMoDAw',
-    title: 'A patient’s facelift experience',
-    quote: 'A first-person account of the patient’s facelift experience.',
-    source: 'External reference · Joe Niamtu, III',
+    youtube_url: 'https://www.youtube.com/shorts/BkbcjZuqk3k',
+    title: 'Diana’s rhinoplasty journey',
+    quote: 'Diana shares her rhinoplasty experience, recovery advice and before-and-after perspective.',
+    source: 'External reference · Dra. Lina M. Vanegas',
     description:
-      'Public facelift patient video published by Dr. Joe Niamtu, III. Demo content only; this is not a Dr. Maris patient testimonial.',
-    thumbnail_url: 'https://i.ytimg.com/vi/vM-0UpMoDAw/hqdefault.jpg',
+      'A vertical patient testimonial covering the rhinoplasty journey from consultation through recovery. Demo content only; Diana is not a Dr. Maris patient.',
+    thumbnail_url: 'https://i.ytimg.com/vi/BkbcjZuqk3k/hqdefault.jpg',
   },
   {
-    youtube_url: 'https://www.youtube.com/watch?v=HOtP-XD5fj8',
-    title: 'Reflections after facelift surgery',
-    quote: 'A patient shares personal reflections on her facelift journey.',
-    source: 'External reference · Joe Niamtu, III',
+    youtube_url: 'https://www.youtube.com/shorts/iF8MsQ6PMLA',
+    title: 'Beatriz’s rhinoplasty experience',
+    quote: 'Beatriz describes the breathing and appearance concerns behind her nose surgery.',
+    source: 'External reference · Clínicas Diego de León',
     description:
-      'Facelift testimonial video listed by Niamtu Cosmetic Facial Surgery. Demo content only; this is not a Dr. Maris patient testimonial.',
-    thumbnail_url: 'https://i.ytimg.com/vi/HOtP-XD5fj8/hqdefault.jpg',
+      'The clinic describes Beatriz’s septal deviation, breathing difficulty and rhinoseptoplasty experience. Demo content only; Beatriz is not a Dr. Maris patient.',
+    thumbnail_url: 'https://i.ytimg.com/vi/iF8MsQ6PMLA/hqdefault.jpg',
   },
   {
-    youtube_url: 'https://www.youtube.com/watch?v=o5qRKEQeV9A',
-    title: 'A facelift patient’s story',
-    quote: 'Diane discusses her decision to have a facelift and her experience with the results.',
-    source: 'External reference · Ricardo L. Rodriguez, MD',
+    youtube_url: 'https://www.youtube.com/shorts/8YGbjpVxI8Y',
+    title: 'A happy patient after rhinoplasty',
+    quote: 'A short patient-perspective clip following rhinoplasty surgery.',
+    source: 'External reference · Richardsons Face Hospitals',
     description:
-      'Based on the public patient-testimonial page from Dr. Ricardo L. Rodriguez in Baltimore. Demo content only; this is not a Dr. Maris patient testimonial.',
-    thumbnail_url: 'https://i.ytimg.com/vi/o5qRKEQeV9A/hqdefault.jpg',
+      'Published as “Happy patient after Rhinoplasty surgery” by Richardsons Face Hospitals. Demo content only; this is not a Dr. Maris patient testimonial.',
+    thumbnail_url: 'https://i.ytimg.com/vi/8YGbjpVxI8Y/hqdefault.jpg',
   },
   {
-    youtube_url: 'https://www.youtube.com/watch?v=yKFSBg9vu20',
-    title: 'Della’s facelift consultation story',
-    quote: 'Della and her surgeon discuss her goals and planned facial procedures.',
-    source: 'External reference · 8 West Clinic',
+    youtube_url: 'https://www.youtube.com/shorts/kEHigpBbDK8',
+    title: 'Rhinoplasty patient story',
+    quote: 'A patient story documenting a rhinoplasty journey.',
+    source: 'External reference · Dr. Mehmet Nurettin Kiral',
     description:
-      'Part one of 8 West Clinic’s public patient documentary about Della’s facelift, eyelid and brow-lift consultation. Demo content only; this is not a Dr. Maris patient testimonial.',
-    thumbnail_url: 'https://i.ytimg.com/vi/yKFSBg9vu20/hqdefault.jpg',
+      'One of the vertical patient-story videos featured by Dr. Kiral’s rhinoplasty patient stories page. Demo content only; this is not a Dr. Maris patient testimonial.',
+    thumbnail_url: 'https://i.ytimg.com/vi/kEHigpBbDK8/hqdefault.jpg',
   },
 ]
 
@@ -50,6 +50,11 @@ const homepageDocumentId = 'lz78tguouxtpwkdt69hummo6'
 const videoComponentType = 'homepage.video-section'
 const storyComponentType = 'homepage.video-story'
 const storyUrls = patientStories.map((story) => story.youtube_url)
+const previousSeedVideoIds = ['vM-0UpMoDAw', 'HOtP-XD5fj8', 'o5qRKEQeV9A', 'yKFSBg9vu20']
+const managedStoryUrls = [
+  ...storyUrls,
+  ...previousSeedVideoIds.map((id) => `https://www.youtube.com/watch?v=${id}`),
+]
 
 function writeMode() {
   return process.argv.includes('--write')
@@ -101,7 +106,7 @@ async function main() {
       [sectionIds, storyComponentType],
     )
 
-    const unknownStories = existing.rows.filter((story) => !storyUrls.includes(story.youtube_url))
+    const unknownStories = existing.rows.filter((story) => !managedStoryUrls.includes(story.youtube_url))
     if (unknownStories.length) {
       throw new Error(
         'The video section already contains non-seed stories. No data was changed; review the existing stories before seeding.',

@@ -129,32 +129,32 @@ export function CustomerVideoTestimonial({
                 {activeStory.description && <p>{activeStory.description}</p>}
               </footer>
             )}
+            {storyList.length > 1 && (
+              <nav className="stitch-homepage-testimonial__playlist" aria-label="Choose a patient story">
+                {storyList.map((story, index) => {
+                  const storyVideoId = getYoutubeVideoId(story.youtubeUrl)
+                  if (!storyVideoId) return null
+                  return (
+                    <button
+                      className="stitch-homepage-testimonial__story-card"
+                      type="button"
+                      key={story.id}
+                      aria-pressed={story.id === activeStory.id}
+                      aria-label={`Show story ${index + 1}${story.title ? `: ${story.title}` : ''}`}
+                      onClick={() => selectStory(story.id)}
+                    >
+                      <span className="stitch-homepage-testimonial__story-thumb">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={resolveThumbnailUrl(story.thumbnailUrl, storyVideoId)} alt="" loading="lazy" decoding="async" />
+                        <span aria-hidden="true"><Play size={15} fill="currentColor" /></span>
+                      </span>
+                      <span className="stitch-homepage-testimonial__story-label">{story.title || story.source || `Patient story ${index + 1}`}</span>
+                    </button>
+                  )
+                })}
+              </nav>
+            )}
           </div>
-          {storyList.length > 1 && (
-            <nav className="stitch-homepage-testimonial__playlist" aria-label="Choose a patient story">
-              {storyList.map((story, index) => {
-                const storyVideoId = getYoutubeVideoId(story.youtubeUrl)
-                if (!storyVideoId) return null
-                return (
-                  <button
-                    className="stitch-homepage-testimonial__story-card"
-                    type="button"
-                    key={story.id}
-                    aria-pressed={story.id === activeStory.id}
-                    aria-label={`Show story ${index + 1}${story.title ? `: ${story.title}` : ''}`}
-                    onClick={() => selectStory(story.id)}
-                  >
-                    <span className="stitch-homepage-testimonial__story-thumb">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={resolveThumbnailUrl(story.thumbnailUrl, storyVideoId)} alt="" loading="lazy" decoding="async" />
-                      <span aria-hidden="true"><Play size={15} fill="currentColor" /></span>
-                    </span>
-                    <span className="stitch-homepage-testimonial__story-label">{story.title || story.source || `Patient story ${index + 1}`}</span>
-                  </button>
-                )
-              })}
-            </nav>
-          )}
         </div>
       </div>
     </section>
