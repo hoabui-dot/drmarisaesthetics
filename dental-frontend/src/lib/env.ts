@@ -90,9 +90,6 @@ const clientEnvSchema = z.object({
       (val) => val.startsWith("http://") || val.startsWith("https://"),
       "NEXT_PUBLIC_STRAPI_URL must be a valid URL",
     ),
-  NEXT_PUBLIC_STRAPI_API_TOKEN: z
-    .string()
-    .min(1, "NEXT_PUBLIC_STRAPI_API_TOKEN is required"),
   NEXT_PUBLIC_SERVER_URL: z
     .string()
     .min(1, "NEXT_PUBLIC_SERVER_URL is required"),
@@ -202,7 +199,6 @@ if (isServer && !isBuildPhase) {
     "Build-time env (NEXT_PUBLIC_*)",
     [
       "NEXT_PUBLIC_STRAPI_URL",
-      "NEXT_PUBLIC_STRAPI_API_TOKEN",
       "NEXT_PUBLIC_SERVER_URL",
       "NEXT_PUBLIC_RECAPTCHA_SITE_KEY",
       "NEXT_PUBLIC_RECAPTCHA_ENABLED",
@@ -215,7 +211,6 @@ if (isServer && !isBuildPhase) {
     "Build-time env (NEXT_PUBLIC_*)",
     [
       "NEXT_PUBLIC_STRAPI_URL",
-      "NEXT_PUBLIC_STRAPI_API_TOKEN",
       "NEXT_PUBLIC_SERVER_URL",
       "NEXT_PUBLIC_RECAPTCHA_SITE_KEY",
       "NEXT_PUBLIC_RECAPTCHA_ENABLED",
@@ -289,8 +284,6 @@ export const STRAPI_WEBHOOK_SECRET = isServer
 // These are validated at server boot; no || "" needed.
 export const NEXT_PUBLIC_STRAPI_URL =
   process.env.NEXT_PUBLIC_STRAPI_URL as string;
-export const NEXT_PUBLIC_STRAPI_API_TOKEN =
-  process.env.NEXT_PUBLIC_STRAPI_API_TOKEN as string;
 export const NEXT_PUBLIC_SERVER_URL =
   process.env.NEXT_PUBLIC_SERVER_URL as string;
 export const NEXT_PUBLIC_RECAPTCHA_SITE_KEY =

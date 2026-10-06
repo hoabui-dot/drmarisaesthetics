@@ -7,6 +7,7 @@ import { useMemo, useState, type FormEvent } from 'react'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { SelectBase } from '@/src/components/ui/SelectBase'
 import { CheckBoxBase } from '@/src/components/ui/CheckBoxBase'
+import { trackMarketingEvent } from '@/src/lib/marketing/events'
 import { CountryPicker, defaultCountry, type CountryOption } from '@/src/components/forms/CountryPicker'
 import { formatNationalPhone, normalizeNationalPhone } from '@/src/components/forms/phoneFormatting'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
@@ -80,6 +81,7 @@ export function ContactConsultationSection({ data, formOnly = false, submissionS
         console.error('[Contact page] submission rejected', { status: response.status, error: errorBody?.error || 'unknown' })
         throw new Error(errorBody?.error || 'Contact request failed')
       }
+      trackMarketingEvent('lead_submission_success', { submission_source: submissionSource })
       setStatus('success')
       setForm({ name: '', phone: '', email: '', preferredContact: contactMethodOptions[0].value, service: services[0]?.value || '', otherService: '', message: '', consent: false })
     } catch {

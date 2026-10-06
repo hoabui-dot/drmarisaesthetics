@@ -8,7 +8,7 @@
   "attributes": {
     "youtube_url": {
       "type": "string",
-      "required": true
+      "pluginOptions": { "content-manager": { "visible": false } }
     },
     "title": {
       "type": "string",
@@ -20,16 +20,25 @@
       "type": "text"
     },
     "quote": {
-      "type": "text"
+      "type": "text",
+      "pluginOptions": { "content-manager": { "visible": false } }
     },
     "customer_name": {
-      "type": "string"
+      "type": "string",
+      "pluginOptions": { "content-manager": { "visible": false } }
     },
     "customer_description": {
-      "type": "text"
+      "type": "text",
+      "pluginOptions": { "content-manager": { "visible": false } }
     },
     "thumbnail_url": {
-      "type": "text"
+      "type": "text",
+      "pluginOptions": { "content-manager": { "visible": false } }
+    },
+    "stories": {
+      "type": "component",
+      "repeatable": true,
+      "component": "homepage.video-story"
     }
   }
 }

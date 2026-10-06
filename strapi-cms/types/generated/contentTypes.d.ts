@@ -1150,6 +1150,114 @@ export interface ApiServiceService extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiSiteVerificationSiteVerification
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'site_verifications';
+  info: {
+    description: 'Approved search-engine ownership verification metadata.';
+    displayName: 'SEO Manager - Site Verification';
+    pluralName: 'site-verifications';
+    singularName: 'site-verification';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    'content-manager': {
+      visible: false;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    internal_name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 120;
+      }>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::site-verification.site-verification'
+    > &
+      Schema.Attribute.Private;
+    provider: Schema.Attribute.Enumeration<
+      ['google_search_console', 'bing_webmaster']
+    > &
+      Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    verification_method: Schema.Attribute.Enumeration<['meta_tag']> &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'meta_tag'>;
+    verification_token: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 512;
+      }>;
+  };
+}
+
+export interface ApiTrackingIntegrationTrackingIntegration
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'tracking_integrations';
+  info: {
+    description: 'Validated public configuration for approved analytics and advertising adapters.';
+    displayName: 'SEO Manager - Tracking Integrations';
+    pluralName: 'tracking-integrations';
+    singularName: 'tracking-integration';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    'content-manager': {
+      visible: false;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    internal_name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 120;
+      }>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::tracking-integration.tracking-integration'
+    > &
+      Schema.Attribute.Private;
+    provider: Schema.Attribute.Enumeration<
+      [
+        'google_tag_manager',
+        'google_analytics_4',
+        'google_ads',
+        'meta_pixel',
+        'openai_ads',
+        'openai_ads_pixel',
+      ]
+    > &
+      Schema.Attribute.Required;
+    public_id: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 120;
+      }>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiTreatmentsPageTreatmentsPage
   extends Struct.SingleTypeSchema {
   collectionName: 'treatments_pages';
@@ -1872,6 +1980,8 @@ declare module '@strapi/strapi' {
       'api::robots-settings.robots-settings': ApiRobotsSettingsRobotsSettings;
       'api::seo-manager-settings.seo-manager-settings': ApiSeoManagerSettingsSeoManagerSettings;
       'api::service.service': ApiServiceService;
+      'api::site-verification.site-verification': ApiSiteVerificationSiteVerification;
+      'api::tracking-integration.tracking-integration': ApiTrackingIntegrationTrackingIntegration;
       'api::treatments-page.treatments-page': ApiTreatmentsPageTreatmentsPage;
       'api::website-setting.website-setting': ApiWebsiteSettingWebsiteSetting;
       'plugin::content-releases.release': PluginContentReleasesRelease;

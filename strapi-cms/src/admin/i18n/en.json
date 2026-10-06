@@ -1180,6 +1180,13 @@
   "content-manager.components.homepage.video-section.customer_name": "Customer name",
   "content-manager.components.homepage.video-section.customer_description": "Customer description",
   "content-manager.components.homepage.video-section.thumbnail_url": "Video thumbnail URL (optional)",
+  "content-manager.components.homepage.video-section.stories": "Patient stories",
+  "content-manager.components.homepage.video-story.youtube_url": "YouTube video URL",
+  "content-manager.components.homepage.video-story.title": "Story title",
+  "content-manager.components.homepage.video-story.quote": "Patient quote",
+  "content-manager.components.homepage.video-story.source": "Patient / source name",
+  "content-manager.components.homepage.video-story.description": "Story description",
+  "content-manager.components.homepage.video-story.thumbnail_url": "Poster / thumbnail URL (optional)",
   "content-manager.components.result.case.category_ids": "Categories",
   "content-manager.components.homepage.patient-results-section.selected_case_numbers": "Homepage patient cases"
 }

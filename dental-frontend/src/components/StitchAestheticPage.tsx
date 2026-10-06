@@ -18,7 +18,7 @@ import { useOurTeamMotion } from '@/src/hooks/useOurTeamMotion'
 import { useEffect, useRef } from 'react'
 import type { HomepageEditorialData } from '@/src/types/homepage-editorial'
 import type { ResultsData } from '@/src/data/results'
-import { getMediaUrl } from '@/src/lib/api/queries'
+import { getMediaUrl } from '@/src/lib/api/media'
 import { CustomerVideoTestimonial } from '@/src/components/homepage/CustomerVideoTestimonial'
 
 /* const legacyImages = {
@@ -151,6 +151,22 @@ export function StitchHomepage({ data, results }: { data?: HomepageEditorialData
   }, [])
   const hero = data?.hero_content ?? {}
   const video = data?.video_section ?? {}
+  const patientStories = Array.isArray(video.stories)
+    ? video.stories.flatMap((value, index) => {
+      if (!value || typeof value !== 'object') return []
+      const story = value as Record<string, unknown>
+      if (typeof story.youtube_url !== 'string') return []
+      return [{
+        id: String(story.id ?? `patient-story-${index}`),
+        youtubeUrl: story.youtube_url,
+        title: typeof story.title === 'string' ? story.title : undefined,
+        quote: typeof story.quote === 'string' ? story.quote : undefined,
+        source: typeof story.source === 'string' ? story.source : undefined,
+        description: typeof story.description === 'string' ? story.description : undefined,
+        thumbnailUrl: typeof story.thumbnail_url === 'string' ? story.thumbnail_url : undefined,
+      }]
+    })
+    : []
   const signature = data?.signature_procedures ?? {}
   const method = data?.maris_method ?? data?.surgical_care_process ?? {}
   const revision = data?.revision_surgery ?? {}
@@ -219,6 +235,7 @@ export function StitchHomepage({ data, results }: { data?: HomepageEditorialData
       customerName={typeof video.customer_name === 'string' ? video.customer_name : undefined}
       customerDescription={typeof video.customer_description === 'string' ? video.customer_description : undefined}
       thumbnailUrl={typeof video.thumbnail_url === 'string' ? video.thumbnail_url : undefined}
+      stories={patientStories}
     />
 
       <section className="stitch-section stitch-procedures" data-motion-section="procedures" data-signature-procedures><div className="stitch-container"><div className="stitch-section-heading"><span className="stitch-kicker" data-signature-motion data-signature-eyebrow>{typeof signature.eyebrow === 'string' ? signature.eyebrow : 'SIGNATURE PROCEDURES'}</span><h2><span className="stitch-hero-line"><span data-signature-motion data-signature-title>{signatureTitle}</span></span></h2><p className="stitch-lead" data-signature-motion data-signature-copy>{typeof signature.description === 'string' ? signature.description : 'Explore the procedures Dr. Maris performs with the same clinical discipline: careful assessment, transparent planning and a recovery strategy that respects the individual.'}</p></div><div className="stitch-procedure-grid">{procedureItems.map((item, index) => { const record = item as Record<string, unknown>; const number = String(record.number || `0${index + 1}`); const title = String(record.title || 'Procedure'); const copy = String(record.description || ''); const image = cmsImage(record.image_url || record.image, images.technology); const alt = String(record.image_alt || record.imageAlt || title); const fallbackHref = title === 'Rhinoplasty' ? '/services/rhinoplasty' : `/treatments#${title.toLowerCase().replaceAll(' ', '-')}`; const cmsHref = typeof record.href === 'string' ? record.href.trim() : ''; const href = cmsHref || fallbackHref; return <a className="stitch-procedure-panel" href={href} key={`${title}-${index}`} data-procedure-panel data-signature-panel data-procedure-index={index}><div className="stitch-procedure-panel__image"><StitchImage src={image} alt={alt} /><span className="stitch-procedure-panel__curtain" data-signature-curtain aria-hidden="true" /></div><div className="stitch-procedure-panel__body"><b data-signature-motion data-signature-number>{number}</b><div><h3 data-signature-motion data-signature-panel-title>{title}</h3><p data-signature-motion data-signature-panel-description>{copy}</p><span className="stitch-link" data-signature-motion data-signature-panel-cta>Explore Procedure <ArrowRight size={16} /></span></div></div></a> })}</div></div></section>

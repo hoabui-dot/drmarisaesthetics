@@ -47,6 +47,8 @@ const MODEL_TAG_MAP: Record<string, string[]> = {
   "robots-settings": ["robots-settings"],
   redirect: ["redirects"],
   "canonical-rule": ["canonical-rules"],
+  "site-verification": ["marketing-config"],
+  "tracking-integration": ["marketing-config"],
 };
 
 // Model to path mapping for specific revalidation

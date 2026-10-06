@@ -6,11 +6,48 @@ const { getSitemapReport } = require(path.resolve(process.cwd(), 'src/lib/sitema
 
 const HEALTH_PERMISSION = 'plugin::seo-manager.health';
 const SITEMAP_PERMISSION = 'plugin::seo-manager.sitemap';
+const MARKETING_PERMISSION = 'plugin::seo-manager.marketing';
 const CACHE_TTL_MS = 30_000;
 const PAGE_SIZE = 100;
 const MAX_PAGES_PER_QUERY = 50;
 let snapshot = null;
 let snapshotCreatedAt = 0;
+
+function frontendOrigin() {
+  return process.env.FRONTEND_URL || process.env.NEXTJS_URL || process.env.NEXT_PUBLIC_SERVER_URL || '';
+}
+
+function marketingUid(kind) {
+  if (kind === 'verification') return 'api::site-verification.site-verification';
+  if (kind === 'tracking') return 'api::tracking-integration.tracking-integration';
+  return null;
+}
+
+function validTrackingId(provider, value) {
+  const id = String(value || '').trim();
+  if (provider === 'google_tag_manager') return /^GTM-[A-Z0-9]+$/i.test(id);
+  if (provider === 'google_analytics_4') return /^G-[A-Z0-9]+$/i.test(id);
+  if (provider === 'google_ads') return /^AW-[0-9]+$/i.test(id);
+  if (provider === 'meta_pixel') return /^[0-9]{5,20}$/.test(id);
+  if (provider === 'openai_ads' || provider === 'openai_ads_pixel') return /^[A-Za-z0-9_-]{8,128}$/.test(id);
+  return false;
+}
+
+function validateMarketing(kind, data) {
+  if (!data || typeof data !== 'object' || Array.isArray(data)) return 'A configuration object is required.';
+  if (!String(data.internal_name || '').trim()) return 'An internal name is required.';
+  if (kind === 'verification') {
+    if (!['google_search_console', 'bing_webmaster'].includes(data.provider)) return 'Unsupported site verification provider.';
+    if (!String(data.verification_token || '').trim() || String(data.verification_token).length > 512) return 'A valid verification token is required.';
+    if (data.verification_method !== 'meta_tag') return 'Only meta-tag verification is supported.';
+    return '';
+  }
+  if (kind === 'tracking') {
+    if (!validTrackingId(data.provider, data.public_id)) return 'The tracking provider ID is invalid.';
+    return '';
+  }
+  return 'Unknown marketing configuration type.';
+}
 
 const CONTENT_MODELS = [
   {
@@ -254,8 +291,73 @@ module.exports = {
       subCategory: 'seo-manager',
       pluginName: 'seo-manager',
     });
+    strapi.admin.services.permission.actionProvider.register({
+      section: 'plugins',
+      displayName: 'Manage SEO and marketing integrations',
+      uid: 'marketing',
+      subCategory: 'seo-manager',
+      pluginName: 'seo-manager',
+    });
   },
   controllers: {
+    marketing: {
+      async context(ctx) {
+        const frontendUrl = frontendOrigin();
+        let hostname = '';
+        try { hostname = frontendUrl ? new URL(frontendUrl).hostname : ''; } catch { hostname = ''; }
+        ctx.body = { data: { frontendUrl, hostname, nodeEnvironment: process.env.NODE_ENV || 'development' } };
+      },
+      async find(ctx) {
+        const uid = marketingUid(ctx.params.kind);
+        if (!uid) return ctx.badRequest('Unknown marketing configuration type.');
+        const rows = await strapi.documents(uid).findMany({ status: 'published', sort: ['createdAt:desc'], pagination: { page: 1, pageSize: 100 } });
+        ctx.body = { data: rows };
+      },
+      async create(ctx) {
+        const uid = marketingUid(ctx.params.kind);
+        const data = ctx.request.body?.data || {};
+        const message = validateMarketing(ctx.params.kind, data);
+        if (!uid || message) return ctx.badRequest(message || 'Unknown marketing configuration type.');
+        const row = await strapi.documents(uid).create({ data, status: 'published' });
+        ctx.body = { data: row };
+      },
+      async update(ctx) {
+        const uid = marketingUid(ctx.params.kind);
+        const data = ctx.request.body?.data || {};
+        const message = validateMarketing(ctx.params.kind, data);
+        if (!uid || message) return ctx.badRequest(message || 'Unknown marketing configuration type.');
+        const row = await strapi.documents(uid).update(ctx.params.documentId, { data, status: 'published' });
+        ctx.body = { data: row };
+      },
+      async delete(ctx) {
+        const uid = marketingUid(ctx.params.kind);
+        if (!uid) return ctx.badRequest('Unknown marketing configuration type.');
+        const row = await strapi.documents(uid).delete(ctx.params.documentId);
+        ctx.body = { data: row };
+      },
+    },
+    publicConfig: {
+      async find(ctx) {
+        try {
+          const [verifications, integrations] = await Promise.all([
+            strapi.documents('api::site-verification.site-verification').findMany({
+              status: 'published', fields: ['provider', 'verification_method', 'verification_token', 'enabled'], pagination: { page: 1, pageSize: 100 },
+            }),
+            strapi.documents('api::tracking-integration.tracking-integration').findMany({
+              status: 'published', fields: ['provider', 'public_id', 'enabled'], pagination: { page: 1, pageSize: 100 },
+            }),
+          ]);
+          ctx.body = { data: {
+            verifications: (verifications || []).filter((item) => item.enabled === true && item.verification_method === 'meta_tag').map((item) => ({ provider: item.provider, method: item.verification_method, token: item.verification_token })),
+            integrations: (integrations || []).filter((item) => item.enabled === true && validTrackingId(item.provider, item.public_id)).map((item) => ({ provider: item.provider, publicId: item.public_id })),
+          } };
+        } catch (error) {
+          strapi.log.error(`[seo-manager] public marketing config failed: ${error instanceof Error ? error.message : 'unknown error'}`);
+          ctx.status = 503;
+          ctx.body = { error: { message: 'Marketing configuration is temporarily unavailable.' } };
+        }
+      },
+    },
     health: {
       async find(ctx) {
         try {
@@ -331,6 +433,26 @@ module.exports = {
       type: 'admin',
       routes: [
         {
+          method: 'GET', path: '/marketing/site-context', handler: 'marketing.context',
+          config: { policies: [{ name: 'admin::hasPermissions', config: { actions: [MARKETING_PERMISSION] } }] },
+        },
+        {
+          method: 'GET', path: '/marketing/config/:kind', handler: 'marketing.find',
+          config: { policies: [{ name: 'admin::hasPermissions', config: { actions: [MARKETING_PERMISSION] } }] },
+        },
+        {
+          method: 'POST', path: '/marketing/config/:kind', handler: 'marketing.create',
+          config: { policies: [{ name: 'admin::hasPermissions', config: { actions: [MARKETING_PERMISSION] } }] },
+        },
+        {
+          method: 'PUT', path: '/marketing/config/:kind/:documentId', handler: 'marketing.update',
+          config: { policies: [{ name: 'admin::hasPermissions', config: { actions: [MARKETING_PERMISSION] } }] },
+        },
+        {
+          method: 'DELETE', path: '/marketing/config/:kind/:documentId', handler: 'marketing.delete',
+          config: { policies: [{ name: 'admin::hasPermissions', config: { actions: [MARKETING_PERMISSION] } }] },
+        },
+        {
           method: 'GET',
           path: '/sitemap',
           handler: 'sitemap.find',
@@ -349,6 +471,18 @@ module.exports = {
           config: { policies: [{ name: 'admin::hasPermissions', config: { actions: [HEALTH_PERMISSION] } }] },
         },
       ],
+    },
+    'content-api': {
+      type: 'content-api',
+      routes: [{
+        method: 'GET',
+        path: '/public-config',
+        handler: 'publicConfig.find',
+        // Public read-only output: verification tokens and tracking IDs are
+        // intentionally public website metadata. Never return internal names,
+        // draft values, credentials, or admin-only configuration here.
+        config: { auth: false },
+      }],
     },
   },
 };

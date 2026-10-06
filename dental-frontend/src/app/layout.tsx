@@ -14,6 +14,8 @@ import type { ContactMethod, Footer as FooterData, Navigation } from '@/src/type
 import { getServiceNavigationOptions, getWebsiteSetting } from '@/src/lib/api/queries'
 import { GlobalCtaProvider } from '@/src/components/providers/GlobalCtaProvider'
 import { FALLBACK_FOOTER, FALLBACK_HEADER_NAVIGATION } from '@/src/lib/constants/site-navigation'
+import { getMarketingPublicConfig } from '@/src/lib/seo/seo-manager'
+import { MarketingIntegrations } from '@/src/components/marketing/MarketingIntegrations'
 
 const staticNavigation: Navigation = {
   navigation: FALLBACK_HEADER_NAVIGATION.map((item) => ({ ...item })),
@@ -89,7 +91,7 @@ function buildNavigation(serviceOptions: Array<{ value: string; label: string }>
  * Provides global fonts, styling configuration, header navigation, and footer.
  */
 
-export const metadata: Metadata = {
+const baseMetadata: Metadata = {
   title: {
     template: '%s',
     default: `${CLINIC_INFO.name} - Surgeon-Led Cosmetic Surgery`,
@@ -102,6 +104,19 @@ export const metadata: Metadata = {
   },
 }
 
+export async function generateMetadata(): Promise<Metadata> {
+  const marketing = await getMarketingPublicConfig()
+  const google = marketing.verifications.find((item) => item.provider === 'google_search_console' && item.method === 'meta_tag')?.token
+  const bing = marketing.verifications.find((item) => item.provider === 'bing_webmaster' && item.method === 'meta_tag')?.token
+  return {
+    ...baseMetadata,
+    verification: {
+      ...(google ? { google } : {}),
+      ...(bing ? { other: { 'msvalidate.01': bing } } : {}),
+    },
+  }
+}
+
 // Contact methods are read from Strapi at request time. The CMS URL is a
 // runtime container secret/configuration value and must not be evaluated while
 // the standalone image is being built.
@@ -112,7 +127,7 @@ interface RootLayoutProps {
 }
 
 export default async function RootLayout({ children }: RootLayoutProps) {
-  const [websiteSetting, serviceOptions] = await Promise.all([getWebsiteSetting(), getServiceNavigationOptions()]);
+  const [websiteSetting, serviceOptions, marketing] = await Promise.all([getWebsiteSetting(), getServiceNavigationOptions(), getMarketingPublicConfig()]);
   const navigation = buildNavigation(serviceOptions, websiteSetting?.headerNavigation);
   const settingsContactMethods = websiteSetting?.contactMethods?.map((method) => ({
     id: method.id || 0,
@@ -151,6 +166,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="vi">
       <body className="antialiased flex flex-col min-h-screen">
+        <MarketingIntegrations integrations={marketing.integrations} />
         <ReCaptchaProvider>
           <BookingModalWrapper serviceOptions={serviceOptions} bookingForm={websiteSetting?.bookingForm}>
             <CallModalWrapper>

@@ -230,6 +230,8 @@ export default {
       "api::robots-settings.robots-settings",
       "api::redirect.redirect",
       "api::canonical-rule.canonical-rule",
+      "api::site-verification.site-verification",
+      "api::tracking-integration.tracking-integration",
     ];
     const permissionHook = roleService?.hooks?.willResetSuperAdminPermissions;
 

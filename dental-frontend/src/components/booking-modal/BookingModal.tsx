@@ -10,6 +10,7 @@ import { useBookingModal } from './BookingModalContext'
 import { CountryPicker, defaultCountry, type CountryOption } from '@/src/components/forms/CountryPicker'
 import { SelectBase, type SelectOption } from '@/src/components/ui/SelectBase'
 import { formatNationalPhone, normalizeNationalPhone } from '@/src/components/forms/phoneFormatting'
+import { trackMarketingEvent } from '@/src/lib/marketing/events'
 
 const fallbackBookingForm = {
   visualEyebrow: 'DIRECT SURGEON CARE', visualTitle: 'Your case is reviewed before you travel.',
@@ -93,6 +94,7 @@ export function BookingModal() {
         throw new Error(errorBody?.error || 'Submission failed')
       }
       await submitContact(1)
+      trackMarketingEvent('lead_submission_success', { submission_source: 'booking_modal' })
       setStatus('success'); toast.success('Your case has been received.', { description: 'Our team will contact you regarding the appropriate next step.' }); close()
     } catch { setStatus('error') } finally { setIsSubmitting(false) }
   }

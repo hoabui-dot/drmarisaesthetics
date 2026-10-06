@@ -4,7 +4,7 @@ import { resolve } from 'node:path'
 const root = resolve(new URL('..', import.meta.url).pathname, '..')
 const target = JSON.parse(await readFile(resolve(root, 'docs/design-spec/contracts/homepage.target.json'), 'utf8'))
 const baseUrl = process.env.STRAPI_URL || process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
-const token = process.env.STRAPI_API_TOKEN || process.env.NEXT_PUBLIC_STRAPI_API_TOKEN
+const token = process.env.STRAPI_API_TOKEN
 const headers = token ? { Authorization: `Bearer ${token}` } : {}
 const failures = []
 

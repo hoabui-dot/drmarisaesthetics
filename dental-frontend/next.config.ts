@@ -2,7 +2,6 @@ import type { NextConfig } from "next";
 import path from "path";
 
 const strapiPublicUrl = process.env.NEXT_PUBLIC_STRAPI_URL ?? "";
-const frontendUrl = process.env.NEXT_PUBLIC_SERVER_URL ?? "";
 
 const nextConfig: NextConfig = {
   // Enable standalone output for Docker
@@ -40,21 +39,21 @@ const nextConfig: NextConfig = {
             value: [
               `default-src 'self'`,
               // Scripts: self + inline (Next.js) + unsafe-eval (Three.js/WebGL) + Google reCAPTCHA
-              `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/`,
+              `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://bzrcdn.openai.com`,
               // Styles: self + inline (Tailwind / CSS-in-JS)
               `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
               // Fonts
               `font-src 'self' https://fonts.gstatic.com`,
               // Images: self + Strapi uploads + data URIs + blob (Next.js image opt)
-              `img-src 'self' data: blob: ${strapiPublicUrl} https://*.trycloudflare.com https://*.unsplash.com https://*.s3.amazonaws.com https://api.dicebear.com https://cdn-icons-png.flaticon.com https://nhakhoaquoctesg.vn https://lh3.googleusercontent.com https://i.ytimg.com`,
+              `img-src 'self' data: blob: ${strapiPublicUrl} https://*.trycloudflare.com https://*.unsplash.com https://*.s3.amazonaws.com https://api.dicebear.com https://cdn-icons-png.flaticon.com https://nhakhoaquoctesg.vn https://lh3.googleusercontent.com https://i.ytimg.com https://www.facebook.com https://bzr.openai.com`,
               // API connections: self + Strapi + Google reCAPTCHA
-              `connect-src 'self' ${strapiPublicUrl} https://*.trycloudflare.com https://www.google.com https://maps.googleapis.com https://maps.gstatic.com`,
+              `connect-src 'self' ${strapiPublicUrl} https://*.trycloudflare.com https://www.google.com https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://www.facebook.com https://connect.facebook.net https://bzr.openai.com https://bzrcdn.openai.com https://maps.googleapis.com https://maps.gstatic.com`,
               // Media: self + Strapi
               `media-src 'self' ${strapiPublicUrl} https://*.trycloudflare.com`,
               // Workers: self + blob (Next.js)
               `worker-src 'self' blob:`,
               // Frames: Google Maps + Google reCAPTCHA
-              `frame-src 'self' https://maps.google.com https://www.google.com https://www.youtube.com https://www.youtube-nocookie.com https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/`,
+              `frame-src 'self' https://maps.google.com https://www.google.com https://www.youtube.com https://www.youtube-nocookie.com https://www.googletagmanager.com https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/`,
               // Objects: none
               `object-src 'none'`,
             ]

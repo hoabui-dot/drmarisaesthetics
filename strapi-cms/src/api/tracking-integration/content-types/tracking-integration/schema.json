@@ -1,0 +1,18 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tracking_integrations",
+  "info": {
+    "singularName": "tracking-integration",
+    "pluralName": "tracking-integrations",
+    "displayName": "SEO Manager - Tracking Integrations",
+    "description": "Validated public configuration for approved analytics and advertising adapters."
+  },
+  "options": { "draftAndPublish": true },
+  "pluginOptions": { "content-manager": { "visible": false } },
+  "attributes": {
+    "internal_name": { "type": "string", "required": true, "maxLength": 120 },
+    "provider": { "type": "enumeration", "enum": ["google_tag_manager", "google_analytics_4", "google_ads", "meta_pixel", "openai_ads", "openai_ads_pixel"], "required": true },
+    "public_id": { "type": "string", "required": true, "maxLength": 120 },
+    "enabled": { "type": "boolean", "default": false }
+  }
+}

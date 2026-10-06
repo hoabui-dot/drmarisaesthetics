@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_homepage_video_stories",
+  "info": {
+    "displayName": "Patient video story",
+    "description": "A vertical patient video paired with its own testimonial content."
+  },
+  "options": {},
+  "attributes": {
+    "youtube_url": { "type": "string", "required": true },
+    "title": { "type": "string", "maxLength": 255 },
+    "quote": { "type": "text" },
+    "source": { "type": "string", "maxLength": 255 },
+    "description": { "type": "text" },
+    "thumbnail_url": { "type": "text" }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "kind": "collectionType",
+  "collectionName": "site_verifications",
+  "info": {
+    "singularName": "site-verification",
+    "pluralName": "site-verifications",
+    "displayName": "SEO Manager - Site Verification",
+    "description": "Approved search-engine ownership verification metadata."
+  },
+  "options": { "draftAndPublish": true },
+  "pluginOptions": { "content-manager": { "visible": false } },
+  "attributes": {
+    "internal_name": { "type": "string", "required": true, "maxLength": 120 },
+    "provider": { "type": "enumeration", "enum": ["google_search_console", "bing_webmaster"], "required": true },
+    "verification_method": { "type": "enumeration", "enum": ["meta_tag"], "default": "meta_tag", "required": true },
+    "verification_token": { "type": "string", "required": true, "maxLength": 512 },
+    "enabled": { "type": "boolean", "default": true }
+  }
+}

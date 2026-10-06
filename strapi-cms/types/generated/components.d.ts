@@ -2050,17 +2050,65 @@ export interface HomepageVideoSection extends Struct.ComponentSchema {
     displayName: 'Homepage video section';
   };
   attributes: {
-    customer_description: Schema.Attribute.Text;
-    customer_name: Schema.Attribute.String;
-    quote: Schema.Attribute.Text;
+    customer_description: Schema.Attribute.Text &
+      Schema.Attribute.SetPluginOptions<{
+        'content-manager': {
+          visible: false;
+        };
+      }>;
+    customer_name: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        'content-manager': {
+          visible: false;
+        };
+      }>;
+    quote: Schema.Attribute.Text &
+      Schema.Attribute.SetPluginOptions<{
+        'content-manager': {
+          visible: false;
+        };
+      }>;
+    stories: Schema.Attribute.Component<'homepage.video-story', true>;
     subtitle: Schema.Attribute.Text;
-    thumbnail_url: Schema.Attribute.Text;
+    thumbnail_url: Schema.Attribute.Text &
+      Schema.Attribute.SetPluginOptions<{
+        'content-manager': {
+          visible: false;
+        };
+      }>;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 255;
       }> &
       Schema.Attribute.DefaultTo<"A patient's perspective">;
+    youtube_url: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        'content-manager': {
+          visible: false;
+        };
+      }>;
+  };
+}
+
+export interface HomepageVideoStory extends Struct.ComponentSchema {
+  collectionName: 'components_homepage_video_stories';
+  info: {
+    description: 'A vertical patient video paired with its own testimonial content.';
+    displayName: 'Patient video story';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    quote: Schema.Attribute.Text;
+    source: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 255;
+      }>;
+    thumbnail_url: Schema.Attribute.Text;
+    title: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 255;
+      }>;
     youtube_url: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
@@ -2728,6 +2776,7 @@ declare module '@strapi/strapi' {
       'homepage.text-item': HomepageTextItem;
       'homepage.title-line': HomepageTitleLine;
       'homepage.video-section': HomepageVideoSection;
+      'homepage.video-story': HomepageVideoStory;
       'menu.link': MenuLink;
       'menu.nav-child': MenuNavChild;
       'menu.nav-item': MenuNavItem;

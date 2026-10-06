@@ -6,6 +6,8 @@
  */
 
 import { apiClient } from "./client";
+import { getMediaUrl } from "./media";
+export { getMediaUrl } from "./media";
 import type {
   Navigation,
   StrapiNavigation,
@@ -615,57 +617,6 @@ function normalizeWebsiteCategories(value: unknown): WebsiteSetting['blogCategor
  * @param size - Image size (optional, for compatibility)
  * @returns Full media URL or empty string
  */
-export function getMediaUrl(media: any, size?: string): string {
-  if (!media) return "";
-
-  if (typeof media === "string") {
-    // The About page adapter already normalizes CMS media to the frontend
-    // proxy path. Keep the resolver idempotent so callers can safely pass
-    // either raw Strapi paths or an already-normalized URL.
-    if (media.startsWith("/api/strapi-media/")) return media;
-    return media.startsWith("/") ? `/api/strapi-media${media}` : media;
-  }
-
-  // Handle different media object structures
-  let url = "";
-
-  // Case 1: Direct media object with url
-  const source = Array.isArray(media) ? media[0] : media;
-  if (!source) return "";
-
-  // Strapi v5 may return a media entity directly, nested in `data`, or in
-  // the v4-compatible `data.attributes` shape. Resolve all supported shapes
-  // here so page adapters do not need to know which API response was used.
-  const entity = source.data && !Array.isArray(source.data) ? source.data : source;
-  const attributes = entity.attributes && typeof entity.attributes === "object" ? entity.attributes : entity;
-  const formats = attributes.formats || entity.formats || source.formats;
-
-  if (size && formats?.[size]?.url) {
-    url = formats[size].url;
-  } else if (attributes.url) {
-    url = attributes.url;
-  } else if (entity.url) {
-    url = entity.url;
-  }
-
-  if (!url && source.url) {
-    url = source.url;
-  }
-
-  if (!url) return "";
-
-  // If URL is relative, prepend API URL
-  if (url.startsWith("/")) {
-    // Keep uploaded media on the frontend origin. The proxy fetches it from
-    // STRAPI_URL internally, so Next Image can optimize local Docker uploads
-    // without trying to reach localhost:1337 from inside the frontend.
-    return `/api/strapi-media${url}`;
-  }
-
-  // Already absolute URL
-  return url;
-}
-
 /**
  * Get media alt text
  *

@@ -1,5 +1,5 @@
 import { apiClient } from '@/src/lib/api/client'
-import { getMediaUrl } from '@/src/lib/api/queries'
+import { getMediaUrl } from '@/src/lib/api/media'
 
 export type CategoryListingItem = {
   id: number

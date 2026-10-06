@@ -41,6 +41,18 @@ psql "$DATABASE_URL" \
 psql "$DATABASE_URL" \
   -v ON_ERROR_STOP=1 \
   -f migration-production/016-homepage-patient-result-stable-selection.sql
+
+psql "$DATABASE_URL" \
+  -v ON_ERROR_STOP=1 \
+  -f migration-production/017-homepage-video-heading.sql
+
+psql "$DATABASE_URL" \
+  -v ON_ERROR_STOP=1 \
+  -f migration-production/018-homepage-patient-video-stories.sql
+
+psql "$DATABASE_URL" \
+  -v ON_ERROR_STOP=1 \
+  -f migration-production/019-homepage-patient-story-editor-layout.sql
 ```
 
 The migrations are structural and idempotent. They never seed or copy CRM
@@ -146,6 +158,24 @@ and optional subtitle to the Homepage customer-video component. Deploy the
 matching Strapi schema and frontend first, then apply this structural migration.
 Editors can change the title and add or omit the subtitle in Homepage Content
 Manager; it does not seed testimonial copy.
+
+### `018-homepage-patient-video-stories.sql`
+
+Relaxes the legacy single-video URL column so a Homepage video section can use
+the new repeatable `stories` component. Strapi creates/synchronizes the nested
+story component table and relation storage from the deployed
+`homepage.video-story` schema. Deploy the matching Strapi schema before this
+migration. Existing single-video fields and content are retained for
+compatibility; editors should manually recreate those values as a Patient story
+in Content Manager. This migration does not copy or seed stories.
+
+### `019-homepage-patient-story-editor-layout.sql`
+
+Removes the old single-video field rows from Strapi's persisted Homepage video
+component edit layout, leaving section heading fields and `stories`. The legacy
+schema attributes remain hidden and stored for API/content compatibility. Run
+this after deploying the CMS schema that includes Patient stories. It does not
+alter or delete homepage content.
 
 ## Manual promotion merge
 

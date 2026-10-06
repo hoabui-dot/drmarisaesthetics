@@ -26,11 +26,30 @@ interface SeoDefaults {
   default_open_graph_description?: string;
 }
 
+export interface MarketingPublicConfig {
+  verifications: Array<{ provider: "google_search_console" | "bing_webmaster"; method: "meta_tag"; token: string }>;
+  integrations: Array<{ provider: "google_tag_manager" | "google_analytics_4" | "google_ads" | "meta_pixel" | "openai_ads" | "openai_ads_pixel"; publicId: string }>;
+}
+
 const FALLBACKS = {
   title: "DR. MARIS AESTHETICS | Plastic Surgery in Vietnam",
   description: "Surgeon-led, hospital-based cosmetic surgery in Ho Chi Minh City for international patients.",
   siteName: "DR. MARIS AESTHETICS",
 };
+
+export async function getMarketingPublicConfig(): Promise<MarketingPublicConfig> {
+  try {
+    const response = await apiClient<{ data?: Partial<MarketingPublicConfig> }>("/api/seo-manager/public-config", {
+      tags: ["marketing-config"],
+    });
+    return {
+      verifications: Array.isArray(response.data?.verifications) ? response.data.verifications : [],
+      integrations: Array.isArray(response.data?.integrations) ? response.data.integrations : [],
+    };
+  } catch {
+    return { verifications: [], integrations: [] };
+  }
+}
 
 function first<T>(...values: Array<T | null | undefined | "">): T | undefined {
   return values.find((value): value is T => Boolean(value));

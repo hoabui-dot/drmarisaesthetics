@@ -17,8 +17,9 @@ import { useTheme } from 'styled-components'
 import '../styles.css'
 import { HealthDashboard } from './HealthDashboard'
 import { SitemapManager } from './SitemapManager'
+import { MarketingManager } from './MarketingManager'
 
-type Tab = 'health' | 'sitemap' | 'metadata' | 'robots' | 'redirects' | 'canonicals'
+type Tab = 'health' | 'sitemap' | 'metadata' | 'robots' | 'redirects' | 'canonicals' | 'marketing'
 type Rule = { id?: number; documentId?: string; source_path: string; destination_path: string; status_code: string; is_active: boolean; notes?: string }
 type CanonicalRule = { id?: number; documentId?: string; source_path: string; canonical_url: string; is_active: boolean; notes?: string }
 type RecordValue = Record<string, unknown>
@@ -77,7 +78,7 @@ export const App = () => {
   } as React.CSSProperties
   const [tab, setTab] = useState<Tab>(() => {
     const requested = new URLSearchParams(window.location.search).get('tab')
-    return requested === 'sitemap' || requested === 'redirects' || requested === 'canonicals' || requested === 'robots' || requested === 'metadata' ? requested : 'health'
+    return requested === 'sitemap' || requested === 'redirects' || requested === 'canonicals' || requested === 'robots' || requested === 'metadata' || requested === 'marketing' ? requested : 'health'
   })
   const [metadata, setMetadata] = useState<RecordValue>(metadataDefaults)
   const [robots, setRobots] = useState<RecordValue>(robotsDefaults)
@@ -303,6 +304,7 @@ export const App = () => {
     { id: 'robots', label: msg('tab.robots', 'Robots.txt') },
     { id: 'redirects', label: msg('tab.redirects', 'Redirects') },
     { id: 'canonicals', label: msg('tab.canonicals', 'Canonical rules') },
+    { id: 'marketing', label: msg('tab.marketing', 'SEO & Marketing') },
   ]
 
   return (
@@ -318,7 +320,7 @@ export const App = () => {
           {tabs.map((item) => <button key={item.id} type="button" className={tab === item.id ? 'is-active' : ''} onClick={() => setTab(item.id)}>{item.label}</button>)}
         </nav>
         <section className="seo-manager-panel">
-          {tab === 'health' ? <HealthDashboard msg={msg} /> : tab === 'sitemap' ? <SitemapManager msg={msg} /> : tab === 'metadata' || tab === 'robots' ? renderSettings() : renderRuleList(tab)}
+          {tab === 'health' ? <HealthDashboard msg={msg} /> : tab === 'sitemap' ? <SitemapManager msg={msg} /> : tab === 'marketing' ? <MarketingManager msg={msg} /> : tab === 'metadata' || tab === 'robots' ? renderSettings() : renderRuleList(tab)}
         </section>
       </Box>
     </Main>

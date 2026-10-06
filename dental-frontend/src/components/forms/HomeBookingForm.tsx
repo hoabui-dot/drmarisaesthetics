@@ -8,6 +8,7 @@ import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { SelectBase } from '@/src/components/ui/SelectBase';
 import { CountryFlag } from '@/src/components/forms/CountryPicker';
 import type { BookingSubmissionSource } from '@/src/lib/submissions';
+import { trackMarketingEvent } from '@/src/lib/marketing/events';
 
 type ServiceOption = { value: string; label: string };
 
@@ -96,6 +97,7 @@ export function HomeBookingForm({ serviceOptions, submitLabel = "REQUEST CONSULT
         : "recaptcha-disabled";
       const response = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ fullName: values.fullName.trim(), phoneNumber: `${country.dialCode}${values.phone.replace(/\D/g, "")}`, country: country.name, email: values.email.trim(), service: values.service, message: values.message.trim(), submissionSource, recaptchaToken }) });
       if (!response.ok) throw new Error("Submission failed");
+      trackMarketingEvent('lead_submission_success', { submission_source: submissionSource });
       setStatus("success");
       setValues({ fullName: "", phone: "", email: "", service: "", message: "" });
     } catch { setStatus("error"); }
