@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Play } from 'lucide-react'
 import { getYoutubeEmbedUrl, getYoutubeVideoAspectRatio, getYoutubeVideoId } from '@/src/lib/youtube'
 
@@ -60,11 +60,31 @@ export function CustomerVideoTestimonial({
   const [activeStoryId, setActiveStoryId] = useState(storyList[0]?.id ?? '')
   const activeStory = storyList.find((story) => story.id === activeStoryId) ?? storyList[0]
   const [isPlaying, setIsPlaying] = useState(false)
+  const [isMuted, setIsMuted] = useState(true)
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section) return
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsMuted(true)
+        setIsPlaying(true)
+      } else {
+        // Removing the iframe stops playback reliably across browsers.
+        setIsPlaying(false)
+      }
+    }, { threshold: 0.1 })
+
+    observer.observe(section)
+    return () => observer.disconnect()
+  }, [])
 
   if (!activeStory) return null
 
   const videoId = getYoutubeVideoId(activeStory.youtubeUrl)
-  const playerUrl = getYoutubeEmbedUrl(activeStory.youtubeUrl, { autoplay: true })
+  const playerUrl = getYoutubeEmbedUrl(activeStory.youtubeUrl, { autoplay: true, mute: isMuted })
   const videoAspectRatio = getYoutubeVideoAspectRatio(activeStory.youtubeUrl)
   if (!videoId || !playerUrl) return null
 
@@ -72,16 +92,13 @@ export function CustomerVideoTestimonial({
   const sectionClassName = ['stitch-homepage-testimonial', className].filter(Boolean).join(' ')
   const selectStory = (storyId: string) => {
     if (storyId === activeStory.id) return
-    setIsPlaying(false)
+    setIsMuted(true)
+    setIsPlaying(true)
     setActiveStoryId(storyId)
   }
 
   return (
-    <section className={sectionClassName} aria-label="Customer video testimonial">
-      <header className="stitch-section-heading stitch-homepage-testimonial__heading">
-        <h2>{title.trim() || 'A patient’s perspective'}</h2>
-        {subtitle?.trim() && <p className="stitch-lead">{subtitle.trim()}</p>}
-      </header>
+    <section ref={sectionRef} className={sectionClassName} aria-label="Customer video testimonial">
       <div className="stitch-homepage-testimonial__inner" key={activeStory.id}>
         <div className="stitch-homepage-testimonial__media" data-video-orientation={videoAspectRatio === '9 / 16' ? 'portrait' : 'landscape'}>
           <div className="stitch-homepage-testimonial__frame" style={{ aspectRatio: videoAspectRatio }}>
@@ -107,7 +124,10 @@ export function CustomerVideoTestimonial({
                 className="stitch-homepage-testimonial__play"
                 type="button"
                 aria-label={`Play patient story${activeStory.source ? ` from ${activeStory.source}` : ''}`}
-                onClick={() => setIsPlaying(true)}
+                onClick={() => {
+                  setIsMuted(false)
+                  setIsPlaying(true)
+                }}
               >
                 <Play size={28} fill="currentColor" aria-hidden="true" />
               </button>
@@ -118,6 +138,10 @@ export function CustomerVideoTestimonial({
 
         <div className="stitch-homepage-testimonial__story">
           <div className="stitch-homepage-testimonial__content">
+            <header className="stitch-homepage-testimonial__heading">
+              <h2>{title.trim() || 'A patient’s perspective'}</h2>
+              {subtitle?.trim() && <p className="stitch-lead">{subtitle.trim()}</p>}
+            </header>
             <div className="stitch-homepage-testimonial__quote-wrap">
               {activeStory.title && <h3>{activeStory.title}</h3>}
               {activeStory.quote && <blockquote>{activeStory.quote}</blockquote>}

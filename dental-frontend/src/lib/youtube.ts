@@ -32,13 +32,22 @@ export function getYoutubeVideoAspectRatio(source: string): '9 / 16' | '16 / 9' 
 
 export function getYoutubeEmbedUrl(
   source: string,
-  options: { autoplay?: boolean; background?: boolean } = {},
+  options: { autoplay?: boolean; background?: boolean; mute?: boolean } = {},
 ): string | null {
   const videoId = getYoutubeVideoId(source)
   if (!videoId) return null
 
-  const query = options.background
-    ? `?autoplay=1&mute=1&controls=0&playsinline=1&loop=1&playlist=${videoId}&rel=0`
-    : options.autoplay ? '?autoplay=1&playsinline=1&rel=0' : '?rel=0'
-  return `https://www.youtube.com/embed/${videoId}${query}`
+  const params = new URLSearchParams({ rel: '0' })
+  if (options.autoplay || options.background) params.set('autoplay', '1')
+  if (options.mute || options.background) params.set('mute', '1')
+  if (options.background) {
+    params.set('controls', '0')
+    params.set('playsinline', '1')
+    params.set('loop', '1')
+    params.set('playlist', videoId)
+  } else if (options.autoplay) {
+    params.set('playsinline', '1')
+  }
+
+  return `https://www.youtube.com/embed/${videoId}?${params.toString()}`
 }
