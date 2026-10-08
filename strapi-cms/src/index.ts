@@ -24,6 +24,7 @@ function normalisePermissionProperties(value: unknown): Record<string, unknown> 
 async function ensureContentManagerFieldPermissions(strapi: any) {
   const requirements: Record<string, string[]> = {
     'api::website-setting.website-setting': [
+      'map_display_name', 'map_embed_url',
       'blog_categories', 'blog_categories.category_id', 'blog_categories.label', 'blog_categories.icon',
       'service_categories', 'service_categories.category_id', 'service_categories.label', 'service_categories.icon',
     ],

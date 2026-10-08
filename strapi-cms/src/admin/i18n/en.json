@@ -295,6 +295,8 @@
   "content-manager.content-types.api::website-setting.website-setting.map_latitude": "Map latitude",
   "content-manager.content-types.api::website-setting.website-setting.map_longitude": "Map longitude",
   "content-manager.content-types.api::website-setting.website-setting.map_zoom": "Map zoom",
+  "content-manager.content-types.api::website-setting.website-setting.map_display_name": "Map display name",
+  "content-manager.content-types.api::website-setting.website-setting.map_embed_url": "Google Maps embed URL",
   "content-manager.content-types.api::website-setting.website-setting.header_navigation": "Header navigation",
   "content-manager.content-types.api::website-setting.website-setting.footer_description": "Footer description",
   "content-manager.content-types.api::website-setting.website-setting.footer_link_groups": "Footer link groups",

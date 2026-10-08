@@ -533,6 +533,8 @@ export async function getWebsiteSetting(isDraftMode: boolean = false): Promise<W
       mapLatitude: value.map_latitude == null ? undefined : Number(value.map_latitude),
       mapLongitude: value.map_longitude == null ? undefined : Number(value.map_longitude),
       mapZoom: value.map_zoom == null ? undefined : Number(value.map_zoom),
+      mapDisplayName: value.map_display_name || undefined,
+      mapEmbedUrl: value.map_embed_url || undefined,
       headerNavigation: Array.isArray(value.header_navigation) ? value.header_navigation.map((item: any) => ({
         id: item.id,
         label: item.label || '',

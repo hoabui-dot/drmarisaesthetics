@@ -19,6 +19,8 @@
     "map_latitude": { "type": "decimal" },
     "map_longitude": { "type": "decimal" },
     "map_zoom": { "type": "integer", "default": 16 },
+    "map_display_name": { "type": "string", "description": "Business or hospital name shown with the map location." },
+    "map_embed_url": { "type": "text", "description": "Optional iframe src copied from Google Maps > Share > Embed a map. Use this to pin the exact hospital/business listing." },
     "header_navigation": { "type": "component", "repeatable": true, "component": "menu.nav-item" },
     "footer_description": { "type": "text" },
     "footer_link_groups": { "type": "component", "repeatable": true, "component": "footer.link-group" },

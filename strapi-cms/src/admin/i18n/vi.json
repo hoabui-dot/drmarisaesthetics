@@ -310,6 +310,8 @@
   "content-manager.content-types.api::website-setting.website-setting.map_latitude": "Vĩ độ bản đồ",
   "content-manager.content-types.api::website-setting.website-setting.map_longitude": "Kinh độ bản đồ",
   "content-manager.content-types.api::website-setting.website-setting.map_zoom": "Mức thu phóng bản đồ",
+  "content-manager.content-types.api::website-setting.website-setting.map_display_name": "Tên địa điểm trên bản đồ",
+  "content-manager.content-types.api::website-setting.website-setting.map_embed_url": "URL nhúng Google Maps",
   "content-manager.content-types.api::website-setting.website-setting.contact_methods": "Phương thức liên hệ",
   "content-manager.content-types.api::website-setting.website-setting.social_links": "Liên kết mạng xã hội",
   "content-manager.content-types.api::website-setting.website-setting.global_cta": "CTA toàn cục",

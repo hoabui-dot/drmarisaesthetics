@@ -19,6 +19,8 @@ export interface ContactMapSettings {
   mapLatitude?: number
   mapLongitude?: number
   mapZoom?: number
+  mapDisplayName?: string
+  mapEmbedUrl?: string
 }
 
 const benefitIcons = { location: MapPin, landmark: Building2, parking: CarFront }
@@ -38,6 +40,8 @@ export function ContactClinicLocationSection({ data, websiteSettings }: { data: 
             lat={latitude}
             lng={longitude}
             zoom={zoom}
+            query={[websiteSettings?.mapDisplayName, clinicAddress].filter(Boolean).join(' ')}
+            embedUrl={websiteSettings?.mapEmbedUrl}
             title="DR. MARIS AESTHETICS clinic location map"
             className="absolute inset-0 w-full h-full grayscale-[15%] contrast-[1.05]"
           />

@@ -22,9 +22,11 @@ interface FooterProps {
   mapLatitude?: number;
   mapLongitude?: number;
   mapZoom?: number;
+  mapDisplayName?: string;
+  mapEmbedUrl?: string;
 }
 
-export function Footer({ footer, logoSrc, mapLatitude, mapLongitude, mapZoom }: FooterProps) {
+export function Footer({ footer, logoSrc, mapLatitude, mapLongitude, mapZoom, mapDisplayName, mapEmbedUrl }: FooterProps) {
   // Social links are intentionally CMS-only. Do not fall back to the legacy
   // dental constants after they were moved into Website Settings.
   const socialLinks: SocialLink[] = footer?.socialLinks || [];
@@ -50,6 +52,8 @@ export function Footer({ footer, logoSrc, mapLatitude, mapLongitude, mapZoom }: 
             lat={mapLatitude ?? CLINIC_INFO.coordinates.lat}
             lng={mapLongitude ?? CLINIC_INFO.coordinates.lng}
             zoom={mapZoom ?? 15}
+            query={[mapDisplayName, contact?.address].filter(Boolean).join(' ')}
+            embedUrl={mapEmbedUrl}
             title="Dr. Maris Aesthetics clinic location map"
             className="site-footer-map__frame"
           />

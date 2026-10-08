@@ -57,6 +57,10 @@ psql "$DATABASE_URL" \
 psql "$DATABASE_URL" \
   -v ON_ERROR_STOP=1 \
   -f migration-production/020-contact-map-use-website-settings.sql
+
+psql "$DATABASE_URL" \
+  -v ON_ERROR_STOP=1 \
+  -f migration-production/021-website-settings-google-map-place.sql
 ```
 
 The migrations are structural and idempotent. They never seed or copy CRM
@@ -189,6 +193,15 @@ Contact page now gets its displayed address and map coordinates/zoom from
 Website Settings. Existing values in those duplicate component columns are
 discarded; this does not modify Website Settings or other Contact content.
 Deploy the matching Strapi schema and frontend first, then run the migration.
+
+### `021-website-settings-google-map-place.sql`
+
+Adds `map_display_name` and optional `map_embed_url` to Website Settings. The
+display name plus the existing address provides a searchable fallback, while
+the embed URL can point to the exact hospital/business listing and preserve its
+Google Maps marker/title. Both Footer and Contact use the same settings; this
+migration does not seed map data. Deploy the matching CMS/frontend schema
+before applying it.
 
 ## Manual promotion merge
 

@@ -26,6 +26,8 @@ export default async function ContactPage() {
     mapLatitude: websiteSetting?.mapLatitude,
     mapLongitude: websiteSetting?.mapLongitude,
     mapZoom: websiteSetting?.mapZoom,
+    mapDisplayName: websiteSetting?.mapDisplayName || websiteSetting?.siteName,
+    mapEmbedUrl: websiteSetting?.mapEmbedUrl,
   }} /></>;
 }
 

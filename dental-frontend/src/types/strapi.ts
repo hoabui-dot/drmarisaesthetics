@@ -236,6 +236,8 @@ export interface WebsiteSetting {
   mapLatitude?: number;
   mapLongitude?: number;
   mapZoom?: number;
+  mapDisplayName?: string;
+  mapEmbedUrl?: string;
   headerNavigation?: NavItem[];
   footerDescription?: string;
   footerLinkGroups?: FooterLinkGroup[];

@@ -176,7 +176,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
                 {children}
               </main>
             </GlobalCtaProvider>
-            <Footer footer={footer} logoSrc={websiteSetting?.logo?.url} mapLatitude={websiteSetting?.mapLatitude} mapLongitude={websiteSetting?.mapLongitude} mapZoom={websiteSetting?.mapZoom} />
+            <Footer footer={footer} logoSrc={websiteSetting?.logo?.url} mapLatitude={websiteSetting?.mapLatitude} mapLongitude={websiteSetting?.mapLongitude} mapZoom={websiteSetting?.mapZoom} mapDisplayName={websiteSetting?.mapDisplayName || websiteSetting?.siteName} mapEmbedUrl={websiteSetting?.mapEmbedUrl} />
 
             {/* Global Features */}
             <FloatingContactWrapper contactMethods={contactMethods} />

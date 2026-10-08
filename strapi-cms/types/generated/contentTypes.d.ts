@@ -1333,6 +1333,8 @@ export interface ApiWebsiteSettingWebsiteSetting
     > &
       Schema.Attribute.Private;
     logo: Schema.Attribute.Media<'images'>;
+    map_display_name: Schema.Attribute.String;
+    map_embed_url: Schema.Attribute.Text;
     map_latitude: Schema.Attribute.Decimal;
     map_longitude: Schema.Attribute.Decimal;
     map_zoom: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<16>;
