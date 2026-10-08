@@ -7,14 +7,11 @@
   "options": {},
   "attributes": {
     "title": { "type": "string", "required": true, "default": "Vị trí phòng khám" },
-    "address": { "type": "text", "required": true },
     "benefits": {
       "type": "component",
       "repeatable": true,
       "component": "contact.location-benefit"
     },
-    "clinic_name": { "type": "string", "required": true, "default": "Smilux Dental Clinic" },
-    "directions_label": { "type": "string", "required": true, "default": "CHỈ ĐƯỜNG TRÊN GOOGLE MAPS" },
-    "directions_url": { "type": "string" }
+    "directions_label": { "type": "string", "required": true, "default": "CHỈ ĐƯỜNG TRÊN GOOGLE MAPS" }
   }
 }

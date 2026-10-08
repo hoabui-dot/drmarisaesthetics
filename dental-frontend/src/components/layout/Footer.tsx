@@ -50,7 +50,6 @@ export function Footer({ footer, logoSrc, mapLatitude, mapLongitude, mapZoom }: 
             lat={mapLatitude ?? CLINIC_INFO.coordinates.lat}
             lng={mapLongitude ?? CLINIC_INFO.coordinates.lng}
             zoom={mapZoom ?? 15}
-            query={contact?.address || CLINIC_INFO.address}
             title="Dr. Maris Aesthetics clinic location map"
             className="site-footer-map__frame"
           />

@@ -53,6 +53,10 @@ psql "$DATABASE_URL" \
 psql "$DATABASE_URL" \
   -v ON_ERROR_STOP=1 \
   -f migration-production/019-homepage-patient-story-editor-layout.sql
+
+psql "$DATABASE_URL" \
+  -v ON_ERROR_STOP=1 \
+  -f migration-production/020-contact-map-use-website-settings.sql
 ```
 
 The migrations are structural and idempotent. They never seed or copy CRM
@@ -176,6 +180,15 @@ component edit layout, leaving section heading fields and `stories`. The legacy
 schema attributes remain hidden and stored for API/content compatibility. Run
 this after deploying the CMS schema that includes Patient stories. It does not
 alter or delete homepage content.
+
+### `020-contact-map-use-website-settings.sql`
+
+Removes duplicate address, clinic-name, and directions-URL fields from the
+Contact map component and its persisted Content Manager edit layout. The
+Contact page now gets its displayed address and map coordinates/zoom from
+Website Settings. Existing values in those duplicate component columns are
+discarded; this does not modify Website Settings or other Contact content.
+Deploy the matching Strapi schema and frontend first, then run the migration.
 
 ## Manual promotion merge
 

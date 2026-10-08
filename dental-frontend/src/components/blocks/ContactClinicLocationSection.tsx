@@ -8,11 +8,8 @@ type Benefit = { icon?: 'location' | 'landmark' | 'parking'; text: string }
 
 interface ClinicLocationData {
   title: string
-  address: string
   benefits: Benefit[]
-  clinicName: string
   directionsLabel: string
-  directionsUrl?: string
 }
 
 export interface ContactMapSettings {
@@ -27,11 +24,11 @@ export interface ContactMapSettings {
 const benefitIcons = { location: MapPin, landmark: Building2, parking: CarFront }
 
 export function ContactClinicLocationSection({ data, websiteSettings }: { data: ClinicLocationData; websiteSettings?: ContactMapSettings }) {
-  const clinicAddress = websiteSettings?.address || data.address || CLINIC_INFO.vietNamAddress || CLINIC_INFO.address
+  const clinicAddress = websiteSettings?.address || CLINIC_INFO.vietNamAddress || CLINIC_INFO.address
   const latitude = websiteSettings?.mapLatitude ?? CLINIC_INFO.coordinates.lat
   const longitude = websiteSettings?.mapLongitude ?? CLINIC_INFO.coordinates.lng
   const zoom = websiteSettings?.mapZoom ?? 16
-  const clinicQuery = `${data.clinicName || CLINIC_INFO.vietNamName || CLINIC_INFO.name} ${clinicAddress}`
+  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`
 
   return (
     <section className="contact-clinic-location" aria-labelledby="contact-clinic-location-title">
@@ -40,9 +37,8 @@ export function ContactClinicLocationSection({ data, websiteSettings }: { data: 
           <GoogleMapEmbed
             lat={latitude}
             lng={longitude}
-            query={clinicQuery}
             zoom={zoom}
-            title={`${data.clinicName || CLINIC_INFO.name} location map`}
+            title="DR. MARIS AESTHETICS clinic location map"
             className="absolute inset-0 w-full h-full grayscale-[15%] contrast-[1.05]"
           />
         </div>
@@ -64,8 +60,8 @@ export function ContactClinicLocationSection({ data, websiteSettings }: { data: 
               )
             })}
           </div>
-          {data.directionsUrl && (
-            <a className="contact-clinic-location__directions" href={data.directionsUrl} target="_blank" rel="noreferrer">
+          {directionsUrl && (
+            <a className="contact-clinic-location__directions" href={directionsUrl} target="_blank" rel="noreferrer">
               <span>{data.directionsLabel}</span>
               <ExternalLink size={15} aria-hidden="true" />
             </a>

@@ -1544,14 +1544,11 @@ export async function getContactPage(isDraftMode: boolean = false): Promise<Cont
       } else if (type === "contact.map-section") {
         blockData = {
           title: block.title || "Vị trí phòng khám",
-          address: block.address || "",
           benefits: (block.benefits || []).map((benefit: any) => ({
             icon: benefit.icon || 'location',
             text: benefit.text || '',
           })),
-          clinicName: block.clinic_name || "DR. MARIS AESTHETICS",
           directionsLabel: block.directions_label || "CHỈ ĐƯỜNG TRÊN GOOGLE MAPS",
-          directionsUrl: block.directions_url || '',
         };
       } else if (type === "contact.expectation") {
         blockData = {

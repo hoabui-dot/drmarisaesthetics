@@ -540,15 +540,10 @@ export interface ContactMapSection extends Struct.ComponentSchema {
     displayName: 'Clinic Location Section';
   };
   attributes: {
-    address: Schema.Attribute.Text & Schema.Attribute.Required;
     benefits: Schema.Attribute.Component<'contact.location-benefit', true>;
-    clinic_name: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'Smilux Dental Clinic'>;
     directions_label: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'CH\u1EC8 \u0110\u01AF\u1EDCNG TR\u00CAN GOOGLE MAPS'>;
-    directions_url: Schema.Attribute.String;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'V\u1ECB tr\u00ED ph\u00F2ng kh\u00E1m'>;
