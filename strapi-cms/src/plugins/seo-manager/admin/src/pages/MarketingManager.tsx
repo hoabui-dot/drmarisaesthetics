@@ -106,7 +106,12 @@ export function MarketingManager({ msg }: { msg: (key: string, fallback: string)
           {input(msg('marketing.internalName', 'Internal name'), 'internal_name', edit?.internal_name)}
           <label className="seo-manager-field"><Typography variant="pi" fontWeight="bold">{msg('marketing.provider', 'Provider')}</Typography><SingleSelect value={String(edit?.provider || providers[kind][0][0])} onChange={(provider) => setEdit((current) => current ? { ...current, provider, ...(kind === 'tracking' ? { public_id: '' } : {}) } : current)}>{providers[kind].map(([value, label]) => <SingleSelectOption key={value} value={value}>{label}</SingleSelectOption>)}</SingleSelect></label>
           {kind === 'verification' ? input(msg('marketing.verificationToken', 'Verification token'), 'verification_token', edit?.verification_token) : input(msg('marketing.publicId', 'Provider public ID'), 'public_id', edit?.public_id)}
-          <label className="seo-manager-toggle"><Toggle checked={edit?.enabled === true} onChange={(event: React.ChangeEvent<HTMLInputElement>) => setEdit((current) => current ? { ...current, enabled: event.target.checked } : current)}>{msg('marketing.enabled', 'Enabled')}</Toggle></label>
+          <Toggle
+            offLabel={msg('marketing.disabled', 'Disabled')}
+            onLabel={msg('marketing.enabled', 'Enabled')}
+            checked={edit?.enabled === true}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => setEdit((current) => current ? { ...current, enabled: event.target.checked } : current)}
+          />
         </div></Modal.Body>
         <Modal.Footer><Button variant="tertiary" onClick={() => setEdit(null)}>{msg('marketing.cancel', 'Cancel')}</Button><Button loading={saving} onClick={() => void save()}>{msg('marketing.save', 'Save and publish')}</Button></Modal.Footer>
       </Modal.Content>

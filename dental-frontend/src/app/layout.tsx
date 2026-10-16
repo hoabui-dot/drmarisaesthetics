@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import './globals.css'
 import { Header } from '@/src/components/layout/Header'
 import { Footer } from '@/src/components/layout/Footer'
@@ -165,6 +166,18 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   } : staticFooter;
   return (
     <html lang="vi">
+      {process.env.NODE_ENV === 'production' && <>
+        <Script id="drmaris-google-tag" src="https://www.googletagmanager.com/gtag/js?id=G-RHDCNF8W7B" strategy="beforeInteractive" />
+        <Script id="drmaris-google-tag-config" strategy="beforeInteractive">{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){window.dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-RHDCNF8W7B');
+          window.gtag = window.gtag || gtag;
+          window.__drmarisGtagInitialized = true;
+          window.__drmarisGoogleTagIds = Array.from(new Set([...(window.__drmarisGoogleTagIds || []), 'G-RHDCNF8W7B']));
+        `}</Script>
+      </>}
       <body className="antialiased flex flex-col min-h-screen">
         <MarketingIntegrations integrations={marketing.integrations} />
         <ReCaptchaProvider>

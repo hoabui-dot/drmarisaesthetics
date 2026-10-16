@@ -42,12 +42,24 @@ export async function getMarketingPublicConfig(): Promise<MarketingPublicConfig>
     const response = await apiClient<{ data?: Partial<MarketingPublicConfig> }>("/api/seo-manager/public-config", {
       tags: ["marketing-config"],
     });
+    const integrations = Array.isArray(response.data?.integrations) ? [...response.data.integrations] : [];
+    // This property is explicitly installed by the site owner. Keep it in the
+    // production route-tracking list even if the CMS integration record is
+    // temporarily missing, so client-side navigations continue to emit views.
+    if (process.env.NODE_ENV === 'production' && !integrations.some((item) => item.provider === 'google_analytics_4' && item.publicId === 'G-RHDCNF8W7B')) {
+      integrations.push({ provider: 'google_analytics_4', publicId: 'G-RHDCNF8W7B' });
+    }
     return {
       verifications: Array.isArray(response.data?.verifications) ? response.data.verifications : [],
-      integrations: Array.isArray(response.data?.integrations) ? response.data.integrations : [],
+      integrations,
     };
   } catch {
-    return { verifications: [], integrations: [] };
+    return {
+      verifications: [],
+      integrations: process.env.NODE_ENV === 'production'
+        ? [{ provider: 'google_analytics_4', publicId: 'G-RHDCNF8W7B' }]
+        : [],
+    };
   }
 }
 

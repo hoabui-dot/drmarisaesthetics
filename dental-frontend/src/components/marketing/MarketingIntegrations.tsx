@@ -1,12 +1,15 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import type { MarketingPublicConfig } from "@/src/lib/seo/seo-manager";
 
 declare global {
   interface Window {
     dataLayer?: unknown[];
+    gtag?: (...args: unknown[]) => void;
+    __drmarisGoogleTagIds?: string[];
+    __drmarisGtagInitialized?: boolean;
     fbq?: ((...args: unknown[]) => void) & { callMethod?: (...args: unknown[]) => void; queue?: unknown[]; loaded?: boolean; version?: string };
     oaiq?: ((...args: unknown[]) => void) & { q?: unknown[] };
   }
@@ -34,6 +37,7 @@ export function MarketingIntegrations({ integrations }: { integrations: Marketin
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const query = searchParams.toString();
+  const hasMounted = useRef(false);
 
   useEffect(() => {
     const active = integrations.filter((item) => providers[item.provider]?.(item.publicId));
@@ -46,8 +50,8 @@ export function MarketingIntegrations({ integrations }: { integrations: Marketin
     const openai = [...ids("openai_ads"), ...ids("openai_ads_pixel")];
 
     window.dataLayer = window.dataLayer || [];
-    const gtag = (...args: unknown[]) => window.dataLayer!.push(args);
-    (window as Window & { gtag?: typeof gtag }).gtag = gtag;
+    const gtag = window.gtag || ((...args: unknown[]) => window.dataLayer!.push(args));
+    window.gtag = gtag;
     gtm.forEach((id) => {
       window.dataLayer!.push({ "gtm.start": Date.now(), event: "gtm.js" });
       addScript(`drmaris-gtm-${id}`, `https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(id)}`);
@@ -55,8 +59,17 @@ export function MarketingIntegrations({ integrations }: { integrations: Marketin
     const googleIds = [...new Set([...ga4, ...ads])];
     if (googleIds.length) {
       addScript("drmaris-google-tag", `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(googleIds[0])}`);
-      gtag("js", new Date());
-      googleIds.forEach((id) => gtag("config", id, ga4.includes(id) ? { send_page_view: false } : {}));
+      if (!window.__drmarisGtagInitialized) {
+        gtag("js", new Date());
+        window.__drmarisGtagInitialized = true;
+      }
+      const configuredIds = new Set(window.__drmarisGoogleTagIds || []);
+      googleIds.forEach((id) => {
+        if (configuredIds.has(id)) return;
+        gtag("config", id, ga4.includes(id) ? { send_page_view: false } : {});
+        configuredIds.add(id);
+      });
+      window.__drmarisGoogleTagIds = [...configuredIds];
     }
     if (meta.length && !window.fbq) {
       const fbq = function (...args: unknown[]) {
@@ -79,6 +92,12 @@ export function MarketingIntegrations({ integrations }: { integrations: Marketin
   }, [integrations]);
 
   useEffect(() => {
+    // The root Google tag sends the initial page_view. Only send subsequent
+    // client-side navigations here to avoid counting the first page twice.
+    if (!hasMounted.current) {
+      hasMounted.current = true;
+      return;
+    }
     const pagePath = `${pathname}${query ? `?${query}` : ""}`;
     const active = integrations.filter((item) => providers[item.provider]?.(item.publicId));
     const googleIds = [...new Set(active.filter((item) => item.provider === "google_analytics_4" || item.provider === "google_ads").map((item) => item.publicId))];
