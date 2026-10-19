@@ -99,8 +99,7 @@ export interface AboutDoctors extends Struct.ComponentSchema {
       Schema.Attribute.DefaultTo<'Meet Our Doctors'>;
     view_all_label: Schema.Attribute.String &
       Schema.Attribute.DefaultTo<'VIEW ALL DOCTORS'>;
-    view_all_link: Schema.Attribute.String &
-      Schema.Attribute.DefaultTo<'/our-team'>;
+    view_all_link: Schema.Attribute.String;
   };
 }
 
@@ -1578,6 +1577,25 @@ export interface HomepageHeroSection extends Struct.ComponentSchema {
   };
 }
 
+export interface HomepageHospitalBasedSurgerySecondarySection
+  extends Struct.ComponentSchema {
+  collectionName: 'components_homepage_hospital_based_surgery_secondary_sections';
+  info: {
+    displayName: 'Second hospital-based surgery section';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    disclaimer: Schema.Attribute.Text;
+    editorial_lead: Schema.Attribute.Text;
+    eyebrow: Schema.Attribute.String;
+    image: Schema.Attribute.Media<'images'>;
+    image_alt: Schema.Attribute.String;
+    mobile_image: Schema.Attribute.Media<'images'>;
+    proof_items: Schema.Attribute.Component<'homepage.text-item', true>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface HomepageHospitalBasedSurgerySection
   extends Struct.ComponentSchema {
   collectionName: 'components_homepage_hospital_based_surgery_sections';
@@ -2526,6 +2544,7 @@ export interface WebsiteSettingBlogCategory extends Struct.ComponentSchema {
     category_id: Schema.Attribute.String;
     icon: Schema.Attribute.Media<'images'>;
     label: Schema.Attribute.String & Schema.Attribute.Required;
+    route_name: Schema.Attribute.String;
   };
 }
 
@@ -2742,6 +2761,7 @@ declare module '@strapi/strapi' {
       'homepage.frequently-asked-questions-section': HomepageFrequentlyAskedQuestionsSection;
       'homepage.hero': HomepageHero;
       'homepage.hero-section': HomepageHeroSection;
+      'homepage.hospital-based-surgery-secondary-section': HomepageHospitalBasedSurgerySecondarySection;
       'homepage.hospital-based-surgery-section': HomepageHospitalBasedSurgerySection;
       'homepage.international-journey-section': HomepageInternationalJourneySection;
       'homepage.international-patients-section': HomepageInternationalPatientsSection;

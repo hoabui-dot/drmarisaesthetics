@@ -66,8 +66,11 @@ function buildArticleEntity(input: StructuredDataInput, canonical: string, organ
   return compact({ "@type": articleType, "@id": `${canonical}#article`, headline: cleanText(input.title), description: cleanText(input.description), image: absoluteImage(input.image), datePublished: isoDate(input.publishedAt), dateModified: isoDate(input.updatedAt || input.publishedAt), author, publisher: { "@id": organizationId }, mainEntityOfPage: { "@id": `${canonical}#webpage` }, url: canonical });
 }
 async function resolveStructuredDataUnsafe(input: StructuredDataInput): Promise<JsonLdEntity | null> {
-  const settings = await getSettings(); if (settings.structured_data_enabled === false || input.pageSeo?.structured_data_enabled === false || input.pageSeo?.no_index === true) return null;
-  const canonical = await Promise.race([resolveCanonicalUrl(input.path, input.pageSeo), new Promise<string>((resolve) => setTimeout(() => resolve(absolutePath(input.path)), 1500))]);
+  const [settings, canonical] = await Promise.all([
+    getSettings(),
+    Promise.race([resolveCanonicalUrl(input.path, input.pageSeo), new Promise<string>((resolve) => setTimeout(() => resolve(absolutePath(input.path)), 1500))]),
+  ]);
+  if (settings.structured_data_enabled === false || input.pageSeo?.structured_data_enabled === false || input.pageSeo?.no_index === true) return null;
   const businessType = settings.structured_data_business_type && ALLOWED_BUSINESS_TYPES.has(settings.structured_data_business_type) ? settings.structured_data_business_type : FALLBACK_SETTINGS.structured_data_business_type;
   const organization = buildOrganization(businessType); const organizationId = `${siteOrigin()}/#organization`; const websiteId = `${siteOrigin()}/#website`; const webpageId = `${canonical}#webpage`; const contentEntityId = `${canonical}#${input.pageType === "service" ? "service" : "article"}`;
   const webpage = compact({ "@type": pageSchemaType(input.pageType), "@id": webpageId, url: canonical, name: cleanText(input.title), description: cleanText(input.description), isPartOf: { "@id": websiteId }, primaryImageOfPage: absoluteImage(input.image) ? { "@type": "ImageObject", contentUrl: absoluteImage(input.image) } : undefined, datePublished: isoDate(input.publishedAt), dateModified: isoDate(input.updatedAt || input.publishedAt) });

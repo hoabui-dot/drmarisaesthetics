@@ -1,8 +1,25 @@
 'use client'
 
 import { useEffect } from 'react'
-import { animate, createTimeline, onScroll } from 'animejs'
 import type { RefObject } from 'react'
+
+type MotionTarget = HTMLElement | null
+
+function reveal(animations: Animation[], element: MotionTarget, options: { delay: number; duration: number; y?: number }) {
+  if (!element) return
+  animations.push(element.animate(
+    [
+      { opacity: 0, transform: `translateY(${options.y ?? 10}px)` },
+      { opacity: 1, transform: 'translateY(0)' },
+    ],
+    {
+      delay: options.delay,
+      duration: options.duration,
+      easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+      fill: 'both',
+    },
+  ))
+}
 
 export function useSignatureProceduresMotion(root: RefObject<HTMLElement | null>) {
   useEffect(() => {
@@ -10,14 +27,11 @@ export function useSignatureProceduresMotion(root: RefObject<HTMLElement | null>
     const section = scope?.querySelector<HTMLElement>('[data-signature-procedures]')
     if (!section) return
 
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const eyebrow = section.querySelector<HTMLElement>('[data-signature-eyebrow]')
     const title = section.querySelector<HTMLElement>('[data-signature-title]')
     const supportingCopy = section.querySelector<HTMLElement>('[data-signature-copy]')
     const panels = Array.from(section.querySelectorAll<HTMLElement>('[data-signature-panel]'))
-
     const panelParts = panels.map((panel) => ({
-      panel,
       image: panel.querySelector<HTMLElement>('.stitch-procedure-panel__image img'),
       curtain: panel.querySelector<HTMLElement>('[data-signature-curtain]'),
       number: panel.querySelector<HTMLElement>('[data-signature-number]'),
@@ -25,76 +39,64 @@ export function useSignatureProceduresMotion(root: RefObject<HTMLElement | null>
       description: panel.querySelector<HTMLElement>('[data-signature-panel-description]'),
       cta: panel.querySelector<HTMLElement>('[data-signature-panel-cta]'),
     }))
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     if (reduceMotion) {
       section.querySelectorAll<HTMLElement>('[data-signature-motion]').forEach((element) => {
         element.style.opacity = '1'
         element.style.transform = 'none'
       })
-      panelParts.forEach(({ curtain }) => {
+      panelParts.forEach(({ image, curtain }) => {
+        if (image) image.style.transform = 'none'
         if (curtain) curtain.style.transform = 'scaleY(0)'
       })
       return
     }
 
-    const content = [eyebrow, title, supportingCopy].filter(Boolean) as HTMLElement[]
-    const panelContent = panelParts.flatMap(({ number, title, description, cta }) => [number, title, description, cta]).filter(Boolean) as HTMLElement[]
-
-    animate(content, { opacity: 0, y: 10, duration: 0 })
-    animate(panelContent, { opacity: 0, y: 10, duration: 0 })
-    panelParts.forEach(({ image, curtain }) => {
-      if (image) animate(image, { opacity: 1, scale: 1.07, y: 20, duration: 0 })
-      if (curtain) animate(curtain, { scaleY: 1, duration: 0 })
-    })
-
-    const timeline = createTimeline({ autoplay: false })
-    if (eyebrow) timeline.add(eyebrow, { opacity: [0, 1], y: [10, 0], duration: 340, ease: 'outCubic' }, 0)
-    if (title) timeline.add(title, { opacity: [0, 1], y: [18, 0], duration: 520, ease: 'outCubic' }, 180)
-    if (supportingCopy) timeline.add(supportingCopy, { opacity: [0, 1], y: [14, 0], duration: 420, ease: 'outCubic' }, 420)
-
-    panelParts.forEach(({ image, curtain, number, title, description, cta }, index) => {
-      const start = 500 + index * 65
-      if (curtain) timeline.add(curtain, { scaleY: [1, 0], duration: 480, ease: 'outCubic' }, start)
-      if (image) timeline.add(image, { scale: [1.07, 1], y: [20, 0], duration: 560, ease: 'outCubic' }, start)
-      if (number) timeline.add(number, { opacity: [0, 1], y: [8, 0], duration: 240, ease: 'outCubic' }, start + 170)
-      if (title) timeline.add(title, { opacity: [0, 1], y: [10, 0], duration: 280, ease: 'outCubic' }, start + 205)
-      if (description) timeline.add(description, { opacity: [0, 1], y: [8, 0], duration: 280, ease: 'outCubic' }, start + 250)
-      if (cta) timeline.add(cta, { opacity: [0, 1], y: [6, 0], duration: 240, ease: 'outCubic' }, start + 300)
-    })
-
-    let hasEntered = false
-    const reveal = () => {
-      if (hasEntered) return
-      hasEntered = true
-      timeline.play()
+    const animations: Animation[] = []
+    const collect = (element: HTMLElement | null, keyframes: Keyframe[], duration: number, delay = 0) => {
+      if (!element) return
+      animations.push(element.animate(keyframes, {
+        duration,
+        delay,
+        easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+        fill: 'both',
+      }))
     }
 
-    // Anime.js v4 uses container-boundary first, target-boundary second.
-    // This starts the choreography once roughly the first third of the
-    // section has entered the viewport, without scrubbing the entrance.
-    const scrollObserver = onScroll({
-      target: section,
-      enter: { container: 'bottom', target: '30%' },
-      leave: 'top bottom',
-      repeat: true,
-      onEnter: reveal,
-      onEnterBackward: reveal,
-    })
+    let hasEntered = false
+    const play = () => {
+      if (hasEntered) return
+      hasEntered = true
+      reveal(animations, eyebrow, { delay: 0, duration: 340, y: 10 })
+      reveal(animations, title, { delay: 180, duration: 520, y: 18 })
+      reveal(animations, supportingCopy, { delay: 420, duration: 420, y: 14 })
 
-    // Protect against route-entry frames or smooth-scroll jumps that skip the
-    // exact Anime.js threshold. Anime.js remains the sole animation owner.
-    const visibilityObserver = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) reveal()
-      },
-      { threshold: 0.01 },
-    )
-    visibilityObserver.observe(section)
+      panelParts.forEach(({ image, curtain, number, title: panelTitle, description, cta }, index) => {
+        const start = 500 + index * 65
+        collect(curtain, [{ transform: 'scaleY(1)' }, { transform: 'scaleY(0)' }], 480, start)
+        collect(image, [
+          { transform: 'translateY(20px) scale(1.07)' },
+          { transform: 'translateY(0) scale(1)' },
+        ], 560, start)
+        reveal(animations, number, { delay: start + 170, duration: 240, y: 8 })
+        reveal(animations, panelTitle, { delay: start + 205, duration: 280, y: 10 })
+        reveal(animations, description, { delay: start + 250, duration: 280, y: 8 })
+        reveal(animations, cta, { delay: start + 300, duration: 240, y: 6 })
+      })
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        play()
+        observer.disconnect()
+      }
+    }, { threshold: 0.01 })
+    observer.observe(section)
 
     return () => {
-      scrollObserver.revert()
-      visibilityObserver.disconnect()
-      timeline.pause().revert()
+      observer.disconnect()
+      animations.forEach((animation) => animation.cancel())
     }
   }, [root])
 }

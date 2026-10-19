@@ -763,6 +763,7 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
         'homepage.revision-surgery-section',
         'homepage.doctor-assessment-section',
         'homepage.hospital-based-surgery-section',
+        'homepage.hospital-based-surgery-secondary-section',
         'homepage.international-patients-section',
         'homepage.international-journey-section',
         'homepage.patient-results-section',

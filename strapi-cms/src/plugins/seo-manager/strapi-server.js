@@ -51,8 +51,12 @@ function validateMarketing(kind, data) {
 
 const CONTENT_MODELS = [
   {
-    uid: 'api::blog.blog', label: 'Blog', kind: 'collection', path: (item) => item.slug ? `/news/${item.slug}` : '',
-    fields: ['title', 'slug', 'metaDescription', 'publishedAt', 'updatedAt'],
+    uid: 'api::blog.blog', label: 'Blog', kind: 'collection', path: (item, categoryRoutes) => {
+      if (!item.slug) return '';
+      const categoryRoute = categoryRoutes?.get(item.blog_category_id);
+      return categoryRoute ? `/news/${categoryRoute}/${item.slug}` : `/news/${item.slug}`;
+    },
+    fields: ['title', 'slug', 'blog_category_id', 'metaDescription', 'publishedAt', 'updatedAt'],
     populate: { seo: { populate: ['meta_image'] }, coverImage: true }, canonicalSupported: true,
     sitemapSupported: true, structuredDataGenerated: true, pageSeoConsumed: true,
   },
@@ -94,6 +98,11 @@ const CONTENT_MODELS = [
     structuredDataGenerated: false, globalImageFallback: false,
   },
 ];
+
+function normalizeBlogCategoryRoute(value) {
+  return String(value || '').trim().toLowerCase().replace(/đ/g, 'd').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
 
 function adminEditUrl(uid, kind, documentId, locale) {
   const target = kind === 'single'
@@ -137,6 +146,15 @@ async function findContentDocuments(strapi, locales) {
   const drafts = [];
   for (const model of CONTENT_MODELS) {
     for (const locale of locales) {
+      let blogCategoryRoutes = new Map();
+      if (model.uid === 'api::blog.blog') {
+        try {
+          const settings = await strapi.documents('api::website-setting.website-setting').findFirst({ status: 'published', locale, populate: { blog_categories: true } });
+          blogCategoryRoutes = new Map((settings?.blog_categories || []).map((category) => [category.category_id, category.route_name || normalizeBlogCategoryRoute(category.label)]).filter(([id, route]) => id && route));
+        } catch (error) {
+          strapi.log.warn(`[seo-manager] Blog category routes could not be loaded locale=${locale}: ${error instanceof Error ? error.message : 'unknown error'}`);
+        }
+      }
       const base = { locale, fields: model.fields, populate: model.populate };
       const query = model.kind === 'single'
         ? async (status) => {
@@ -151,7 +169,7 @@ async function findContentDocuments(strapi, locales) {
         strapi.log.warn(`[seo-manager] published content query failed uid=${model.uid} locale=${locale}: ${error instanceof Error ? error.message : 'unknown error'}`);
       }
       for (const item of publishedRows) {
-        const path = model.path(item);
+        const path = model.path(item, blogCategoryRoutes);
         if (!path) continue;
         published.push({
           ...item,
@@ -179,7 +197,7 @@ async function findContentDocuments(strapi, locales) {
         strapi.log.warn(`[seo-manager] draft route check skipped uid=${model.uid} locale=${locale}: ${error instanceof Error ? error.message : 'unknown error'}`);
       }
       for (const item of draftRows) {
-        const path = model.path(item);
+        const path = model.path(item, blogCategoryRoutes);
         if (path) drafts.push({ path, uid: model.uid, locale: item.locale || locale });
       }
     }

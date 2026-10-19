@@ -15,7 +15,7 @@ function DoctorPortrait({ doctor, featured = false }: { doctor: HomepageDoctorBl
 }
 
 function ProfileLink({ doctor }: { doctor: HomepageDoctorBlock['doctors'][number] }) {
-  return <Link href={doctor.profileLink || '/our-team'} className="doctor-profile-link">View Profile <ArrowRight aria-hidden="true" /></Link>
+  return <Link href={doctor.profileLink || '/our-team/dr-huy'} className="doctor-profile-link">View Profile <ArrowRight aria-hidden="true" /></Link>
 }
 
 function FeaturedDoctorCard({ doctor }: { doctor: HomepageDoctorBlock['doctors'][number] }) {
@@ -31,5 +31,7 @@ export function DoctorSection({ data }: { data: HomepageDoctorBlock }) {
   if (!doctors.length) return null
   const [featured, ...standardDoctors] = doctors
 
-  return <section id="home-doctors" className="doctor-team-section" aria-labelledby="home-doctors-heading"><div className="mx-auto max-w-home-container px-4 py-16 sm:px-6 lg:px-8 lg:py-20"><header className="doctor-team-header"><div><p className="eyebrow">{data.eyebrow || 'OUR SURGICAL TEAM'}</p><h2 id="home-doctors-heading">{data.title || 'Meet Our Surgical Specialists'}</h2></div><Link href={data.viewAllLink || '/our-team'} className="doctor-view-all">{data.viewAllLabel || 'MEET THE TEAM'} <ArrowRight aria-hidden="true" /></Link></header><div className="doctor-card-group" data-count={doctors.length}><FeaturedDoctorCard doctor={featured} />{standardDoctors.map((doctor) => <StandardDoctorCard key={doctor.id} doctor={doctor} />)}</div></div></section>
+  const viewAllLink = data.viewAllLink && data.viewAllLink !== '/our-team' ? data.viewAllLink : '#home-doctors'
+
+  return <section id="home-doctors" className="doctor-team-section" aria-labelledby="home-doctors-heading"><div className="mx-auto max-w-home-container px-4 py-16 sm:px-6 lg:px-8 lg:py-20"><header className="doctor-team-header"><div><p className="eyebrow">{data.eyebrow || 'OUR SURGICAL TEAM'}</p><h2 id="home-doctors-heading">{data.title || 'Meet Our Surgical Specialists'}</h2></div><Link href={viewAllLink} className="doctor-view-all">{data.viewAllLabel || 'MEET THE TEAM'} <ArrowRight aria-hidden="true" /></Link></header><div className="doctor-card-group" data-count={doctors.length}><FeaturedDoctorCard doctor={featured} />{standardDoctors.map((doctor) => <StandardDoctorCard key={doctor.id} doctor={doctor} />)}</div></div></section>
 }

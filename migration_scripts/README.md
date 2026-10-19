@@ -59,3 +59,22 @@ IDs for the Website Settings categories.
 for service taxonomy. It adds the service categories that are missing from
 Website Settings and assigns the current Service records by slug. Run without
 flags for preview, then use `--write --publish` after reviewing the mapping.
+
+## Blog category route names
+
+`223-add-blog-category-route-name.js` is a local PostgreSQL migration for the
+new `route_name` field on Website Settings Blog Categories. It adds the column
+and backfills route segments from category labels (including Vietnamese
+diacritics). Rows sharing the same stable `category_id`—such as draft and
+published component copies—receive the same route name.
+
+From the repository root, preview and then apply to the local Strapi database:
+
+```bash
+node migration_scripts/223-add-blog-category-route-name.js
+node migration_scripts/223-add-blog-category-route-name.js --write
+```
+
+The script reads the local database connection from `strapi-cms/.env`, uses a
+transaction for writes, and is never invoked by Strapi or Docker. Production
+uses the separate structural migration `migration-production/022-blog-category-route-name.sql`.

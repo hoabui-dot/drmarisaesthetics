@@ -25,7 +25,7 @@ export const FALLBACK_HEADER_NAVIGATION = [
 export const FALLBACK_FOOTER = {
   description: 'A surgeon-led aesthetic practice providing personalized, hospital-based cosmetic surgery care in Ho Chi Minh City.',
   linkGroups: [
-    { id: 1, heading: 'EXPLORE', links: [{ id: 1, label: 'About Us', href: '/about-us' }, { id: 2, label: 'Our Team', href: '/our-team' }, { id: 3, label: 'Services', href: '/services' }, { id: 4, label: 'Treatments', href: '/treatments' }] },
+    { id: 1, heading: 'EXPLORE', links: [{ id: 1, label: 'About Us', href: '/about-us' }, { id: 2, label: 'Dr. Huy', href: '/our-team/dr-huy' }, { id: 9, label: 'Dr. Cuong', href: '/our-team/dr-cuong' }, { id: 3, label: 'Services', href: '/services' }, { id: 4, label: 'Treatments', href: '/treatments' }] },
     { id: 2, heading: 'PATIENT JOURNEY', links: [{ id: 5, label: 'Patient Results', href: '/results' }, { id: 6, label: 'Patient Journal', href: '/news' }, { id: 7, label: 'Contact & Consultation', href: '/contact' }, { id: 8, label: 'Medical Disclaimer', href: '/medical-disclaimer' }] },
   ],
   copyrightText: '© 2026 DR. MARIS AESTHETICS. ALL RIGHTS RESERVED.',

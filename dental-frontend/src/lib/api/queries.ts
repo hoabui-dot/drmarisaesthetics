@@ -446,7 +446,6 @@ export async function getResults(isDraftMode: boolean = false): Promise<ResultsD
         "populate[cases][populate][image]": "true",
       },
       isDraftMode,
-      cache: "no-store",
       tags: ["results"],
     });
     const value = response?.data?.attributes
@@ -518,7 +517,6 @@ export async function getWebsiteSetting(isDraftMode: boolean = false): Promise<W
         status: isDraftMode ? "draft" : "published",
       },
       isDraftMode,
-      cache: "no-store",
       tags: ["website-setting"],
     });
     const value = response?.data;
@@ -544,7 +542,19 @@ export async function getWebsiteSetting(isDraftMode: boolean = false): Promise<W
         children: Array.isArray(item.children) ? item.children.map((child: any) => ({ id: child.id, label: child.label || '', href: child.href || '#', isExternal: child.isExternal ?? child.is_external ?? false })) : undefined,
       })) : undefined,
       footerDescription: value.footer_description || undefined,
-      footerLinkGroups: Array.isArray(value.footer_link_groups) ? value.footer_link_groups.map((group: any) => ({ id: group.id, heading: group.heading || '', links: Array.isArray(group.links) ? group.links.map((link: any) => ({ id: link.id, label: link.label || '', href: link.href || '#' })) : [] })) : undefined,
+      footerLinkGroups: Array.isArray(value.footer_link_groups) ? value.footer_link_groups.map((group: any) => ({
+        id: group.id,
+        heading: group.heading || '',
+        links: Array.isArray(group.links) ? group.links.flatMap((link: any) => {
+          const href = String(link.href || '#').replace(/\/$/, '')
+          if (href === '/our-team') return [
+            { id: `${link.id}-huy`, label: 'Dr. Huy', href: '/our-team/dr-huy' },
+            { id: `${link.id}-cuong`, label: 'Dr. Cuong', href: '/our-team/dr-cuong' },
+          ]
+          if (href === '/deep-plane-facelift-specialist') return [{ id: link.id, label: link.label || 'Dr. Cuong', href: '/our-team/dr-cuong' }]
+          return [{ id: link.id, label: link.label || '', href }]
+        }) : [],
+      })) : undefined,
       footerCopyrightText: value.footer_copyright_text || undefined,
       footerTagline: value.footer_tagline || undefined,
       contactMethods: (value.contact_methods || []).filter((item: any) => item.is_active !== false).sort((a: any, b: any) => (a.order || 0) - (b.order || 0)).map((item: any) => ({ ...item, isActive: item.is_active !== false, icon: item.icon ? { url: getMediaUrl(item.icon), alt: item.icon.alternativeText || item.label, width: item.icon.width || 0, height: item.icon.height || 0 } : undefined })),
@@ -599,6 +609,7 @@ function normalizeWebsiteCategories(value: unknown): WebsiteSetting['blogCategor
     return [{
       id,
       label,
+      routeName: slugifyCategoryRoute(typeof item?.route_name === 'string' && item.route_name.trim() ? item.route_name.trim() : label),
       icon: iconUrl ? {
         url: iconUrl,
         alt: icon.alternativeText || label,
@@ -607,6 +618,11 @@ function normalizeWebsiteCategories(value: unknown): WebsiteSetting['blogCategor
       } : undefined,
     }];
   });
+}
+
+function slugifyCategoryRoute(value: string): string {
+  return value.trim().toLowerCase().replace(/đ/g, 'd').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
 
 /**
@@ -877,6 +893,8 @@ export async function getHomepage(isDraftMode: boolean = false): Promise<Homepag
     let canonicalBlogPosts: any[] = [];
     if ((data.layout || []).some((block: HomepageBlockComponent) => block.__component === "homepage.blog-collection-section")) {
       try {
+        const websiteSetting = await getWebsiteSetting(isDraftMode)
+        const routeNameByCategoryId = new Map((websiteSetting?.blogCategories || []).map((category) => [category.id, category.routeName]))
         const blogResponse = await apiClient<any>("/api/blogs", {
           params: { "populate[coverImage]": "true", sort: "publishedAt:desc", "pagination[limit]": 12 },
           isDraftMode,
@@ -890,6 +908,7 @@ export async function getHomepage(isDraftMode: boolean = false): Promise<Homepag
             id: post.id,
             documentId: post.documentId,
             ...postData,
+            categoryRouteName: routeNameByCategoryId.get(postData.blog_category_id),
             imageUrl: mediaData?.url || null,
             imageAlt: mediaData?.alternativeText || postData.title || "",
           };
@@ -1641,7 +1660,7 @@ export async function getAboutPage(isDraftMode: boolean = false): Promise<any> {
         doctorsSlider = {
           title: data.doctors.title || "Meet Our Doctors",
           viewAllLabel: data.doctors.view_all_label || "VIEW ALL DOCTORS",
-          viewAllLink: data.doctors.view_all_link || "/our-team",
+          viewAllLink: data.doctors.view_all_link && data.doctors.view_all_link !== "/our-team" ? data.doctors.view_all_link : undefined,
           doctors: (data.doctors.doctors || []).map((doctor: any) => ({
             id: doctor.id,
             name: doctor.name || "",

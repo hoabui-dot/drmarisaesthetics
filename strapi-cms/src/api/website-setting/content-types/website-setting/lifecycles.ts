@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto'
 
-type Category = { category_id?: string | null; [key: string]: unknown }
+type Category = { category_id?: string | null; route_name?: string | null; label?: string; [key: string]: unknown }
 type LifecycleData = {
   blog_categories?: Category[]
   service_categories?: Category[]
@@ -13,19 +13,33 @@ const ensureCategoryIds = (data?: LifecycleData, existing?: LifecycleData) => {
     if (!Array.isArray(items)) continue
     const previousByComponentId = new Map(
       (Array.isArray(existing?.[key]) ? existing[key] : [])
-        .filter((item) => item?.id != null && item.category_id)
-        .map((item) => [String(item.id), item.category_id as string]),
+        .filter((item) => item?.id != null)
+        .map((item) => [String(item.id), item]),
     )
     const usedIds = new Set<string>()
+    const usedRouteNames = new Set<string>()
     data[key] = items.map((item) => {
+      const previous = item.id != null ? previousByComponentId.get(String(item.id)) : undefined
       const preservedId = typeof item.category_id === 'string' && item.category_id.trim()
         ? item.category_id.trim()
-        : item.id != null ? previousByComponentId.get(String(item.id)) : undefined
+        : previous?.category_id
       const categoryId = preservedId && !usedIds.has(preservedId) ? preservedId : randomUUID()
       usedIds.add(categoryId)
+      if (key === 'blog_categories') {
+        const routeName = normalizeRouteName(item.route_name || previous?.route_name || item.label || '')
+        if (!routeName) throw new Error(`Blog category "${item.label || 'Untitled'}" needs a route name or label.`)
+        if (usedRouteNames.has(routeName)) throw new Error(`Blog category route name "${routeName}" must be unique.`)
+        usedRouteNames.add(routeName)
+        return { ...item, category_id: categoryId, route_name: routeName }
+      }
       return { ...item, category_id: categoryId }
     })
   }
+}
+
+function normalizeRouteName(value: string): string {
+  return value.trim().toLowerCase().replace(/đ/g, 'd').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
 }
 
 const getExistingCategories = async (): Promise<LifecycleData | undefined> => {

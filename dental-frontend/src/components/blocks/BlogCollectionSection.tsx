@@ -11,12 +11,15 @@ import {
 } from "@/src/components/ui/carousel";
 import { useMobileAnimation } from '@/src/hooks/useMobileAnimation';
 import { PerformanceAnimation } from '@/src/components/ui/PerformanceAnimation';
+import { blogArticlePath } from '@/src/lib/news/routes';
 
 interface BlogPost {
   id: number;
   documentId?: string;
   title: string;
   slug: string;
+  blog_category_id?: string | null;
+  categoryRouteName?: string;
   excerpt?: string;
   imageCover?: {
     data?: {
@@ -104,7 +107,7 @@ export default function BlogCollectionSection({
                       className="h-full"
                     >
                       <NavigationLink
-                        href={`/news/${post.slug}`}
+                        href={post.categoryRouteName ? `/news/${post.categoryRouteName}/${post.slug}` : blogArticlePath(post.slug, post.blog_category_id)}
                         className="block group bg-white rounded-3xl overflow-hidden shadow-[0_10px_30px_rgba(30,58,95,0.08)] hover:shadow-[0_20px_60px_rgba(30,58,95,0.15)] transition-all duration-500 border border-primary-50 hover:border-primary-200 h-full hover:-translate-y-2"
                       >
                         {/* Image Container */}

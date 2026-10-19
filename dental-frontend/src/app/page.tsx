@@ -12,12 +12,11 @@ import { getHomepageEditorial, getResults } from '@/src/lib/api/queries'
  */
 
 export default async function Home() {
-  const [homepage, results] = await Promise.all([getHomepageEditorial(), getResults()])
-  const structuredData = await resolveStructuredData({
+  const [homepage, results, structuredData] = await Promise.all([getHomepageEditorial(), getResults(), resolveStructuredData({
     pageType: 'home', path: '/',
     title: 'Plastic Surgery in Vietnam for International Patients',
     description: 'Hospital-based cosmetic surgery in Ho Chi Minh City with direct surgeon assessment by Dr. Maris.',
-  })
+  })])
 
   return <><StructuredDataScript data={structuredData} /><StitchHomepage data={homepage ?? undefined} results={results} /></>
 }

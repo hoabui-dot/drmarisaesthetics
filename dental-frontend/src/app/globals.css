@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=EB+Garamond:wght@500;600;700&family=Instrument+Sans:wght@400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -32,9 +30,9 @@
   --stitch-ink: var(--stitch-color-editorial-ink);
   --stitch-muted: var(--stitch-color-muted);
   --stitch-surface: var(--stitch-color-clinical-surface);
-  --stitch-font-family-body: 'Instrument Sans', sans-serif;
-  --stitch-font-family-display: 'Cormorant Garamond', Georgia, serif;
-  --stitch-font-family-nav: 'EB Garamond', 'Cormorant Garamond', Georgia, serif;
+  --stitch-font-family-body: var(--font-instrument-sans), sans-serif;
+  --stitch-font-family-display: var(--font-cormorant-garamond), Georgia, serif;
+  --stitch-font-family-nav: var(--font-eb-garamond), var(--font-cormorant-garamond), Georgia, serif;
   --stitch-font-weight-display: 900;
   --stitch-font-weight-display-bold: 900;
   --stitch-font-weight-display-medium: 500;

@@ -20,6 +20,7 @@
 import { revalidateTag, revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { SITEMAP_CACHE_TAG, SITEMAP_WEBHOOK_EVENTS } from "@/src/lib/seo/sitemap-cache";
+import { getWebsiteSetting } from "@/src/lib/api/queries";
 
 // Webhook secret from environment
 const WEBHOOK_SECRET = process.env.STRAPI_WEBHOOK_SECRET;
@@ -63,10 +64,10 @@ const MODEL_PATH_MAP: Record<string, string[]> = {
   service: ["/services"],
   "service-category": ["/services"],
   "website-setting": ["/services", "/news"],
-  "our-team": ["/our-team", "/our-team/dr-huy"],
+  "our-team": ["/our-team/dr-huy"],
   result: ["/results"],
   "treatments-page": ["/treatments"],
-  "deep-plane-facelift-specialist": ["/deep-plane-facelift-specialist", "/our-team/dr-cuong"],
+  "deep-plane-facelift-specialist": ["/our-team/dr-cuong"],
   "robots-settings": ["/robots.txt"],
   "sitemap-manager-settings": ["/sitemap.xml"],
   "canonical-rule": ["/sitemap.xml"],
@@ -150,11 +151,20 @@ function isSitemapRelevant(modelName: string): boolean {
   return SITEMAP_RELEVANT_MODELS.has(normalizeModelName(modelName));
 }
 
-function sitemapEntryPath(modelName: string, slug?: string): string | null {
+async function sitemapEntryPath(modelName: string, entry?: WebhookPayload['entry']): Promise<string | null> {
+  const slug = entry?.slug
   if (!slug) return null;
   const model = normalizeModelName(modelName);
-  if (model === "blog" || model === "news") return `/news/${slug}`;
-  if (model === "service") return `/services/${slug}`;
+  if (model === "blog" || model === "news") {
+    const categoryId = typeof entry?.blog_category_id === 'string' ? entry.blog_category_id : ''
+    if (categoryId) {
+      const settings = await getWebsiteSetting().catch(() => null)
+      const routeName = settings?.blogCategories.find((category) => category.id === categoryId)?.routeName
+      if (routeName) return `/news/${routeName}/${encodeURIComponent(slug)}`
+    }
+    return `/news/${encodeURIComponent(slug)}`
+  }
+  if (model === "service") return `/services/${encodeURIComponent(slug)}`;
   return `/${slug}`;
 }
 
@@ -238,7 +248,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 8. Revalidate entry-specific path using the model's public route prefix.
-    const entryPath = sitemapEntryPath(normalizedModel, payload.entry?.slug);
+    const entryPath = await sitemapEntryPath(normalizedModel, payload.entry);
     if (entryPath) {
       try {
         revalidatePath(entryPath);

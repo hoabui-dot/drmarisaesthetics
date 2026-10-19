@@ -76,12 +76,10 @@ export function Header({ navigation, logoSrc }: HeaderProps) {
     || pathname === '/about-us'
     || pathname === '/contact'
     || pathname === '/results'
-    || pathname === '/our-team'
     || pathname.startsWith('/our-team/')
     || pathname === '/services'
     || pathname.startsWith('/services/')
     || pathname === '/treatments'
-    || pathname === '/deep-plane-facelift-specialist'
     || pathname.startsWith('/face/')
     || pathname.startsWith('/news');
   const { open: openBookingModal } = useBookingModal();

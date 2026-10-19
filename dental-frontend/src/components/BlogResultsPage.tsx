@@ -7,6 +7,7 @@ import { AnimatePresence, MotionConfig, motion, useReducedMotion } from 'motion/
 import { FormEvent, useEffect, useMemo, useState } from 'react'
 import type { WebsiteCategory } from '@/src/types/strapi'
 import { ConsultationCtaSection } from '@/src/components/blocks/ConsultationCtaSection'
+import { blogArticlePath } from '@/src/lib/news/routes'
 
 export type BlogListItem = {
   id: number
@@ -100,7 +101,7 @@ export function BlogResultsPage({ posts: initialPosts, total: initialTotal, cate
         <motion.div layout className="results-grid" transition={reduceMotion ? { duration: 0 } : { layout: { duration: .35, ease: 'easeOut' } }}>
           <AnimatePresence initial={false}>
             {posts.map((post) => <motion.article key={post.id} layout className="result-card blog-result-card" initial={{ opacity: 0, y: reduceMotion ? 0 : 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: reduceMotion ? 0 : 12 }} transition={{ duration: reduceMotion ? 0 : .3 }}>
-              <Link href={`/news/${post.slug}`} className="blog-result-card__link">
+              <Link href={blogArticlePath(post.slug, post.categoryId, categories)} className="blog-result-card__link">
                 <div className="result-pair result-pair--single blog-result-card__image">{post.imageUrl ? <Image src={post.imageUrl} alt={post.imageAlt || post.title} fill sizes="(max-width: 900px) 100vw, 50vw" className="object-cover" unoptimized /> : null}</div>
                 <div className="result-card__body">
                   <div className="result-card__heading"><div><span className="blog-result-card__category">{post.categoryId ? categoryLabels.get(post.categoryId) || `Category ${post.categoryId}` : 'Clinical knowledge'}</span><h3>{post.title}</h3><p>{post.metaDescription || 'Read the clinical guide.'}</p></div><strong>{formatDate(post.publishedAt)}</strong></div>

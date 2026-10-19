@@ -23,6 +23,11 @@ function safeDestination(source: string, destination: string): string | null {
 
 export async function middleware(request: NextRequest) {
   const path = normalize(request.nextUrl.pathname);
+  // These legacy page URLs are intentionally retired. Do not let CMS redirect
+  // entries resurrect them; allow Next.js to resolve them to its 404 page.
+  if (path === "/our-team" || path === "/deep-plane-facelift-specialist") {
+    return NextResponse.next();
+  }
   if (path === "/sitemap") return NextResponse.redirect(new URL("/sitemap.xml", request.url), 308);
   if (path.startsWith("/_next") || path.startsWith("/api") || path === "/robots.txt" || path === "/sitemap.xml" || path.endsWith("-sitemap.xml") || path === "/sitemap.xsl") return NextResponse.next();
   try {

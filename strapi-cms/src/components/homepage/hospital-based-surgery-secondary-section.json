@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_homepage_hospital_based_surgery_secondary_sections",
+  "info": { "displayName": "Second hospital-based surgery section" },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "editorial_lead": { "type": "text" },
+    "description": { "type": "text" },
+    "disclaimer": { "type": "text" },
+    "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "mobile_image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "image_alt": { "type": "string" },
+    "proof_items": { "type": "component", "repeatable": true, "component": "homepage.text-item" }
+  }
+}

@@ -5,6 +5,7 @@
   "attributes": {
     "category_id": { "type": "string", "required": false },
     "label": { "type": "string", "required": true },
+    "route_name": { "type": "string", "required": false },
     "icon": { "type": "media", "multiple": false, "allowedTypes": ["images"] }
   }
 }

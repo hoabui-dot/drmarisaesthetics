@@ -29,7 +29,7 @@ const STATIC_ROUTES = [
 
 const COLLECTION_ROUTES = [
   { uid: 'api::service.service', sitemapKey: 'service', label: 'Services', singularLabel: 'Service', group: 'Services', prefix: '/services', routePattern: '/services/:slug', slugField: 'slug', fields: ['title', 'slug', 'updatedAt', 'publishedAt', 'locale'], populate: { seo: true } },
-  { uid: 'api::blog.blog', sitemapKey: 'news', label: 'News', singularLabel: 'News article', group: 'News', prefix: '/news', routePattern: '/news/:slug', slugField: 'slug', fields: ['title', 'slug', 'updatedAt', 'publishedAt', 'locale'], populate: { seo: true } },
+  { uid: 'api::blog.blog', sitemapKey: 'news', label: 'News', singularLabel: 'News article', group: 'News', prefix: '/news', routePattern: '/news/:categoryRoute/:slug', slugField: 'slug', fields: ['title', 'slug', 'blog_category_id', 'updatedAt', 'publishedAt', 'locale'], populate: { seo: true } },
 ];
 
 function enabledByConfig(config, key) {
@@ -50,6 +50,9 @@ const cleanPath = (value) => {
   const path = `/${value.trim()}`.replace(/\/{2,}/g, '/').split(/[?#]/, 1)[0];
   return path.length > 1 ? path.replace(/\/$/, '') : '/';
 };
+
+const normalizeCategoryRoute = (value) => String(value || '').trim().toLowerCase().replace(/đ/g, 'd').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  .replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 function getPublicOrigin() {
   const configured = process.env.NEXT_PUBLIC_SERVER_URL || process.env.FRONTEND_URL;
@@ -180,6 +183,16 @@ async function getSitemapReport(strapi) {
     findRules(strapi, 'api::canonical-rule.canonical-rule', ['source_path', 'canonical_url', 'is_active']),
   ]);
   const sourceConfig = getSourceConfiguration(settings);
+  let blogCategoryRoutes = new Map();
+  try {
+    const websiteSetting = await findSingle(strapi, 'api::website-setting.website-setting', defaultLocale, { blog_categories: true });
+    blogCategoryRoutes = new Map((websiteSetting?.blog_categories || []).map((category) => [
+      category.category_id,
+      category.route_name || normalizeCategoryRoute(category.label),
+    ]).filter(([categoryId, routeName]) => categoryId && routeName));
+  } catch (error) {
+    strapi.log.warn(`[sitemap] Blog category routes unavailable; legacy article URLs will be used: ${error.message}`);
+  }
 
   const canonicalRules = new Map(canonicalRows.filter((row) => row.is_active !== false && row.source_path && row.canonical_url).map((row) => [cleanPath(row.source_path), row.canonical_url]));
   const activeRedirects = redirects.filter((row) => row.is_active !== false);
@@ -288,8 +301,11 @@ async function getSitemapReport(strapi) {
           issues.push(issue('SITEMAP_SLUG_MISSING', 'critical', 'Published entry has no route slug', model.prefix || '/', `${model.label} is published but has no slug.`));
           continue;
         }
+        const categoryRoute = model.uid === 'api::blog.blog' ? blogCategoryRoutes.get(entry.blog_category_id) : null;
         await addCandidate({
-          path: `${model.prefix}/${encodeURIComponent(entry.slug)}`,
+          path: model.uid === 'api::blog.blog' && categoryRoute
+            ? `${model.prefix}/${encodeURIComponent(categoryRoute)}/${encodeURIComponent(entry.slug)}`
+            : `${model.prefix}/${encodeURIComponent(entry.slug)}`,
           entry,
           label: entry.title || entry.slug,
           group: model.group,
@@ -307,8 +323,11 @@ async function getSitemapReport(strapi) {
         const publishedSlugs = new Set(rows.map((entry) => entry.slug).filter(Boolean));
         for (const draft of drafts) {
           if (!draft.slug || publishedSlugs.has(draft.slug)) continue;
+          const categoryRoute = model.uid === 'api::blog.blog' ? blogCategoryRoutes.get(draft.blog_category_id) : null;
           excluded.push({
-            path: `${model.prefix}/${encodeURIComponent(draft.slug)}`,
+            path: model.uid === 'api::blog.blog' && categoryRoute
+              ? `${model.prefix}/${encodeURIComponent(categoryRoute)}/${encodeURIComponent(draft.slug)}`
+              : `${model.prefix}/${encodeURIComponent(draft.slug)}`,
             label: draft.title || draft.slug,
             contentType: model.label,
             locale,

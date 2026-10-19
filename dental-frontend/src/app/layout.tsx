@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
+import { Cormorant_Garamond, EB_Garamond, Instrument_Sans } from 'next/font/google'
 import './globals.css'
 import { Header } from '@/src/components/layout/Header'
 import { Footer } from '@/src/components/layout/Footer'
@@ -17,6 +18,28 @@ import { GlobalCtaProvider } from '@/src/components/providers/GlobalCtaProvider'
 import { FALLBACK_FOOTER, FALLBACK_HEADER_NAVIGATION } from '@/src/lib/constants/site-navigation'
 import { getMarketingPublicConfig } from '@/src/lib/seo/seo-manager'
 import { MarketingIntegrations } from '@/src/components/marketing/MarketingIntegrations'
+
+const instrumentSans = Instrument_Sans({
+  subsets: ['latin', 'latin-ext'],
+  weight: ['400', '500', '600', '700'],
+  display: 'swap',
+  variable: '--font-instrument-sans',
+})
+
+const cormorantGaramond = Cormorant_Garamond({
+  subsets: ['latin', 'latin-ext'],
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  display: 'swap',
+  variable: '--font-cormorant-garamond',
+})
+
+const ebGaramond = EB_Garamond({
+  subsets: ['latin', 'latin-ext'],
+  weight: ['500', '600', '700'],
+  display: 'swap',
+  variable: '--font-eb-garamond',
+})
 
 const staticNavigation: Navigation = {
   navigation: FALLBACK_HEADER_NAVIGATION.map((item) => ({ ...item })),
@@ -72,10 +95,10 @@ function buildNavigation(serviceOptions: Array<{ value: string; label: string }>
       if (item.href === '/our-team') {
         return {
           ...item,
-          isClickable: item.isClickable !== false,
-          children: item.children?.length ? item.children : [
-            { id: 8001, label: 'Dr. Huy', href: '/our-team/dr-huy' },
-            { id: 8002, label: 'Dr. Cuong', href: '/our-team/dr-cuong' },
+          isClickable: false,
+          children: [
+            { id: item.children?.[0]?.id || 8001, label: 'Dr. Huy', href: '/our-team/dr-huy' },
+            { id: item.children?.[1]?.id || 8002, label: 'Dr. Cuong', href: '/our-team/dr-cuong' },
           ],
         }
       }
@@ -167,8 +190,8 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="vi">
       {process.env.NODE_ENV === 'production' && <>
-        <Script id="drmaris-google-tag" src="https://www.googletagmanager.com/gtag/js?id=G-RHDCNF8W7B" strategy="beforeInteractive" />
-        <Script id="drmaris-google-tag-config" strategy="beforeInteractive">{`
+        <Script id="drmaris-google-tag" src="https://www.googletagmanager.com/gtag/js?id=G-RHDCNF8W7B" strategy="afterInteractive" />
+        <Script id="drmaris-google-tag-config" strategy="afterInteractive">{`
           window.dataLayer = window.dataLayer || [];
           function gtag(){window.dataLayer.push(arguments);}
           gtag('js', new Date());
@@ -178,7 +201,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           window.__drmarisGoogleTagIds = Array.from(new Set([...(window.__drmarisGoogleTagIds || []), 'G-RHDCNF8W7B']));
         `}</Script>
       </>}
-      <body className="antialiased flex flex-col min-h-screen">
+      <body className={`${instrumentSans.variable} ${cormorantGaramond.variable} ${ebGaramond.variable} antialiased flex flex-col min-h-screen`}>
         <MarketingIntegrations integrations={marketing.integrations} />
         <ReCaptchaProvider>
           <BookingModalWrapper serviceOptions={serviceOptions} bookingForm={websiteSetting?.bookingForm}>

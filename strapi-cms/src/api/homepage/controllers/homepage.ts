@@ -26,6 +26,7 @@ export default factories.createCoreController(
                 "homepage.revision-surgery-section": { populate: ["image", "mobile_image"] },
                 "homepage.doctor-assessment-section": { populate: ["image"] },
                 "homepage.hospital-based-surgery-section": { populate: ["image", "mobile_image", "proof_items"] },
+                "homepage.hospital-based-surgery-secondary-section": { populate: ["image", "mobile_image", "proof_items"] },
                 "homepage.international-patients-section": { populate: ["review_items"] },
                 "homepage.international-journey-section": { populate: { steps: { populate: ["image"] } } },
                 "homepage.patient-results-section": { populate: "*" },

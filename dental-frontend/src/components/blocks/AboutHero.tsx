@@ -55,7 +55,7 @@ export function AboutHero({ data }: { data: AboutHeroData }) {
               <p>Dr. Maris is directly involved from consultation and examination through surgery and postoperative follow-up, while surgical procedures are performed at City International Hospital (CIH).</p>
             </div>
             <div className="about-editorial-hero__actions">
-              <Link href="/our-team" className="about-editorial-hero__button about-editorial-hero__button--primary">Meet Dr. Maris</Link>
+              <Link href="#about-doctors" className="about-editorial-hero__button about-editorial-hero__button--primary">Meet Our Doctors</Link>
               <Link href="/contact" className="booking-inline-cta about-editorial-hero__button about-editorial-hero__button--secondary">Request an Online Consultation</Link>
             </div>
           </div>

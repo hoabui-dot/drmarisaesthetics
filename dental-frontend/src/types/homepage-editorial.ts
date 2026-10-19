@@ -12,6 +12,7 @@ export type HomepageEditorialData = {
   revision_surgery?: HomepageSectionContent | null
   doctor_assessment?: HomepageSectionContent | null
   hospital_based_surgery?: HomepageSectionContent | null
+  hospital_based_surgery_sections?: HomepageSectionContent[]
   international_patients?: HomepageSectionContent | null
   international_journey?: HomepageSectionContent | null
   patient_results?: HomepageSectionContent | null
@@ -43,6 +44,7 @@ export function unwrapHomepageComponent(value: unknown): HomepageSectionContent 
 
 export function normalizeHomepageEditorial(raw: Record<string, unknown>): HomepageEditorialData {
   const result: HomepageEditorialData = { title: typeof raw.title === 'string' ? raw.title : undefined }
+  const hospitalSections: HomepageSectionContent[] = []
   const componentFields: Record<string, string> = {
     hero_content: 'hero_section',
     video_section: 'video_section',
@@ -68,6 +70,7 @@ export function normalizeHomepageEditorial(raw: Record<string, unknown>): Homepa
     'revision-surgery-section': 'revision_surgery',
     'doctor-assessment-section': 'doctor_assessment',
     'hospital-based-surgery-section': 'hospital_based_surgery',
+    'hospital-based-surgery-secondary-section': 'hospital_based_surgery',
     'international-patients-section': 'international_patients',
     'international-journey-section': 'international_journey',
     'patient-results-section': 'patient_results',
@@ -78,12 +81,24 @@ export function normalizeHomepageEditorial(raw: Record<string, unknown>): Homepa
     if (!section || typeof section !== 'object') continue
     const uid = String((section as Record<string, unknown>).__component || '')
     const alias = dynamicAliases[uid.split('.').pop() || '']
-    if (alias) (result as Record<string, unknown>)[alias] = section
+    if (!alias) continue
+    if (alias === 'hospital_based_surgery') {
+      hospitalSections.push(section as HomepageSectionContent)
+      if (!(result as Record<string, unknown>)[alias]) {
+        ;(result as Record<string, unknown>)[alias] = section
+      }
+      continue
+    }
+    ;(result as Record<string, unknown>)[alias] = section
   }
+  if (hospitalSections.length) result.hospital_based_surgery_sections = hospitalSections
   for (const key of HOMEPAGE_SECTION_ORDER) {
     if ((result as Record<string, unknown>)[key]) continue
     const value = unwrapHomepageComponent(raw[componentFields[key]]) ?? unwrapHomepageComponent(raw[key])
     ;(result as Record<string, unknown>)[key] = value
+  }
+  if (!result.hospital_based_surgery_sections?.length && result.hospital_based_surgery) {
+    result.hospital_based_surgery_sections = [result.hospital_based_surgery]
   }
   result.metadata_title = typeof raw.metadata_title === 'string' ? raw.metadata_title : undefined
   result.metadata_description = typeof raw.metadata_description === 'string' ? raw.metadata_description : undefined

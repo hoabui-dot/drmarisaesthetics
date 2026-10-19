@@ -6,6 +6,7 @@ interface Article {
   id: number;
   title: string;
   slug: string;
+  categoryRouteName?: string;
   excerpt?: string;
   imageUrl?: string | null;
   imageAlt?: string;
@@ -47,7 +48,7 @@ export function ArticlesSection({ data }: { data: ArticlesSectionData }) {
           <span className="articles-heading-line" aria-hidden="true" />
         </header>
         <div className="articles-layout">
-          <NavigationLink href={`/news/${featured.slug}`} className="articles-featured-card">
+          <NavigationLink href={featured.categoryRouteName ? `/news/${featured.categoryRouteName}/${featured.slug}` : `/news/${featured.slug}`} className="articles-featured-card">
             <ArticleImage article={featured} featured />
             <div className="articles-featured-content">
               <h3>{featured.title}</h3>
@@ -57,7 +58,7 @@ export function ArticlesSection({ data }: { data: ArticlesSectionData }) {
           </NavigationLink>
           <div className="articles-compact-list">
             {compact.map((article) => (
-              <NavigationLink key={article.id} href={`/news/${article.slug}`} className="articles-compact-card">
+              <NavigationLink key={article.id} href={article.categoryRouteName ? `/news/${article.categoryRouteName}/${article.slug}` : `/news/${article.slug}`} className="articles-compact-card">
                 <ArticleImage article={article} />
                 <div className="articles-compact-content">
                   <h3>{article.title}</h3>

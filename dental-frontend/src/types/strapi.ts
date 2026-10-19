@@ -196,6 +196,7 @@ export interface WebsiteSettingSocialLink {
 export interface WebsiteCategory {
   id: string;
   label: string;
+  routeName?: string;
   icon?: Media;
 }
 

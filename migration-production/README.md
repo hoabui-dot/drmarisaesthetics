@@ -61,6 +61,10 @@ psql "$DATABASE_URL" \
 psql "$DATABASE_URL" \
   -v ON_ERROR_STOP=1 \
   -f migration-production/021-website-settings-google-map-place.sql
+
+psql "$DATABASE_URL" \
+  -v ON_ERROR_STOP=1 \
+  -f migration-production/022-blog-category-route-name.sql
 ```
 
 The migrations are structural and idempotent. They never seed or copy CRM
@@ -202,6 +206,25 @@ the embed URL can point to the exact hospital/business listing and preserve its
 Google Maps marker/title. Both Footer and Contact use the same settings; this
 migration does not seed map data. Deploy the matching CMS/frontend schema
 before applying it.
+
+### `022-blog-category-route-name.sql`
+
+Adds nullable `route_name` storage to Website Settings Blog Categories. Each
+category route segment identifies an article path as
+`/news/{route_name}/{blog-slug}`. The frontend derives a normalized route from
+the category label when this value is still empty, and Strapi fills/normalizes
+it when Website Settings is saved. This migration is structural only; it does
+not rewrite existing blog records or editorial category labels.
+
+### Homepage second hospital section
+
+The Homepage dynamic zone includes the distinct component
+`homepage.hospital-based-surgery-secondary-section`, which mirrors the fields
+of the existing hospital section so editors can maintain a separate second
+hospital record. Strapi synchronizes this component table and its dynamic-zone
+relation storage from the deployed schema at startup. No standalone SQL
+migration is required. Deploy the CMS schema before adding the new component in
+Homepage Content Manager; then save and publish Homepage content manually.
 
 ## Manual promotion merge
 
