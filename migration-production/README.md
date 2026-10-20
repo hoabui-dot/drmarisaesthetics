@@ -300,7 +300,10 @@ of the existing hospital section so editors can maintain a separate second
 hospital record. Strapi synchronizes this component table and its dynamic-zone
 relation storage from the deployed schema at startup. No standalone SQL
 migration is required. Deploy the CMS schema before adding the new component in
-Homepage Content Manager; then save and publish Homepage content manually.
+Homepage Content Manager. For explicit production content seeding that
+preserves existing Homepage sections and adds the CIH section after the current
+hospital section, use
+`seed-production/seed-homepage-cih-hospital-section.js`.
 
 ### About Us hospital environments section
 

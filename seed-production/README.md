@@ -191,10 +191,57 @@ Strapi schema, run the content seeds in this order:
    About records; it requires the About section from step 2.
 4. `seed-treatments-overview-hospital-image.js` is independent and may be run
    separately after its own schema migration.
+5. `seed-homepage-cih-hospital-section.js` adds/updates the CIH section after
+   the existing Homepage hospital section. It is independent of the About and
+   Contact seeds, but requires the Homepage component schema to be deployed.
 
 For each script, inspect the dry-run output first. A missing prerequisite is a
 workflow/order issue, not a reason to bypass the script's production write
 guards. Never write or publish until the production content has been reviewed.
+
+## Homepage CIH hospital section
+
+Script: `seed-homepage-cih-hospital-section.js`
+
+The Homepage schema already contains
+`homepage.hospital-based-surgery-secondary-section`, so no SQL migration is
+required. The seed preserves the original `homepage.hospital-based-surgery-section`
+and every other section, then inserts or updates exactly one CIH section
+immediately after it. It writes a dedicated CIH title and conservative,
+non-ownership copy; existing Homepage sections and their media are not replaced.
+
+The section uses the City International Hospital exterior image previously
+referenced in the Treatments/About seeds: the direct Wikimedia Commons file
+under CC0 1.0. On an approved write, the script reuses the named image in the
+Strapi Media Library if present; otherwise it downloads that exact HTTPS asset
+from `upload.wikimedia.org`, validates JPEG type/size, uploads it, and assigns
+the same media item to desktop and mobile image fields. No unrelated hospital
+or stock image is used.
+
+Dry-run, after the Homepage schema and frontend version are deployed:
+
+```sh
+STRAPI_URL="<verified-production-strapi-url>" \
+STRAPI_API_TOKEN="<scoped-token>" \
+node seed-production/seed-homepage-cih-hospital-section.js
+```
+
+After reviewing the existing section title, insertion position, copy, image
+source/license, and dry-run report, write and publish explicitly:
+
+```sh
+STRAPI_URL="<verified-production-strapi-url>" \
+STRAPI_API_TOKEN="<scoped-token>" \
+ALLOW_PRODUCTION_WRITE=YES \
+PRODUCTION_CONTENT_REVIEWED=YES \
+HOMEPAGE_CIH_IMAGE_REVIEWED=YES \
+node seed-production/seed-homepage-cih-hospital-section.js --write --publish
+```
+
+The write requires all approval flags and verifies one published secondary
+section immediately after the original, with the CC0 image assigned to both
+responsive image fields. It is not run by Docker build/startup or Strapi
+bootstrap.
 
 ## Dr. Cuong consultation hospital showcase
 
