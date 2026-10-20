@@ -115,17 +115,6 @@ async function main() {
       secondary_label: 'EXPLORE OUR SERVICES',
       secondary_link: '/services',
     },
-    existingByComponent('about.hospital') || {
-      __component: 'about.hospital',
-      eyebrow: 'HOSPITAL-BASED SURGERY',
-      title: 'Surgery Performed at City International Hospital (CIH)',
-      statement: 'DR. MARIS AESTHETICS is a cosmetic surgery practice, not a spa or beauty center.',
-      description: 'Surgical procedures are performed at City International Hospital (CIH), Ho Chi Minh City. A hospital environment provides access to broader medical infrastructure and supporting services surrounding surgery.',
-      ...(mediaId(hospitalImage) ? { image: mediaId(hospitalImage) } : {}),
-      image_alt: 'City International Hospital exterior',
-      scope: ['Major body contouring', 'Breast surgery', 'Anesthesia procedures', 'Combined procedures', 'Revision surgery', 'Complex secondary operations'].map((title) => ({ title })),
-      disclaimer: 'DR. MARIS AESTHETICS and City International Hospital are separate entities. CIH is the hospital environment where surgical procedures are performed.',
-    },
   ].map(withoutCmsFields)
 
   console.log(JSON.stringify({ dryRun: DRY_RUN, before: existing.map((item) => item.__component), after: sections.map((item) => item.__component), uploadCount: uploads.length }, null, 2))
@@ -135,7 +124,7 @@ async function main() {
   await request('/api/about-page?status=published', { method: 'PUT', body: JSON.stringify({ data: { publishedAt: new Date().toISOString() } }) })
   const verify = await request('/api/about-page?populate=sections')
   const actual = verify.data?.sections || []
-  if (actual.length < 8) throw new Error(`About migration verification failed: expected 8 sections, received ${actual.length}`)
+  if (actual.length < 7) throw new Error(`About migration verification failed: expected at least 7 sections, received ${actual.length}`)
   console.log(`[about-page] migrated and published ${actual.length} sections`)
 }
 

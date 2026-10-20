@@ -21,7 +21,7 @@ export function useOurTeamMotion(root: RefObject<HTMLElement | null>) {
     const eyebrow = hero.querySelector<HTMLElement>('[data-team-hero-eyebrow]')
     const titleLines = hero.querySelectorAll<HTMLElement>('[data-team-hero-title-line]')
     const copy = hero.querySelectorAll<HTMLElement>('[data-team-hero-copy]')
-    const actions = hero.querySelectorAll<HTMLElement>('[data-team-hero-actions] a, [data-team-hero-actions] button')
+    const actions = hero.querySelectorAll<HTMLElement>('[data-team-hero-actions] > *')
     const image = hero.querySelector<HTMLElement>('[data-team-hero-image]')
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
@@ -133,13 +133,13 @@ export function useOurTeamMotion(root: RefObject<HTMLElement | null>) {
     const scope = root.current
     if (!scope) return
 
-    const sections = Array.from(scope.querySelectorAll<HTMLElement>('section:not([data-team-hero]):not([data-team-revision]):not([data-planning-process])'))
+    const sections = Array.from(scope.querySelectorAll<HTMLElement>('section:not([data-team-hero]):not([data-team-revision]):not([data-planning-process]):not([data-about-hospitals])'))
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const cleanups: Array<() => void> = []
 
     sections.forEach((section) => {
       const elements = Array.from(section.querySelectorAll<HTMLElement>(
-        '.stitch-kicker, h2, h3, p, li, blockquote, [class*="__media"], .stitch-portrait, .stitch-about-international-heading, .stitch-journey-grid > article, .stitch-about-scope, .stitch-about-hospital-overlay > div, .stitch-actions',
+        '.stitch-kicker, h2, h3, p, li, blockquote, [class*="__media"], .stitch-portrait, .stitch-about-international-heading, .stitch-journey-grid > article, .stitch-actions',
       ))
 
       if (!elements.length) return

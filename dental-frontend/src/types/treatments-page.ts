@@ -13,6 +13,8 @@ export type TreatmentPageSection = {
   paragraphTwo?: string
   image?: string
   imageAlt?: string
+  secondaryImageUrl?: string
+  secondaryImageAlt?: string
   items: TreatmentPageItem[]
 }
 

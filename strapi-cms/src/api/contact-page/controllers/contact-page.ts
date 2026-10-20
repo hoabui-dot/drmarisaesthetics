@@ -23,7 +23,6 @@ export default factories.createCoreController(
             },
             "contact.consultation-section": {
               populate: {
-                location_options: { populate: "*" },
                 advisor_image: { populate: "*" },
               },
             },

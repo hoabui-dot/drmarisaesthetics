@@ -182,7 +182,13 @@ export async function buildSeoMetadata(options: {
     metadataBase: new URL(productionOrigin()),
     title,
     description,
-    alternates: { canonical },
+    alternates: {
+      canonical,
+      languages: {
+        "en-au": canonical,
+        "x-default": canonical,
+      },
+    },
     robots: {
       index: pageSeo.no_index !== true,
       follow: pageSeo.no_follow !== true,

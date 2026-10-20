@@ -7,6 +7,7 @@ import { ServiceFaqSection } from '@/src/components/services/ServiceFaqSection'
 import type { BlogDetailRecord } from '@/src/lib/api/blog-detail'
 import { getLatestBlogDetails } from '@/src/lib/api/blog-detail'
 import { blogArticlePath } from '@/src/lib/news/routes'
+import { SiteBreadcrumbs } from '@/src/components/layout/SiteBreadcrumbs'
 import type { WebsiteCategory } from '@/src/types/strapi'
 
 type BetterBlockChild = { text?: string; children?: BetterBlockChild[] }
@@ -32,12 +33,19 @@ export async function BlogDetailView({ blog, categoryLabel, categories = [] }: {
   const image = mediaUrl(blog.coverImage)
   const blocks = (blog.contentBetterBlocks || []) as BetterBlock[]
   const indexItems = getIndexItems(blocks, blog.slug)
+  const blogCategory = categories.find((category) => category.id === blog.blog_category_id)
+  const breadcrumbItems = [
+    { label: 'Home', href: '/' },
+    { label: 'News', href: '/news' },
+    ...(blogCategory?.routeName ? [{ label: blogCategory.label, href: `/news/${encodeURIComponent(blogCategory.routeName)}` }] : []),
+    { label: blog.title },
+  ]
 
   return <main className="service-detail-page blog-detail-page">
     <section className="service-detail-hero service-detail-hero--editorial">
       <div className="service-detail-hero__media" aria-hidden="true">{image ? <Image src={image} alt="" fill priority sizes="100vw" /> : null}</div>
       <div className="service-detail-hero__content">
-        <nav className="service-detail-breadcrumb" aria-label="Breadcrumb"><Link href="/">Home</Link><span aria-hidden="true">›</span><Link href="/news">Patient Planning Journal</Link><span aria-hidden="true">›</span><span>{blog.title}</span></nav>
+        <SiteBreadcrumbs items={breadcrumbItems} />
         {categoryLabel ? <span className="blog-result-card__category">{categoryLabel}</span> : null}
         <h2>{blog.title}</h2>
         {blog.metaDescription ? <p className="service-detail-hero__description">{blog.metaDescription}</p> : null}

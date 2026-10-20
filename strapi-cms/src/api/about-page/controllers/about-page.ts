@@ -27,7 +27,7 @@ export default factories.createCoreController(
             "about.revision": { populate: { image: { populate: "*" }, concerns: { populate: "*" } } },
             "about.international": { populate: { items: { populate: "*" } } },
             "about.consultation": { populate: "*" },
-            "about.hospital": { populate: { image: { populate: "*" }, scope: { populate: "*" } } },
+            "about.hospital-environments": { populate: { hospitals: { populate: "*" } } },
           },
         },
       };

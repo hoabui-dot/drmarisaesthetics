@@ -204,7 +204,7 @@ export function Header({ navigation, logoSrc }: HeaderProps) {
                   size="md"
                   priority
                   src={logoSrc}
-                  imageClassName={`w-auto transition-all duration-300 rounded-none ${isHeroRoute ? 'h-10 sm:h-10 lg:h-10' : scrolled ? 'h-12 sm:h-10' : 'h-16 sm:h-12 lg:h-14'}`}
+                  imageClassName={`w-auto transition-all duration-300 rounded-none ${isHeroRoute ? 'h-12 sm:h-12 lg:h-14' : scrolled ? 'h-12 sm:h-10' : 'h-16 sm:h-12 lg:h-14'}`}
                 />
               </div>
             </Link>

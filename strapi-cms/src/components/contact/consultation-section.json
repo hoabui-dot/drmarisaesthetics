@@ -8,13 +8,7 @@
   "attributes": {
     "form_title": { "type": "string", "required": true },
     "form_intro": { "type": "text", "required": true },
-    "location_options": {
-      "type": "component",
-      "repeatable": true,
-      "component": "contact.select-option"
-    },
     "privacy_policy_label": { "type": "string", "required": true },
-    "privacy_policy_href": { "type": "string" },
     "submit_label": { "type": "string", "required": true },
     "info_title": { "type": "string", "required": true },
     "info_description": { "type": "text", "required": true },

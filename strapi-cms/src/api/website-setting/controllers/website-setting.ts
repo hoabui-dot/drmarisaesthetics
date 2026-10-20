@@ -15,6 +15,7 @@ export default factories.createCoreController('api::website-setting.website-sett
         social_links: true,
         blog_categories: { populate: { icon: true } },
         service_categories: { populate: { icon: true } },
+        hospital_locations: true,
         global_cta: { populate: { background_image: true, steps: true } },
         booking_form: { populate: { visual_image: true, visual_points: true } },
       },

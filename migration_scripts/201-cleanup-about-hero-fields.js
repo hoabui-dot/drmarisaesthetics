@@ -65,7 +65,6 @@ async function main() {
   const existingHeroImage = mediaId(hero.image || hero.backgroundImage) || mediaId(await findExistingHeroImage())
   const profileImage = findUpload([/^(bg-1 \(1\)\.png)$/i, /^bg_1_1_813ceba8c1$/i])
   const revisionImage = findUpload([/^why-preoperative-assessment-matters\.jpg$/i, /^Why_Preoperative_Assessment_Matters_c5830087c1$/i])
-  const hospitalImage = findUpload([/^(bg-2 \(1\)\.png)$/i, /^bg_2_1_ab2f95d501$/i])
 
   const nextHero = {
     __component: 'about.hero',
@@ -82,11 +81,11 @@ async function main() {
   }
 
   const nextSections = sections
+    .filter((section) => section.__component !== 'about.hospital')
     .map((section) => {
       if (section.__component === 'about.hero') return nextHero
       if (section.__component === 'about.surgeon-profile' && !section.image && profileImage) return { ...section, image: profileImage.id }
       if (section.__component === 'about.revision' && !section.image && revisionImage) return { ...section, image: revisionImage.id }
-      if (section.__component === 'about.hospital' && !section.image && hospitalImage) return { ...section, image: hospitalImage.id }
       return section
     })
     .map(serialize)

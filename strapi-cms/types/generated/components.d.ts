@@ -146,19 +146,53 @@ export interface AboutHeroStat extends Struct.ComponentSchema {
   };
 }
 
-export interface AboutHospital extends Struct.ComponentSchema {
-  collectionName: 'components_about_hospitals';
+export interface AboutHospitalChapter extends Struct.ComponentSchema {
+  collectionName: 'components_about_hospital_chapters';
   info: {
-    displayName: 'Hospital-Based Surgery';
+    description: 'One editorial location entry; keep exterior/interior imagery replaceable through CMS URLs.';
+    displayName: 'Hospital Chapter';
   };
   attributes: {
-    description: Schema.Attribute.Text;
-    disclaimer: Schema.Attribute.Text;
+    abbreviation: Schema.Attribute.String & Schema.Attribute.Required;
+    address: Schema.Attribute.Text & Schema.Attribute.Required;
+    chapter: Schema.Attribute.String & Schema.Attribute.Required;
+    description: Schema.Attribute.Text & Schema.Attribute.Required;
+    detail_image_alt: Schema.Attribute.String;
+    detail_image_url: Schema.Attribute.Text;
+    exterior_image_alt: Schema.Attribute.String & Schema.Attribute.Required;
+    exterior_image_url: Schema.Attribute.Text & Schema.Attribute.Required;
+    interior_image_alt: Schema.Attribute.String & Schema.Attribute.Required;
+    interior_image_url: Schema.Attribute.Text & Schema.Attribute.Required;
+    maps_directions_url: Schema.Attribute.Text;
+    maps_embed_url: Schema.Attribute.Text;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    short_label: Schema.Attribute.String & Schema.Attribute.Required;
+    short_name: Schema.Attribute.String;
+    source_url: Schema.Attribute.String;
+    website: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface AboutHospitalEnvironments extends Struct.ComponentSchema {
+  collectionName: 'components_about_hospital_environments';
+  info: {
+    description: 'Editorial showcase of independent hospital environments associated with the practice.';
+    displayName: 'Hospital Environments';
+  };
+  attributes: {
+    cta_label: Schema.Attribute.String & Schema.Attribute.Required;
+    description: Schema.Attribute.Text & Schema.Attribute.Required;
+    disclaimer: Schema.Attribute.Text & Schema.Attribute.Required;
     eyebrow: Schema.Attribute.String;
-    image: Schema.Attribute.Media<'images'>;
-    image_alt: Schema.Attribute.String;
-    scope: Schema.Attribute.Component<'about.item', true>;
-    statement: Schema.Attribute.Text;
+    hospitals: Schema.Attribute.Component<'about.hospital-chapter', true> &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 2;
+          min: 2;
+        },
+        number
+      >;
     title: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
@@ -343,8 +377,6 @@ export interface ContactConsultationSection extends Struct.ComponentSchema {
     form_title: Schema.Attribute.String & Schema.Attribute.Required;
     info_description: Schema.Attribute.Text & Schema.Attribute.Required;
     info_title: Schema.Attribute.String & Schema.Attribute.Required;
-    location_options: Schema.Attribute.Component<'contact.select-option', true>;
-    privacy_policy_href: Schema.Attribute.String;
     privacy_policy_label: Schema.Attribute.String & Schema.Attribute.Required;
     submit_label: Schema.Attribute.String & Schema.Attribute.Required;
     trust_description: Schema.Attribute.String & Schema.Attribute.Required;
@@ -535,17 +567,22 @@ export interface ContactLocationBenefit extends Struct.ComponentSchema {
 export interface ContactMapSection extends Struct.ComponentSchema {
   collectionName: 'components_contact_map_sections';
   info: {
-    description: 'Data-driven clinic map and location information section';
+    description: 'Hospital location explorer; hospital records are maintained in the About Page hospital environments section';
     displayName: 'Clinic Location Section';
   };
   attributes: {
     benefits: Schema.Attribute.Component<'contact.location-benefit', true>;
+    description: Schema.Attribute.Text;
     directions_label: Schema.Attribute.String &
       Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'CH\u1EC8 \u0110\u01AF\u1EDCNG TR\u00CAN GOOGLE MAPS'>;
+      Schema.Attribute.DefaultTo<'Get Directions'>;
+    eyebrow: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'HOSPITAL LOCATIONS'>;
+    official_website_label: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'Official Website'>;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'V\u1ECB tr\u00ED ph\u00F2ng kh\u00E1m'>;
+      Schema.Attribute.DefaultTo<'Visit Our Hospital Facilities'>;
   };
 }
 
@@ -580,18 +617,6 @@ export interface ContactQuickContactCard extends Struct.ComponentSchema {
     label: Schema.Attribute.String & Schema.Attribute.Required;
     supporting_text: Schema.Attribute.String;
     value: Schema.Attribute.Text & Schema.Attribute.Required;
-  };
-}
-
-export interface ContactSelectOption extends Struct.ComponentSchema {
-  collectionName: 'components_contact_select_options';
-  info: {
-    description: 'Structured option for a consultation form select.';
-    displayName: 'Select Option';
-  };
-  attributes: {
-    label: Schema.Attribute.String & Schema.Attribute.Required;
-    value: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
@@ -2503,6 +2528,8 @@ export interface TreatmentsPageEditorialSection extends Struct.ComponentSchema {
     lead: Schema.Attribute.Text;
     paragraph_one: Schema.Attribute.Text;
     paragraph_two: Schema.Attribute.Text;
+    secondary_image_alt: Schema.Attribute.String;
+    secondary_image_url: Schema.Attribute.Text;
     section_key: Schema.Attribute.String & Schema.Attribute.Required;
     title: Schema.Attribute.String & Schema.Attribute.Required;
   };
@@ -2627,6 +2654,24 @@ export interface WebsiteSettingGlobalCtaStep extends Struct.ComponentSchema {
   };
 }
 
+export interface WebsiteSettingHospitalLocation extends Struct.ComponentSchema {
+  collectionName: 'components_website_setting_hospital_locations';
+  info: {
+    displayName: 'Hospital map location';
+  };
+  attributes: {
+    address: Schema.Attribute.Text & Schema.Attribute.Required;
+    latitude: Schema.Attribute.Decimal;
+    location_key: Schema.Attribute.Enumeration<['HIU', 'CIH']> &
+      Schema.Attribute.Required;
+    longitude: Schema.Attribute.Decimal;
+    maps_embed_url: Schema.Attribute.Text;
+    maps_place_url: Schema.Attribute.Text;
+    maps_search_query: Schema.Attribute.Text;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface WebsiteSettingServiceCategory extends Struct.ComponentSchema {
   collectionName: 'components_website_setting_service_categories';
   info: {
@@ -2666,7 +2711,8 @@ declare module '@strapi/strapi' {
       'about.featured-services': AboutFeaturedServices;
       'about.hero': AboutHero;
       'about.hero-stat': AboutHeroStat;
-      'about.hospital': AboutHospital;
+      'about.hospital-chapter': AboutHospitalChapter;
+      'about.hospital-environments': AboutHospitalEnvironments;
       'about.international': AboutInternational;
       'about.item': AboutItem;
       'about.mission-vision': AboutMissionVision;
@@ -2694,7 +2740,6 @@ declare module '@strapi/strapi' {
       'contact.map-section': ContactMapSection;
       'contact.quick-action-banner': ContactQuickActionBanner;
       'contact.quick-contact-card': ContactQuickContactCard;
-      'contact.select-option': ContactSelectOption;
       'contact.website-tile': ContactWebsiteTile;
       'customer.before-after-gallery': CustomerBeforeAfterGallery;
       'customer.benefit-item': CustomerBenefitItem;
@@ -2825,6 +2870,7 @@ declare module '@strapi/strapi' {
       'website-setting.contact-method': WebsiteSettingContactMethod;
       'website-setting.global-cta': WebsiteSettingGlobalCta;
       'website-setting.global-cta-step': WebsiteSettingGlobalCtaStep;
+      'website-setting.hospital-location': WebsiteSettingHospitalLocation;
       'website-setting.service-category': WebsiteSettingServiceCategory;
       'website-setting.social-link': WebsiteSettingSocialLink;
     }

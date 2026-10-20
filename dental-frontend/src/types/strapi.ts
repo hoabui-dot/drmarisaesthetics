@@ -227,18 +227,25 @@ export interface WebsiteSettingBookingForm {
   successDescription?: string;
 }
 
+export interface WebsiteHospitalMapLocation {
+  id?: number;
+  locationKey: 'HIU' | 'CIH';
+  name: string;
+  address: string;
+  latitude?: number;
+  longitude?: number;
+  mapsEmbedUrl?: string;
+  mapsPlaceUrl?: string;
+  mapsSearchQuery?: string;
+}
+
 export interface WebsiteSetting {
   siteName: string;
   logo?: Media;
   defaultOpenGraphImage?: Media;
-  address: string;
   phonePrimary: string;
   openingHours?: string;
-  mapLatitude?: number;
-  mapLongitude?: number;
-  mapZoom?: number;
-  mapDisplayName?: string;
-  mapEmbedUrl?: string;
+  hospitalLocations?: WebsiteHospitalMapLocation[];
   headerNavigation?: NavItem[];
   footerDescription?: string;
   footerLinkGroups?: FooterLinkGroup[];

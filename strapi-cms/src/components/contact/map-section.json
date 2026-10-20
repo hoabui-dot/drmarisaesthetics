@@ -2,16 +2,19 @@
   "collectionName": "components_contact_map_sections",
   "info": {
     "displayName": "Clinic Location Section",
-    "description": "Data-driven clinic map and location information section"
+    "description": "Hospital location explorer; hospital records are maintained in the About Page hospital environments section"
   },
   "options": {},
   "attributes": {
-    "title": { "type": "string", "required": true, "default": "Vị trí phòng khám" },
+    "eyebrow": { "type": "string", "default": "HOSPITAL LOCATIONS" },
+    "title": { "type": "string", "required": true, "default": "Visit Our Hospital Facilities" },
+    "description": { "type": "text" },
     "benefits": {
       "type": "component",
       "repeatable": true,
       "component": "contact.location-benefit"
     },
-    "directions_label": { "type": "string", "required": true, "default": "CHỈ ĐƯỜNG TRÊN GOOGLE MAPS" }
+    "directions_label": { "type": "string", "required": true, "default": "Get Directions" },
+    "official_website_label": { "type": "string", "default": "Official Website" }
   }
 }

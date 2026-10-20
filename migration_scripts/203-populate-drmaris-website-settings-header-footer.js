@@ -39,7 +39,6 @@ const footerLinkGroups = [
       { label: 'Patient Results', href: '/results' },
       { label: 'Patient Journal', href: '/news' },
       { label: 'Contact & Consultation', href: '/contact' },
-      { label: 'Medical Disclaimer', href: '/medical-disclaimer' },
     ],
   },
 ]

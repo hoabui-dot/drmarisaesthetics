@@ -10,7 +10,9 @@ export function useLazySectionMotion(root: RefObject<HTMLElement | null>) {
     const scope = root.current
     if (!scope) return
 
-    const sections = Array.from(scope.querySelectorAll<HTMLElement>('section')).filter((section) => !section.parentElement?.closest('section'))
+    const sections = Array.from(scope.querySelectorAll<HTMLElement>('section')).filter((section) =>
+      !section.parentElement?.closest('section') && !section.matches('.contact-clinic-location'),
+    )
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const animations: Array<{ pause: () => void; revert?: () => void }> = []
 
@@ -22,7 +24,9 @@ export function useLazySectionMotion(root: RefObject<HTMLElement | null>) {
         : section.matches('.stitch-treatment-hero')
           ? '.stitch-treatment-breadcrumb, .stitch-treatment-hero__copy > .stitch-kicker, .stitch-treatment-hero__copy h2, .stitch-treatment-hero__copy > p, .stitch-treatment-review, .stitch-treatment-hero__copy button, .stitch-treatment-hero__media'
           : '.stitch-kicker, h2, h3, h4, p, blockquote, li, button, a, [class*="__image"], [class*="__media"], img'
-      return Array.from(section.querySelectorAll<HTMLElement>(selectors)).filter((element) => !element.closest('.stitch-surgical-atlas'))
+      return Array.from(section.querySelectorAll<HTMLElement>(selectors)).filter((element) =>
+        !element.closest('.stitch-surgical-atlas, .hospital-image-story'),
+      )
     }
 
     const sectionTargets = new Map<HTMLElement, HTMLElement[]>()

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { buildSeoMetadata } from '@/src/lib/seo/seo-manager'
 import { resolveStructuredData, StructuredDataScript } from '@/src/lib/seo/structured-data'
 import { StitchAboutUs } from '@/src/components/StitchAestheticPage'
-import { getAboutPage } from '@/src/lib/api/queries'
+import { getAboutPage, getWebsiteSetting } from '@/src/lib/api/queries'
 
 /**
  * About Us Page
@@ -21,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function AboutUsPage() {
     try {
-        const aboutPage = await getAboutPage()
+        const [aboutPage, websiteSetting] = await Promise.all([getAboutPage(), getWebsiteSetting()])
         const structuredData = await resolveStructuredData({
             pageType: 'about', path: '/about-us',
             title: 'About Us - DR. MARIS AESTHETICS',
@@ -33,7 +33,7 @@ export default async function AboutUsPage() {
             <>
                 <StructuredDataScript data={structuredData} />
                 <main className="min-h-screen bg-background">
-                    <StitchAboutUs heroImage={aboutPage?.hero?.image} content={aboutPage} />
+                    <StitchAboutUs heroImage={aboutPage?.hero?.image} content={aboutPage} hospitalLocations={websiteSetting?.hospitalLocations} />
                 </main>
             </>
         )

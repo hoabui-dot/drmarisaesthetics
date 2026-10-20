@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { Clock3, Mail, MapPin, Phone } from 'lucide-react'
 import type { CSSProperties } from 'react'
+import { SiteBreadcrumbs } from '@/src/components/layout/SiteBreadcrumbs'
 
 type ContactCard = {
   label: string
@@ -46,11 +47,7 @@ export function ContactHeroSection({ data }: { data: ContactHeroData }) {
   return (
     <section id="contact-hero" className="contact-hero-section" aria-labelledby="contact-hero-heading">
       <div className="contact-hero-container">
-        <nav className="contact-hero-breadcrumb" aria-label="Breadcrumb">
-          <Link href="/">Home</Link>
-          <span aria-hidden="true">›</span>
-          <span aria-current="page">Contact</span>
-        </nav>
+        <SiteBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Contact' }]} />
 
         <div className="contact-hero-top">
           <div className="contact-hero-intro">
@@ -59,7 +56,7 @@ export function ContactHeroSection({ data }: { data: ContactHeroData }) {
             <p className="contact-hero-description">{data.description || 'Our surgical team is ready to listen and guide you through assessment, planning and postoperative care.'}</p>
             <div className="editorial-hero-actions contact-hero-actions">
               <a href="#form-section" className="booking-inline-cta editorial-hero-primary contact-editorial-button">Request an Online Consultation <ArrowRight size={16} aria-hidden="true" /></a>
-              <Link href="/contact?case=revision" className="editorial-hero-secondary contact-editorial-link">Submit a Revision Case</Link>
+              <button type="button" className="editorial-hero-secondary contact-editorial-link">Submit a Revision Case</button>
             </div>
           </div>
 

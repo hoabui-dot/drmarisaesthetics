@@ -65,12 +65,71 @@ psql "$DATABASE_URL" \
 psql "$DATABASE_URL" \
   -v ON_ERROR_STOP=1 \
   -f migration-production/022-blog-category-route-name.sql
+
+psql "$DATABASE_URL" \
+  -v ON_ERROR_STOP=1 \
+  -f migration-production/023-remove-about-hospital-section.sql
+
+psql "$DATABASE_URL" \
+  -v ON_ERROR_STOP=1 \
+  -f migration-production/024-contact-information-website-settings.sql
+
+psql "$DATABASE_URL" \
+  -v ON_ERROR_STOP=1 \
+  -f migration-production/025-about-hospital-directions-url.sql
+
+psql "$DATABASE_URL" \
+  -v ON_ERROR_STOP=1 \
+  -f migration-production/026-contact-dual-hospital-explorer.sql
+
+psql "$DATABASE_URL" \
+  -v ON_ERROR_STOP=1 \
+  -f migration-production/027-about-hospital-map-embed-url.sql
+
+psql "$DATABASE_URL" \
+  -v ON_ERROR_STOP=1 \
+  -f migration-production/028-website-hospital-coordinate-precision.sql
+
+psql "$DATABASE_URL" \
+  -v ON_ERROR_STOP=1 \
+  -f migration-production/029-website-settings-hospital-locations-layout.sql
+
+psql "$DATABASE_URL" \
+  -v ON_ERROR_STOP=1 \
+  -f migration-production/030-website-hospital-place-url.sql
+
 ```
 
 The migrations are structural and idempotent. They never seed or copy CRM
 records automatically. The legacy promotion table is deliberately removed in
 a separate final step so a production operator can verify the manual merge
 first. No Media Library files are deleted automatically.
+
+### `030-website-hospital-place-url.sql`
+
+Adds the optional `maps_place_url` field to each Website Settings hospital
+location. Enter the verified Google Maps **place** URL in that field (not the
+search URL and not the iframe embed URL). The contact map preview uses verified
+latitude/longitude for its pin and opens `maps_place_url` when clicked. This
+prevents Google from geocoding a long address to the wrong location. Populate
+the production HIU field with the verified place link supplied by the site
+owner; CIH remains unchanged unless its own place URL is separately verified.
+
+Apply `031-consolidate-website-hospital-locations.sql` after verifying the
+manual content seed. Then apply `032-website-hospital-map-search-query.sql`:
+
+```bash
+psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f migration-production/031-consolidate-website-hospital-locations.sql
+psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f migration-production/032-website-hospital-map-search-query.sql
+```
+
+### `032-website-hospital-map-search-query.sql`
+
+Adds optional `maps_search_query` to Website Settings hospital locations. This
+separates Google Maps geocoding text from the English address displayed in the
+UI. The corresponding production content seed stores the verified Vietnamese
+HIU facility name/address here, while leaving the English display address and
+existing place URL intact. Apply this migration before running the seed.
 
 ## Current migrations
 
@@ -193,8 +252,9 @@ alter or delete homepage content.
 
 Removes duplicate address, clinic-name, and directions-URL fields from the
 Contact map component and its persisted Content Manager edit layout. The
-Contact page now gets its displayed address and map coordinates/zoom from
-Website Settings. Existing values in those duplicate component columns are
+Contact page now gets its displayed address and map coordinates from
+Website Settings; map zoom is defined by the embed URL or a fixed frontend
+fallback. Existing values in those duplicate component columns are
 discarded; this does not modify Website Settings or other Contact content.
 Deploy the matching Strapi schema and frontend first, then run the migration.
 
@@ -216,6 +276,22 @@ the category label when this value is still empty, and Strapi fills/normalizes
 it when Website Settings is saved. This migration is structural only; it does
 not rewrite existing blog records or editorial category labels.
 
+### `023-remove-about-hospital-section.sql`
+
+Removes only the obsolete `about.hospital` component from the About Page:
+its dynamic-zone assignments, component-owned media links, join table, and
+component table. Media Library files are retained. It does not affect the
+separate Homepage hospital sections or hospital content on other routes.
+
+### `024-contact-information-website-settings.sql`
+
+Adds optional second-location fields to Website Settings and removes the
+unused `location_options` field and component storage from the Contact
+consultation section. Contact Information now reads the primary/secondary
+addresses and active contact methods from Website Settings. The migration does
+not seed a second address: enter the verified address, coordinates, map name,
+and optional embed URL in Website Settings after deployment.
+
 ### Homepage second hospital section
 
 The Homepage dynamic zone includes the distinct component
@@ -225,6 +301,150 @@ hospital record. Strapi synchronizes this component table and its dynamic-zone
 relation storage from the deployed schema at startup. No standalone SQL
 migration is required. Deploy the CMS schema before adding the new component in
 Homepage Content Manager; then save and publish Homepage content manually.
+
+### About Us hospital environments section
+
+The About Page dynamic zone adds `about.hospital-environments` with two
+repeatable `about.hospital-chapter` entries. Strapi synchronizes the component
+tables and dynamic-zone relations from the deployed schema at startup, so no
+standalone SQL migration is needed. Deploy the Strapi schema and frontend
+together, then add/review/publish production hospital content manually. The
+local layout seed is intentionally host-guarded and must not be used against
+production. The production content seed is maintained separately under
+`seed-production/`; verify image rights, current addresses, Maps destinations,
+and authorized wording before running it.
+
+### About Page hospital directions links
+
+`025-about-hospital-directions-url.sql` adds the optional
+`maps_directions_url` field to each `about.hospital-chapter` component and
+exposes it in an existing Content Manager edit layout. Editors should enter a
+full HTTPS Google Maps directions/share URL for the exact hospital entrance or
+campus destination. The displayed address becomes a link with a directions
+icon when this URL is present; without it, the address remains plain text.
+
+### `025-about-hospital-directions-url.sql`
+
+Adds the optional `maps_directions_url` storage field to About hospital chapter
+records and exposes it in the Content Manager. This is structural only; the
+location values are populated by an explicit local or production seed after
+address review.
+
+### `026-contact-dual-hospital-explorer.sql`
+
+Adds the Contact location section's `eyebrow`, `description`, and official
+website button label, and adds `short_name` and `source_url` to canonical About
+hospital records. The Contact explorer reads HIU and CIH details from the About
+Page hospital-environments records; this avoids maintaining duplicate hospital
+addresses, image URLs, maps, and names in Contact. It also exposes the new
+fields in existing Content Manager layouts. It does not seed or publish content.
+
+After the matching Strapi schema and frontend are deployed, run
+`migration_scripts/225-migrate-contact-dual-hospital-location-explorer-local.js`
+against local Strapi with `--write` (and optionally `--publish`). Production
+content is updated separately with
+`seed-production/seed-contact-dual-hospital-explorer.js`; do not run the
+localhost-only migration against production.
+
+### `027-about-hospital-map-embed-url.sql`
+
+Adds the optional `maps_embed_url` field to canonical hospital records and
+exposes it in the About hospital Content Manager component. For a reliable
+facility pin, editors must copy each hospital's own Google Maps **Share → Embed
+a map** iframe `src` into this field. Do not use a directions URL, invent
+coordinates, or reuse one hospital's embed URL for the other. Until configured,
+the frontend falls back to a name/address search, which may not identify the
+exact campus pin unambiguously.
+
+### Website Settings hospital map coordinates
+
+The repeatable `website-setting.hospital-location` component is registered by
+the Strapi schema and Strapi synchronizes its component/relation storage on
+startup; no standalone SQL migration is needed. The Contact hospital explorer
+reads its name, English display address, coordinates, exact embed URL,
+click-through place URL, and optional localized search query from
+`Website Settings → Hospital map locations`, keyed by
+`HIU` or `CIH`. The local seed is
+`migration_scripts/226-seed-website-setting-hospital-locations-local.js` and
+must only target a local Strapi instance. After migration 031, this repeatable
+component is the canonical source for facility names, addresses and map data;
+do not reintroduce standalone address or coordinate fields.
+
+`028-website-hospital-coordinate-precision.sql` widens the component
+latitude/longitude columns to `numeric(10,7)`. Apply it after the CMS schema has
+created `website-setting.hospital-location`; otherwise PostgreSQL's default
+decimal scale would round GPS coordinates to two decimal places and move the
+marker substantially.
+
+`029-website-settings-hospital-locations-layout.sql` adds the repeatable
+`hospital_locations` component to the saved Website Settings Content Manager
+layout when a customized layout already exists. It does not seed location
+content.
+
+### `033-remove-hospital-map-zoom.sql`
+
+Removes the redundant per-hospital `zoom` field from component storage and its
+persisted Content Manager layout. Each canonical embed URL already defines its
+zoom level; fallback maps use a fixed frontend default. Keep latitude and
+longitude for fallback directions/maps, `maps_place_url` for the clickable
+Google Maps destination, and `maps_search_query` for localized fallback search
+when an embed URL is unavailable. Deploy the matching schema/frontend, then
+apply this structural migration. After applying earlier migrations through 033,
+apply the Treatments image-stack extension:
+
+```bash
+psql "$DATABASE_URL" -v ON_ERROR_STOP=1 \
+  -f migration-production/034-treatments-overview-secondary-hospital-image.sql
+```
+
+### `034-treatments-overview-secondary-hospital-image.sql`
+
+Adds optional `secondary_image_url` and `secondary_image_alt` columns to the
+Treatments Page editorial component storage. The existing `image` media
+relation remains the first/HIU image and is not modified. After deploying the
+updated Strapi schema and frontend, use
+`seed-production/seed-treatments-overview-hospital-image.js` to populate only
+the Overview's CIH image URL and alt text. The seed is dry-run by default and
+preserves all unrelated sections and existing image data.
+
+### `031-consolidate-website-hospital-locations.sql`
+
+Consolidates address and map data into `Website Settings → Hospital map
+locations`. Before running this structural migration in production, deploy the
+matching Strapi schema/frontend and run
+`seed-production/migrate-website-setting-hospital-locations.js --write
+--publish` with the production safety flags. The content seed stores both
+hospital display addresses in English, adds/updates CIH with its mapped
+coordinates and coordinate-based Google Maps embed URL, and preserves HIU's
+verified coordinates and Maps URLs. The CIH address is sourced from the
+official hospital website and the pin is cross-checked against the mapped
+hospital building. Review seed output before publishing.
+Then run this SQL to drop the duplicated Address, primary/secondary map fields,
+and remove their stale Content Manager layout entries. Run the content seed and
+verify both locations before 031.
+
+### Compact dual-hospital footer
+
+The footer switcher consumes the existing published
+`Website Settings → Hospital map locations` entries (`HIU` and `CIH`). This is
+a frontend-only change: it adds no content fields, tables, or relations, so no
+additional SQL migration is required. Verify that both entries have reviewed
+names and addresses before rollout. Saved latitude/longitude are preferred for
+precise Google Maps directions; if unavailable, the frontend uses the hospital
+name and address. The redesigned footer removes the Google Maps iframe and
+does not load Maps scripts.
+
+### Dr. Cuong consultation hospital showcase
+
+The `/our-team/dr-cuong` consultation CTA uses the existing About Page
+`hospital-environments.hospitals` entries for facility photos and the existing
+Website Settings `hospital_locations` entries for canonical names, English
+addresses, and verified map links. The switcher is frontend-only and does not
+add or alter database structure, so no new production SQL migration is needed.
+Before rollout, confirm both HIU and CIH records and their approved exterior
+images are present in the production About Page. The CMS content seed is
+`seed-production/seed-about-us-hospital-environments.js` and must be reviewed
+and run explicitly; it is not invoked by deployment or application startup.
 
 ## Manual promotion merge
 

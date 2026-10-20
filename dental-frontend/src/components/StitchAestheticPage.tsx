@@ -14,19 +14,21 @@ import { PlanningProcessSection, planningSteps } from '@/src/components/homepage
 import { PatientResultsGallerySection } from '@/src/components/homepage/PatientResultsGallerySection'
 import { MotionFaqAccordion } from '@/src/components/ui/motion-faq-accordion'
 import { ConsultationCtaSection } from '@/src/components/blocks/ConsultationCtaSection'
+import { SiteBreadcrumbs } from '@/src/components/layout/SiteBreadcrumbs'
 import { useOurTeamMotion } from '@/src/hooks/useOurTeamMotion'
 import { useEffect, useRef } from 'react'
 import type { HomepageEditorialData } from '@/src/types/homepage-editorial'
 import type { ResultsData } from '@/src/data/results'
 import { getMediaUrl } from '@/src/lib/api/media'
 import { CustomerVideoTestimonial } from '@/src/components/homepage/CustomerVideoTestimonial'
+import { AboutHospitalEnvironmentsSection } from '@/src/components/blocks/AboutHospitalEnvironmentsSection'
+import { useAboutHospitalEnvironmentsMotion } from '@/src/hooks/useAboutHospitalEnvironmentsMotion'
 
 /* const legacyImages = {
   hero: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCTeb4K7icJOejOCNmhoM1L_97JimcI6Qtyot9YzMr51gD3_D096TT551datl7elzq4TGEQz-bEMf8KBAUaMGPSuRx-gXA7LQDE6AxQJeik8HAprXx5WLc0J8tMTKQRuN5tTfMsno6xTgx-ocAouFxiXWQRiCATFFvjwsLvpxprL1m7V9S-mUEXDc3L_aWSsmNthvE245NzLwUH0W-RYhnjXBO7LUB-OAqjk5SNLSZFeUzTH3V751D0',
   heroDoctor: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCTeb4K7icJOejOCNmhoM1L_97JimcI6Qtyot9YzMr51gD3_D096TT551datl7elzq4TGEQz-bEMf8KBAUaMGPSuRx-gXA7LQDE6AxQJeik8HAprXx5WLc0J8tMTKQRuN5tTfMsno6xTgx-ocAouFxiXWQRiCATFFvjwsLvpxprL1m7V9S-mUEXDc3L_aWSsmNthvE245NzLwUH0W-RYhnjXBO7LUB-OAqjk5SNLSZFeUzTH3V751D0',
   doctor: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCTeb4K7icJOejOCNmhoM1L_97JimcI6Qtyot9YzMr51gD3_D096TT551datl7elzq4TGEQz-bEMf8KBAUaMGPSuRx-gXA7LQDE6AxQJeik8HAprXx5WLc0J8tMTKQRuN5tTfMsno6xTgx-ocAouFxiXWQRiCATFFvjwsLvpxprL1m7V9S-mUEXDc3L_aWSsmNthvE245NzLwUH0W-RYhnjXBO7LUB-OAqjk5SNLSZFeUzTH3V751D0',
   clinic: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDxLNXCFVyLcdlfs3uKkXCF1nWzjOTlVHjbpSP07wg76cD4otnSBnmCAAt1Q57Tyj15rO6f8Z6857zzPhjjWAmXaeErAAZnwu6mADqs3tc98ftky9z2AYeSGQb0fDf_TJgY_52sEsTvavziZQJlySwrko2v_jKxGIpfSjrhbY2TDZfq64krwVmF90rBv7n4UMWEk2pyh4qcEwDImDsvTDEw7iLuJAeoRqbp3rlrmpdS1aQ7tLL7vbdw5g',
-  aboutHospital: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA1LCeH-Ppjwbtbg4zULKHP3OYSwQrWS6JnKRpkXMJKfp-4xvfAuEibObKn17fqXDLCQqZ35tFmBIgGFP_Cb7BXwHWQE3g35huXXerG_hLfwuFpyoDtba24X29bZ1Tu7ki0OyueVd7K1JGxneXkimaHpIVJhm8fXx9mYYvtyW5FyZ3en95kLINrU96c5hMMz991fP7-hMAfwKX2w1wBd_ry7gZ-kQ-qs3c399WfmNb4I8xBUGfCVVs3HQ',
   technology: 'https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&w=1800&q=85',
 } */
 
@@ -37,7 +39,6 @@ const images = {
   heroDoctor: '/api/strapi-media/uploads/homepage_AB_6_A_Xu_C_Teb4_K7ic_J_Oej_OC_Nmho_M1_L_97_Jimc_I6_Qtyot9_Yz_Mr51g_D3_D096_TT_551datl7elzq4_TGE_Qz_b_E_Mf8_KBA_Ua_MG_3bad945119.jpg',
   doctor: '/api/strapi-media/uploads/homepage_AB_6_A_Xu_C_Teb4_K7ic_J_Oej_OC_Nmho_M1_L_97_Jimc_I6_Qtyot9_Yz_Mr51g_D3_D096_TT_551datl7elzq4_TGE_Qz_b_E_Mf8_KBA_Ua_MG_3bad945119.jpg',
   clinic: '/api/strapi-media/uploads/clinic_b23afb0268.jpg',
-  aboutHospital: '/api/strapi-media/uploads/about_clinic_reception_42f5c64fe4.jpg',
   technology: '/api/strapi-media/uploads/homepage_photo_1551076805_e1869033e561_8692844173.jpg',
 }
 
@@ -292,12 +293,14 @@ export function StitchHomepageSupplement() {
 }
 
 function _StitchAboutUsLegacy() {
-  return <div className="stitch-page stitch-about"><section className="stitch-about-intro"><div className="stitch-container stitch-grid stitch-grid--two"><div><span className="stitch-kicker">SURGEON-LED COSMETIC SURGERY · HO CHI MINH CITY</span><h2>About <em>Us</em></h2><blockquote>“Cosmetic surgery should begin with a medical assessment, a clear surgical plan and confidence in the surgeon responsible for your care.”</blockquote><p>DR. MARIS AESTHETICS is a surgeon-led cosmetic surgery practice in Ho Chi Minh City, providing personalized care for patients considering primary aesthetic procedures as well as complex revision surgery after previous operations.</p><p>Dr. Maris is directly involved from consultation and examination through surgery and postoperative follow-up.</p><div className="stitch-actions"><a className="stitch-button stitch-button--dark" href="/team">MEET DR. MARIS</a><ConsultationButton /></div></div><div className="stitch-about-image"><StitchImage src={images.doctor} alt="Dr. Maris, lead plastic surgeon" /></div></div></section><section className="stitch-section"><div className="stitch-container"><span className="stitch-kicker">DIRECT SURGEON CARE</span><h2>Cosmetic Surgery Built Around Direct Surgeon Involvement</h2><p className="stitch-lead">At Maris Aesthetics, the surgeon who consults with you should be the one who operates on you and oversees your recovery.</p><div className="stitch-process-line stitch-process-line--large">{surgicalProcess.map(([n, title, copy]) => <div key={n}><b>{n}</b><span>{title}</span><small>{copy}</small></div>)}</div></div></section><section className="stitch-section stitch-surface"><div className="stitch-container stitch-grid stitch-grid--two"><div><span className="stitch-kicker">OUR APPROACH</span><h2>Assessment Before Procedure</h2><blockquote>“The procedure someone initially requests is not automatically the procedure that should be recommended.”</blockquote><p>The objective is to understand the actual condition first, then build a plan around the patient.</p></div><div><h3>Surgical planning considers:</h3><ul className="stitch-assessment-list">{['Anatomy', 'Skin and tissue condition', 'Medical history', 'Previous operations', 'Existing implants', 'Scar tissue', 'Body proportions', 'Current symptoms', 'Aesthetic goals', 'Recovery expectations', 'Limitations of surgery'].map(item => <li key={item}>{item}</li>)}</ul></div></div></section><section className="stitch-section stitch-profile"><div className="stitch-container stitch-grid stitch-grid--two"><div className="stitch-portrait"><StitchImage src={images.doctor} alt="Dr. A. Maris, MD" /></div><div><span className="stitch-kicker">DR. MARIS</span><h2>Dr. A. Maris, MD</h2><p className="stitch-role">Cosmetic &amp; Plastic Surgeon | 6+ Years of Cosmetic Surgery Experience</p><p>Every consultation is an opportunity to understand the patient’s goals, concerns and expectations before discussing a procedure.</p><h3>His Consultation Philosophy</h3><p>Good surgery begins with listening, examination and a clear plan—not with a package or a promise.</p></div></div></section><section className="stitch-section stitch-dark"><div className="stitch-container stitch-grid stitch-grid--two"><div><span className="stitch-kicker">REVISION &amp; COMPLEX SURGERY</span><h2>For Patients Whose Previous Surgery Did Not Go as Planned</h2><p>Revision surgery requires an individualized assessment of anatomy, implants, scar tissue and the limits of what can safely be corrected.</p><ConsultationButton /></div><div><ul className="stitch-check-list">{revisionConcerns.slice(0, 6).map(item => <li key={item}><CheckCircle2 size={17} />{item}</li>)}</ul></div></div></section><section className="stitch-section stitch-surface"><div className="stitch-container stitch-international"><span className="stitch-kicker">INTERNATIONAL PATIENT STANDARDS</span><h2>Personalized Care Across Every Border</h2><div className="stitch-journey-grid">{[['Virtual Consultations', 'Begin your journey from home with an in-depth video consultation.'], ['Concierge Planning', 'Our international patient coordinator assists with logistics and scheduling.'], ['Transparent Care', 'Clear communication and medically-supervised care from consultation through follow-up.']].map(([title, copy], index) => <article key={title}><b>0{index + 1}</b><h3>{title}</h3><p>{copy}</p></article>)}</div></div></section><section className="stitch-section stitch-consultation"><div className="stitch-container"><div><span className="stitch-kicker">BEGIN YOUR PERSONALIZED AESTHETIC JOURNEY</span><h2>Start with a conversation.</h2></div><ConsultationButton /></div></section></div>
+  return <div className="stitch-page stitch-about"><section className="stitch-about-intro"><div className="stitch-container stitch-grid stitch-grid--two"><div><span className="stitch-kicker">SURGEON-LED COSMETIC SURGERY · HO CHI MINH CITY</span><h2>About <em>Us</em></h2><blockquote>“Cosmetic surgery should begin with a medical assessment, a clear surgical plan and confidence in the surgeon responsible for your care.”</blockquote><p>DR. MARIS AESTHETICS is a surgeon-led cosmetic surgery practice in Ho Chi Minh City, providing personalized care for patients considering primary aesthetic procedures as well as complex revision surgery after previous operations.</p><p>Dr. Maris is directly involved from consultation and examination through surgery and postoperative follow-up.</p><div className="stitch-actions"><span className="stitch-button stitch-button--dark stitch-button--static" aria-disabled="true">MEET DR. MARIS</span><ConsultationButton /></div></div><div className="stitch-about-image"><StitchImage src={images.doctor} alt="Dr. Maris, lead plastic surgeon" /></div></div></section><section className="stitch-section"><div className="stitch-container"><span className="stitch-kicker">DIRECT SURGEON CARE</span><h2>Cosmetic Surgery Built Around Direct Surgeon Involvement</h2><p className="stitch-lead">At Maris Aesthetics, the surgeon who consults with you should be the one who operates on you and oversees your recovery.</p><div className="stitch-process-line stitch-process-line--large">{surgicalProcess.map(([n, title, copy]) => <div key={n}><b>{n}</b><span>{title}</span><small>{copy}</small></div>)}</div></div></section><section className="stitch-section stitch-surface"><div className="stitch-container stitch-grid stitch-grid--two"><div><span className="stitch-kicker">OUR APPROACH</span><h2>Assessment Before Procedure</h2><blockquote>“The procedure someone initially requests is not automatically the procedure that should be recommended.”</blockquote><p>The objective is to understand the actual condition first, then build a plan around the patient.</p></div><div><h3>Surgical planning considers:</h3><ul className="stitch-assessment-list">{['Anatomy', 'Skin and tissue condition', 'Medical history', 'Previous operations', 'Existing implants', 'Scar tissue', 'Body proportions', 'Current symptoms', 'Aesthetic goals', 'Recovery expectations', 'Limitations of surgery'].map(item => <li key={item}>{item}</li>)}</ul></div></div></section><section className="stitch-section stitch-profile"><div className="stitch-container stitch-grid stitch-grid--two"><div className="stitch-portrait"><StitchImage src={images.doctor} alt="Dr. A. Maris, MD" /></div><div><span className="stitch-kicker">DR. MARIS</span><h2>Dr. A. Maris, MD</h2><p className="stitch-role">Cosmetic &amp; Plastic Surgeon | 6+ Years of Cosmetic Surgery Experience</p><p>Every consultation is an opportunity to understand the patient’s goals, concerns and expectations before discussing a procedure.</p><h3>His Consultation Philosophy</h3><p>Good surgery begins with listening, examination and a clear plan—not with a package or a promise.</p></div></div></section><section className="stitch-section stitch-dark"><div className="stitch-container stitch-grid stitch-grid--two"><div><span className="stitch-kicker">REVISION &amp; COMPLEX SURGERY</span><h2>For Patients Whose Previous Surgery Did Not Go as Planned</h2><p>Revision surgery requires an individualized assessment of anatomy, implants, scar tissue and the limits of what can safely be corrected.</p><ConsultationButton /></div><div><ul className="stitch-check-list">{revisionConcerns.slice(0, 6).map(item => <li key={item}><CheckCircle2 size={17} />{item}</li>)}</ul></div></div></section><section className="stitch-section stitch-surface"><div className="stitch-container stitch-international"><span className="stitch-kicker">INTERNATIONAL PATIENT STANDARDS</span><h2>Personalized Care Across Every Border</h2><div className="stitch-journey-grid">{[['Virtual Consultations', 'Begin your journey from home with an in-depth video consultation.'], ['Concierge Planning', 'Our international patient coordinator assists with logistics and scheduling.'], ['Transparent Care', 'Clear communication and medically-supervised care from consultation through follow-up.']].map(([title, copy], index) => <article key={title}><b>0{index + 1}</b><h3>{title}</h3><p>{copy}</p></article>)}</div></div></section><section className="stitch-section stitch-consultation"><div className="stitch-container"><div><span className="stitch-kicker">BEGIN YOUR PERSONALIZED AESTHETIC JOURNEY</span><h2>Start with a conversation.</h2></div><ConsultationButton /></div></section></div>
 }
 
-export function StitchAboutUs({ heroImage, content }: { heroImage?: string | null; content?: any } = {}) {
+export function StitchAboutUs({ heroImage, content, hospitalLocations = [] }: { heroImage?: string | null; content?: any; hospitalLocations?: import('@/src/types/strapi').WebsiteHospitalMapLocation[] } = {}) {
   const aboutRef = useRef<HTMLDivElement>(null)
+  const { open: openBookingModal } = useBookingModal()
   useOurTeamMotion(aboutRef)
+  useAboutHospitalEnvironmentsMotion(aboutRef)
   const cmsHero = content?.hero || {}
   const aboutSections = Array.isArray(content?.aboutSections) ? content.aboutSections : []
   const sectionOf = (component: string) => aboutSections.find((section: any) => section.__component === component) || {}
@@ -307,7 +310,7 @@ export function StitchAboutUs({ heroImage, content }: { heroImage?: string | nul
   const cmsRevision = sectionOf('about.revision')
   const cmsInternational = sectionOf('about.international')
   const cmsConsultation = sectionOf('about.consultation')
-  const cmsHospital = sectionOf('about.hospital')
+  const cmsHospitalEnvironments = sectionOf('about.hospital-environments')
   const cmsImage = (value: unknown, fallback: string) => getMediaUrl(value) || fallback
   const cmsProcessSteps = Array.isArray(cmsProcess.steps) && cmsProcess.steps.length
     ? cmsProcess.steps.map((step: any, index: number) => {
@@ -333,20 +336,46 @@ export function StitchAboutUs({ heroImage, content }: { heroImage?: string | nul
     ['Concierge Planning', 'Our dedicated international patient coordinator will assist with scheduling, accommodation recommendations, and local logistics for a stress-free stay.'],
     ['Transparent Care', 'Clear, upfront detailing of all costs, expected recovery timelines, and required stay durations, ensuring you can plan your trip with complete confidence.'],
   ]
-  const surgicalScope: string[] = Array.isArray(cmsHospital.scope) && cmsHospital.scope.length ? cmsHospital.scope.map((item: any) => item.title || item.label).filter(Boolean) : ['Major body contouring', 'Breast surgery', 'Anesthesia procedures', 'Combined procedures', 'Revision surgery', 'Complex secondary operations']
 
   return <div ref={aboutRef} className="stitch-page stitch-about">
     <section className="stitch-about-intro" data-team-hero>
       <div className="stitch-container stitch-grid stitch-grid--two">
         <div>
+          <SiteBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'About Us' }]} />
           <span className="stitch-kicker" data-team-hero-eyebrow><i data-team-hero-divider />{heroEyebrow}</span>
           <h2><span className="stitch-hero-line"><span data-team-hero-title-line>{heroTitle}</span></span></h2>
           <div className="stitch-about-image stitch-about-image--mobile" aria-hidden="true"><StitchImage src={heroImage || images.heroDoctor} alt="" /></div>
           <blockquote data-team-hero-copy>“{heroLead}”</blockquote>
           <div className="our-team-profile-hero__body" data-team-hero-copy><p>{heroDescription}</p><p>{heroSecondaryDescription}</p></div>
           <div className="stitch-actions" data-team-hero-actions>
-            <a className="stitch-button stitch-button--dark" href="/team">MEET DR. MARIS</a>
-            <a className="stitch-button stitch-button--outline" href="/contact">REQUEST AN ONLINE CONSULTATION</a>
+            <span
+              className="stitch-button stitch-button--dark"
+              role="button"
+              tabIndex={0}
+              onClick={() => openBookingModal()}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault()
+                  openBookingModal()
+                }
+              }}
+            >
+              MEET DR. MARIS
+            </span>
+            <span
+              className="stitch-button stitch-button--outline"
+              role="button"
+              tabIndex={0}
+              onClick={() => openBookingModal()}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault()
+                  openBookingModal()
+                }
+              }}
+            >
+              REQUEST AN ONLINE CONSULTATION
+            </span>
           </div>
         </div>
         <div className="stitch-about-image stitch-about-image--desktop" data-team-hero-image><StitchImage src={heroImage || images.heroDoctor} alt="Dr. Maris, Lead Plastic Surgeon at Maris Aesthetics" /></div>
@@ -371,10 +400,14 @@ export function StitchAboutUs({ heroImage, content }: { heroImage?: string | nul
       </div>
     </section>
 
+    {Array.isArray(cmsHospitalEnvironments.hospitals) && cmsHospitalEnvironments.hospitals.length ? (
+      <AboutHospitalEnvironmentsSection data={cmsHospitalEnvironments} hospitalLocations={hospitalLocations} />
+    ) : null}
+
     <section className="stitch-section stitch-about-profile">
       <div className="stitch-container stitch-grid stitch-grid--two">
         <div className="stitch-portrait stitch-about-profile__desktop-image"><StitchImage src={cmsImage(cmsProfile.image, images.doctor)} alt={cmsProfile.image_alt || 'Dr. A. Maris, MD'} /></div>
-        <div className="stitch-about-profile__copy"><span className="stitch-kicker">{cmsProfile.eyebrow || 'DR. MARIS'}</span><h2>{cmsProfile.title || 'Dr. A. Maris, MD'}</h2><div className="stitch-portrait stitch-about-profile__mobile-image" aria-hidden="true"><StitchImage src={cmsImage(cmsProfile.image, images.doctor)} alt="" /></div><p className="stitch-role">{cmsProfile.role || 'Cosmetic &amp; Plastic Surgeon | 6+ Years of Cosmetic Surgery Experience'}</p><p>{cmsProfile.description || 'Dr. Maris focuses on personalized surgical planning across breast, body and facial procedures, with particular attention to patients requiring revision or corrective surgery. He remains directly involved in every step of the journey: consultation, assessment, surgical planning, surgery, and postoperative follow-up.'}</p><div className="stitch-about-philosophy"><h3>{cmsProfile.philosophy_title || 'His Consultation Philosophy'}</h3><p>{cmsProfile.philosophy_description || 'Consultation should provide clarity rather than pressure. We meticulously cover patient concerns, previous surgery, realistic possibilities, surgical suitability, potential limitations, relevant risks, recovery expectations, and international travel considerations.'}</p><a className="stitch-link" href="/team">Learn More About Dr. Maris <ArrowRight size={17} /></a></div></div>
+        <div className="stitch-about-profile__copy"><span className="stitch-kicker">{cmsProfile.eyebrow || 'DR. MARIS'}</span><h2>{cmsProfile.title || 'Dr. A. Maris, MD'}</h2><div className="stitch-portrait stitch-about-profile__mobile-image" aria-hidden="true"><StitchImage src={cmsImage(cmsProfile.image, images.doctor)} alt="" /></div><p className="stitch-role">{cmsProfile.role || 'Cosmetic &amp; Plastic Surgeon | 6+ Years of Cosmetic Surgery Experience'}</p><p>{cmsProfile.description || 'Dr. Maris focuses on personalized surgical planning across breast, body and facial procedures, with particular attention to patients requiring revision or corrective surgery. He remains directly involved in every step of the journey: consultation, assessment, surgical planning, surgery, and postoperative follow-up.'}</p><div className="stitch-about-philosophy"><h3>{cmsProfile.philosophy_title || 'His Consultation Philosophy'}</h3><p>{cmsProfile.philosophy_description || 'Consultation should provide clarity rather than pressure. We meticulously cover patient concerns, previous surgery, realistic possibilities, surgical suitability, potential limitations, relevant risks, recovery expectations, and international travel considerations.'}</p><span className="stitch-link stitch-link--static" aria-disabled="true">Learn More About Dr. Maris <ArrowRight size={17} /></span></div></div>
       </div>
     </section>
 
@@ -391,6 +424,5 @@ export function StitchAboutUs({ heroImage, content }: { heroImage?: string | nul
 
     <section className="stitch-section stitch-consultation"><div className="stitch-container"><div><span className="stitch-kicker">{cmsConsultation.eyebrow || 'TAKE THE FIRST STEP'}</span><h2>{cmsConsultation.title || 'Begin Your Personalized Aesthetic Journey'}</h2></div><div className="stitch-actions"><ConsultationButton>BOOK A CONSULTATION</ConsultationButton><a className="stitch-button stitch-button--outline" href="/services">EXPLORE OUR SERVICES</a></div></div></section>
 
-    <section className="stitch-about-hospital"><div className="stitch-about-hospital-image"><StitchImage src={cmsImage(cmsHospital.image, images.aboutHospital)} alt={cmsHospital.image_alt || 'City International Hospital exterior'} /><div className="stitch-about-hospital-overlay"><div><span className="stitch-kicker">{cmsHospital.eyebrow || 'HOSPITAL-BASED SURGERY'}</span><h2>{cmsHospital.title || 'Surgery Performed at City International Hospital (CIH)'}</h2></div></div></div><div className="stitch-section"><div className="stitch-container stitch-grid stitch-grid--two"><div><p className="stitch-about-hospital-statement">{cmsHospital.statement || 'DR. MARIS AESTHETICS is a cosmetic surgery practice, not a spa or beauty center.'}</p><p>{cmsHospital.description || 'Surgical procedures are performed at City International Hospital (CIH), Ho Chi Minh City. A hospital environment provides access to broader medical infrastructure and supporting services surrounding surgery.'}</p><a className="stitch-link" href="/about-us">Explore Hospital &amp; Facilities <ArrowRight size={17} /></a></div><div className="stitch-about-scope"><span className="stitch-kicker">SURGICAL SCOPE</span><ul>{surgicalScope.map(item => <li key={item}>{item}</li>)}</ul></div><p className="stitch-disclaimer">{cmsHospital.disclaimer || 'DR. MARIS AESTHETICS and City International Hospital are separate entities. CIH is the hospital environment where surgical procedures are performed.'}</p></div></div></section>
   </div>
 }

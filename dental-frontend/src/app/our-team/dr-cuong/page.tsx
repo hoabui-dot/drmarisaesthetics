@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { DeepPlaneFaceliftSpecialistPage } from '@/src/components/DeepPlaneFaceliftSpecialistPage'
-import { getDeepPlaneFaceliftSpecialist, getServiceOptions, getWebsiteSetting } from '@/src/lib/api/queries'
+import { getAboutHospitalLocations, getDeepPlaneFaceliftSpecialist, getServiceOptions, getWebsiteSetting } from '@/src/lib/api/queries'
 import { buildSeoMetadata } from '@/src/lib/seo/seo-manager'
 
 const PROFILE_PATH = '/our-team/dr-cuong'
@@ -11,20 +11,18 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function DrCuongProfileRoute() {
-  const [page, websiteSetting, serviceOptions] = await Promise.all([
+  const [page, websiteSetting, serviceOptions, hospitalChapters] = await Promise.all([
     getDeepPlaneFaceliftSpecialist(),
     getWebsiteSetting(),
     getServiceOptions(),
+    getAboutHospitalLocations(),
   ])
 
   return <DeepPlaneFaceliftSpecialistPage page={page} websiteSettings={{
-    address: websiteSetting?.address,
     phonePrimary: websiteSetting?.phonePrimary,
     openingHours: websiteSetting?.openingHours,
-    mapLatitude: websiteSetting?.mapLatitude,
-    mapLongitude: websiteSetting?.mapLongitude,
-    mapZoom: websiteSetting?.mapZoom,
-  }} serviceOptions={serviceOptions} />
+    hospitalLocations: websiteSetting?.hospitalLocations,
+  }} serviceOptions={serviceOptions} hospitalChapters={hospitalChapters} />
 }
 
 export const dynamic = 'force-dynamic'

@@ -7,6 +7,8 @@ import { ServiceContentRenderer } from '@/src/components/services/ServiceContent
 import { ServiceDetailSidebar } from '@/src/components/services/ServiceDetailSidebar'
 import { ServiceFaqSection, type ServiceFaqData } from '@/src/components/services/ServiceFaqSection'
 import { getWebsiteSetting } from '@/src/lib/api/queries'
+import { SiteBreadcrumbs } from '@/src/components/layout/SiteBreadcrumbs'
+import { resolveCanonicalUrl } from '@/src/lib/seo/seo-manager'
 
 type MediaValue = { url?: string; attributes?: { url?: string }; data?: { attributes?: { url?: string }; url?: string } }
 type BetterBlockChild = { text?: string; children?: BetterBlockChild[] }
@@ -67,9 +69,17 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const service = await getService((await params).slug)
   if (!service) return { title: 'Service Not Found' }
   const image = getServiceImage(service)
+  const canonical = await resolveCanonicalUrl(`/services/${service.slug}`)
   return {
     title: service.title,
     description: service.metaDescription,
+    alternates: {
+      canonical,
+      languages: {
+        'en-au': canonical,
+        'x-default': canonical,
+      },
+    },
     openGraph: { title: service.title, description: service.metaDescription, type: 'article', images: image ? [{ url: image, alt: service.title }] : undefined },
     twitter: { card: 'summary_large_image', title: service.title, description: service.metaDescription, images: image ? [image] : undefined },
   }
@@ -91,7 +101,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
       <section className="service-detail-hero service-detail-hero--editorial">
         <div className="service-detail-hero__media" aria-hidden="true">{image ? <Image src={image} alt="" fill priority sizes="100vw" /> : null}</div>
         <div className="service-detail-hero__content">
-          <nav className="service-detail-breadcrumb" aria-label="Breadcrumb"><Link href="/">Home</Link><span aria-hidden="true">›</span><Link href="/services">Services</Link><span aria-hidden="true">›</span><span>{service.title}</span></nav>
+          <SiteBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Services', href: '/services' }, { label: service.title }]} />
           <span className="stitch-kicker">{categoryLabel ? `${categoryLabel} · DR. MARIS AESTHETICS` : 'DR. MARIS AESTHETICS · PLASTIC SURGERY'}</span>
           <h2>{service.title}</h2>
           {service.metaDescription ? <p className="service-detail-hero__description">{service.metaDescription}</p> : null}

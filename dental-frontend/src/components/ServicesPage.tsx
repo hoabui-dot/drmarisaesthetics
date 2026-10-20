@@ -7,6 +7,7 @@ import { AnimatePresence, MotionConfig, motion, useReducedMotion } from 'motion/
 import { useEffect, useMemo, useState } from 'react'
 import type { WebsiteCategory } from '@/src/types/strapi'
 import { ConsultationCtaSection } from '@/src/components/blocks/ConsultationCtaSection'
+import { SiteBreadcrumbs } from '@/src/components/layout/SiteBreadcrumbs'
 
 export type ServiceListItem = {
   id: number
@@ -66,6 +67,7 @@ export function ServicesPage({ services: initialServices, total: initialTotal, c
     <main className="stitch-page results-page services-results-page">
       <section className="results-page__hero" data-results-entrance>
         <div className="stitch-container">
+          <SiteBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Services' }]} />
           <span className="results-page__eyebrow">SURGEON-LED SERVICES · DR. MARIS AESTHETICS</span>
           <h2><span className="results-page__title-mask"><span>Plastic Surgery Services</span></span></h2>
           <p className="results-page__editorial-lead">Surgeon-led procedures planned around anatomy, safety and long-term recovery.</p>

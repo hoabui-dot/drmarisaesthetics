@@ -105,7 +105,7 @@ export const DEEP_PLANE_FACELIFT_SPECIALIST = {
     ],
   },
   consultation: {
-    id: 'consultation', eyebrow: 'SURGICAL PRACTICE & FACILITY', title: 'Beverly Hills Surgical Center', image: 'https://lh3.googleusercontent.com/aida/AEtjO1WfXn0aZh79Vut2Omz54O7hx3xJogRiFPSdd7VEVS_JSRkpCslA5I3Y0jieqUFJa3rnVEKTshl32HJeQMJF2FsO-JQtg00CIrCIKhiX60mSQ0mGyfQiSveqGQJ2m0em7H4_fC-10UOme_RDGyImFBp0h9qz7nL9WZeCL6_9mBuicmywULFa4xh0t8FaBcLNFoYQEwGWnWgyi-kihMfhpRAy7cwie6rVJHqlIkP1Wzwzp9QC5KSX48aP5TmG', imageAlt: 'State of the art surgical facility interior', address: 'Maris Aesthetics • Quad A Surgical Affiliate • Suite 920, 450 N Bedford Drive • Beverly Hills, CA 90210', hours: 'Monday – Friday: 8:30 AM – 5:30 PM PST • Saturdays: Dedicated Surgical Procedures Only', phone: '+1 (310) 555-0190 • Direct Clinical Intake', formTitle: 'Request Your Private Surgical Consultation', formDescription: 'Direct diagnostic review with Dr. Alexander Maris. We accommodate both domestic visits and structured virtual consultations for travel patients.', mapAddress: '450 N Bedford Dr, Beverly Hills, CA 90210',
+    id: 'consultation', eyebrow: 'SURGICAL PRACTICE & FACILITIES', title: 'Our Hospital Facilities', image: '', imageAlt: '', address: '', hours: '', phone: '', formTitle: 'Request Your Private Surgical Consultation', formDescription: 'Direct diagnostic review with Dr. Alexander Maris. We accommodate both domestic visits and structured virtual consultations for travel patients.', mapAddress: '',
   },
 } as const
 

@@ -1,4 +1,7 @@
 import { randomUUID } from 'node:crypto'
+import { errors } from '@strapi/utils'
+
+const { ValidationError } = errors
 
 type Category = { category_id?: string | null; route_name?: string | null; label?: string; [key: string]: unknown }
 type LifecycleData = {
@@ -18,21 +21,40 @@ const ensureCategoryIds = (data?: LifecycleData, existing?: LifecycleData) => {
     )
     const usedIds = new Set<string>()
     const usedRouteNames = new Set<string>()
-    data[key] = items.map((item) => {
+    data[key] = items.flatMap((item) => {
+      if (!item || typeof item !== 'object') return []
       const previous = item.id != null ? previousByComponentId.get(String(item.id)) : undefined
+      const label = typeof item.label === 'string' && item.label.trim()
+        ? item.label.trim()
+        : typeof previous?.label === 'string' ? previous.label.trim() : ''
+      const submittedRouteName = typeof item.route_name === 'string' ? item.route_name.trim() : ''
+      const previousRouteName = typeof previous?.route_name === 'string' ? previous.route_name.trim() : ''
+      const hasCategoryData = Boolean(
+        label || submittedRouteName || previousRouteName || item.category_id || previous?.category_id || item.icon,
+      )
+
+      // Strapi's repeatable-component editor can include an empty placeholder row.
+      // It is not a category and should not make an otherwise valid publish fail.
+      if (!hasCategoryData) return []
+
       const preservedId = typeof item.category_id === 'string' && item.category_id.trim()
         ? item.category_id.trim()
         : previous?.category_id
       const categoryId = preservedId && !usedIds.has(preservedId) ? preservedId : randomUUID()
       usedIds.add(categoryId)
-      if (key === 'blog_categories') {
-        const routeName = normalizeRouteName(item.route_name || previous?.route_name || item.label || '')
-        if (!routeName) throw new Error(`Blog category "${item.label || 'Untitled'}" needs a route name or label.`)
-        if (usedRouteNames.has(routeName)) throw new Error(`Blog category route name "${routeName}" must be unique.`)
-        usedRouteNames.add(routeName)
-        return { ...item, category_id: categoryId, route_name: routeName }
+
+      if (!label) {
+        throw new ValidationError(`Every ${key === 'blog_categories' ? 'blog' : 'service'} category needs a label.`)
       }
-      return { ...item, category_id: categoryId }
+
+      if (key === 'blog_categories') {
+        const routeName = normalizeRouteName(submittedRouteName || previousRouteName || label)
+        if (!routeName) throw new ValidationError(`Blog category "${label}" needs a route name or a usable label.`)
+        if (usedRouteNames.has(routeName)) throw new ValidationError(`Blog category route name "${routeName}" must be unique.`)
+        usedRouteNames.add(routeName)
+        return [{ ...item, label, category_id: categoryId, route_name: routeName }]
+      }
+      return [{ ...item, label, category_id: categoryId }]
     })
   }
 }
@@ -53,8 +75,9 @@ const getExistingCategories = async (): Promise<LifecycleData | undefined> => {
 }
 
 export default {
-  beforeCreate(event: { params: { data?: LifecycleData } }) {
-    ensureCategoryIds(event.params.data)
+  async beforeCreate(event: { params: { data?: LifecycleData } }) {
+    const existing = await getExistingCategories()
+    ensureCategoryIds(event.params.data, existing)
   },
   async beforeUpdate(event: { params: { data?: LifecycleData } }) {
     const existing = await getExistingCategories()

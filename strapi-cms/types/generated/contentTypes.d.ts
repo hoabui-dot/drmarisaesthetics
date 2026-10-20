@@ -467,7 +467,7 @@ export interface ApiAboutPageAboutPage extends Struct.SingleTypeSchema {
         'about.revision',
         'about.international',
         'about.consultation',
-        'about.hospital',
+        'about.hospital-environments',
       ]
     >;
     seo: Schema.Attribute.Component<'seo.page-seo', false>;
@@ -1304,7 +1304,6 @@ export interface ApiWebsiteSettingWebsiteSetting
     draftAndPublish: true;
   };
   attributes: {
-    address: Schema.Attribute.Text & Schema.Attribute.Required;
     blog_categories: Schema.Attribute.Component<
       'website-setting.blog-category',
       true
@@ -1327,6 +1326,10 @@ export interface ApiWebsiteSettingWebsiteSetting
     footer_tagline: Schema.Attribute.String;
     global_cta: Schema.Attribute.Component<'website-setting.global-cta', false>;
     header_navigation: Schema.Attribute.Component<'menu.nav-item', true>;
+    hospital_locations: Schema.Attribute.Component<
+      'website-setting.hospital-location',
+      true
+    >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -1334,11 +1337,6 @@ export interface ApiWebsiteSettingWebsiteSetting
     > &
       Schema.Attribute.Private;
     logo: Schema.Attribute.Media<'images'>;
-    map_display_name: Schema.Attribute.String;
-    map_embed_url: Schema.Attribute.Text;
-    map_latitude: Schema.Attribute.Decimal;
-    map_longitude: Schema.Attribute.Decimal;
-    map_zoom: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<16>;
     opening_hours: Schema.Attribute.String;
     phone_primary: Schema.Attribute.String & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;

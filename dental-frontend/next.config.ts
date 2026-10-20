@@ -36,7 +36,7 @@ const nextConfig: NextConfig = {
               // Fonts
               `font-src 'self' https://fonts.gstatic.com`,
               // Images: self + Strapi uploads + data URIs + blob (Next.js image opt)
-              `img-src 'self' data: blob: ${strapiPublicUrl} https://*.trycloudflare.com https://*.unsplash.com https://*.s3.amazonaws.com https://api.dicebear.com https://cdn-icons-png.flaticon.com https://nhakhoaquoctesg.vn https://lh3.googleusercontent.com https://i.ytimg.com https://www.facebook.com https://bzr.openai.com`,
+              `img-src 'self' data: blob: ${strapiPublicUrl} https://*.trycloudflare.com https://*.unsplash.com https://*.s3.amazonaws.com https://upload.wikimedia.org https://isofhcare-backup.s3-ap-southeast-1.amazonaws.com https://cdn.medpro.vn https://hiuhospital.com https://api.dicebear.com https://cdn-icons-png.flaticon.com https://nhakhoaquoctesg.vn https://lh3.googleusercontent.com https://i.ytimg.com https://www.facebook.com https://bzr.openai.com`,
               // API connections: self + Strapi + Google reCAPTCHA
               `connect-src 'self' ${strapiPublicUrl} https://*.trycloudflare.com https://www.google.com https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://www.facebook.com https://connect.facebook.net https://bzr.openai.com https://bzrcdn.openai.com https://maps.googleapis.com https://maps.gstatic.com`,
               // Media: self + Strapi
@@ -128,6 +128,22 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "*.s3.amazonaws.com",
+      },
+      {
+        protocol: "https",
+        hostname: "upload.wikimedia.org",
+      },
+      {
+        protocol: "https",
+        hostname: "isofhcare-backup.s3-ap-southeast-1.amazonaws.com",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.medpro.vn",
+      },
+      {
+        protocol: "https",
+        hostname: "hiuhospital.com",
       },
       // Dicebear avatars
       {

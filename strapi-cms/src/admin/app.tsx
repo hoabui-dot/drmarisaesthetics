@@ -1,4 +1,5 @@
 import './seo-help.css'
+import './website-settings.css'
 import englishTranslations from './i18n/en.json'
 import vietnameseTranslations from './i18n/vi.json'
 import type { StrapiApp } from '@strapi/admin/strapi-admin'
@@ -12,11 +13,75 @@ const LIST_VIEW_COLUMNS_HOOK = 'Admin/CM/pages/ListView/inject-column-in-table'
 const EDIT_VIEW_LAYOUT_HOOK = 'Admin/CM/pages/EditView/mutate-edit-view-layout'
 const SERVICE_UID = 'api::service.service'
 const BOOKING_SUBMISSION_UID = 'api::booking-submission.booking-submission'
+const WEBSITE_SETTINGS_UID = 'api::website-setting.website-setting'
+const WEBSITE_SETTINGS_FULL_WIDTH_FIELDS = new Set([
+  'hospital_locations', 'header_navigation', 'footer_link_groups', 'contact_methods',
+  'social_links', 'global_cta', 'booking_form', 'blog_categories', 'service_categories',
+])
+
+type WebsiteSettingsSection = {
+  key: string
+  fields: string[]
+  title: { en: string; vi: string }
+  description: { en: string; vi: string }
+  defaultOpen?: boolean
+}
+
+const WEBSITE_SETTINGS_SECTIONS: WebsiteSettingsSection[] = [
+  { key: 'identity', fields: ['site_name', 'logo', 'default_open_graph_image'], title: { en: 'Website identity & SEO', vi: 'Nhận diện website & SEO' }, description: { en: 'Brand identity and the default image used for social sharing.', vi: 'Nhận diện thương hiệu và hình ảnh mặc định khi chia sẻ website.' }, defaultOpen: true },
+  { key: 'contact', fields: ['phone_primary', 'opening_hours', 'contact_methods', 'hospital_locations'], title: { en: 'Contact & hospital locations', vi: 'Liên hệ & địa điểm bệnh viện' }, description: { en: 'Primary contact details, contact methods, and hospital map locations.', vi: 'Thông tin liên hệ chính, phương thức liên hệ và địa điểm bệnh viện.' } },
+  { key: 'navigation', fields: ['header_navigation'], title: { en: 'Header navigation', vi: 'Điều hướng Header' }, description: { en: 'Manage the header menu and its nested items.', vi: 'Quản lý menu Header và các mục menu con.' } },
+  { key: 'footer', fields: ['footer_description', 'footer_link_groups', 'footer_copyright_text', 'footer_tagline'], title: { en: 'Footer', vi: 'Footer' }, description: { en: 'Footer description, navigation groups, and supporting text.', vi: 'Mô tả, nhóm liên kết và nội dung hiển thị ở footer.' } },
+  { key: 'social', fields: ['social_links'], title: { en: 'Social links', vi: 'Liên kết mạng xã hội' }, description: { en: 'Social profiles displayed across the website.', vi: 'Các trang mạng xã hội được hiển thị trên website.' } },
+  { key: 'cta', fields: ['global_cta'], title: { en: 'Global call to action', vi: 'CTA toàn cục' }, description: { en: 'Shared call-to-action content used across pages.', vi: 'Nội dung kêu gọi hành động dùng chung trên các trang.' } },
+  { key: 'booking', fields: ['booking_form'], title: { en: 'Booking form', vi: 'Biểu mẫu đặt lịch' }, description: { en: 'Shared booking form configuration and content.', vi: 'Cấu hình và nội dung biểu mẫu đặt lịch dùng chung.' } },
+  { key: 'categories', fields: ['blog_categories', 'service_categories'], title: { en: 'Blog & service categories', vi: 'Danh mục bài viết & dịch vụ' }, description: { en: 'Manage the categories used by News and Services filters.', vi: 'Quản lý danh mục dùng cho bộ lọc Tin tức và Dịch vụ.' }, defaultOpen: true },
+]
 
 type EditViewLayoutPayload = {
   layout?: { layout?: unknown[][]; [key: string]: unknown } | unknown[][]
   model?: string
   [key: string]: unknown
+}
+
+const isWebsiteSettingsEditView = (model?: string) => model === WEBSITE_SETTINGS_UID || (
+  typeof window !== 'undefined' && decodeURIComponent(window.location.pathname).includes(`/content-manager/single-types/${WEBSITE_SETTINGS_UID}`)
+)
+
+const organizeWebsiteSettingsLayout = (payload: EditViewLayoutPayload) => {
+  if (!isWebsiteSettingsEditView(payload.model) || !payload.layout) return payload
+  const editLayout = payload.layout
+  const panels = Array.isArray(editLayout) ? editLayout : editLayout.layout
+  if (!Array.isArray(panels)) return payload
+
+  const fieldsByName = new Map<string, any>()
+  panels.flat(2).forEach((field: any) => {
+    if (field && typeof field.name === 'string') fieldsByName.set(field.name, field)
+  })
+  const fullWidth = (name: string, field: any) => WEBSITE_SETTINGS_FULL_WIDTH_FIELDS.has(name) || ['component', 'dynamiczone', 'blocks'].includes(field?.type)
+  const isMedia = (name: string, field: any) => name === 'logo' || name.endsWith('_image') || field?.type === 'media'
+  const buildRows = (names: string[]) => {
+    const rows: unknown[][] = []
+    let compact: unknown[] = []
+    const flush = () => { if (compact.length) rows.push(compact); compact = [] }
+    ;[...names].sort((a, b) => Number(isMedia(b, fieldsByName.get(b))) - Number(isMedia(a, fieldsByName.get(a)))).forEach((name) => {
+      const field = fieldsByName.get(name)
+      if (!field) return
+      if (fullWidth(name, field)) { flush(); rows.push([{ ...field, size: 12 }]); return }
+      compact.push({ ...field, size: 6 })
+      if (compact.length === 2) flush()
+    })
+    flush()
+    return rows
+  }
+  const assigned = new Set(WEBSITE_SETTINGS_SECTIONS.flatMap((section) => section.fields))
+  const unassigned = [...fieldsByName.keys()].filter((name) => !assigned.has(name))
+  const layout = WEBSITE_SETTINGS_SECTIONS.map((section, index) => [
+    ...buildRows(section.fields),
+    ...(index === 0 ? buildRows(unassigned) : []),
+  ]).filter((panel) => panel.length)
+
+  return { ...payload, layout: Array.isArray(editLayout) ? layout : { ...editLayout, layout } }
 }
 
 const moveServiceCategoryBeforeBetterBlocks = (payload: EditViewLayoutPayload) => {
@@ -144,6 +209,136 @@ const startWebsiteCategoryIdInputHider = () => {
   observer.observe(document.body, { childList: true, subtree: true })
   window.addEventListener('popstate', schedule)
   schedule()
+}
+
+const websiteSettingsLocale = (): 'en' | 'vi' => {
+  if (typeof document !== 'undefined' && document.documentElement.lang.toLowerCase().startsWith('vi')) return 'vi'
+  try {
+    const localeKey = Object.keys(localStorage).find((key) => /locale|language/i.test(key))
+    if (localeKey && (localStorage.getItem(localeKey) || '').toLowerCase().startsWith('vi')) return 'vi'
+  } catch { /* localStorage may be unavailable */ }
+  return 'en'
+}
+
+const findWebsiteSettingsField = (name: string) => {
+  const root: ParentNode = document.querySelector('form') || document
+  const escaped = name.replace(/["\\]/g, '\\$&')
+  const exact = root.querySelector<HTMLElement>([
+    `[name="${escaped}"]`, `[name$="[${escaped}]"]`, `[name$=".${escaped}"]`,
+    `[data-strapi-field="${escaped}"]`, `[data-field-name="${escaped}"]`, `[data-field="${escaped}"]`,
+    `#${escaped}`, `[id$="-${escaped}"]`, `[id$=".${escaped}"]`,
+  ].join(','))
+  if (exact) return exact.closest<HTMLElement>('[data-strapi-field],[data-field-name],[data-name],[role="group"]') || exact
+  const normalized = name.replaceAll('_', ' ').toLowerCase()
+  return Array.from(root.querySelectorAll<HTMLElement>('label,legend,h2,h3,h4,[data-strapi-field],[data-field-name]')).find((el) =>
+    el.textContent?.replace(/[:*]/g, '').replace(/\s+/g, ' ').trim().toLowerCase() === normalized,
+  ) || null
+}
+
+const isWebsiteSettingsSurface = (element: HTMLElement) => {
+  const style = window.getComputedStyle(element)
+  return Number.parseFloat(style.borderRadius) > 0 && (
+    (style.backgroundColor !== 'rgba(0, 0, 0, 0)' && style.backgroundColor !== 'transparent') || style.boxShadow !== 'none'
+  )
+}
+
+const findWebsiteSettingsPanel = (fieldNames: string[]) => {
+  const anchors = fieldNames.map(findWebsiteSettingsField).filter((item): item is HTMLElement => Boolean(item))
+  if (!anchors.length) return null
+  const form = anchors[0].closest('form') || document.body
+  const chains = anchors.map((anchor) => {
+    const chain: HTMLElement[] = []
+    let node: HTMLElement | null = anchor
+    while (node && node !== form) {
+      if (isWebsiteSettingsSurface(node)) chain.push(node)
+      node = node.parentElement
+    }
+    return chain
+  })
+  const shared = chains[0].find((candidate) => chains.every((chain) => chain.includes(candidate)))
+  if (shared) return shared
+  const counts = new Map<HTMLElement, number>()
+  chains.flat().forEach((surface) => counts.set(surface, (counts.get(surface) || 0) + 1))
+  return [...counts.keys()].sort((a, b) => (counts.get(b) || 0) - (counts.get(a) || 0))[0] || null
+}
+
+const enhanceWebsiteSettingsAccordions = () => {
+  if (!isWebsiteSettingsEditView()) return
+  const locale = websiteSettingsLocale()
+  WEBSITE_SETTINGS_SECTIONS.forEach((section) => {
+    const panel = findWebsiteSettingsPanel(section.fields)
+    if (!panel) return
+    const id = `drmaris-website-settings-${section.key}`
+    panel.classList.add('drmaris-settings-section')
+    panel.dataset.drmarisSettingsSection = section.key
+    panel.id = id
+    const open = panel.dataset.drmarisSettingsOpen
+      ? panel.dataset.drmarisSettingsOpen === 'true'
+      : Boolean(section.defaultOpen)
+
+    let toggle = panel.querySelector<HTMLButtonElement>(':scope > .drmaris-settings-toggle')
+    if (!toggle) {
+      toggle = document.createElement('button')
+      toggle.type = 'button'
+      toggle.className = 'drmaris-settings-toggle'
+      const heading = document.createElement('span')
+      heading.className = 'drmaris-settings-heading'
+      heading.textContent = section.title[locale]
+      const description = document.createElement('small')
+      description.textContent = section.description[locale]
+      const copy = document.createElement('span')
+      copy.className = 'drmaris-settings-copy'
+      copy.append(heading, description)
+      const icon = document.createElement('span')
+      icon.className = 'drmaris-settings-icon'
+      icon.setAttribute('aria-hidden', 'true')
+      toggle.append(copy, icon)
+      panel.prepend(toggle)
+    }
+
+    const contentNodes = () => Array.from(panel.children).filter((child) => child !== toggle) as HTMLElement[]
+    const applyState = (expanded: boolean) => {
+      panel.dataset.drmarisSettingsOpen = String(expanded)
+      panel.classList.toggle('is-open', expanded)
+      toggle!.setAttribute('aria-expanded', String(expanded))
+      toggle!.setAttribute('aria-controls', `${id}-content`)
+      toggle!.setAttribute('aria-label', `${expanded ? (locale === 'vi' ? 'Thu gọn' : 'Collapse') : (locale === 'vi' ? 'Mở rộng' : 'Expand')} ${section.title[locale]}`)
+      const icon = toggle!.querySelector('.drmaris-settings-icon')
+      if (icon) icon.textContent = expanded ? '−' : '+'
+      contentNodes().forEach((node, index) => {
+        if (index === 0) node.id = `${id}-content`
+        node.hidden = !expanded
+        node.setAttribute('aria-hidden', String(!expanded))
+      })
+    }
+    if (!toggle.dataset.bound) {
+      toggle.dataset.bound = 'true'
+      toggle.addEventListener('click', () => applyState(panel.dataset.drmarisSettingsOpen !== 'true'))
+    }
+    applyState(open)
+  })
+}
+
+const startWebsiteSettingsAccordionObserver = () => {
+  if (typeof window === 'undefined' || typeof document === 'undefined') return
+  const appWindow = window as typeof window & { __drmarisWebsiteSettingsAccordionObserver?: boolean }
+  if (appWindow.__drmarisWebsiteSettingsAccordionObserver) return
+  if (!document.body) { window.setTimeout(startWebsiteSettingsAccordionObserver, 50); return }
+  appWindow.__drmarisWebsiteSettingsAccordionObserver = true
+  let scheduled = false
+  const schedule = () => {
+    if (scheduled) return
+    scheduled = true
+    window.requestAnimationFrame(() => {
+      scheduled = false
+      try { enhanceWebsiteSettingsAccordions() }
+      catch (error) { console.error('[DrMaris Admin] Website Settings accordion enhancement failed', error) }
+    })
+  }
+  new MutationObserver(schedule).observe(document.body, { childList: true, subtree: true })
+  window.addEventListener('popstate', schedule)
+  schedule()
+  ;[100, 400, 1000, 2000].forEach((delay) => window.setTimeout(schedule, delay))
 }
 
 const readResponsePayload = async (response: Response): Promise<AdminResponsePayload | string | null> => {
@@ -443,7 +638,7 @@ export default {
     }))
 
     app.registerHook(EDIT_VIEW_LAYOUT_HOOK, (payload: EditViewLayoutPayload) => (
-      moveServiceCategoryBeforeBetterBlocks(payload)
+      organizeWebsiteSettingsLayout(moveServiceCategoryBeforeBetterBlocks(payload))
     ))
   },
 
@@ -452,6 +647,7 @@ export default {
 
     installClipboardFallback()
     startWebsiteCategoryIdInputHider()
+    startWebsiteSettingsAccordionObserver()
 
     const debugWindow = window as typeof window & { __smiluxAdminFetchDebug?: boolean }
     if (debugWindow.__smiluxAdminFetchDebug) return

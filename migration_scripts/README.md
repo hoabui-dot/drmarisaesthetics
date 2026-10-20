@@ -78,3 +78,77 @@ node migration_scripts/223-add-blog-category-route-name.js --write
 The script reads the local database connection from `strapi-cms/.env`, uses a
 transaction for writes, and is never invoked by Strapi or Docker. Production
 uses the separate structural migration `migration-production/022-blog-category-route-name.sql`.
+
+## Contact dual-hospital location explorer
+
+The Contact location explorer reads its two canonical hospital records from the
+About Page `about.hospital-environments` section. Its Contact component stores
+only the section heading/copy and its position above FAQ. This avoids divergent
+address, image, and map records across pages.
+
+After deploying the matching Strapi schemas locally, use
+`224-seed-about-us-hospital-environments-local.js` only if the local About Page
+does not yet contain the two reviewed sample hospital records. It is restricted
+to loopback hosts and previews by default. Then run
+`225-migrate-contact-dual-hospital-location-explorer-local.js` to update the
+canonical HIU/CIH metadata, generate address-specific directions URLs, update
+Contact copy, and ensure Contact's location block is above FAQ.
+
+```bash
+STRAPI_URL=http://127.0.0.1:22345 \
+STRAPI_API_TOKEN="$STRAPI_API_TOKEN" \
+node migration_scripts/225-migrate-contact-dual-hospital-location-explorer-local.js
+
+# After inspecting the dry-run output and confirming local content:
+STRAPI_URL=http://127.0.0.1:22345 \
+STRAPI_API_TOKEN="$STRAPI_API_TOKEN" \
+node migration_scripts/225-migrate-contact-dual-hospital-location-explorer-local.js --write --publish
+```
+
+The migration is an explicit Content API data update, not a database seed
+automatically run by Strapi. It refuses non-local hosts and requires the
+canonical About records and Contact map component to exist. Production uses
+structural SQL `migration-production/026-contact-dual-hospital-explorer.sql`
+and the separately gated script
+`seed-production/seed-contact-dual-hospital-explorer.js`.
+
+## Consolidate Website Settings hospital locations
+
+`227-migrate-website-settings-to-hospital-locations-local.js` adds the verified
+CIH address as a `CIH` entry in the repeatable `hospital_locations` component.
+`226-seed-website-setting-hospital-locations-local.js` sets the HIU display
+address to English while preserving its verified coordinates and Google Maps
+place URL. Together, these scripts update local Website Settings; coordinates
+remain optional for CIH until verified. Preview and then write only to the
+local database:
+
+```sh
+node --env-file=strapi-cms/.env migration_scripts/227-migrate-website-settings-to-hospital-locations-local.js
+node --env-file=strapi-cms/.env migration_scripts/227-migrate-website-settings-to-hospital-locations-local.js --write
+```
+
+Production content is migrated separately by
+`seed-production/migrate-website-setting-hospital-locations.js`. After verifying
+the content in Website Settings, apply structural SQL
+`migration-production/031-consolidate-website-hospital-locations.sql`, which
+removes the old duplicate fields. Back up production first and follow the
+ordering documented in `migration-production/README.md`.
+
+`228-set-hiu-google-maps-search-query-local.js` corrects both hospital map
+embeds in local Website Settings. HIU uses its verified Google Maps CID (so the
+similarly named university is never selected). CIH uses a Google-generated
+address-specific embed for `City International Hospital, 3 Đường Số 17A, An
+Lạc, Hồ Chí Minh 700000, Vietnam`; the previous hand-built `place_id` embed
+resolved incorrectly. It fixes HIU's shifted longitude, restores its place
+link, and keeps both public English display addresses unchanged. The script
+updates draft and published entries and refuses any database that is not on
+loopback with a local/test name. Preview, then apply:
+
+```sh
+node --env-file=strapi-cms/.env migration_scripts/228-set-hiu-google-maps-search-query-local.js
+node --env-file=strapi-cms/.env migration_scripts/228-set-hiu-google-maps-search-query-local.js --write
+```
+
+If only CIH needs repair, use `229-fix-cih-google-maps-embed-local.js`; it
+updates CIH only and leaves HIU untouched. Both scripts update draft and
+published Website Settings records and are restricted to local/test databases.

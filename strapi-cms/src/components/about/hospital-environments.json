@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_about_hospital_environments",
+  "info": {
+    "displayName": "Hospital Environments",
+    "description": "Editorial showcase of independent hospital environments associated with the practice."
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "description": { "type": "text", "required": true },
+    "disclaimer": { "type": "text", "required": true },
+    "cta_label": { "type": "string", "required": true },
+    "hospitals": { "type": "component", "repeatable": true, "component": "about.hospital-chapter", "required": true, "min": 2, "max": 2 }
+  }
+}

@@ -3,7 +3,7 @@
 import { useRef } from 'react'
 import { ContactHeroSection } from '@/src/components/blocks/ContactHeroSection'
 import { ContactConsultationSection } from '@/src/components/blocks/ContactConsultationSection'
-import { ContactClinicLocationSection, type ContactMapSettings } from '@/src/components/blocks/ContactClinicLocationSection'
+import { ContactClinicLocationSection, type ContactHospitalLocation, type ContactMapSettings } from '@/src/components/blocks/ContactClinicLocationSection'
 import { ContactExpectationSection } from '@/src/components/blocks/ContactExpectationSection'
 import { ContactFaqSection } from '@/src/components/blocks/ContactFaqSection'
 import type { ContactPageContent } from '@/src/lib/api/queries'
@@ -15,7 +15,7 @@ const referenceConsultationImage = 'https://lh3.googleusercontent.com/aida-publi
 const staticContactContent: any = {
   blocks: [
     { id: 'contact-hero', __component: 'contact.hero', data: { title: 'Start With a Conversation About Your Case', subtitle: 'PRIVATE CONSULTATION · HO CHI MINH CITY', description: 'Considering cosmetic surgery abroad often begins with questions, not decisions. Contact DR. MARIS AESTHETICS to discuss your concerns, previous procedures and surgical goals before planning your next step.', heroImageUrl: referenceConsultationImage } },
-    { id: 'contact-consultation', __component: 'contact.consultation-section', data: { formTitle: 'Request a Consultation', formIntro: 'Please fill out the form below and our patient coordinator will contact you within 24 hours to schedule your private consultation.', serviceOptions: [{ label: 'Rhinoplasty', value: 'rhinoplasty' }, { label: 'Revision Surgery', value: 'revision-surgery' }, { label: 'Facial Contouring', value: 'facial-contouring' }, { label: 'Breast Surgery', value: 'breast-surgery' }], privacyPolicyLabel: 'Privacy Policy', privacyPolicyHref: '/privacy-policy', submitLabel: 'Send Request', infoTitle: 'Contact Information', infoDescription: 'Our international patient coordinator will guide you through the next step.', advisorTitle: 'International Patient Coordination', advisorDescription: 'Private, direct and medically focused communication before you travel.', advisorImage: referenceConsultationImage, contacts: [], trustTitle: 'Hospital-Based Care', trustDescription: 'Every surgical plan is assessed with safety, anatomy and recovery in mind.' } },
+    { id: 'contact-consultation', __component: 'contact.consultation-section', data: { formTitle: 'Request a Consultation', formIntro: 'Please fill out the form below and our patient coordinator will contact you within 24 hours to schedule your private consultation.', serviceOptions: [{ label: 'Rhinoplasty', value: 'rhinoplasty' }, { label: 'Revision Surgery', value: 'revision-surgery' }, { label: 'Facial Contouring', value: 'facial-contouring' }, { label: 'Breast Surgery', value: 'breast-surgery' }], privacyPolicyLabel: 'Privacy Policy', submitLabel: 'Send Request', infoTitle: 'Contact Information', infoDescription: 'Our international patient coordinator will guide you through the next step.', advisorTitle: 'International Patient Coordination', advisorDescription: 'Private, direct and medically focused communication before you travel.', advisorImage: referenceConsultationImage, contacts: [], trustTitle: 'Hospital-Based Care', trustDescription: 'Every surgical plan is assessed with safety, anatomy and recovery in mind.' } },
     { id: 'contact-location', __component: 'contact.map-section', data: { title: 'Visit DR. MARIS AESTHETICS', benefits: [{ icon: 'location', text: 'Hospital-based surgical facility' }, { icon: 'landmark', text: 'International patient support' }, { icon: 'parking', text: 'Convenient city access' }], directionsLabel: 'Get Directions' } },
     { id: 'contact-expectation', __component: 'contact.expectation', data: { title: 'What to Expect', items: [{ step: '01', title: 'Send Your Request', description: 'Fill out our detailed form to help us understand your unique aesthetic goals and concerns.' }, { step: '02', title: 'Speak With Our Team', description: 'Our patient coordinator will contact you to review your request and arrange an appointment.' }, { step: '03', title: 'Meet Your Doctor', description: 'Enjoy a comprehensive, private consultation with our medical specialists to design your roadmap.' }] } },
     { id: 'contact-faq', __component: 'contact.faq', data: { title: 'Frequently Asked Questions', questions: [{ question: 'Is there a fee for the initial consultation?', answer: "Yes, we charge a nominal fee for the specialist's time, which is fully credited toward any treatment you choose to proceed with." }, { question: 'How soon can I get an appointment?', answer: 'Typically, we can accommodate new patient consultations within 3–5 business days depending on physician availability.' }, { question: 'Do you offer virtual consultations?', answer: 'For international patients or initial assessments, we offer secure video consultations via our patient portal.' }, { question: 'How should I prepare for my consultation?', answer: 'Please bring a list of your current medications and any medical history relevant to your visit.' }] } },
@@ -30,22 +30,46 @@ function normalizePhoneHref(value: string) {
 function resolveGlobalContacts(settings?: ContactMapSettings) {
   if (!settings) return []
 
-  const contacts = []
-  if (settings.phonePrimary?.trim()) {
-    contacts.push({ type: 'hotline' as const, label: 'Phone', value: settings.phonePrimary.trim(), href: normalizePhoneHref(settings.phonePrimary) })
+  const configured = (settings.contactMethods || []).filter((method) =>
+    method.label?.trim() && /^(https?:|mailto:|tel:)/i.test(method.href?.trim() || ''),
+  )
+  if (configured.length) {
+    return configured.map((method) => {
+      const href = method.href.trim()
+      const value = href.replace(/^(mailto:|tel:)/i, '').replace(/^https?:\/\/(?:wa\.me|api\.whatsapp\.com)\//i, '').replace(/[?&].*$/, '')
+      return { type: method.type || 'contact', label: method.label.trim(), value, href }
+    })
   }
-  return contacts
+  return settings.phonePrimary?.trim()
+    ? [{ type: 'phone', label: 'Phone', value: settings.phonePrimary.trim(), href: normalizePhoneHref(settings.phonePrimary) }]
+    : []
 }
 
-export default function ContactPageClient({ content, serviceOptions = [], websiteSettings }: { content?: ContactPageContent; serviceOptions?: ServiceOption[]; websiteSettings?: ContactMapSettings }) {
+function resolveGlobalLocations(settings?: ContactMapSettings) {
+  if (!settings) return []
+  const facilityOrder = { HIU: 0, CIH: 1 }
+  return [...(settings.hospitalLocations || [])]
+    .filter((location) => location.name.trim() && location.address.trim())
+    .sort((a, b) => facilityOrder[a.locationKey] - facilityOrder[b.locationKey])
+    .map((location) => ({
+      label: location.name,
+      address: location.address,
+      latitude: location.latitude,
+      longitude: location.longitude,
+      mapsPlaceUrl: location.mapsPlaceUrl,
+    }))
+}
+
+export default function ContactPageClient({ content, serviceOptions = [], hospitals = [], websiteSettings }: { content?: ContactPageContent; serviceOptions?: ServiceOption[]; hospitals?: ContactHospitalLocation[]; websiteSettings?: ContactMapSettings }) {
   const pageRef = useRef<HTMLElement>(null)
   useLazySectionMotion(pageRef)
   const globalContacts = resolveGlobalContacts(websiteSettings)
+  const globalLocations = resolveGlobalLocations(websiteSettings)
   const sourceContent = content?.blocks?.length ? content : staticContactContent
   const resolvedContent = {
     ...sourceContent,
     blocks: sourceContent.blocks.map((block: any) => block.__component === 'contact.consultation-section'
-      ? { ...block, data: { ...block.data, contacts: globalContacts, serviceOptions: serviceOptions.length ? serviceOptions : block.data.serviceOptions } }
+      ? { ...block, data: { ...block.data, contacts: globalContacts, locations: globalLocations, serviceOptions: serviceOptions.length ? serviceOptions : block.data.serviceOptions } }
       : block),
   }
   return (
@@ -60,7 +84,7 @@ export default function ContactPageClient({ content, serviceOptions = [], websit
         }
 
         if (block.__component === 'contact.map-section') {
-          return <ContactClinicLocationSection key={block.id} data={block.data} websiteSettings={websiteSettings} />
+          return <ContactClinicLocationSection key={block.id} data={block.data} hospitals={hospitals} websiteSettings={websiteSettings} />
         }
 
         if (block.__component === 'contact.expectation') return <ContactExpectationSection key={block.id} data={block.data} />

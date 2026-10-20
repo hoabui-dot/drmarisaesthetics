@@ -2,16 +2,17 @@
 
 import Image from 'next/image'
 import { useRef, type MouseEvent } from 'react'
-import { ArrowRight, CheckCircle2, Clock3, MapPin, PhoneCall, ShieldCheck, X } from 'lucide-react'
+import { ArrowRight, CheckCircle2, ShieldCheck, X } from 'lucide-react'
 import { useBookingModal } from '@/src/components/booking-modal/BookingModalContext'
 import { CommonFaqAccordion } from '@/src/components/blocks/CommonFaqAccordion'
-import { GoogleMapEmbed } from '@/src/components/ui/google-map-embed'
 import { ContactConsultationSection, type ContactConsultationData } from '@/src/components/blocks/ContactConsultationSection'
+import { DeepPlaneHospitalShowcase, type HospitalShowcaseItem } from '@/src/components/blocks/DeepPlaneHospitalShowcase'
 import type { ContactMapSettings } from '@/src/components/blocks/ContactClinicLocationSection'
 import type { ServiceOption } from '@/src/components/blocks/ContactConsultationSection'
 import type { DeepPlaneFaceliftSpecialistData, DeepPlaneSectionKey } from '@/src/lib/constants/deep-plane-facelift-specialist'
 import { useDeepPlaneCertificationMotion } from '@/src/hooks/useDeepPlaneCertificationMotion'
 import { PlanningProcessSection } from '@/src/components/homepage/PlanningProcessSection'
+import { SiteBreadcrumbs } from '@/src/components/layout/SiteBreadcrumbs'
 
 function ConsultationButton({ variant = 'primary' }: { variant?: 'primary' | 'secondary' }) {
   const { open } = useBookingModal()
@@ -22,9 +23,10 @@ type DeepPlaneFaceliftSpecialistPageProps = {
   page: DeepPlaneFaceliftSpecialistData
   websiteSettings?: ContactMapSettings
   serviceOptions?: ServiceOption[]
+  hospitalChapters?: HospitalShowcaseItem[]
 }
 
-export function DeepPlaneFaceliftSpecialistPage({ page, websiteSettings, serviceOptions = [] }: DeepPlaneFaceliftSpecialistPageProps) {
+export function DeepPlaneFaceliftSpecialistPage({ page, websiteSettings, serviceOptions = [], hospitalChapters = [] }: DeepPlaneFaceliftSpecialistPageProps) {
   const certificationRef = useRef<HTMLElement>(null)
   useDeepPlaneCertificationMotion(certificationRef)
   const consultationForm: ContactConsultationData = {
@@ -32,7 +34,6 @@ export function DeepPlaneFaceliftSpecialistPage({ page, websiteSettings, service
     formIntro: 'Please share a few details about your goals. Our patient coordinator will review your case and arrange a private surgical consultation.',
     serviceOptions,
     privacyPolicyLabel: 'Privacy Policy',
-    privacyPolicyHref: '/privacy-policy',
     submitLabel: 'Request Private Consultation',
     infoTitle: 'Private Surgical Intake',
     infoDescription: page.consultation.formDescription,
@@ -42,13 +43,6 @@ export function DeepPlaneFaceliftSpecialistPage({ page, websiteSettings, service
     trustTitle: 'Confidential Clinical Review',
     trustDescription: 'Your details remain private and are used only to coordinate your consultation.',
   }
-  const mapAddress = websiteSettings?.address || ''
-  const mapLatitude = websiteSettings?.mapLatitude ?? 34.0736
-  const mapLongitude = websiteSettings?.mapLongitude ?? -118.4004
-  const mapZoom = websiteSettings?.mapZoom ?? 16
-  const officeAddress = websiteSettings?.address || ''
-  const consultationHours = websiteSettings?.openingHours || ''
-  const consultationPhone = websiteSettings?.phonePrimary || ''
   const recoverySteps = page.recovery.steps.map((step) => ({
     number: step.number,
     title: step.title,
@@ -67,6 +61,7 @@ export function DeepPlaneFaceliftSpecialistPage({ page, websiteSettings, service
     <section className="deep-plane-facelift__hero" style={sectionStyle('hero')}>
       <div className="stitch-container deep-plane-facelift__hero-grid">
         <div className="deep-plane-facelift__hero-copy">
+          <SiteBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Dr. Cuong' }]} />
           <span className="stitch-kicker"><i aria-hidden="true" />{page.hero.eyebrow}</span>
           <h1>{page.hero.title}</h1>
           <figure className="deep-plane-facelift__hero-image deep-plane-facelift__hero-image--mobile" aria-hidden="true"><Image src={page.hero.image} alt="" fill priority sizes="(max-width: 767px) 100vw, 1px" unoptimized /></figure>
@@ -104,7 +99,7 @@ export function DeepPlaneFaceliftSpecialistPage({ page, websiteSettings, service
 
     <section id={page.faq.id} style={sectionStyle('faq')} className="deep-plane-facelift__section deep-plane-facelift__section--faq"><SectionHeading eyebrow={page.faq.eyebrow} title={page.faq.title} description={page.faq.description} /><div className="stitch-container deep-plane-facelift__faq"><CommonFaqAccordion items={page.faq.items.map(([question, answer], index) => ({ id: index + 1, question, answer }))} className="deep-plane-facelift__faq-accordion" defaultOpenIndex={0} /></div></section>
 
-    <section id={page.consultation.id} style={sectionStyle('consultation')} className="deep-plane-facelift__consultation"><div className="stitch-container deep-plane-facelift__consultation-grid"><div className="deep-plane-facelift__facility"><span className="deep-plane-facelift__eyebrow">{page.consultation.eyebrow}</span><h2>{page.consultation.title}</h2><div className="deep-plane-facelift__consultation-image"><Image src={page.consultation.image} alt={page.consultation.imageAlt} fill sizes="(max-width: 900px) 100vw, 42vw" unoptimized /></div><dl><div><dt><MapPin size={17} aria-hidden="true" />Surgical Suite & Consultation Office</dt><dd>{officeAddress}</dd></div><div><dt><Clock3 size={17} aria-hidden="true" />Consultation Hours</dt><dd>{consultationHours}</dd></div><div><dt><PhoneCall size={17} aria-hidden="true" />Private Surgical Concierge Line</dt><dd>{consultationPhone}</dd></div></dl><div className="deep-plane-facelift__map"><div className="deep-plane-facelift__map-frame"><GoogleMapEmbed lat={mapLatitude} lng={mapLongitude} query={mapAddress} zoom={mapZoom} title="Dr. Maris Aesthetics clinic location map" /></div></div></div><div className="deep-plane-facelift__intake"><ContactConsultationSection data={consultationForm} formOnly /></div></div></section>
+    <section id={page.consultation.id} style={sectionStyle('consultation')} className="deep-plane-facelift__consultation"><div className="stitch-container deep-plane-facelift__consultation-grid"><div className="deep-plane-facelift__facility"><DeepPlaneHospitalShowcase hospitals={hospitalChapters} locations={websiteSettings?.hospitalLocations} /></div><div className="deep-plane-facelift__intake"><ContactConsultationSection data={consultationForm} formOnly /></div></div></section>
   </main>
 }
 

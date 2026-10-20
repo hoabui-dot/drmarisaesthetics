@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_website_setting_hospital_locations",
+  "info": { "displayName": "Hospital map location" },
+  "options": {},
+  "attributes": {
+    "location_key": { "type": "enumeration", "enum": ["HIU", "CIH"], "required": true },
+    "name": { "type": "string", "required": true },
+    "address": { "type": "text", "required": true },
+    "latitude": { "type": "decimal" },
+    "longitude": { "type": "decimal" },
+    "maps_embed_url": { "type": "text" },
+    "maps_place_url": { "type": "text", "description": "Verified Google Maps place URL opened when visitors click the map preview." },
+    "maps_search_query": { "type": "text", "description": "Optional Google Maps search text used for the embedded preview. Use the local-language facility name/address if English search resolves incorrectly; the public UI address remains separate." }
+  }
+}

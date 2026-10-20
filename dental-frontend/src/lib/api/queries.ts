@@ -84,6 +84,8 @@ export async function getTreatmentsPage(isDraftMode = false): Promise<TreatmentP
         paragraphTwo: item.paragraph_two || undefined,
         image: item.image ? getMediaUrl(item.image) : undefined,
         imageAlt: item.image_alt || undefined,
+        secondaryImageUrl: typeof item.secondary_image_url === 'string' ? item.secondary_image_url : undefined,
+        secondaryImageAlt: item.secondary_image_alt || undefined,
         items: Array.isArray(item.items) ? item.items.map((entry: any): TreatmentPageItem => ({
           number: entry.number || undefined,
           title: entry.title,
@@ -514,6 +516,7 @@ export async function getWebsiteSetting(isDraftMode: boolean = false): Promise<W
         "populate[booking_form][populate][visual_points]": "true",
         "populate[blog_categories][populate][icon]": "true",
         "populate[service_categories][populate][icon]": "true",
+        "populate[hospital_locations]": "true",
         status: isDraftMode ? "draft" : "published",
       },
       isDraftMode,
@@ -525,14 +528,19 @@ export async function getWebsiteSetting(isDraftMode: boolean = false): Promise<W
       siteName: value.site_name || "DR. MARIS AESTHETICS",
       logo: value.logo ? { url: getMediaUrl(value.logo), alt: value.logo.alternativeText || value.site_name, width: value.logo.width || 0, height: value.logo.height || 0 } : undefined,
       defaultOpenGraphImage: value.default_open_graph_image ? { url: getMediaUrl(value.default_open_graph_image), alt: value.default_open_graph_image.alternativeText || value.site_name, width: value.default_open_graph_image.width || 0, height: value.default_open_graph_image.height || 0 } : undefined,
-      address: value.address || "",
       phonePrimary: value.phone_primary || "",
       openingHours: value.opening_hours,
-      mapLatitude: value.map_latitude == null ? undefined : Number(value.map_latitude),
-      mapLongitude: value.map_longitude == null ? undefined : Number(value.map_longitude),
-      mapZoom: value.map_zoom == null ? undefined : Number(value.map_zoom),
-      mapDisplayName: value.map_display_name || undefined,
-      mapEmbedUrl: value.map_embed_url || undefined,
+      hospitalLocations: Array.isArray(value.hospital_locations) ? value.hospital_locations.map((location: any) => ({
+        id: location.id,
+        locationKey: location.location_key,
+        name: location.name || '',
+        address: location.address || '',
+        latitude: location.latitude == null ? undefined : Number(location.latitude),
+        longitude: location.longitude == null ? undefined : Number(location.longitude),
+        mapsEmbedUrl: location.maps_embed_url || undefined,
+        mapsPlaceUrl: location.maps_place_url || undefined,
+        mapsSearchQuery: location.maps_search_query || undefined,
+      })).filter((location: any) => ['HIU', 'CIH'].includes(location.locationKey) && location.name && location.address) : [],
       headerNavigation: Array.isArray(value.header_navigation) ? value.header_navigation.map((item: any) => ({
         id: item.id,
         label: item.label || '',
@@ -557,7 +565,7 @@ export async function getWebsiteSetting(isDraftMode: boolean = false): Promise<W
       })) : undefined,
       footerCopyrightText: value.footer_copyright_text || undefined,
       footerTagline: value.footer_tagline || undefined,
-      contactMethods: (value.contact_methods || []).filter((item: any) => item.is_active !== false).sort((a: any, b: any) => (a.order || 0) - (b.order || 0)).map((item: any) => ({ ...item, isActive: item.is_active !== false, icon: item.icon ? { url: getMediaUrl(item.icon), alt: item.icon.alternativeText || item.label, width: item.icon.width || 0, height: item.icon.height || 0 } : undefined })),
+      contactMethods: (value.contact_methods || []).filter((item: any) => item.is_active !== false).sort((a: any, b: any) => (a.order || 0) - (b.order || 0)).map((item: any) => ({ id: item.id, type: item.type || 'contact', label: item.label || '', href: item.href || '', color: item.color || undefined, order: item.order || 0, isActive: item.is_active !== false, icon: item.icon ? { url: getMediaUrl(item.icon), alt: item.icon.alternativeText || item.label, width: item.icon.width || 0, height: item.icon.height || 0 } : undefined })),
       socialLinks: (value.social_links || []).filter((item: any) => item.is_active !== false).sort((a: any, b: any) => (a.order || 0) - (b.order || 0)).map((item: any) => ({ ...item, iconClass: item.icon_class, isActive: item.is_active !== false })),
       globalCta: value.global_cta ? {
         eyebrow: value.global_cta.eyebrow || "BEGIN YOUR JOURNEY",
@@ -1546,30 +1554,26 @@ export async function getContactPage(isDraftMode: boolean = false): Promise<Cont
           formIntro: cleanDescription(block.form_intro) || '',
           serviceOptions: [],
           privacyPolicyLabel: block.privacy_policy_label || '',
-          privacyPolicyHref: block.privacy_policy_href || '',
           submitLabel: block.submit_label || '',
           infoTitle: block.info_title || '',
           infoDescription: cleanDescription(block.info_description) || '',
           advisorTitle: block.advisor_title || '',
           advisorDescription: cleanDescription(block.advisor_description) || '',
           advisorImage: block.advisor_image ? getMediaUrl(block.advisor_image) : undefined,
-          contacts: (block.contacts || []).map((contact: any) => ({
-            type: contact.type || 'hotline',
-            label: contact.label || '',
-            value: contact.value || '',
-            href: contact.href || '',
-          })),
           trustTitle: block.trust_title || '',
           trustDescription: block.trust_description || '',
         };
       } else if (type === "contact.map-section") {
         blockData = {
+          eyebrow: block.eyebrow || "HOSPITAL LOCATIONS",
           title: block.title || "Vị trí phòng khám",
+          description: cleanDescription(block.description) || "",
           benefits: (block.benefits || []).map((benefit: any) => ({
             icon: benefit.icon || 'location',
             text: benefit.text || '',
           })),
-          directionsLabel: block.directions_label || "CHỈ ĐƯỜNG TRÊN GOOGLE MAPS",
+          directionsLabel: block.directions_label || "Get Directions",
+          officialWebsiteLabel: block.official_website_label || "Official Website",
         };
       } else if (type === "contact.expectation") {
         blockData = {
@@ -1621,7 +1625,7 @@ export async function getAboutPage(isDraftMode: boolean = false): Promise<any> {
         "populate[sections][on][about.revision][populate]": "*",
         "populate[sections][on][about.international][populate]": "*",
         "populate[sections][on][about.consultation][populate]": "*",
-        "populate[sections][on][about.hospital][populate]": "*",
+        "populate[sections][on][about.hospital-environments][populate][hospitals]": "*",
       },
       isDraftMode,
       tags: ["about-page"],
@@ -1801,7 +1805,7 @@ export async function getAboutPage(isDraftMode: boolean = false): Promise<any> {
       "about.revision": "revision",
       "about.international": "international",
       "about.consultation": "consultation",
-      "about.hospital": "hospital",
+        "about.hospital-environments": "hospital-environments",
     };
     const sections = sectionBlocks
       .map((section: any) => sectionKeys[section.__component] || "")
@@ -1825,5 +1829,27 @@ export async function getAboutPage(isDraftMode: boolean = false): Promise<any> {
     };
   } catch (error) {
     return null;
+  }
+}
+
+/** Fetch the canonical hospital chapters shared by About and Contact pages. */
+export async function getAboutHospitalLocations(isDraftMode: boolean = false): Promise<any[]> {
+  try {
+    const response = await apiClient<any>("/api/about-page", {
+      params: {
+        "populate[sections][on][about.hospital-environments][populate][hospitals]": "*",
+        status: isDraftMode ? "draft" : "published",
+      },
+      isDraftMode,
+      tags: ["about-page", "contact-hospital-locations"],
+      cache: "no-store",
+    });
+    const sections = response?.data?.sections;
+    const section = Array.isArray(sections)
+      ? sections.find((item: any) => item.__component === "about.hospital-environments")
+      : null;
+    return Array.isArray(section?.hospitals) ? section.hospitals : [];
+  } catch {
+    return [];
   }
 }

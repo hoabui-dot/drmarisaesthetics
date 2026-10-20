@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_about_hospital_chapters",
+  "info": {
+    "displayName": "Hospital Chapter",
+    "description": "One editorial location entry; keep exterior/interior imagery replaceable through CMS URLs."
+  },
+  "options": {},
+  "attributes": {
+    "chapter": { "type": "string", "required": true },
+    "name": { "type": "string", "required": true },
+    "abbreviation": { "type": "string", "required": true },
+    "short_name": { "type": "string" },
+    "short_label": { "type": "string", "required": true },
+    "address": { "type": "text", "required": true },
+    "maps_directions_url": { "type": "text" },
+    "maps_embed_url": { "type": "text" },
+    "website": { "type": "string", "required": true },
+    "source_url": { "type": "string" },
+    "description": { "type": "text", "required": true },
+    "exterior_image_url": { "type": "text", "required": true },
+    "exterior_image_alt": { "type": "string", "required": true },
+    "interior_image_url": { "type": "text", "required": true },
+    "interior_image_alt": { "type": "string", "required": true },
+    "detail_image_url": { "type": "text" },
+    "detail_image_alt": { "type": "string" }
+  }
+}

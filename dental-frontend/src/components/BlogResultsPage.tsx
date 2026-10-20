@@ -8,6 +8,7 @@ import { FormEvent, useEffect, useMemo, useState } from 'react'
 import type { WebsiteCategory } from '@/src/types/strapi'
 import { ConsultationCtaSection } from '@/src/components/blocks/ConsultationCtaSection'
 import { blogArticlePath } from '@/src/lib/news/routes'
+import { SiteBreadcrumbs } from '@/src/components/layout/SiteBreadcrumbs'
 
 export type BlogListItem = {
   id: number
@@ -75,6 +76,7 @@ export function BlogResultsPage({ posts: initialPosts, total: initialTotal, cate
     <main className="stitch-page results-page blog-results-page">
       <section className="results-page__hero" data-results-entrance>
         <div className="stitch-container">
+          <SiteBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'News' }]} />
           <h2><span className="results-page__title-mask"><span>Patient Planning Journal</span></span></h2>
           <p className="results-page__editorial-lead">Clear, clinically grounded guidance for informed decisions and confident recovery.</p>
           <p className="results-page__supporting-copy">Explore surgeon-led perspectives, treatment planning notes and recovery guidance from the Dr. Maris Aesthetics team.</p>

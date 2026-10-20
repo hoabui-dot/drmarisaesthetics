@@ -110,8 +110,17 @@ export function PlanningProcessSection({
         .add(number, { opacity: [0.3, 1], scale: [0.85, 1], duration: 520, ease: 'outCubic' }, 0)
         .add(title, { opacity: [0, 1], y: [16, 0], duration: 520, ease: 'outCubic' }, 90)
         .add(description, { opacity: [0, 1], y: [12, 0], duration: 520, ease: 'outCubic' }, 180)
-      if (visualMedia && !plainVisual) {
-        timeline.add(visualMedia, { opacity: [0.9, 1], scale: [1.025, 1], duration: 560, ease: 'outCubic' }, 60)
+      if (visualMedia) {
+        // The deep-plane recovery variant uses the original image treatment
+        // (no zoom), but it still needs a visible transition when the active
+        // step changes. Previously `plainVisual` skipped the image animation
+        // altogether, making the scroll-driven step switch appear broken.
+        timeline.add(visualMedia, {
+          opacity: [plainVisual ? 0.45 : 0.9, 1],
+          scale: plainVisual ? 1 : [1.025, 1],
+          duration: 560,
+          ease: 'outCubic',
+        }, 60)
       }
       timeline.play()
       timelinesRef.current = [timeline]

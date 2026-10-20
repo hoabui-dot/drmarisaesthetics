@@ -11,6 +11,8 @@
     "paragraph_two": { "type": "text" },
     "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
     "image_alt": { "type": "string" },
+    "secondary_image_url": { "type": "text" },
+    "secondary_image_alt": { "type": "string" },
     "items": { "type": "component", "repeatable": true, "component": "treatments-page.item" }
   }
 }

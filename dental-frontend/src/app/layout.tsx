@@ -9,7 +9,6 @@ import { FloatingContactWrapper } from '@/src/components/floating-contact'
 import { BookingModalWrapper } from '@/src/components/booking-modal/BookingModalWrapper'
 import { CallModalWrapper } from '@/src/components/call-modal'
 import { Toaster } from 'sonner'
-import { CLINIC_INFO } from '@/src/lib/constants/contact'
 
 import { BRAND_LOGO_PATH } from '@/src/lib/constants/brand'
 import type { ContactMethod, Footer as FooterData, Navigation } from '@/src/types/strapi'
@@ -18,6 +17,7 @@ import { GlobalCtaProvider } from '@/src/components/providers/GlobalCtaProvider'
 import { FALLBACK_FOOTER, FALLBACK_HEADER_NAVIGATION } from '@/src/lib/constants/site-navigation'
 import { getMarketingPublicConfig } from '@/src/lib/seo/seo-manager'
 import { MarketingIntegrations } from '@/src/components/marketing/MarketingIntegrations'
+import { CLINIC_INFO } from '@/src/lib/constants/contact'
 
 const instrumentSans = Instrument_Sans({
   subsets: ['latin', 'latin-ext'],
@@ -96,9 +96,12 @@ function buildNavigation(serviceOptions: Array<{ value: string; label: string }>
         return {
           ...item,
           isClickable: false,
-          children: [
-            { id: item.children?.[0]?.id || 8001, label: 'Dr. Huy', href: '/our-team/dr-huy' },
-            { id: item.children?.[1]?.id || 8002, label: 'Dr. Cuong', href: '/our-team/dr-cuong' },
+          // Website Settings repeatable-component order is authoritative here
+          // too. Previously this branch rebuilt the submenu from array indexes,
+          // which silently replaced the editor's child order with a fixed list.
+          children: item.children?.length ? item.children : [
+            { id: 8001, label: 'Dr. Huy', href: '/our-team/dr-huy' },
+            { id: 8002, label: 'Dr. Cuong', href: '/our-team/dr-cuong' },
           ],
         }
       }
@@ -174,7 +177,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     linkGroups: websiteSetting?.footerLinkGroups?.length ? websiteSetting.footerLinkGroups : staticFooter.linkGroups,
     contactInfo: {
       ...staticFooter.contactInfo,
-      address: websiteSetting.address || staticFooter.contactInfo.address,
+      address: staticFooter.contactInfo.address,
       phone: websiteSetting.phonePrimary || staticFooter.contactInfo.phone,
       email: settingsEmail,
     },
@@ -188,7 +191,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     })),
   } : staticFooter;
   return (
-    <html lang="vi">
+    <html lang="vi" className={`${instrumentSans.variable} ${cormorantGaramond.variable} ${ebGaramond.variable}`}>
       {process.env.NODE_ENV === 'production' && <>
         <Script id="drmaris-google-tag" src="https://www.googletagmanager.com/gtag/js?id=G-RHDCNF8W7B" strategy="afterInteractive" />
         <Script id="drmaris-google-tag-config" strategy="afterInteractive">{`
@@ -201,7 +204,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           window.__drmarisGoogleTagIds = Array.from(new Set([...(window.__drmarisGoogleTagIds || []), 'G-RHDCNF8W7B']));
         `}</Script>
       </>}
-      <body className={`${instrumentSans.variable} ${cormorantGaramond.variable} ${ebGaramond.variable} antialiased flex flex-col min-h-screen`}>
+      <body className="antialiased flex flex-col min-h-screen">
         <MarketingIntegrations integrations={marketing.integrations} />
         <ReCaptchaProvider>
           <BookingModalWrapper serviceOptions={serviceOptions} bookingForm={websiteSetting?.bookingForm}>
@@ -212,7 +215,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
                 {children}
               </main>
             </GlobalCtaProvider>
-            <Footer footer={footer} logoSrc={websiteSetting?.logo?.url} mapLatitude={websiteSetting?.mapLatitude} mapLongitude={websiteSetting?.mapLongitude} mapZoom={websiteSetting?.mapZoom} mapDisplayName={websiteSetting?.mapDisplayName || websiteSetting?.siteName} mapEmbedUrl={websiteSetting?.mapEmbedUrl} />
+            <Footer footer={footer} logoSrc={websiteSetting?.logo?.url} hospitalLocations={websiteSetting?.hospitalLocations} />
 
             {/* Global Features */}
             <FloatingContactWrapper contactMethods={contactMethods} />
