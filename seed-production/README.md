@@ -15,21 +15,21 @@ both `--write` and `--publish` are supplied.
 
 ### Required production review/configuration
 
-The repository intentionally does not contain production URLs, API tokens, or
-verified Maps links. Before a future production run, the operator/AI doing that
-deployment must:
+The repository intentionally does not contain production URLs or API tokens.
+The facility-specific map coordinates/embed URLs are the reviewed values
+already used by Website Settings. Before a production run, the operator/AI doing
+that deployment must:
 
 1. Obtain the correct HTTPS Strapi production base URL and a least-privilege
    API token from the authorized operator. Supply them only as environment
    variables; never commit secrets or paste them into this README.
 2. Verify hospital names, current addresses, public wording, image rights,
    image attribution, and the clinic/hospital relationship disclaimer.
-3. Fill `PRODUCTION_HOSPITAL_DIRECTIONS.CIH` and `.HIU` in the script with
-   verified HTTPS Google Maps share/directions URLs pointing to the intended
-   entrance/campus. They are intentionally blank in the checked-in file. Do
-   not guess a destination from the display address.
-4. Review the complete dry-run output against the production About Page and
-   confirm the schema including `maps_directions_url` is deployed.
+3. Review the complete dry-run output against the production About Page and
+   confirm the schema including `maps_directions_url` and `maps_embed_url` is
+   deployed. Directions use the verified facility coordinates (not ambiguous
+   address/name search); the map embeds use the reviewed facility-specific URLs
+   shared with Website Settings.
 
 ### Safe execution
 
@@ -51,10 +51,11 @@ PRODUCTION_CONTENT_REVIEWED=YES \
 node seed-production/seed-about-us-hospital-environments.js --write --publish
 ```
 
-The script rejects HTTP targets, missing credentials, missing directions URLs,
-unreviewed content, and writes without both explicit flags. It validates Maps
-URLs against Google Maps HTTPS hosts and verifies that exactly two hospital
-entries and both directions URLs were saved after publishing.
+The script rejects HTTP targets, missing credentials, unreviewed content, and
+writes without both explicit flags. It validates the coordinate-based
+directions URLs against Google Maps HTTPS hosts and verifies that exactly two
+hospital entries, directions URLs, and facility-specific map embeds were saved
+after publishing.
 
 ## Contact dual-hospital location explorer
 
@@ -66,14 +67,13 @@ seed updates the verified HIU/CIH names, short names, addresses, official/source
 URLs, and directions links there; it updates the Contact `contact.map-section`
 heading/copy and moves that section above FAQ if necessary. Existing hospital
 images and all unrelated About/Contact blocks are preserved. It does not create
-or invent hospital imagery, coordinates, clinical claims, or map pins. Existing
-`maps_embed_url` values are preserved. For an exact marker, an authorized editor
-must obtain each facility's own Google Maps **Share → Embed a map** iframe `src`
-and enter it in the corresponding About Page hospital record; never reuse a
-map URL or guess coordinates. The frontend uses this exact embed when present,
-and otherwise falls back to a facility name/address search that may be
-ambiguous. A production write is blocked until both distinct embed URLs are
-present, and the dry-run output reports them for review.
+or invent hospital imagery, coordinates, clinical claims, or map pins. The About
+seed supplies each hospital's reviewed `maps_embed_url`; it is
+preserved here. The URLs are facility-specific and sourced from the same
+verified map configuration as Website Settings. Never reuse one hospital's map
+URL for the other. The frontend uses these exact embeds; a production write is
+blocked until both distinct embed URLs are present, and the dry-run output
+reports them for review.
 
 The supplied official references are:
 
@@ -82,11 +82,10 @@ The supplied official references are:
 - CIH exterior image reference/license: `https://commons.wikimedia.org/wiki/File:City_International_Hospital_Vietnam.jpg`
 
 Before a production write, verify the current address, image asset/rights, and
-official wording against those sources and check that both hospital records
-already have approved exterior images in the CMS. The script generates each
-Google Maps directions URL as
-`https://www.google.com/maps/dir/?api=1&destination=<encoded-address>`; it does
-not assume coordinates or reuse one hospital's map for the other.
+official wording against those sources. The About seed creates the image/map
+records required by this Contact seed. Directions use verified facility
+coordinates in the Google Maps URL, avoiding ambiguous HIU name/address search;
+the public-facing address remains English text from the approved seed data.
 
 Production host and token are intentionally not stored in this repository.
 The future operator/AI must receive the authorized HTTPS `STRAPI_URL` and a
@@ -113,8 +112,9 @@ PRODUCTION_CONTENT_REVIEWED=YES \
 node seed-production/seed-contact-dual-hospital-explorer.js --write --publish
 ```
 
-The script requires HTTPS, both write-approval flags, `--write`, and
-`--publish`. It verifies the published About records, generated directions
+Run this only after the About hospital-environments seed is published. The
+script requires HTTPS, both write-approval flags, `--write`, and `--publish`.
+It verifies the published About records, generated coordinate-based directions
 links, Contact copy, and placement before FAQ. Take a database backup before
 writing; recover content from the CMS/database backup if editorial values need
 to be rolled back.
@@ -124,8 +124,10 @@ to be rolled back.
 Script: `migrate-website-setting-hospital-locations.js`
 
 This content migration normalizes the HIU display address to English and adds
-or updates CIH under `hospital_locations`. It preserves HIU's verified
-coordinates and Maps URLs, and writes a Google-generated address-specific CIH
+or updates both canonical HIU and CIH entries under `hospital_locations`. If
+HIU is absent, it creates the reviewed canonical record from the verified
+facility identity, coordinates, and Maps URLs already recorded in this script;
+it does not infer these values from a search result. It writes a Google-generated address-specific CIH
 embed query using its verified street address, which resolves to the hospital
 building and its place preview. CIH's street address is confirmed on
 [the official CIH website](https://cih.com.vn/).
@@ -148,9 +150,9 @@ protobuf previously resolved incorrectly. The CIH pin resolves to
 `10.7410166,106.609125`. Apply
 `migration-production/032-website-hospital-map-search-query.sql` before running
 this content seed. Review the CIH map preview before writing.
-Review/preserve the production HIU address and map coordinates; do not replace
-them with local values. Review the CIH map URL and coordinates in the dry run
-before writing.
+Review the HIU/CIH addresses and map URLs in the dry run before writing. Existing
+HIU component metadata is preserved where possible; the canonical English
+address and verified map identifiers are normalized consistently.
 
 Dry run:
 
@@ -174,6 +176,25 @@ Verify both HIU and CIH in published Website Settings before applying
 `migration-production/031-consolidate-website-hospital-locations.sql`, which
 then removes the old `address`, map coordinates, and secondary-location fields.
 The script is intentionally excluded from build/startup paths.
+
+## Recommended production seed order
+
+After applying the required structural migrations and deploying the matching
+Strapi schema, run the content seeds in this order:
+
+1. `migrate-website-setting-hospital-locations.js` — creates/normalizes the
+   canonical HIU/CIH Website Settings records.
+2. `seed-about-us-hospital-environments.js` — adds the two About hospital
+   records, including their verified direction and embed URLs, while preserving
+   other About sections.
+3. `seed-contact-dual-hospital-explorer.js` — updates Contact and its canonical
+   About records; it requires the About section from step 2.
+4. `seed-treatments-overview-hospital-image.js` is independent and may be run
+   separately after its own schema migration.
+
+For each script, inspect the dry-run output first. A missing prerequisite is a
+workflow/order issue, not a reason to bypass the script's production write
+guards. Never write or publish until the production content has been reviewed.
 
 ## Dr. Cuong consultation hospital showcase
 

@@ -52,11 +52,14 @@ async function main() {
   const locations = Array.isArray(draft.hospital_locations) ? draft.hospital_locations.map(cleanComponent) : []
   const existingHIUIndex = locations.findIndex((item) => item.location_key === 'HIU')
   const existingHIU = existingHIUIndex >= 0 ? locations[existingHIUIndex] : null
-  if (!existingHIU?.name || !existingHIU?.address) {
-    throw new Error('A verified HIU name and address must already exist in Website Settings. Restore/review HIU before seeding CIH or deploying the dual-hospital footer.')
-  }
+  // HIU's canonical identity, English address, place URL, embed URL, and
+  // coordinates are already verified above. Bootstrap it when production has
+  // no HIU row instead of making CIH migration impossible; preserve any other
+  // existing HIU fields when the row is present.
   const hiu = {
-    ...existingHIU,
+    ...(existingHIU || {}),
+    location_key: 'HIU',
+    name: existingHIU?.name || 'Hong Bang International University Hospital',
     address: HIU_ADDRESS,
     latitude: HIU_LATITUDE,
     longitude: HIU_LONGITUDE,
@@ -64,7 +67,8 @@ async function main() {
     maps_place_url: HIU_MAPS_PLACE_URL,
     maps_search_query: HIU_MAPS_SEARCH_QUERY,
   }
-  locations[existingHIUIndex] = hiu
+  if (existingHIUIndex >= 0) locations[existingHIUIndex] = hiu
+  else locations.unshift(hiu)
   const existingIndex = locations.findIndex((item) => item.location_key === 'CIH')
   const cih = {
     ...(existingIndex >= 0 ? locations[existingIndex] : {}),
@@ -79,7 +83,7 @@ async function main() {
   if (existingIndex >= 0) locations[existingIndex] = cih
   else locations.push(cih)
 
-  console.log(JSON.stringify({ mode: WRITE ? 'write-and-publish' : 'dry-run', documentId: draft.documentId, existingLocationKeys: (draft.hospital_locations || []).map((item) => item.location_key), updatedHIU: { location_key: hiu.location_key, name: hiu.name, address: hiu.address, maps_search_query: hiu.maps_search_query, latitude: hiu.latitude, longitude: hiu.longitude, maps_place_url: hiu.maps_place_url, maps_embed_url: hiu.maps_embed_url }, migratedCIH: cih }, null, 2))
+  console.log(JSON.stringify({ mode: WRITE ? 'write-and-publish' : 'dry-run', documentId: draft.documentId, existingLocationKeys: (draft.hospital_locations || []).map((item) => item.location_key), createdCanonicalHIU: !existingHIU, updatedHIU: { location_key: hiu.location_key, name: hiu.name, address: hiu.address, maps_search_query: hiu.maps_search_query, latitude: hiu.latitude, longitude: hiu.longitude, maps_place_url: hiu.maps_place_url, maps_embed_url: hiu.maps_embed_url }, migratedCIH: cih }, null, 2))
   if (!WRITE) return
 
   await request('/api/website-setting?status=draft', { method: 'PUT', body: JSON.stringify({ data: { hospital_locations: locations } }) })

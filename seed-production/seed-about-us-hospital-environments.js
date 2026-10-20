@@ -3,8 +3,9 @@
 /**
  * Production-only seed for the About Us hospital environments section.
  *
- * Intentionally blank until a production operator verifies the target Strapi
- * URL/token, content approval, and direct Google Maps URLs. See README.md.
+ * Production endpoint/token and editorial approval remain operator supplied.
+ * Verified maps directions and embed data are kept in the reviewed constants
+ * below; see README.md for the required dry-run/write sequence.
  * This script defaults to dry-run and never runs from app startup or Docker.
  */
 const STRAPI_URL = (process.env.STRAPI_URL || '').replace(/\/$/, '')
@@ -15,11 +16,24 @@ const ALLOW_PRODUCTION_WRITE = process.env.ALLOW_PRODUCTION_WRITE === 'YES'
 const PRODUCTION_CONTENT_REVIEWED = process.env.PRODUCTION_CONTENT_REVIEWED === 'YES'
 const COMPONENT = 'about.hospital-environments'
 
-// Fill these with verified Google Maps share/directions URLs before production
-// writes. Do not derive the production destinations from display-address text.
-const PRODUCTION_HOSPITAL_DIRECTIONS = {
-  CIH: '',
-  HIU: '',
+// Verified facility coordinates are used for directions so Google Maps does
+// not ambiguously resolve HIU to the similarly named university campus.
+const HOSPITAL_MAPS = {
+  CIH: {
+    latitude: 10.7410166,
+    longitude: 106.609125,
+    embedUrl: 'https://www.google.com/maps/embed?origin=mfe&pb=!1m3!2m1!1sCity+International+Hospital,+3+%C4%90%C6%B0%E1%BB%9Dng+S%E1%BB%91+17A,+An+L%E1%BA%A1c,+H%E1%BB%93+Ch%C3%AD+Minh+700000,+Vietnam!6i17',
+  },
+  HIU: {
+    latitude: 10.8424391,
+    longitude: 106.7115029,
+    embedUrl: 'https://www.google.com/maps/embed?origin=mfe&pb=!1m3!3m2!1m1!4s16010722763691272719',
+  },
+}
+
+function directionsUrl(abbreviation) {
+  const { latitude, longitude } = HOSPITAL_MAPS[abbreviation]
+  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${latitude},${longitude}`)}`
 }
 
 const hospitalStories = [
@@ -29,7 +43,8 @@ const hospitalStories = [
     abbreviation: 'CIH',
     short_label: 'Established multidisciplinary hospital environment',
     address: 'No. 3, Street 17A, An Lac Ward, Ho Chi Minh City, Vietnam',
-    maps_directions_url: PRODUCTION_HOSPITAL_DIRECTIONS.CIH,
+    maps_directions_url: directionsUrl('CIH'),
+    maps_embed_url: HOSPITAL_MAPS.CIH.embedUrl,
     website: 'https://cih.com.vn/',
     description: 'An established multidisciplinary hospital setting in Ho Chi Minh City, with clinical facilities and supporting medical services.',
     exterior_image_url: 'https://upload.wikimedia.org/wikipedia/commons/8/8e/City_International_Hospital_Vietnam.jpg',
@@ -45,7 +60,8 @@ const hospitalStories = [
     abbreviation: 'HIU',
     short_label: 'Modern university hospital environment',
     address: '01 Street 10, Van Phuc 1 Residential Area, Hiep Binh Ward, Ho Chi Minh City 700000, Vietnam',
-    maps_directions_url: PRODUCTION_HOSPITAL_DIRECTIONS.HIU,
+    maps_directions_url: directionsUrl('HIU'),
+    maps_embed_url: HOSPITAL_MAPS.HIU.embedUrl,
     website: 'https://hiuhospital.com/',
     description: 'A multidisciplinary university hospital in Ho Chi Minh City with patient-care and clinical facilities.',
     exterior_image_url: 'https://hiuhospital.com/_next/image?q=75&url=https%3A%2F%2Fstorage.googleapis.com%2Fhiuh-public-media-production%2Fuploads%2Fcms%2Fcollections%2Ffacilities%2Fkhoi-nha-sanh-chinh.jpg&w=3840',
@@ -67,7 +83,7 @@ const sampleSection = {
 }
 
 function validateGoogleMapsUrl(value, abbreviation) {
-  if (!value) throw new Error(`Set a verified Google Maps directions URL for ${abbreviation} in PRODUCTION_HOSPITAL_DIRECTIONS before writing.`)
+  if (!value) throw new Error(`No verified Google Maps directions URL is configured for ${abbreviation}.`)
   let url
   try {
     url = new URL(value)

@@ -23,12 +23,16 @@ const HOSPITALS = {
   HIU: {
     short_name: 'Hong Bang Hospital',
     address: '01 Street 10, Van Phuc 1 Residential Area, Hiep Binh Ward, Ho Chi Minh City 700000, Vietnam',
+    latitude: 10.8424391,
+    longitude: 106.7115029,
     website: 'https://hiuhospital.com/',
     source_url: 'https://hiuhospital.com/lien-he',
   },
   CIH: {
     short_name: 'City International Hospital',
     address: 'No. 3, Street 17A, An Lac Ward, Ho Chi Minh City, Vietnam',
+    latitude: 10.7410166,
+    longitude: 106.609125,
     website: 'https://cih.com.vn/',
     source_url: 'https://cih.com.vn/',
   },
@@ -43,8 +47,8 @@ if (WRITE && (!WRITE_APPROVED || !CONTENT_REVIEWED)) {
 }
 if (WRITE && !PUBLISH) throw new Error('For public Contact content, use both --write and --publish after reviewing the dry run.')
 
-function directionsUrl(address) {
-  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`
+function directionsUrl({ latitude, longitude }) {
+  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${latitude},${longitude}`)}`
 }
 
 async function request(path, options = {}) {
@@ -105,7 +109,7 @@ async function main() {
   const hospitalRecords = hospitalSection.hospitals.map((hospital) => {
     const details = HOSPITALS[hospital.abbreviation]
     if (!details) return hospital
-    const maps_directions_url = directionsUrl(details.address)
+    const maps_directions_url = directionsUrl(details)
     assertGoogleDirectionsUrl(maps_directions_url, hospital.abbreviation)
     return { ...hospital, ...details, maps_directions_url }
   })
