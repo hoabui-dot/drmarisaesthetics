@@ -1,7 +1,7 @@
 'use client'
 
 import React, { forwardRef } from 'react'
-import { motion, MotionProps } from 'framer-motion'
+import { motion, MotionProps } from 'motion/react'
 import { useMobileAnimation } from '@/src/hooks/useMobileAnimation'
 
 type MotionDivProps = Omit<MotionProps, "ref"> & {

@@ -6,6 +6,7 @@ import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from 'motion/r
 import { ChevronDown } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import type { NavItem } from '@/src/types/strapi'
+import { isCurrentNavigationPage, isNavigationPathWithin } from '@/src/lib/navigation/route-matching'
 
 type DesktopMegaNavigationProps = {
   items: NavItem[]
@@ -93,7 +94,8 @@ export function DesktopMegaNavigation({ items, activeSection, onNavigate }: Desk
     }
   })
 
-  const isCurrent = (href: string) => href === '/' ? pathname === '/' : pathname.startsWith(href)
+  const isCurrentPage = (href: string) => isCurrentNavigationPage(pathname, href)
+  const isRouteActive = (href: string) => isNavigationPathWithin(pathname, href)
 
   return (
     <LayoutGroup id="desktop-global-mega-navigation">
@@ -101,7 +103,7 @@ export function DesktopMegaNavigation({ items, activeSection, onNavigate }: Desk
         {items.map((item) => {
           const key = String(item.id)
           const hasChildren = Boolean(item.children?.length)
-          const active = activeMenu === key || hoveredNavItem === key || (!activeMenu && !hoveredNavItem && (activeSection === item.href.replace('#', '') || isCurrent(item.href)))
+          const active = activeMenu === key || hoveredNavItem === key || (!activeMenu && !hoveredNavItem && (activeSection === item.href.replace('#', '') || isRouteActive(item.href)))
 
           if (!hasChildren) {
             const directLinkClass = `desktop-mega-navigation__link relative flex items-center gap-1 rounded-lg px-3 py-2 transition-colors ${active ? '' : 'after:absolute after:bottom-1 after:left-3 after:right-3 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:transition-transform after:duration-200 hover:after:scale-x-100'}`
@@ -137,7 +139,7 @@ export function DesktopMegaNavigation({ items, activeSection, onNavigate }: Desk
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.div key={activeMenu} initial="hidden" animate="visible" exit="exit" variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { delayChildren: reduceMotion ? 0 : 0.04, staggerChildren: reduceMotion ? 0 : 0.045 } }, exit: { opacity: 0, transition: { duration: reduceMotion ? 0 : 0.12 } } }} className="inline-grid w-max max-w-[calc(100vw-2.5rem)] grid-cols-[max-content] gap-0.5">
                   {activeItem.children.map((child) => <motion.div key={child.id} variants={{ hidden: { opacity: 0, y: 8 }, visible: { opacity: 1, y: 0, transition: reduceMotion ? { duration: 0 } : { duration: 0.24, ease: [0.22, 1, 0.36, 1] } }, exit: { opacity: 0, y: -4 } }}>
-                    <Link href={child.href} data-current={isCurrent(child.href) || undefined} onClick={() => { onNavigate?.(child.href); closeMenu() }} className={`desktop-mega-navigation__item group/mega relative block w-full max-w-[calc(100vw-2.5rem)] overflow-hidden rounded-md px-3.5 py-2.5 whitespace-nowrap transition-colors ${isCurrent(child.href) ? 'bg-[var(--smilux-primary)]' : ''}`}>
+                    <Link href={child.href} aria-current={isCurrentPage(child.href) ? 'page' : undefined} data-current={isCurrentPage(child.href) || undefined} onClick={() => { onNavigate?.(child.href); closeMenu() }} className="desktop-mega-navigation__item group/mega relative block w-full max-w-[calc(100vw-2.5rem)] overflow-hidden rounded-md px-3.5 py-2.5 whitespace-nowrap transition-colors">
                       <span aria-hidden="true" className="desktop-mega-navigation__item-highlight pointer-events-none absolute inset-0 rounded-md opacity-0 transition-opacity duration-200 group-hover/mega:opacity-100" />
                       <span className="relative z-10 flex items-center gap-2">{child.label}</span>
                     </Link>

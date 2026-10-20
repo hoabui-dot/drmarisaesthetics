@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { X, Phone } from "lucide-react";
 import { useCallModal } from "./CallModalContext";
 import { CLINIC_INFO } from "@/src/lib/constants/contact";

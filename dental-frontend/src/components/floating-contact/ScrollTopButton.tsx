@@ -9,7 +9,7 @@
 
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { useState, useEffect } from "react";
 import { Tooltip } from "@/src/components/ui/Tooltip";
 import { ArrowUp } from "lucide-react";

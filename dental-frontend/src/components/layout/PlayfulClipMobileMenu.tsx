@@ -6,8 +6,10 @@ import { ArrowUpRight, CalendarDays, ChevronDown } from 'lucide-react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useReducedMotion } from 'motion/react'
+import { usePathname } from 'next/navigation'
 import type { Navigation, NavItem } from '@/src/types/strapi'
 import { HEADER_CTA } from '@/src/lib/constants/site-navigation'
+import { isCurrentNavigationPage, isNavigationPathWithin } from '@/src/lib/navigation/route-matching'
 
 type PlayfulClipMobileMenuProps = {
   open: boolean
@@ -16,32 +18,35 @@ type PlayfulClipMobileMenuProps = {
   onBook: () => void
 }
 
-function MenuLink({ href, label, open, onClose, child = false, clickable = true, onToggle }: { href: string; label: string; open: boolean; onClose: () => void; child?: boolean; clickable?: boolean; onToggle?: () => void }) {
-  if (!clickable) return <button type="button" onClick={onToggle} className="playful-clip-menu__link"><span>{label}</span></button>
-  return <Link href={href} tabIndex={open ? 0 : -1} onClick={onClose} className={child ? 'playful-clip-menu__child-link' : 'playful-clip-menu__link'}>
+function MenuLink({ href, label, open, onClose, pathname, child = false, clickable = true, onToggle }: { href: string; label: string; open: boolean; onClose: () => void; pathname: string; child?: boolean; clickable?: boolean; onToggle?: () => void }) {
+  const currentPage = isCurrentNavigationPage(pathname, href)
+  if (!clickable) return <button type="button" aria-current={currentPage ? 'page' : undefined} data-current={currentPage || undefined} onClick={onToggle} className="playful-clip-menu__link"><span>{label}</span></button>
+  return <Link href={href} tabIndex={open ? 0 : -1} aria-current={currentPage ? 'page' : undefined} data-current={currentPage || undefined} onClick={onClose} className={child ? 'playful-clip-menu__child-link' : 'playful-clip-menu__link'}>
     <span>{label}</span><ArrowUpRight aria-hidden="true" />
   </Link>
 }
 
-function MenuGroup({ item, open, onClose }: { item: NavItem; open: boolean; onClose: () => void }) {
+function MenuGroup({ item, open, onClose, pathname }: { item: NavItem; open: boolean; onClose: () => void; pathname: string }) {
   const hasChildren = Boolean(item.children?.length)
+  const containsCurrentPage = Boolean(item.children?.some((child) => isNavigationPathWithin(pathname, child.href)))
   const [expanded, setExpanded] = useState(false)
 
   useEffect(() => {
     if (!open) setExpanded(false)
-  }, [open])
+    else if (containsCurrentPage) setExpanded(true)
+  }, [open, containsCurrentPage])
 
-  if (!hasChildren) return <MenuLink href={item.href} label={item.label} open={open} onClose={onClose} />
+  if (!hasChildren) return <MenuLink href={item.href} label={item.label} open={open} onClose={onClose} pathname={pathname} />
 
   return <div className="playful-clip-menu__group">
     <div className="playful-clip-menu__group-heading">
-      <MenuLink href={item.href} label={item.label} open={open} onClose={onClose} clickable={item.isClickable !== false} onToggle={() => setExpanded((value) => !value)} />
+      <MenuLink href={item.href} label={item.label} open={open} onClose={onClose} pathname={pathname} clickable={item.isClickable !== false} onToggle={() => setExpanded((value) => !value)} />
       <button type="button" className="playful-clip-menu__group-toggle" aria-label={`${expanded ? 'Collapse' : 'Expand'} ${item.label} menu`} aria-expanded={expanded} onClick={() => setExpanded((value) => !value)}>
         <ChevronDown aria-hidden="true" />
       </button>
     </div>
     <div className={`playful-clip-menu__children${expanded ? ' is-expanded' : ''}`} aria-hidden={!expanded}>
-      {item.children?.map((child) => <MenuLink key={child.id} href={child.href} label={child.label} open={open && expanded} onClose={onClose} child />)}
+      {item.children?.map((child) => <MenuLink key={child.id} href={child.href} label={child.label} open={open && expanded} onClose={onClose} pathname={pathname} child />)}
     </div>
   </div>
 }
@@ -51,6 +56,7 @@ export function PlayfulClipMobileMenu({ open, navigation, onClose, onBook }: Pla
   const panelRef = useRef<HTMLDivElement>(null)
   const timelineRef = useRef<gsap.core.Timeline | null>(null)
   const reduceMotion = useReducedMotion()
+  const pathname = usePathname()
 
   useGSAP(() => {
     if (!panelRef.current) return
@@ -98,7 +104,7 @@ export function PlayfulClipMobileMenu({ open, navigation, onClose, onBook }: Pla
       <div className="playful-clip-menu__inner">
         <div className="playful-clip-menu__eyebrow" data-clip-menu-eyebrow>DR. MARIS AESTHETICS <span>·</span> PRIVATE SURGICAL CARE</div>
         <div className="playful-clip-menu__list">
-          {navigation.navigation.map((item) => <div key={item.id} data-clip-menu-item><MenuGroup item={item} open={open} onClose={onClose} /></div>)}
+          {navigation.navigation.map((item) => <div key={item.id} data-clip-menu-item><MenuGroup item={item} open={open} onClose={onClose} pathname={pathname} /></div>)}
         </div>
         <div ref={footer => { if (footer) footer.dataset.clipMenuFooter = 'true' }} data-clip-menu-footer className="playful-clip-menu__footer">
           <button type="button" tabIndex={open ? 0 : -1} onClick={() => { onBook(); onClose() }} className="booking-inline-cta playful-clip-menu__cta"><CalendarDays aria-hidden="true" />{HEADER_CTA.label}</button>

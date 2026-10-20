@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 import { useBookingModal } from '@/src/components/booking-modal/BookingModalContext';
 import { useMobileAnimation } from '@/src/hooks/useMobileAnimation';

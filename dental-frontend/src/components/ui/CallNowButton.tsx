@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 import { Phone } from 'lucide-react'
 import { useCallModal } from '@/src/components/call-modal/CallModalContext'
 import { cn } from '@/src/lib/utils'

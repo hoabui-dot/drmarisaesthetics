@@ -33,15 +33,18 @@ export function useHomepageMotion(root: RefObject<HTMLElement | null>) {
     const heroProofItems = scope.querySelectorAll('[data-hero-proof] span')
 
     const intro = gsap.timeline({ defaults: { ease: 'power3.out' } })
-    if (heroDivider) intro.from(heroDivider, { scaleX: 0, transformOrigin: 'left center', duration: 0.3 }, 0)
-    if (heroKickerText) intro.from(heroKickerText, { autoAlpha: 0, y: 10, duration: 0.4 }, 0.12)
-    if (heroTitleLines.length) intro.from(heroTitleLines, { yPercent: 100, autoAlpha: 0, duration: 0.65, stagger: 0.08 }, 0.38)
-    if (heroImage) intro.fromTo(heroImage, { clipPath: 'inset(0 100% 0 0)', scale: 1.08 }, { clipPath: 'inset(0 0% 0 0)', scale: 1, duration: 0.9, ease: 'power3.inOut' }, 0.35)
-    if (heroCopy.length) intro.from(heroCopy, { y: 20, autoAlpha: 0, duration: 0.42, stagger: 0.1 }, 0.92)
-    if (heroActionItems.length) intro.from(heroActionItems, { y: 14, autoAlpha: 0, duration: 0.35, stagger: 0.08 }, 1.2)
-    if (heroActions && !heroActionItems.length) intro.from(heroActions, { y: 14, autoAlpha: 0, duration: 0.35 }, 1.2)
-    if (heroProofItems.length) intro.from(heroProofItems, { y: 10, autoAlpha: 0, duration: 0.3, stagger: 0.06 }, 1.32)
-    if (heroProof && !heroProofItems.length) intro.from(heroProof, { y: 10, autoAlpha: 0, duration: 0.3 }, 1.32)
+    // Keep the editorial reveal, but finish the above-the-fold sequence sooner.
+    // The former staggered timeline delayed the CTA and proof row until ~1.8s,
+    // which made the page look incomplete during Lighthouse's Speed Index capture.
+    if (heroDivider) intro.from(heroDivider, { scaleX: 0, transformOrigin: 'left center', duration: 0.18 }, 0)
+    if (heroKickerText) intro.from(heroKickerText, { autoAlpha: 0, y: 8, duration: 0.24 }, 0.02)
+    if (heroTitleLines.length) intro.from(heroTitleLines, { yPercent: 100, autoAlpha: 0, duration: 0.42, stagger: 0.06 }, 0.08)
+    if (heroImage) intro.fromTo(heroImage, { clipPath: 'inset(0 100% 0 0)', scale: 1.05 }, { clipPath: 'inset(0 0% 0 0)', scale: 1, duration: 0.62, ease: 'power3.inOut' }, 0.08)
+    if (heroCopy.length) intro.from(heroCopy, { y: 12, autoAlpha: 0, duration: 0.28, stagger: 0.045 }, 0.35)
+    if (heroActionItems.length) intro.from(heroActionItems, { y: 10, autoAlpha: 0, duration: 0.24, stagger: 0.04 }, 0.57)
+    if (heroActions && !heroActionItems.length) intro.from(heroActions, { y: 10, autoAlpha: 0, duration: 0.24 }, 0.57)
+    if (heroProofItems.length) intro.from(heroProofItems, { y: 8, autoAlpha: 0, duration: 0.2, stagger: 0.03 }, 0.72)
+    if (heroProof && !heroProofItems.length) intro.from(heroProof, { y: 8, autoAlpha: 0, duration: 0.2 }, 0.72)
 
     if (hero) {
       gsap.to(hero.querySelector('[data-hero-image-media]'), {
@@ -241,21 +244,34 @@ export function useHomepageMotion(root: RefObject<HTMLElement | null>) {
     })
 
     let layoutReadyCancelled = false
-    const imagesReady = Array.from(scope.querySelectorAll('img')).map((image) => image.complete
-      ? Promise.resolve()
-      : new Promise<void>((resolve) => {
-        image.addEventListener('load', () => resolve(), { once: true })
-        image.addEventListener('error', () => resolve(), { once: true })
-      }))
-    Promise.all([document.fonts?.ready ?? Promise.resolve(), ...imagesReady]).then(() => {
-      if (!layoutReadyCancelled) {
-        ScrollTrigger.sort()
-        ScrollTrigger.refresh()
+    let idleRefreshId: number | undefined
+    let fallbackRefreshId: number | undefined
+    const refreshWhenIdle = () => {
+      if (layoutReadyCancelled) return
+      const refresh = () => {
+        requestAnimationFrame(() => {
+          if (layoutReadyCancelled) return
+          ScrollTrigger.sort()
+          ScrollTrigger.refresh()
+        })
       }
-    })
+
+      // ScrollTrigger already performs its normal load/resize refresh. Avoid
+      // waiting on every lazy image and attaching listeners to the full page;
+      // once web fonts settle, do one additional geometry pass during idle.
+      const requestIdle = window.requestIdleCallback?.bind(window)
+      if (requestIdle) {
+        idleRefreshId = requestIdle(refresh, { timeout: 1200 })
+      } else {
+        fallbackRefreshId = window.setTimeout(refresh, 250)
+      }
+    }
+    void (document.fonts?.ready ?? Promise.resolve()).then(refreshWhenIdle)
 
     return () => {
       layoutReadyCancelled = true
+      if (idleRefreshId !== undefined) window.cancelIdleCallback?.(idleRefreshId)
+      if (fallbackRefreshId !== undefined) window.clearTimeout(fallbackRefreshId)
       mm.revert()
     }
   }, { scope: root, dependencies: [] })

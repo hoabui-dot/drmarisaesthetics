@@ -7,7 +7,7 @@
 
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 
 interface FlyingStarsProps {
   isVisible: boolean;

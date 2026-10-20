@@ -23,13 +23,17 @@ export async function GET(request: NextRequest, context: RouteContext) {
 
   const upstreamPath = path.map(encodeURIComponent).join("/");
   const upstreamUrl = `${STRAPI_URL}/${upstreamPath}`;
+  const isUploadedMedia = path[0] === "uploads";
 
   try {
     const upstream = await fetch(upstreamUrl, {
       headers: {
         accept: request.headers.get("accept") || "image/*",
       },
-      next: { revalidate: 3600 },
+      // Strapi upload URLs are generated per uploaded asset (normally with a
+      // unique suffix), so they can be cached for repeat visits. Keep other
+      // proxied paths on the shorter policy in case they are mutable.
+      next: { revalidate: isUploadedMedia ? 31_536_000 : 3600 },
     });
 
     if (!upstream.ok || !upstream.body) {
@@ -41,7 +45,12 @@ export async function GET(request: NextRequest, context: RouteContext) {
     const contentLength = upstream.headers.get("content-length");
     if (contentType) headers.set("content-type", contentType);
     if (contentLength) headers.set("content-length", contentLength);
-    headers.set("cache-control", "public, max-age=3600, stale-while-revalidate=86400");
+    headers.set(
+      "cache-control",
+      isUploadedMedia
+        ? "public, max-age=31536000, s-maxage=31536000, immutable"
+        : "public, max-age=3600, stale-while-revalidate=86400",
+    );
 
     return new NextResponse(upstream.body, { status: 200, headers });
   } catch (error) {

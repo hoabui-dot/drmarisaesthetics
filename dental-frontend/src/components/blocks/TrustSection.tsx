@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
-import { motion, AnimatePresence, useInView } from 'framer-motion'
+import { motion, AnimatePresence, useInView } from 'motion/react'
 import { X } from 'lucide-react'
 import type { HomepageTrustBlock } from '@/src/types/strapi'
 import { AnimatedSectionHeader } from '@/src/components/ui/AnimatedSectionHeader'

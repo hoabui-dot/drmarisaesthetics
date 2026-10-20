@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useSpring, useMotionValue } from 'framer-motion'
+import { useSpring, useMotionValue } from 'motion/react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import type { HomepageCombinedTestimonialResultBlock } from '@/src/types/strapi'
 import { Button } from '@/src/components/ui/button'

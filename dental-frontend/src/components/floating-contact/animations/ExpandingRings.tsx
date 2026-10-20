@@ -7,7 +7,7 @@
 
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 interface ExpandingRingsProps {
   color: "blue" | "green" | "gradient" | "yellow";

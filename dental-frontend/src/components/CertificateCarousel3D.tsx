@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { motion, AnimatePresence, PanInfo } from 'framer-motion'
+import { motion, AnimatePresence, PanInfo } from 'motion/react'
 import Image from 'next/image'
 import { X, ZoomIn } from 'lucide-react'
 

@@ -10,7 +10,7 @@
 
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { useState } from "react";
 import type { ContactMethod } from "@/src/types/strapi";
 import { Tooltip } from "@/src/components/ui/Tooltip";
