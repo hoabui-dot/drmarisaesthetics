@@ -164,7 +164,7 @@ export function StitchHomepage({ data, results }: { data?: HomepageEditorialData
         quote: typeof story.quote === 'string' ? story.quote : undefined,
         source: typeof story.source === 'string' ? story.source : undefined,
         description: typeof story.description === 'string' ? story.description : undefined,
-        thumbnailUrl: typeof story.thumbnail_url === 'string' ? story.thumbnail_url : undefined,
+        thumbnailUrl: typeof story.thumbnail_url === 'string' ? getMediaUrl(story.thumbnail_url) || undefined : undefined,
       }]
     })
     : []
@@ -215,12 +215,12 @@ export function StitchHomepage({ data, results }: { data?: HomepageEditorialData
     <section ref={homepageHeroRef} className="stitch-home-hero" data-motion-section="hero"><div className="stitch-home-hero__inner">
       <div className="stitch-home-hero__mobile-heading" aria-hidden="true">
         <span className="stitch-kicker"><i /> <span>{typeof hero.eyebrow === 'string' ? hero.eyebrow : 'HOSPITAL-BASED COSMETIC SURGERY · HO CHI MINH CITY'}</span></span>
-        <h2><span className="stitch-hero-line"><span>{heroTitle}</span></span></h2>
+        <h1><span className="stitch-hero-line"><span>{heroTitle}</span></span></h1>
       </div>
       <div className="stitch-home-hero__copy" data-hero-copy-wrap>
         <div className="stitch-home-hero__desktop-heading">
           <span className="stitch-kicker" data-hero-kicker><i data-hero-divider /> <span data-hero-kicker-text>{typeof hero.eyebrow === 'string' ? hero.eyebrow : 'HOSPITAL-BASED COSMETIC SURGERY · HO CHI MINH CITY'}</span></span>
-          <h2><span className="stitch-hero-line"><span data-hero-title-line>{heroTitle}</span></span></h2>
+          <h1><span className="stitch-hero-line"><span data-hero-title-line>{heroTitle}</span></span></h1>
         </div>
         <p className="stitch-editorial-lead" data-hero-copy>{typeof hero.editorial_lead === 'string' ? hero.editorial_lead : 'Cosmetic surgery is a medical decision before it is an aesthetic one.'}</p>
         <p data-hero-copy>{heroDescription || 'At DR. MARIS AESTHETICS, your case is personally assessed and managed by Dr. Maris, with surgery performed at City International Hospital (CIH) in Ho Chi Minh City.'}</p>
@@ -238,7 +238,7 @@ export function StitchHomepage({ data, results }: { data?: HomepageEditorialData
       quote={typeof video.quote === 'string' ? video.quote : ''}
       customerName={typeof video.customer_name === 'string' ? video.customer_name : undefined}
       customerDescription={typeof video.customer_description === 'string' ? video.customer_description : undefined}
-      thumbnailUrl={typeof video.thumbnail_url === 'string' ? video.thumbnail_url : undefined}
+      thumbnailUrl={typeof video.thumbnail_url === 'string' ? getMediaUrl(video.thumbnail_url) || undefined : undefined}
       stories={patientStories}
     />
 
@@ -343,7 +343,7 @@ export function StitchAboutUs({ heroImage, content, hospitalLocations = [] }: { 
         <div>
           <SiteBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'About Us' }]} />
           <span className="stitch-kicker" data-team-hero-eyebrow><i data-team-hero-divider />{heroEyebrow}</span>
-          <h2><span className="stitch-hero-line"><span data-team-hero-title-line>{heroTitle}</span></span></h2>
+          <h1><span className="stitch-hero-line"><span data-team-hero-title-line>{heroTitle}</span></span></h1>
           <div className="stitch-about-image stitch-about-image--mobile" aria-hidden="true"><StitchImage src={heroImage || images.heroDoctor} alt="" /></div>
           <blockquote data-team-hero-copy>“{heroLead}”</blockquote>
           <div className="our-team-profile-hero__body" data-team-hero-copy><p>{heroDescription}</p><p>{heroSecondaryDescription}</p></div>

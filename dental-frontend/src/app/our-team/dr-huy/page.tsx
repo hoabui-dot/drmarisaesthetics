@@ -10,23 +10,23 @@ const PAGE_TITLE = 'Dr. Huy | Our Team | Dr. Maris Aesthetics'
 const PAGE_DESCRIPTION = 'Meet Dr. Tran Minh Huy and learn about his experience in aesthetic surgery and patient-centered surgical care.'
 
 export async function generateMetadata(): Promise<Metadata> {
-  return buildSeoMetadata({ path: PROFILE_PATH, title: PAGE_TITLE, description: PAGE_DESCRIPTION })
+  const page = await getOurTeam(false)
+  return buildSeoMetadata({ path: PROFILE_PATH, pageSeo: page?.seo.pageSeo, title: page?.seo.title || PAGE_TITLE, description: page?.seo.description || PAGE_DESCRIPTION })
 }
 
 export default async function DrHuyProfileRoute() {
-  const [cmsData, structuredData] = await Promise.all([
-    getOurTeam(false),
-    resolveStructuredData({
-      pageType: 'about',
-      path: PROFILE_PATH,
-      title: PAGE_TITLE,
-      description: PAGE_DESCRIPTION,
-      breadcrumbs: [
-        { name: 'Home', path: '/' },
-        { name: 'Dr. Huy', path: PROFILE_PATH },
-      ],
-    }),
-  ])
+  const cmsData = await getOurTeam(false)
+  const structuredData = await resolveStructuredData({
+    pageType: 'about',
+    path: PROFILE_PATH,
+    title: cmsData?.seo.title || PAGE_TITLE,
+    description: cmsData?.seo.description || PAGE_DESCRIPTION,
+    pageSeo: cmsData?.seo.pageSeo,
+    breadcrumbs: [
+      { name: 'Home', path: '/' },
+      { name: 'Dr. Huy', path: PROFILE_PATH },
+    ],
+  })
 
   return <><StructuredDataScript data={structuredData} /><OurTeamPage data={cmsData || ourTeamMockData} drHuyImageTreatment /></>
 }

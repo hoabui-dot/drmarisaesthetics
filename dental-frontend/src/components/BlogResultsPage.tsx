@@ -77,7 +77,7 @@ export function BlogResultsPage({ posts: initialPosts, total: initialTotal, cate
       <section className="results-page__hero" data-results-entrance>
         <div className="stitch-container">
           <SiteBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'News' }]} />
-          <h2><span className="results-page__title-mask"><span>Patient Planning Journal</span></span></h2>
+          <h1><span className="results-page__title-mask"><span>Patient Planning Journal</span></span></h1>
           <p className="results-page__editorial-lead">Clear, clinically grounded guidance for informed decisions and confident recovery.</p>
           <p className="results-page__supporting-copy">Explore surgeon-led perspectives, treatment planning notes and recovery guidance from the Dr. Maris Aesthetics team.</p>
           <div className="results-filters" role="group" aria-label="Filter articles">

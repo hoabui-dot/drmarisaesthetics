@@ -69,7 +69,7 @@ export function ServicesPage({ services: initialServices, total: initialTotal, c
         <div className="stitch-container">
           <SiteBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Services' }]} />
           <span className="results-page__eyebrow">SURGEON-LED SERVICES · DR. MARIS AESTHETICS</span>
-          <h2><span className="results-page__title-mask"><span>Plastic Surgery Services</span></span></h2>
+          <h1><span className="results-page__title-mask"><span>Plastic Surgery Services</span></span></h1>
           <p className="results-page__editorial-lead">Surgeon-led procedures planned around anatomy, safety and long-term recovery.</p>
           <p className="results-page__supporting-copy">Explore the procedures Dr. Maris performs with direct clinical involvement from assessment through follow-up.</p>
           <div className="results-filters" role="group" aria-label="Filter services">

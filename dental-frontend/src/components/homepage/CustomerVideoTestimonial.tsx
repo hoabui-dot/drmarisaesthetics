@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Play } from 'lucide-react'
 import { getYoutubeEmbedUrl, getYoutubeVideoAspectRatio, getYoutubeVideoId } from '@/src/lib/youtube'
+import { getMediaUrl } from '@/src/lib/api/media'
 
 export interface CustomerVideoTestimonialProps {
   youtubeUrl: string
@@ -29,14 +30,8 @@ export interface PatientVideoStory {
 function resolveThumbnailUrl(value: string | undefined, videoId: string): string {
   const candidate = value?.trim()
   if (candidate) {
-    if (candidate.startsWith('/uploads/')) return `/api/strapi-media${candidate}`
-    if (candidate.startsWith('/api/strapi-media/') || (candidate.startsWith('/') && !candidate.startsWith('//'))) return candidate
-    try {
-      const url = new URL(candidate)
-      if (url.protocol === 'https:') return url.toString()
-    } catch {
-      // Invalid custom thumbnail URLs fall back to the YouTube preview.
-    }
+    const normalized = getMediaUrl(candidate)
+    if (normalized.startsWith('/') || /^https:\/\//i.test(normalized)) return normalized
   }
   return `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
 }

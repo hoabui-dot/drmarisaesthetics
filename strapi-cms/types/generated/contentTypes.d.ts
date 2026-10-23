@@ -709,6 +709,7 @@ export interface ApiDeepPlaneFaceliftSpecialistDeepPlaneFaceliftSpecialist
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    seo: Schema.Attribute.Component<'seo.page-seo', false>;
     sections: Schema.Attribute.DynamicZone<
       [
         'deep-plane.hero',

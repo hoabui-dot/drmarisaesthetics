@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { useRef } from 'react'
 import { useInternationalPatientJourneyMotion } from '@/src/hooks/useInternationalPatientJourneyMotion'
+import { getMediaUrl } from '@/src/lib/api/media'
 
 const doctorImage = 'https://lh3.googleusercontent.com/aida-public/AB6AXuCTeb4K7icJOejOCNmhoM1L_97JimcI6Qtyot9YzMr51gD3_D096TT551datl7elzq4TGEQz-bEMf8KBAUaMGPSuRx-gXA7LQDE6AxQJeik8HAprXx5WLc0J8tMTKQRuN5tTfMsno6xTgx-ocAouFxiXWQRiCATFFvjwsLvpxprL1m7V9S-mUEXDc3L_aWSsmNthvE245NzLwUH0W-RYhnjXBO7LUB-OAqjk5SNLSZFeUzTH3V751D0'
 /* const defaultSteps = [
@@ -26,15 +27,7 @@ const defaultSteps = [
 type JourneyStep = { title: string; description: string; image?: unknown; image_url?: string; image_alt?: string; imageAlt?: string }
 
 function resolveJourneyImage(value: unknown, fallback: string): string {
-  const resolve = (url: string) => url.startsWith('/') ? `/api/strapi-media${url}` : url
-  if (typeof value === 'string' && value) return resolve(value)
-  if (value && typeof value === 'object') {
-    const record = value as Record<string, unknown>
-    const data = record.data && typeof record.data === 'object' ? record.data as Record<string, unknown> : record
-    const attributes = data.attributes && typeof data.attributes === 'object' ? data.attributes as Record<string, unknown> : data
-    if (typeof attributes.url === 'string') return resolve(attributes.url)
-  }
-  return fallback
+  return getMediaUrl(value) || fallback
 }
 
 type InternationalPatientJourneySectionProps = {

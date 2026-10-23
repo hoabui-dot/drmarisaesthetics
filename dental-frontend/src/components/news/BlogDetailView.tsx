@@ -9,14 +9,14 @@ import { getLatestBlogDetails } from '@/src/lib/api/blog-detail'
 import { blogArticlePath } from '@/src/lib/news/routes'
 import { SiteBreadcrumbs } from '@/src/components/layout/SiteBreadcrumbs'
 import type { WebsiteCategory } from '@/src/types/strapi'
+import { getMediaUrl } from '@/src/lib/api/media'
 
 type BetterBlockChild = { text?: string; children?: BetterBlockChild[] }
 type BetterBlock = { type?: string; level?: number; children?: BetterBlockChild[] }
 
 const mediaUrl = (value?: any) => {
-  const media = value?.data?.attributes || value?.data || value?.attributes || value
-  if (!media || typeof media !== 'object' || typeof media.url !== 'string') return null
-  return media.url.startsWith('/uploads/') ? `/api/strapi-media${media.url}` : media.url
+  const url = getMediaUrl(value)
+  return url || null
 }
 const textFromNodes = (nodes?: BetterBlockChild[]): string => (nodes || []).map((node) => node.text || textFromNodes(node.children)).join('').trim()
 const sectionId = (slug: string, index: number) => `blog-${slug.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'article'}-section-${index + 1}`

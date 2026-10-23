@@ -51,7 +51,7 @@ export function ContactHeroSection({ data }: { data: ContactHeroData }) {
 
         <div className="contact-hero-top">
           <div className="contact-hero-intro">
-            <h2 id="contact-hero-heading">{data.title || 'Contact DR. MARIS AESTHETICS'}</h2>
+            <h1 id="contact-hero-heading">{data.title || 'Contact DR. MARIS AESTHETICS'}</h1>
             <p className="contact-hero-subtitle">{data.subtitle || 'Consultation · Booking · International Patient Support'}</p>
             <p className="contact-hero-description">{data.description || 'Our surgical team is ready to listen and guide you through assessment, planning and postoperative care.'}</p>
             <div className="editorial-hero-actions contact-hero-actions">

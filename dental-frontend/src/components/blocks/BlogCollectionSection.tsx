@@ -12,6 +12,7 @@ import {
 import { useMobileAnimation } from '@/src/hooks/useMobileAnimation';
 import { PerformanceAnimation } from '@/src/components/ui/PerformanceAnimation';
 import { blogArticlePath } from '@/src/lib/news/routes';
+import { getMediaUrl } from '@/src/lib/api/media';
 
 interface BlogPost {
   id: number;
@@ -49,9 +50,6 @@ export default function BlogCollectionSection({
   posts,
   isActive = true,
 }: BlogCollectionSectionProps) {
-  // Use the NEXT_PUBLIC_STRAPI_URL baked at build time — always available,
-  // no async fetch needed unlike the old useEnv() pattern.
-  const strapiUrl = (process.env.NEXT_PUBLIC_STRAPI_URL ?? '').replace(/\/$/, '');
   const { shouldSimplify } = useMobileAnimation();
 
   if (!isActive || !posts || posts.length === 0) {
@@ -113,13 +111,7 @@ export default function BlogCollectionSection({
                         {/* Image Container */}
                         <div className="relative h-56 bg-gradient-to-br from-primary-50 to-blue-50 overflow-hidden">
                           {(() => {
-                            const resolvedSrc = typeof imageUrl === 'string' && imageUrl
-                              ? imageUrl.startsWith('http')
-                                ? imageUrl
-                                : strapiUrl
-                                  ? `${strapiUrl}${imageUrl}`
-                                  : null
-                              : null;
+                            const resolvedSrc = typeof imageUrl === 'string' && imageUrl ? getMediaUrl(imageUrl) : null;
 
                             if (resolvedSrc) {
                               return (

@@ -2,18 +2,13 @@
 
 import { useLayoutEffect, useRef } from 'react'
 import { BlocksRenderer } from '@qkix/better-blocks-react-renderer'
+import { normalizeStrapiMediaUrl } from '@/src/lib/api/media'
 
 type BetterBlocksValue = Record<string, unknown>
 
 const normalizeUploadUrl = (value: unknown) => {
   if (typeof value !== 'string' || !value) return value
-  if (value.startsWith('/uploads/')) return `/api/strapi-media${value}`
-  try {
-    const parsed = new URL(value)
-    return parsed.pathname.startsWith('/uploads/') ? `/api/strapi-media${parsed.pathname}` : value
-  } catch {
-    return value
-  }
+  return normalizeStrapiMediaUrl(value)
 }
 
 const normalizeImageMedia = (media: BetterBlocksValue) => {

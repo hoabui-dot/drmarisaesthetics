@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { ArrowRight } from 'lucide-react'
 import { NavigationLink } from '@/src/components/ui/NavigationLink'
+import { getMediaUrl } from '@/src/lib/api/media'
 
 interface Article {
   id: number;
@@ -21,8 +22,7 @@ interface ArticlesSectionData {
 
 const resolveImage = (url?: string | null) => {
   if (!url) return null
-  if (url.startsWith('http')) return url
-  return `/api/strapi-media${url}`
+  return getMediaUrl(url)
 }
 
 function ArticleImage({ article, featured = false }: { article: Article; featured?: boolean }) {

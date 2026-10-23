@@ -20,20 +20,12 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import remarkBreaks from 'remark-breaks';
+import { getMediaUrl } from '@/src/lib/api/media';
 
 interface MarkdownContentProps {
   content: string;
   className?: string;
 }
-
-const strapiMediaUrl = (src: string) => {
-  if (src.startsWith('/uploads/')) return `/api/strapi-media${src}`;
-  try {
-    const parsed = new URL(src);
-    if (parsed.pathname.startsWith('/uploads/')) return `/api/strapi-media${parsed.pathname}`;
-  } catch { /* Keep non-URL image sources unchanged. */ }
-  return src;
-};
 
 export function MarkdownContent({ content, className = '' }: MarkdownContentProps) {
   const headingId = (children: React.ReactNode) => React.Children.toArray(children).map((child) => typeof child === 'string' ? child : '').join(' ').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -109,7 +101,7 @@ export function MarkdownContent({ content, className = '' }: MarkdownContentProp
           ),
           img: ({ src, alt }) => (
             <img
-              src={typeof src === 'string' ? strapiMediaUrl(src) : undefined}
+              src={typeof src === 'string' ? getMediaUrl(src) : undefined}
               alt={alt || ''}
               loading="lazy"
               className="my-6 h-auto w-full rounded-2xl object-cover"

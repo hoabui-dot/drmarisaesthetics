@@ -33,12 +33,14 @@ export default factories.createCoreController(
       };
 
       const sanitizedQuery = await this.sanitizeQuery(ctx);
+      const seoOnly = ctx.query.seoOnly === "true";
+      delete (sanitizedQuery as any).seoOnly;
 
       const entity = await strapi
         .documents("api::about-page.about-page" as any)
         .findFirst({
           ...sanitizedQuery,
-          populate,
+          populate: seoOnly ? { seo: { populate: ["meta_image"] } } : populate,
           status: ctx.query.status === "draft" ? "draft" : "published",
         });
 

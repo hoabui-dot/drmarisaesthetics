@@ -43,6 +43,7 @@ import { ourTeamMockData, type OurTeamData } from "@/src/data/our-team";
 import { resultsMockData, type ResultCategory, type ResultsData } from "@/src/data/results";
 import type { WebsiteSetting } from "@/src/types/strapi";
 import type { TreatmentPageData, TreatmentPageItem, TreatmentPageSection } from "@/src/types/treatments-page";
+import type { PageSeoInput } from "@/src/lib/seo/seo-manager";
 
 /**
  * Fetches the editorial homepage section components. This is deliberately
@@ -119,6 +120,7 @@ export async function getDeepPlaneFaceliftSpecialist(isDraftMode = false): Promi
         // Dynamic-zone components need explicit `on` fragments. The broad
         // sections populate only reaches the section's direct fields; it does
         // not reliably populate media nested inside repeatable components.
+        "populate[seo][populate][meta_image]": "true",
         "populate[sections][on][deep-plane.hero][populate]": "*",
         "populate[sections][on][deep-plane.journey][populate]": "*",
         "populate[sections][on][deep-plane.recovery][populate][stages][populate][items][populate]": "*",
@@ -173,6 +175,7 @@ export async function getDeepPlaneFaceliftSpecialist(isDraftMode = false): Promi
     const credentials = sectionValues("credentials");
     const faq = sectionValues("faq");
     const consultation = sectionValues("consultation");
+    const seo = value.seo || {};
     const sections = rawSections
       .map((section: any) => {
         const key = componentKeys[section.__component];
@@ -223,8 +226,21 @@ export async function getDeepPlaneFaceliftSpecialist(isDraftMode = false): Promi
     return {
       sections: sections.length ? sections : DEEP_PLANE_FACELIFT_SPECIALIST.sections,
       seo: {
-        title: value.seo_title || DEEP_PLANE_FACELIFT_SPECIALIST.seo.title,
-        description: value.seo_description || DEEP_PLANE_FACELIFT_SPECIALIST.seo.description,
+        title: seo.meta_title || value.seo_title || DEEP_PLANE_FACELIFT_SPECIALIST.seo.title,
+        description: seo.meta_description || value.seo_description || DEEP_PLANE_FACELIFT_SPECIALIST.seo.description,
+        pageSeo: {
+          meta_title: seo.meta_title || value.seo_title || undefined,
+          meta_description: seo.meta_description || value.seo_description || undefined,
+          meta_image: seo.meta_image ? getMediaUrl(seo.meta_image) : undefined,
+          canonical_url: seo.canonical_url || undefined,
+          no_index: typeof seo.no_index === "boolean" ? seo.no_index : undefined,
+          include_in_sitemap: typeof seo.include_in_sitemap === "boolean" ? seo.include_in_sitemap : undefined,
+          no_follow: typeof seo.no_follow === "boolean" ? seo.no_follow : undefined,
+          open_graph_title: seo.open_graph_title || undefined,
+          open_graph_description: seo.open_graph_description || undefined,
+          structured_data_enabled: typeof seo.structured_data_enabled === "boolean" ? seo.structured_data_enabled : undefined,
+          structured_data_json: seo.structured_data_json ?? undefined,
+        } satisfies PageSeoInput,
       },
       hero: {
         ...DEEP_PLANE_FACELIFT_SPECIALIST.hero,
@@ -345,6 +361,7 @@ export async function getServiceNavigationOptions(): Promise<Array<{ value: stri
 
 function mapOurTeamData(value: any): OurTeamData | null {
     if (!value) return null;
+    const seo = value.seo || {};
     const sections = Array.isArray(value.sections) ? value.sections : [];
     const hero = sections.find((section: any) => section.__component === "our-team.hero-section");
     const revision = sections.find((section: any) => section.__component === "our-team.revision-section");
@@ -365,6 +382,23 @@ function mapOurTeamData(value: any): OurTeamData | null {
     })).filter((step: any) => step.title);
     return {
       ...ourTeamMockData,
+      seo: {
+        title: seo.meta_title || ourTeamMockData.seo.title,
+        description: seo.meta_description || ourTeamMockData.seo.description,
+        pageSeo: {
+          meta_title: seo.meta_title || undefined,
+          meta_description: seo.meta_description || undefined,
+          meta_image: seo.meta_image ? getMediaUrl(seo.meta_image) : undefined,
+          canonical_url: seo.canonical_url || undefined,
+          no_index: typeof seo.no_index === "boolean" ? seo.no_index : undefined,
+          include_in_sitemap: typeof seo.include_in_sitemap === "boolean" ? seo.include_in_sitemap : undefined,
+          no_follow: typeof seo.no_follow === "boolean" ? seo.no_follow : undefined,
+          open_graph_title: seo.open_graph_title || undefined,
+          open_graph_description: seo.open_graph_description || undefined,
+          structured_data_enabled: typeof seo.structured_data_enabled === "boolean" ? seo.structured_data_enabled : undefined,
+          structured_data_json: seo.structured_data_json ?? undefined,
+        },
+      },
       authority: authority ? {
         certificateImage: image(authority.certificate_image),
         certificateImageAlt: authority.certificate_image_alt || authority.certificate_image?.alternativeText || "Medical certificate of Dr. Tran Minh Huy",
@@ -427,7 +461,7 @@ function mapOurTeamData(value: any): OurTeamData | null {
 export async function getOurTeam(isDraftMode: boolean = false): Promise<OurTeamData | null> {
   try {
     const response = await apiClient<any>("/api/our-team", {
-      params: { populate: "*" },
+      params: { "populate[seo][populate][meta_image]": "true", "populate[sections]": "*" },
       isDraftMode,
       tags: ["our-team"],
     });
@@ -917,7 +951,7 @@ export async function getHomepage(isDraftMode: boolean = false): Promise<Homepag
             documentId: post.documentId,
             ...postData,
             categoryRouteName: routeNameByCategoryId.get(postData.blog_category_id),
-            imageUrl: mediaData?.url || null,
+            imageUrl: mediaData?.url ? getMediaUrl(mediaData.url) : null,
             imageAlt: mediaData?.alternativeText || postData.title || "",
           };
         });
@@ -1828,6 +1862,21 @@ export async function getAboutPage(isDraftMode: boolean = false): Promise<any> {
       seo: rawData.seo,
     };
   } catch (error) {
+    return null;
+  }
+}
+
+/** Fetch only About page SEO fields for Next.js metadata generation. */
+export async function getAboutPageSeo(isDraftMode: boolean = false): Promise<import("@/src/types/strapi").PageSeo | null> {
+  try {
+    const response = await apiClient<any>("/api/about-page", {
+      params: { seoOnly: "true" },
+      isDraftMode,
+      tags: ["about-page", "about-page-seo"],
+      cache: "no-store",
+    });
+    return response?.data?.seo || null;
+  } catch {
     return null;
   }
 }

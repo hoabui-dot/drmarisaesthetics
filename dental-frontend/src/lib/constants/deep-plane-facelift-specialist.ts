@@ -2,6 +2,9 @@ export const DEEP_PLANE_FACELIFT_SPECIALIST = {
   seo: {
     title: 'Dr. Alexander Maris, MD, FACS | Deep Plane Facelift Specialist',
     description: 'A surgeon-led deep-plane facelift approach focused on natural facial architecture, structural support and measured recovery.',
+    pageSeo: {
+      structured_data_enabled: true,
+    },
   },
   sections: [
     { key: 'hero', id: 'hero' },
@@ -111,4 +114,10 @@ export const DEEP_PLANE_FACELIFT_SPECIALIST = {
 
 export type DeepPlaneSectionKey = 'hero' | 'journey' | 'recovery' | 'certifications' | 'safety' | 'credentials' | 'faq' | 'consultation'
 export type DeepPlaneSection = { key: DeepPlaneSectionKey; id: string }
-export type DeepPlaneFaceliftSpecialistData = typeof DEEP_PLANE_FACELIFT_SPECIALIST
+export type DeepPlaneFaceliftSpecialistData = Omit<typeof DEEP_PLANE_FACELIFT_SPECIALIST, 'seo'> & {
+  seo: {
+    title: string
+    description: string
+    pageSeo: import('@/src/lib/seo/seo-manager').PageSeoInput
+  }
+}

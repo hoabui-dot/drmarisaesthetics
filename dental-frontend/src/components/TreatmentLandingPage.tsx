@@ -164,7 +164,7 @@ export function TreatmentLandingPage({ data }: { data?: TreatmentPageData }) {
       <div className="stitch-treatment-hero__copy stitch-treatment-landing__hero-copy">
         <SiteBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Treatments' }]} />
         <span className="stitch-kicker stitch-treatment-landing__eyebrow"><i aria-hidden="true" /> <span>{data?.hero.eyebrow || 'DR. MARIS AESTHETICS · FACIAL PROCEDURES'}</span></span>
-        <h2>{data?.hero.title || 'Rhinoplasty Surgery in Vietnam'}</h2>
+        <h1>{data?.hero.title || 'Rhinoplasty Surgery in Vietnam'}</h1>
         <p>{data?.hero.description || 'At DR. MARIS AESTHETICS, we redefine nasal harmony through a meticulous structural approach that honors your unique facial architecture. Our surgical philosophy combines clinical precision with natural, balanced results that enhance your features without looking operated on, ensuring both aesthetic beauty and functional integrity.'}</p>
         <div className="stitch-treatment-review stitch-treatment-landing__review"><CheckCircle2 size={18} aria-hidden="true" />{data?.hero.reviewLabel || 'Reviewed by Dr. Maris · Ho Chi Minh City, Vietnam'}</div>
         <ConsultationButton />

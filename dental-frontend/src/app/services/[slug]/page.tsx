@@ -9,6 +9,7 @@ import { ServiceFaqSection, type ServiceFaqData } from '@/src/components/service
 import { getWebsiteSetting } from '@/src/lib/api/queries'
 import { SiteBreadcrumbs } from '@/src/components/layout/SiteBreadcrumbs'
 import { resolveCanonicalUrl } from '@/src/lib/seo/seo-manager'
+import { getMediaUrl } from '@/src/lib/api/media'
 
 type MediaValue = { url?: string; attributes?: { url?: string }; data?: { attributes?: { url?: string }; url?: string } }
 type BetterBlockChild = { text?: string; children?: BetterBlockChild[] }
@@ -16,9 +17,7 @@ type BetterBlock = { type?: string; level?: number; children?: BetterBlockChild[
 type Service = { id: number; title: string; slug: string; service_category_id?: string | null; contentBetterBlocks?: BetterBlock[]; metaDescription?: string; coverImage?: MediaValue; faq?: ServiceFaqData | null; publishedAt?: string; createdAt?: string }
 
 const imageUrl = (value?: MediaValue) => {
-  const media = value?.data?.attributes || value?.data || value?.attributes || value
-  if (!media || typeof media !== 'object' || typeof media.url !== 'string') return null
-  return media.url.startsWith('/uploads/') ? `/api/strapi-media${media.url}` : media.url
+  return getMediaUrl(value) || null
 }
 
 const textFromNodes = (nodes?: BetterBlockChild[]): string => (nodes || []).map((node) => node.text || textFromNodes(node.children)).join('').trim()
@@ -103,7 +102,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
         <div className="service-detail-hero__content">
           <SiteBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Services', href: '/services' }, { label: service.title }]} />
           <span className="stitch-kicker">{categoryLabel ? `${categoryLabel} · DR. MARIS AESTHETICS` : 'DR. MARIS AESTHETICS · PLASTIC SURGERY'}</span>
-          <h2>{service.title}</h2>
+          <h1>{service.title}</h1>
           {service.metaDescription ? <p className="service-detail-hero__description">{service.metaDescription}</p> : null}
         </div>
       </section>

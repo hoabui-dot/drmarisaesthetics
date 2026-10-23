@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { buildSeoMetadata } from '@/src/lib/seo/seo-manager'
 import { resolveStructuredData, StructuredDataScript } from '@/src/lib/seo/structured-data'
 import { StitchAboutUs } from '@/src/components/StitchAestheticPage'
-import { getAboutPage, getWebsiteSetting } from '@/src/lib/api/queries'
+import { getAboutPage, getAboutPageSeo, getWebsiteSetting } from '@/src/lib/api/queries'
 
 /**
  * About Us Page
@@ -15,8 +15,9 @@ export async function generateMetadata(): Promise<Metadata> {
     const title = 'About Us - DR. MARIS AESTHETICS'
     const description =
         'Learn about DR. MARIS AESTHETICS and our surgeon-led, hospital-based approach to cosmetic surgery in Vietnam.'
+    const seo = await getAboutPageSeo()
 
-    return buildSeoMetadata({ path: '/about-us', title, description })
+    return buildSeoMetadata({ path: '/about-us', pageSeo: seo, title, description })
 }
 
 export default async function AboutUsPage() {
@@ -26,6 +27,7 @@ export default async function AboutUsPage() {
             pageType: 'about', path: '/about-us',
             title: 'About Us - DR. MARIS AESTHETICS',
             description: 'Learn about DR. MARIS AESTHETICS and our surgeon-led, hospital-based approach to cosmetic surgery in Vietnam.',
+            pageSeo: aboutPage?.seo,
             breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'About Us', path: '/about-us' }],
         })
 

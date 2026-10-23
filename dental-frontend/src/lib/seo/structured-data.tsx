@@ -3,6 +3,7 @@ import { publicUrl, resolveCanonicalUrl } from "./seo-manager";
 import { CLINIC_INFO } from "@/src/lib/constants/contact";
 import { apiClient } from "@/src/lib/api/client";
 import { BRAND_LOGO_PATH } from "@/src/lib/constants/brand";
+import { normalizeStrapiMediaUrl } from "@/src/lib/api/media";
 
 type PageType = "home" | "about" | "contact" | "services" | "service" | "page" | "blog" | "news";
 type JsonLdEntity = Record<string, unknown>;
@@ -28,7 +29,7 @@ function mediaValue(media: unknown): string | undefined {
 }
 function absoluteImage(media: unknown): string | undefined {
   const value = mediaValue(media); if (!value) return undefined;
-  try { const parsed = new URL(value, siteOrigin()); return parsed.pathname.startsWith("/uploads/") ? `${siteOrigin()}/api/strapi-media${parsed.pathname}` : parsed.toString(); }
+  try { const parsed = new URL(normalizeStrapiMediaUrl(value), siteOrigin()); return parsed.toString(); }
   catch { return publicUrl(value); }
 }
 function compact(entity: JsonLdEntity): JsonLdEntity { return Object.fromEntries(Object.entries(entity).filter(([, value]) => value !== undefined && value !== null && value !== "" && (!Array.isArray(value) || value.length > 0))); }
@@ -73,7 +74,8 @@ async function resolveStructuredDataUnsafe(input: StructuredDataInput): Promise<
   if (settings.structured_data_enabled === false || input.pageSeo?.structured_data_enabled === false || input.pageSeo?.no_index === true) return null;
   const businessType = settings.structured_data_business_type && ALLOWED_BUSINESS_TYPES.has(settings.structured_data_business_type) ? settings.structured_data_business_type : FALLBACK_SETTINGS.structured_data_business_type;
   const organization = buildOrganization(businessType); const organizationId = `${siteOrigin()}/#organization`; const websiteId = `${siteOrigin()}/#website`; const webpageId = `${canonical}#webpage`; const contentEntityId = `${canonical}#${input.pageType === "service" ? "service" : "article"}`;
-  const webpage = compact({ "@type": pageSchemaType(input.pageType), "@id": webpageId, url: canonical, name: cleanText(input.title), description: cleanText(input.description), isPartOf: { "@id": websiteId }, primaryImageOfPage: absoluteImage(input.image) ? { "@type": "ImageObject", contentUrl: absoluteImage(input.image) } : undefined, datePublished: isoDate(input.publishedAt), dateModified: isoDate(input.updatedAt || input.publishedAt) });
+  const pageImage = input.pageSeo?.meta_image || input.image;
+  const webpage = compact({ "@type": pageSchemaType(input.pageType), "@id": webpageId, url: canonical, name: cleanText(input.title), description: cleanText(input.description), isPartOf: { "@id": websiteId }, primaryImageOfPage: absoluteImage(pageImage) ? { "@type": "ImageObject", contentUrl: absoluteImage(pageImage) } : undefined, datePublished: isoDate(input.publishedAt), dateModified: isoDate(input.updatedAt || input.publishedAt) });
   const graph: JsonLdEntity[] = [organization, { "@type": "WebSite", "@id": websiteId, url: `${siteOrigin()}/`, name: CLINIC_INFO.name, publisher: { "@id": organizationId } }, webpage];
   const breadcrumbs = buildBreadcrumbs(input.breadcrumbs || [], canonical); if (breadcrumbs) graph.push(breadcrumbs);
   if (input.pageType === "about" || input.pageType === "contact") webpage.mainEntity = { "@id": organizationId };

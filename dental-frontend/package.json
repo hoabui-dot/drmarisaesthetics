@@ -8,6 +8,7 @@
     "start": "cross-env NODE_OPTIONS='--no-deprecation' next start",
     "type-check": "tsc --noEmit",
     "lint": "eslint",
+    "test:media": "node --experimental-strip-types --test test/media.test.mjs",
     "lint:fix": "eslint --fix",
     "docker:build": "docker-compose build",
     "docker:up": "docker-compose --env-file .env.docker up -d",

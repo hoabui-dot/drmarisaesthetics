@@ -74,7 +74,7 @@ const CONTENT_MODELS = [
   {
     uid: 'api::about-page.about-page', label: 'About Us', kind: 'single', path: () => '/about-us', fields: ['publishedAt', 'updatedAt'],
     populate: { seo: { populate: ['meta_image'] } }, canonicalSupported: true,
-    sitemapSupported: true, structuredDataGenerated: true, auditMetadata: false,
+    sitemapSupported: true, structuredDataGenerated: true, pageSeoConsumed: true, auditMetadata: false,
   },
   {
     uid: 'api::contact-page.contact-page', label: 'Contact', kind: 'single', path: () => '/contact', fields: ['title', 'description', 'publishedAt', 'updatedAt'],
@@ -89,13 +89,13 @@ const CONTENT_MODELS = [
   {
     uid: 'api::our-team.our-team', label: 'Dr. Huy', kind: 'single', path: () => '/our-team/dr-huy', fields: ['publishedAt', 'updatedAt'],
     populate: { seo: { populate: ['meta_image'] } }, canonicalSupported: true,
-    sitemapSupported: true, structuredDataGenerated: true, auditMetadata: false,
+    sitemapSupported: true, structuredDataGenerated: true, pageSeoConsumed: true, auditMetadata: false,
   },
   {
     uid: 'api::deep-plane-facelift-specialist.deep-plane-facelift-specialist', label: 'Dr. Cuong', kind: 'single',
     path: () => '/our-team/dr-cuong', fields: ['seo_title', 'seo_description', 'publishedAt', 'updatedAt'],
-    populate: { seo: { populate: ['meta_image'] } }, canonicalSupported: false, sitemapSupported: true,
-    structuredDataGenerated: false, globalImageFallback: false,
+    populate: { seo: { populate: ['meta_image'] } }, canonicalSupported: true, sitemapSupported: true,
+    structuredDataGenerated: true, pageSeoConsumed: true,
   },
 ];
 

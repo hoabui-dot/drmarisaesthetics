@@ -13,6 +13,7 @@
 import { unstable_noStore as noStore } from "next/cache";
 import qs from "qs";
 import { STRAPI_URL, STRAPI_API_TOKEN } from "@/src/lib/env";
+import { normalizeStrapiMediaUrls } from "@/src/lib/api/media";
 
 interface FetchOptions extends RequestInit {
   params?: Record<string, any>;
@@ -118,7 +119,7 @@ export async function apiClient<T = unknown>(
 
       const data = await response.json();
 
-      return data;
+      return normalizeStrapiMediaUrls(data) as T;
     } catch (error) {
       lastError = error;
 

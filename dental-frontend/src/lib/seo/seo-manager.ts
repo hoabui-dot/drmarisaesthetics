@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { apiClient } from "@/src/lib/api/client";
+import { normalizeStrapiMediaUrl } from "@/src/lib/api/media";
 
 type MediaValue = unknown;
 
@@ -9,6 +10,7 @@ export interface PageSeoInput {
   meta_image?: MediaValue;
   canonical_url?: string | null;
   no_index?: boolean | null;
+  include_in_sitemap?: boolean | null;
   no_follow?: boolean | null;
   open_graph_title?: string | null;
   open_graph_description?: string | null;
@@ -76,10 +78,10 @@ function mediaPath(media: MediaValue): string | undefined {
 }
 
 function publicUrl(path: string): string {
-  if (/^https?:\/\//i.test(path)) return path;
+  const normalized = normalizeStrapiMediaUrl(path);
+  if (/^https?:\/\//i.test(normalized)) return normalized;
   const origin = (process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:1234").replace(/\/$/, "");
-  if (path.startsWith("/uploads/")) return `${origin}/api/strapi-media${path}`;
-  return `${origin}${path.startsWith("/") ? "" : "/"}${path}`;
+  return `${origin}${normalized.startsWith("/") ? "" : "/"}${normalized}`;
 }
 
 function normalizePath(value: string): string {

@@ -165,6 +165,7 @@
   "seo-manager.confirm.delete": "Delete this SEO rule? This cannot be undone.",
   "content-manager.content-types.api::deep-plane-facelift-specialist.deep-plane-facelift-specialist.seo_title": "SEO title",
   "content-manager.content-types.api::deep-plane-facelift-specialist.deep-plane-facelift-specialist.seo_description": "SEO description",
+  "content-manager.content-types.api::deep-plane-facelift-specialist.deep-plane-facelift-specialist.seo": "SEO",
   "content-manager.content-types.api::deep-plane-facelift-specialist.deep-plane-facelift-specialist.hero": "Hero section",
   "content-manager.content-types.api::deep-plane-facelift-specialist.deep-plane-facelift-specialist.journey": "Surgical journey",
   "content-manager.content-types.api::deep-plane-facelift-specialist.deep-plane-facelift-specialist.recovery": "Recovery protocol",

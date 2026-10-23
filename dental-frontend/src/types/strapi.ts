@@ -41,6 +41,7 @@ export interface PageSeo {
   meta_image?: StrapiMedia | null;
   canonical_url?: string | null;
   no_index?: boolean | null;
+  include_in_sitemap?: boolean | null;
   no_follow?: boolean | null;
   open_graph_title?: string | null;
   open_graph_description?: string | null;
